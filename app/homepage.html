@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Curriculum & Attendance</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Nunito:wght@400;700&family=Montserrat:wght@400;600;700&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            heading: ['Nunito', 'sans-serif'],
+            mont: ['Montserrat', 'sans-serif']
+          },
+          colors: {
+            lavender: "#F6F6FF",
+            orange: "#FCAB64",
+            deepred: "#B3001B",
+            darkblue: "#2D3142",
+            skyblue: "#6CB4EE"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+        url("background.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Fade Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="flex min-h-screen text-gray-800">
+
+  <!-- Sidebar Navbar -->
+  <aside class="w-72 bg-darkblue text-white p-6 flex flex-col space-y-6 fixed top-0 bottom-0">
+    <h1 class="text-3xl font-bold font-heading mb-4">📘 Smart App</h1>
+    <nav class="flex-1">
+      <ul class="space-y-5 text-lg">
+        <li><button onclick="showSection('dashboard')" class="w-full text-left py-2 hover:text-skyblue">🏠
+            Dashboard</button></li>
+        <li><button onclick="showSection('curriculum')" class="w-full text-left py-2 hover:text-skyblue">📚
+            Curriculum</button></li>
+        <li><button onclick="showSection('attendance')" class="w-full text-left py-2 hover:text-skyblue">📊
+            Attendance</button></li>
+        <li><button onclick="showSection('calendar')" class="w-full text-left py-2 hover:text-skyblue">📅
+            Calendar</button></li>
+        <li><button onclick="showSection('settings')" class="w-full text-left py-2 hover:text-skyblue">⚙️
+            Settings</button></li>
+        <li><button onclick="showSection('about')" class="w-full text-left py-2 hover:text-skyblue">ℹ️ About</button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 ml-72 mr-80 overflow-y-auto">
+
+    <!-- Dashboard -->
+    <section id="dashboard">
+      <h2 id="greeting" class="text-4xl font-heading font-bold text-center mb-6"></h2>
+      <h3 class="text-2xl text-center font-semibold text-darkblue mb-10">Semester 3 Subjects & Faculty</h3>
+
+      <!-- Subjects -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/ai.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">Principle of AI</h2>
+          <p class="text-sm text-gray-500">Preeti Raj Verma</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/dld.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">Digital Logic Design</h2>
+          <p class="text-sm text-gray-500">Mr. Anuj Rajput</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/dsa.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">Data Structures</h2>
+          <p class="text-sm text-gray-500">Ms. Upasna Joshi</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/math.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">PSLA</h2>
+          <p class="text-sm text-gray-500">Mr. Padmesh</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/fds.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">Foundation of DS</h2>
+          <p class="text-sm text-gray-500">Ms. Maroof</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/uhv.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">UHV</h2>
+          <p class="text-sm text-gray-500">Ms. Jyoti</p>
+        </div>
+        <div class="bg-white shadow-xl rounded-2xl flex flex-col justify-center items-center w-60 h-60">
+          <img src="icons/cr.png" class="w-16 mb-2">
+          <h2 class="font-bold text-lg">Critical Reasoning</h2>
+          <p class="text-sm text-gray-500">N/A</p>
+        </div>
+      </div>
+
+      <!-- Notifications Panel -->
+      <div class="mt-10 bg-white shadow-xl rounded-2xl p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🔔 Notifications</h2>
+        <ul id="notifications" class="space-y-3"></ul>
+      </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="hidden">
+      <h1 class="text-4xl font-heading font-bold text-darkblue mb-10">📘 Curriculum</h1>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h2 class="font-bold text-lg mb-2">Principle of AI</h2>
+          <p class="text-sm mb-3">Faculty: Preeti Raj Verma</p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h2 class="font-bold text-lg mb-2">Digital Logic Design</h2>
+          <p class="text-sm mb-3">Faculty: Mr. Anuj Rajput</p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h3 class="font-bold text-lg mb-2">Foundation of Data Science</h3>
+          <p class="text-sm mb-3">Faculty: Ms. Maroof</p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h4 class="font-bold text-lg mb-2">Probablity Statistics & linear Algebra</h4>
+          <p class="text-sm mb-3">Faculty: <Mr class="Padmesh"></Mr>
+          </p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h5 class="font-bold text-lg mb-2">Data Structures</h5>
+          <p class="text-sm mb-3">Faculty: Ms. Upasna Joshi</p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl flex flex-col items-center justify-center p-6 w-60 h-60">
+          <h6 class="font-bold text-lg mb-2">Universal Human Values</h6>
+          <p class="text-sm mb-3">Faculty: Ms. Jyoti</p>
+          <button class="bg-skyblue px-3 py-1 rounded-lg text-white">View Syllabus</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attendance Section -->
+
+    <section id="attendance" class="hidden">
+      <h1 class="text-4xl font-bold mb-10">📊 Attendance Dashboard</h1>
+      <div class="grid md:grid-cols-4 gap-6 mb-10">
+        <div class="bg-white shadow-lg rounded-2xl p-6 text-center fade-in hover:scale-105 transition">
+          <h2 class="text-lg font-semibold">This Week</h2>
+          <p class="text-2xl font-bold text-skyblue">12 Lectures</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-2xl p-6 text-center fade-in hover:scale-105 transition">
+          <h2 class="text-lg font-semibold">Total Attendance</h2>
+          <p class="text-2xl font-bold text-deepred">200 / 300</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-2xl p-6 text-center fade-in hover:scale-105 transition">
+          <h2 class="text-lg font-semibold">Current %</h2>
+          <p class="text-2xl font-bold text-darkblue">66.7%</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-2xl p-6 text-center fade-in hover:scale-105 transition">
+          <h2 class="text-lg font-semibold">Needed for 75%</h2>
+          <p class="text-2xl font-bold text-orange">34 Lectures</p>
+        </div>
+      </div>
+
+
+      <div class="bg-white shadow-xl rounded-2xl p-6 mb-10 fade-in">
+        <h2 class="text-2xl font-bold mb-4">📌 Missed Classes & Backlogs</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><span class="font-semibold">DS:</span> Missed 4 classes → Backlog: 1 Assignment</li>
+          <li><span class="font-semibold">OS:</span> Missed 3 classes → Backlog: Lab Record</li>
+          <li><span class="font-semibold">CN:</span> Missed 2 classes → Backlog: Project Work</li>
+        </ul>
+      </div>
+      <div class="bg-white shadow-xl rounded-2xl p-6">
+        <canvas id="attendanceChart" class="h-64"></canvas>
+      </div>
+    </section>
+
+
+    <!-- Calendar Section -->
+    <section id="calendar" class="hidden">
+      <h1 class="text-4xl font-bold mb-10">📅 Academic Calendar</h1>
+      <div class="bg-white shadow-xl rounded-2xl p-6 max-w-3xl mx-auto">
+        <div id="monthYear" class="text-xl font-bold text-center mb-4"></div>
+        <div id="calendarDays" class="grid grid-cols-7 gap-2 text-center"></div>
+      </div>
+      <div class="mt-10 max-w-3xl mx-auto bg-white shadow-xl rounded-xl p-6 bg-opacity-90">
+        <h3 class="text-xl font-bold mb-4">📌 Upcoming Events</h3>
+        <ul id="eventList" class="space-y-2 text-sm">
+          <li><span class="font-semibold">15 Sept:</span> Mid Sem Exams Begin</li>
+          <li><span class="font-semibold">30 Sept:</span> Project Submission</li>
+          <li><span class="font-semibold">15 Dec:</span> End Semester Exams</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="hidden">
+      <h1 class="text-4xl font-bold mb-6">⚙️ Profile Settings</h1>
+      <div class="bg-white shadow-lg rounded-xl p-6 space-y-4 max-w-lg">
+        <label>👤 Name: <input id="name" class="border p-2 w-full"></label>
+        <label>📧 Email: <input id="email" class="border p-2 w-full"></label>
+        <label>📱 Phone: <input id="phone" class="border p-2 w-full"></label>
+        <label>🏫 Institution: <input id="inst" class="border p-2 w-full"></label>
+        <label>🎓 Graduation Year: <input id="grad" class="border p-2 w-full"></label>
+        <button onclick="saveProfile()" class="bg-skyblue px-4 py-2 rounded-lg text-white">Save Changes</button>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="hidden">
+      <h1 class="text-4xl font-bold mb-6">ℹ️ About</h1>
+      <p>This is a Smart Curriculum & Attendance SPA dashboard project.</p>
+    </section>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="w-80 bg-white shadow-lg p-6 flex flex-col space-y-6 fixed right-0 top-0 bottom-0">
+    <!-- Profile -->
+    <div onclick="showSection('settings')" class="cursor-pointer">
+      <img src="profile.jpg" class="w-16 h-16 rounded-full mb-2">
+      <h2 class="text-xl font-bold">Arth</h2>
+      <p class="text-sm text-gray-500">Student, Delhi</p>
+    </div>
+
+    <!-- Realtime Clock -->
+    <div>
+      <h3 class="font-bold">⏰ Time</h3>
+      <p id="clock" class="text-lg mb-4"></p>
+    </div>
+
+    <!-- Full Calendar -->
+    <div>
+      <h3 class="font-bold mb-2">📅 Calendar</h3>
+      <div id="sideMonthYear" class="text-center font-semibold mb-2"></div>
+      <div id="sideCalendar" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+    </div>
+
+    <!-- Queries -->
+    <div>
+      <h3 class="font-bold">❓ Queries</h3>
+      <div id="queryMessage" class="text-sm text-green-600 mt-2"></div>
+      <button onclick="raiseQuery()" class="bg-skyblue text-white px-3 py-1 rounded-lg mr-2">Raise</button>
+      <button onclick="revokeQuery()" class="bg-red-500 text-white px-3 py-1 rounded-lg">Revoke</button>
+    </div>
+  </aside>
+
+  <!-- Scripts -->
+  <script>
+    function showSection(id) {
+      document.querySelectorAll("main section").forEach(sec => sec.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+      feather.replace();
+    }
+    showSection('dashboard');
+
+    // Greeting
+    function setGreeting() {
+      const hour = new Date().getHours();
+      let greet = "Good Evening";
+      if (hour < 12) greet = "Good Morning";
+      else if (hour < 18) greet = "Good Afternoon";
+      document.getElementById("greeting").textContent = `👋 ${greet}, Arth!`;
+    }
+    setGreeting();
+
+    // Clock
+    function updateClock() { document.getElementById("clock").textContent = new Date().toLocaleTimeString(); }
+    setInterval(updateClock, 1000); updateClock();
+
+    // Queries
+    function raiseQuery() {
+      alert("✅ Query Raised Successfully");
+      document.getElementById("queryMessage").textContent = "✅ Query Raised Successfully";
+      addNotification("query", "You raised a query");
+    }
+    function revokeQuery() {
+      alert("❌ Query Revoked");
+      document.getElementById("queryMessage").textContent = "";
+      addNotification("absent", "Your query has been revoked");
+    }
+
+    // Save Profile
+    function saveProfile() { alert("✅ Profile updated successfully!"); }
+
+    // Notifications (styled bubbles)
+    const notiList = document.getElementById("notifications");
+    function addNotification(type, message) {
+      let icon = "📢", bg = "bg-skyblue/10 text-skyblue";
+      if (type === "present") { icon = "✅"; bg = "bg-green-100 text-green-700"; }
+      if (type === "absent") { icon = "❌"; bg = "bg-red-100 text-red-700"; }
+      if (type === "query") { icon = "❓"; bg = "bg-orange/20 text-orange-700"; }
+      const li = document.createElement("li");
+      li.className = `flex items-start gap-3 p-3 rounded-xl shadow-sm animate-fadeIn ${bg}`;
+      li.innerHTML = `<span class="text-lg">${icon}</span> <p class="text-sm font-medium">${message}</p>`;
+      notiList.prepend(li);
+    }
+    addNotification("upload", "Teacher uploaded PAI assignment");
+    addNotification("absent", "❌ You were marked Absent in DLD");
+    addNotification("present", "✅ You were marked Present in PSLA");
+
+    // Attendance Chart
+    const ctx = document.getElementById('attendanceChart');
+    if (ctx) { new Chart(ctx, { type: 'bar', data: { labels: ['PAI', 'DLD', 'DSA', 'PSLA', 'FDS', 'UHV', 'CR'], datasets: [{ data: [20, 18, 22, 15, 19, 25, 16], backgroundColor: '#6CB4EE', borderRadius: 6 }] }, options: { plugins: { legend: { display: false } }, responsive: true } }); }
+
+    // Academic Calendar (main + sidebar)
+    const events = { "2025-09-15": "Mid Sem Exams", "2025-12-15": "End Sem Exams", "2025-10-02": "Gandhi Jayanti", "2025-01-26": "Republic Day", "2025-08-15": "Independence Day" };
+    function renderCalendar(month, year, targetDays, targetHeader) {
+      targetDays.innerHTML = ""; const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      targetHeader.textContent = `${monthNames[month]} ${year}`;
+      for (let i = 0; i < firstDay; i++)targetDays.innerHTML += "<div></div>";
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+        let cls = "p-1 rounded-md";
+        if (events[dateStr]) cls += " bg-orange text-white";
+        if (d === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) cls += " border-2 border-skyblue";
+        targetDays.innerHTML += `<div class="${cls}">${d}</div>`;
+      }
+    }
+    const monthYear = document.getElementById("monthYear");
+    const calendarDays = document.getElementById("calendarDays");
+    const sideMonthYear = document.getElementById("sideMonthYear");
+    const sideCalendar = document.getElementById("sideCalendar");
+    const today = new Date(); renderCalendar(today.getMonth(), today.getFullYear(), calendarDays, monthYear);
+    renderCalendar(today.getMonth(), today.getFullYear(), sideCalendar, sideMonthYear);
+  </script>
+</body>
+
+</html>

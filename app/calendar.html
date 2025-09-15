@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar - Smart Attendance</title>
+  
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif']
+          },
+          colors: {
+            lavender: "#F6F6FF",
+            orange: "#FCAB64",
+            deepred: "#B3001B",
+            darkblue: "#2D3142",
+            skyblue: "#6CB4EE"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      
+      background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
+        url("background.jpg"); 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; 
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-darkblue p-8">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-10">
+    <h1 class="text-4xl font-bold">📅 Academic Calendar</h1>
+    <a href="homepage.html" class="bg-orange text-white px-5 py-2 rounded-xl hover:bg-deepred transition shadow-lg font-medium">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  
+  <div class="bg-white shadow-2xl rounded-2xl p-6 max-w-4xl mx-auto bg-opacity-90">
+    
+    
+    <div class="flex justify-between items-center mb-6">
+      <button id="prevMonth" class="px-3 py-1 bg-skyblue text-white rounded-lg hover:bg-darkblue">◀</button>
+      <h2 id="monthYear" class="text-2xl font-bold"></h2>
+      <button id="nextMonth" class="px-3 py-1 bg-skyblue text-white rounded-lg hover:bg-darkblue">▶</button>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="grid grid-cols-7 gap-2 text-center font-medium">
+      <div class="text-red-500">Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div class="text-green-600">Sat</div>
+    </div>
+
+    <div id="calendarDays" class="grid grid-cols-7 gap-2 mt-3"></div>
+  </div>
+
+  
+  <div class="mt-10 max-w-3xl mx-auto bg-white shadow-xl rounded-xl p-6 bg-opacity-90">
+    <h3 class="text-xl font-bold mb-4">📌 Upcoming Events</h3>
+    <ul id="eventList" class="space-y-2 text-sm">
+      <li><span class="font-semibold">15 Sept:</span> Mid Sem Exams Begin</li>
+      <li><span class="font-semibold">30 Sept:</span> Project Submission</li>
+      <li><span class="font-semibold">15 Dec:</span> End Semester Exams</li>
+    </ul>
+  </div>
+
+  
+  <script>
+    const monthYear = document.getElementById("monthYear");
+    const calendarDays = document.getElementById("calendarDays");
+    const prevMonthBtn = document.getElementById("prevMonth");
+    const nextMonthBtn = document.getElementById("nextMonth");
+
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    const events = {
+      "2025-09-15": "Mid Sem Exams Begin",
+      "2025-09-30": "Project Submission",
+      "2025-12-15": "End Semester Exams"
+    };
+
+    function renderCalendar(month, year) {
+      calendarDays.innerHTML = "";
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const monthNames = [
+        "January","February","March","April","May","June",
+        "July","August","September","October","November","December"
+      ];
+
+      monthYear.textContent = `${monthNames[month]} ${year}`;
+
+      for (let i = 0; i < firstDay; i++) {
+        calendarDays.innerHTML += `<div></div>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+        
+        let classes = "p-2 rounded-lg";
+
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          classes += " bg-skyblue text-white font-bold";
+        } else {
+          classes += " hover:bg-lavender";
+        }
+
+        if (events[dateStr]) {
+          classes += " border-2 border-orange font-semibold";
+        }
+
+        calendarDays.innerHTML += `<div class="${classes}">${day}</div>`;
+      }
+    }
+
+    prevMonthBtn.addEventListener("click", () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    nextMonthBtn.addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    renderCalendar(currentMonth, currentYear);
+  </script>
+</body>
+</html>
+
