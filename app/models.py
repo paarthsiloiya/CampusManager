@@ -34,6 +34,7 @@ class User(UserMixin, db.Model):
     # Additional profile information
     enrollment_number = db.Column(db.String(50), unique=True, nullable=True)
     department = db.Column(db.String(100), nullable=True)
+    institution = db.Column(db.String(200), nullable=True, default='Delhi Technical Campus')
     year_of_admission = db.Column(db.Integer, nullable=True)
     
     # Timestamps

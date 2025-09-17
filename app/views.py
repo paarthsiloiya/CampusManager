@@ -1,6 +1,7 @@
-from flask import Blueprint, request, redirect, make_response
+from flask import Blueprint, request, redirect, make_response, url_for, flash
 from flask import render_template
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
+from .models import db, User, Branch
 import json
 import os
 from datetime import datetime
@@ -139,7 +140,7 @@ def dashboard():
         'branch': current_user.branch.value if current_user.branch else 'Not provided',
         'enrollment_number': current_user.enrollment_number or 'Not provided',
         'department': current_user.department or 'Not provided',
-        'institution': 'Delhi Technical University',  # You can make this configurable
+        'institution': current_user.institution or 'Delhi Technical Campus',
         'graduation_year': current_user.year_of_admission + 4 if current_user.year_of_admission else 'Not set',
         'role': 'Student',
         'location': 'Delhi',  # You can add this field to User model if needed
@@ -284,7 +285,7 @@ def curriculum():
         'branch': current_user.branch.value if current_user.branch else 'Not provided',
         'enrollment_number': current_user.enrollment_number or 'Not provided',
         'department': current_user.department or 'Not provided',
-        'institution': 'Delhi Technical University',
+        'institution': current_user.institution or 'Delhi Technical Campus',
         'graduation_year': current_user.year_of_admission + 4 if current_user.year_of_admission else 'Not set',
     }
     
@@ -376,12 +377,16 @@ def attendance():
             'data': [0]
         }
     
+    # Load calendar events
+    calendar_events = load_calendar_events()
+    
     rendered = render_template(
         "Student/attendance.html",
         subjects=subjects_data,
         attendance_stats=attendance_stats,
         missed_classes=missed_classes,
-        attendance_chart_data=attendance_chart_data
+        attendance_chart_data=attendance_chart_data,
+        calendar_events=calendar_events
     )
     
     response = make_response(rendered)
@@ -400,21 +405,117 @@ def calendar():
     response = make_response(rendered)
     return no_cache(response)
 
-@views.route('/settings')
+@views.route('/settings', methods=['GET', 'POST'])
 @login_required
 def settings():
+    if request.method == 'POST':
+        # Handle profile update
+        try:
+            # Get form data (excluding name and email which are now read-only)
+            phone = request.form.get('phone', '').strip()
+            date_of_birth = request.form.get('date_of_birth')
+            enrollment_number = request.form.get('enrollment_number', '').strip()
+            branch = request.form.get('branch', '').strip()
+            semester = request.form.get('semester')
+            institution = request.form.get('institution', '').strip()
+            graduation_year = request.form.get('graduation_year')
+            department = request.form.get('department', '').strip()
+            
+            # Debug logging
+            print(f"🔍 Profile Update Debug Info:")
+            print(f"   Current Name: {current_user.name} (read-only)")
+            print(f"   Current Email: {current_user.email} (read-only)")
+            print(f"   Institution: {institution}")
+            print(f"   Branch: {branch}")
+            print(f"   Semester: {semester}")
+            print(f"   Current user institution: {current_user.institution}")
+            
+            # Validation (removed name and email validation since they're read-only)
+            errors = []
+            
+            if semester and (not semester.isdigit() or int(semester) < 1 or int(semester) > 8):
+                errors.append('Please select a valid semester (1-8).')
+            
+            if branch and branch not in ['AIML', 'AIDS', 'CST', 'CSE']:
+                errors.append('Please select a valid branch.')
+            
+            if graduation_year and not graduation_year.isdigit():
+                errors.append('Graduation year must be a valid number.')
+            
+            if errors:
+                for error in errors:
+                    flash(error, 'error')
+                return redirect(url_for('views.settings'))
+            
+            # Update user data (excluding name and email)
+            current_user.phone = phone if phone else None
+            
+            # Handle date of birth
+            if date_of_birth:
+                try:
+                    current_user.date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+                except ValueError:
+                    flash('Invalid date format for date of birth.', 'error')
+                    return redirect(url_for('views.settings'))
+            
+            current_user.enrollment_number = enrollment_number if enrollment_number else None
+            
+            # Handle branch enum
+            if branch:
+                from .models import Branch
+                try:
+                    current_user.branch = Branch(branch)
+                except ValueError:
+                    flash('Invalid branch selection.', 'error')
+                    return redirect(url_for('views.settings'))
+            
+            if semester:
+                current_user.semester = int(semester)
+            
+            current_user.department = department if department else None
+            
+            # Handle institution
+            current_user.institution = institution if institution else 'Delhi Technical Campus'
+            
+            # Handle graduation year - calculate year_of_admission
+            if graduation_year:
+                grad_year = int(graduation_year)
+                current_user.year_of_admission = grad_year - 4  # Assuming 4-year degree
+            
+            # Update timestamp
+            current_user.updated_at = datetime.utcnow()
+            
+            # Save to database
+            db.session.commit()
+            
+            # Debug confirmation
+            print(f"✅ Profile Update Success:")
+            print(f"   New institution: {current_user.institution}")
+            print(f"   New branch: {current_user.branch.value if current_user.branch else 'None'}")
+            print(f"   New semester: {current_user.semester}")
+            
+            flash('Profile updated successfully!', 'success')
+            return redirect(url_for('views.settings'))
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error updating profile: {e}")
+            flash('An error occurred while updating your profile. Please try again.', 'error')
+            return redirect(url_for('views.settings'))
+    
+    # GET request - show settings form
     # Use actual user data
     student_data = {
         'name': current_user.name,
         'email': current_user.email,
         'phone': current_user.phone,
-        'date_of_birth': current_user.date_of_birth,
+        'date_of_birth': current_user.date_of_birth.strftime('%Y-%m-%d') if current_user.date_of_birth else '',
         'semester': current_user.semester,
         'branch': current_user.branch.value if current_user.branch else 'CSE',
         'enrollment_number': current_user.enrollment_number,
         'department': current_user.department,
-        'institution': 'Delhi Technical University',
-        'graduation_year': current_user.year_of_admission + 4 if current_user.year_of_admission else None,
+        'institution': current_user.institution or 'Delhi Technical Campus',
+        'graduation_year': current_user.year_of_admission + 4 if current_user.year_of_admission else '',
     }
     
     rendered = render_template(
@@ -424,6 +525,65 @@ def settings():
     
     response = make_response(rendered)
     return no_cache(response)
+
+@views.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    """Handle account deletion with proper data cleanup"""
+    try:
+        # Get confirmation input
+        confirmation = request.form.get('confirmation', '').strip()
+        
+        # Debug logging
+        print(f"🗑️ Account Deletion Request:")
+        print(f"   User: {current_user.name} ({current_user.email})")
+        print(f"   User ID: {current_user.id}")
+        print(f"   Confirmation: '{confirmation}'")
+        
+        # Validate confirmation
+        if confirmation != 'DELETE':
+            flash('Account deletion failed. Please type "DELETE" exactly to confirm.', 'error')
+            return redirect(url_for('views.settings'))
+        
+        # Store user info for logging before deletion
+        user_name = current_user.name
+        user_email = current_user.email
+        user_id = current_user.id
+        
+        # Import necessary models for cleanup
+        from . import db
+        
+        # Clean up related data first (if any exists in your schema)
+        # You can add cleanup for attendance records, marks, etc. here
+        # For example:
+        # Attendance.query.filter_by(user_id=user_id).delete()
+        # Marks.query.filter_by(user_id=user_id).delete()
+        
+        # Log out the user first
+        logout_user()
+        
+        # Delete the user account
+        user_to_delete = User.query.get(user_id)
+        if user_to_delete:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            
+            print(f"✅ Account Deleted Successfully:")
+            print(f"   User: {user_name} ({user_email})")
+            print(f"   User ID: {user_id}")
+            
+            # Success message and redirect to home/login
+            flash('Your account has been successfully deleted. Thank you for using our service.', 'success')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('Account deletion failed. User not found.', 'error')
+            return redirect(url_for('auth.login'))
+            
+    except Exception as e:
+        print(f"❌ Account Deletion Error: {str(e)}")
+        db.session.rollback()
+        flash('An error occurred while deleting your account. Please try again or contact support.', 'error')
+        return redirect(url_for('views.settings'))
 
 @views.route('/about')
 @login_required

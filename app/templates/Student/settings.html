@@ -7,48 +7,53 @@
     <h1 class="text-4xl font-bold mb-6 flex items-center gap-2"><i data-feather="settings" class="w-8 h-8 text-skyblue"></i> Profile Settings</h1>
     
     <!-- Profile Information Form -->
-    <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl">
-        <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
-        
-        <!-- Profile Picture Section -->
-        <div class="flex items-center space-x-4 mb-6">
-            <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-                <i data-feather="user" class="w-10 h-10 text-gray-500"></i>
+    <form id="profileForm" method="POST" action="{{ url_for('views.settings') }}">
+        <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl">
+            <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
+            
+            <!-- Profile Picture Section -->
+            <div class="flex items-center space-x-4 mb-6">
+                <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                    <i data-feather="user" class="w-10 h-10 text-gray-500"></i>
+                </div>
+                <div>
+                    <button type="button" class="bg-skyblue text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">Change Photo</button>
+                    <p class="text-sm text-gray-500 mt-1">JPG, PNG or GIF (max. 2MB)</p>
+                </div>
             </div>
-            <div>
-                <button class="bg-skyblue text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">Change Photo</button>
-                <p class="text-sm text-gray-500 mt-1">JPG, PNG or GIF (max. 2MB)</p>
-            </div>
-        </div>
 
         <!-- Form Fields -->
         <div class="grid md:grid-cols-2 gap-4">
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="user" class="w-4 h-4 text-gray-600"></i> Full Name
+                    <span class="text-xs text-red-600 ml-1">(Read-only)</span>
                 </span>
-                <input id="name" value="{{ student.name or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your full name" />
+                <input id="name" name="name" value="{{ student.name or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your full name" readonly />
+                <p class="text-xs text-gray-500">Name cannot be changed after account creation</p>
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="mail" class="w-4 h-4 text-gray-600"></i> Email
+                    <span class="text-xs text-red-600 ml-1">(Read-only)</span>
                 </span>
-                <input id="email" value="{{ student.email or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your email" />
+                <input id="email" name="email" type="email" value="{{ student.email or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your email" readonly />
+                <p class="text-xs text-gray-500">Email cannot be changed after account creation</p>
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="phone" class="w-4 h-4 text-gray-600"></i> Phone
                 </span>
-                <input id="phone" value="{{ student.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
+                <input id="phone" name="phone" value="{{ student.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Date of Birth
                 </span>
-                <input id="dob" type="date" value="{{ student.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
+                <input id="dob" name="date_of_birth" type="date" value="{{ student.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
             </label>
         </div>
 
@@ -59,14 +64,14 @@
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="hash" class="w-4 h-4 text-gray-600"></i> Enrollment Number
                 </span>
-                <input id="enrollment" value="{{ student.enrollment_number or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter enrollment number" />
+                <input id="enrollment" name="enrollment_number" value="{{ student.enrollment_number or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter enrollment number" />
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="book" class="w-4 h-4 text-gray-600"></i> Branch
                 </span>
-                <select id="branch" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
+                <select id="branch" name="branch" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
                     <option value="CSE" {% if student.branch == 'CSE' %}selected{% endif %}>Computer Science & Engineering</option>
                     <option value="AIML" {% if student.branch == 'AIML' %}selected{% endif %}>AI & Machine Learning</option>
                     <option value="AIDS" {% if student.branch == 'AIDS' %}selected{% endif %}>AI & Data Science</option>
@@ -78,7 +83,7 @@
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="layers" class="w-4 h-4 text-gray-600"></i> Current Semester
                 </span>
-                <select id="semester" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
+                <select id="semester" name="semester" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent">
                     {% for i in range(1, 9) %}
                     <option value="{{ i }}" {% if student.semester == i %}selected{% endif %}>Semester {{ i }}</option>
                     {% endfor %}
@@ -89,29 +94,31 @@
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="building" class="w-4 h-4 text-gray-600"></i> Institution
                 </span>
-                <input id="inst" value="{{ student.institution or 'Delhi Technical University' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
+                <input id="inst" name="institution" value="{{ student.institution or 'Delhi Technical Campus' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="graduation-cap" class="w-4 h-4 text-gray-600"></i> Graduation Year
                 </span>
-                <input id="grad" type="number" value="{{ student.graduation_year or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter graduation year" min="2024" max="2030" />
+                <input id="grad" name="graduation_year" type="number" value="{{ student.graduation_year or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter graduation year" min="2024" max="2030" />
             </label>
             
             <label class="flex flex-col gap-2">
                 <span class="flex items-center gap-2 font-medium">
                     <i data-feather="briefcase" class="w-4 h-4 text-gray-600"></i> Department
                 </span>
-                <input id="department" value="{{ student.department or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter department" />
+                <input id="department" name="department" value="{{ student.department or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter department" />
             </label>
         </div>
 
         <!-- Action Buttons -->
         <div class="flex gap-4 pt-6">
-            <button onclick="saveProfile()" class="bg-skyblue px-6 py-3 rounded-lg text-white hover:bg-blue-500 transition font-medium">Save Changes</button>
-            <button onclick="resetForm()" class="bg-gray-500 px-6 py-3 rounded-lg text-white hover:bg-gray-600 transition font-medium">Reset</button>
+            <button type="submit" class="bg-skyblue px-6 py-3 rounded-lg text-white hover:bg-blue-500 transition font-medium">Save Changes</button>
+            <button type="button" onclick="resetForm()" class="bg-gray-500 px-6 py-3 rounded-lg text-white hover:bg-gray-600 transition font-medium">Reset</button>
         </div>
+    </div>
+</form>
     </div>
 
     <!-- Account Settings -->
@@ -140,7 +147,47 @@
                     <h3 class="font-medium text-red-700">Delete Account</h3>
                     <p class="text-sm text-red-600">Permanently delete your account and all data</p>
                 </div>
-                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Delete</button>
+                <button type="button" onclick="showDeleteConfirmation()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                    <i data-feather="alert-triangle" class="h-6 w-6 text-red-600"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Delete Account</h3>
+                <p class="text-sm text-gray-500 mb-6">
+                    Are you absolutely sure you want to delete your account? This action cannot be undone and will permanently remove:
+                </p>
+                <ul class="text-left text-sm text-gray-600 mb-6 space-y-1">
+                    <li>• Your profile information</li>
+                    <li>• All attendance records</li>
+                    <li>• All marks and grades</li>
+                    <li>• Account access and login credentials</li>
+                </ul>
+                
+                <!-- Confirmation Input -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Type "DELETE" to confirm:
+                    </label>
+                    <input id="deleteConfirmation" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Type DELETE here" />
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="button" onclick="hideDeleteConfirmation()" class="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
+                        Cancel
+                    </button>
+                    <form action="{{ url_for('views.delete_account') }}" method="POST" class="flex-1 w-full m-0">
+                        <button type="submit" id="confirmDeleteBtn" disabled class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                            Delete Account
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -184,31 +231,6 @@
         }
     });
 
-    // Save Profile function
-    function saveProfile() {
-        const profileData = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            dob: document.getElementById("dob").value,
-            enrollment: document.getElementById("enrollment").value,
-            branch: document.getElementById("branch").value,
-            semester: document.getElementById("semester").value,
-            institution: document.getElementById("inst").value,
-            graduation_year: document.getElementById("grad").value,
-            department: document.getElementById("department").value
-        };
-        
-        // Here you would typically send this data to the server
-        console.log("Profile data to save:", profileData);
-        
-        // Show success message
-        alert("Profile updated successfully!");
-        
-        // You can implement actual form submission here
-        // For example: fetch('/update-profile', { method: 'POST', body: JSON.stringify(profileData) })
-    }
-
     // Reset form function
     function resetForm() {
         if (confirm("Are you sure you want to reset all changes?")) {
@@ -225,9 +247,9 @@
         }
     }
 
-    // Form validation
+    // Form validation (removed name and email since they're read-only)
     function validateForm() {
-        const requiredFields = ['name', 'email', 'branch', 'semester'];
+        const requiredFields = ['branch', 'semester']; // Removed name and email
         const errors = [];
         
         requiredFields.forEach(field => {
@@ -237,19 +259,75 @@
             }
         });
         
-        // Email validation
-        const email = document.getElementById("email").value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email && !emailRegex.test(email)) {
-            errors.push("Please enter a valid email address");
-        }
-        
         return errors;
+    }
+
+    // Delete account modal functions
+    function showDeleteConfirmation() {
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('deleteConfirmation').value = '';
+        document.getElementById('confirmDeleteBtn').disabled = true;
+        
+        // Focus on the confirmation input
+        setTimeout(() => {
+            document.getElementById('deleteConfirmation').focus();
+        }, 100);
+    }
+
+    function hideDeleteConfirmation() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        document.getElementById('deleteConfirmation').value = '';
+        document.getElementById('confirmDeleteBtn').disabled = true;
     }
 
     // Add real-time validation
     document.addEventListener("DOMContentLoaded", function() {
-        const inputs = document.querySelectorAll("input, select");
+        const form = document.getElementById("profileForm");
+        
+        // Add form submission validation
+        form.addEventListener("submit", function(e) {
+            const errors = validateForm();
+            if (errors.length > 0) {
+                e.preventDefault();
+                alert("Please fix the following errors:\n" + errors.join("\n"));
+            }
+        });
+        
+        // Delete confirmation modal functionality
+        const deleteInput = document.getElementById('deleteConfirmation');
+        const deleteBtn = document.getElementById('confirmDeleteBtn');
+        
+        if (deleteInput && deleteBtn) {
+            deleteInput.addEventListener('input', function() {
+                if (this.value.trim().toUpperCase() === 'DELETE') {
+                    deleteBtn.disabled = false;
+                    deleteBtn.classList.remove('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
+                } else {
+                    deleteBtn.disabled = true;
+                    deleteBtn.classList.add('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        const deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideDeleteConfirmation();
+                }
+            });
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideDeleteConfirmation();
+            }
+        });
+        
+        // Add real-time validation feedback (skip readonly fields)
+        const inputs = document.querySelectorAll("input:not([readonly]), select");
         inputs.forEach(input => {
             input.addEventListener("blur", function() {
                 if (this.hasAttribute("required") && !this.value.trim()) {

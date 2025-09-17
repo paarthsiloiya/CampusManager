@@ -11,23 +11,75 @@
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Nunito:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
         <script>
             tailwind.config = {
                 theme: {
                     extend: {
                         fontFamily: {
-                            sans: ["Poppins", "sans-serif"],
-                            heading: ["Nunito", "sans-serif"],
-                            mont: ["Montserrat", "sans-serif"],
+                            sans: ["Roboto", "sans-serif"],
+                            heading: ["Roboto", "sans-serif"],
+                            mont: ["Roboto", "sans-serif"],
                         },
                         colors: {
-                            lavender: "#F6F6FF",
-                            orange: "#FCAB64",
-                            deepred: "#B3001B",
-                            darkblue: "#2D3142",
-                            skyblue: "#6CB4EE",
+                            // Primary brand colors
+                            lavender: "hsla(248, 100%, 95%, 1)",
+                            orange: "hsla(32, 95%, 69%, 1)",
+                            deepred: "hsla(347, 99%, 35%, 1)",
+                            darkblue: "hsla(218, 17%, 22%, 1)",
+                            skyblue: "hsla(215, 100%, 84%, 1)",
+
+                            // Extended color palette
+                            primary: {
+                                50: "hsla(240, 100%, 98%, 1)", // lavender
+                                100: "hsla(198, 93%, 94%, 1)", // light skyblue
+                                500: "hsla(215, 100%, 84%, 1)", // skyblue
+                                600: "hsla(214, 66%, 58%, 1)", // darker skyblue
+                                700: "hsla(218, 17%, 22%, 1)", // darkblue
+                                900: "hsla(218, 18%, 14%, 1)", // very dark blue
+                            },
+                            secondary: {
+                                50: "hsla(24, 100%, 96%, 1)", // light orange
+                                100: "hsla(34, 100%, 91%, 1)", // lighter orange
+                                500: "hsla(32, 95%, 69%, 1)", // orange
+                                600: "hsla(32, 77%, 60%, 1)", // darker orange
+                                700: "hsla(26, 95%, 44%, 1)", // dark orange
+                            },
+                            accent: {
+                                500: "hsla(347, 99%, 35%, 1)", // deepred
+                                600: "hsla(0, 100%, 27%, 1)", // darker red
+                                700: "hsla(0, 63%, 31%, 1)", // dark red
+                            },
+                            success: {
+                                100: "hsla(138, 76%, 92%, 1)", // light green
+                                500: "hsla(142, 71%, 45%, 1)", // green
+                                600: "hsla(142, 76%, 36%, 1)", // dark green
+                                700: "hsla(140, 81%, 31%, 1)", // darker green
+                            },
+                            warning: {
+                                100: "hsla(48, 96%, 89%, 1)", // light yellow
+                                500: "hsla(38, 92%, 50%, 1)", // yellow
+                                600: "hsla(26, 95%, 44%, 1)", // dark yellow
+                            },
+                            danger: {
+                                100: "hsla(0, 93%, 94%, 1)", // light red
+                                500: "hsla(0, 84%, 60%, 1)", // red
+                                600: "hsla(0, 73%, 50%, 1)", // dark red
+                                700: "hsla(0, 77%, 42%, 1)", // darker red
+                            },
+                            neutral: {
+                                50: "hsla(210, 20%, 98%, 1)", // very light gray
+                                100: "hsla(220, 14%, 96%, 1)", // light gray
+                                200: "hsla(220, 13%, 91%, 1)", // gray
+                                300: "hsla(216, 12%, 84%, 1)", // medium gray
+                                400: "hsla(218, 11%, 65%, 1)", // gray
+                                500: "hsla(220, 9%, 46%, 1)", // dark gray
+                                600: "hsla(215, 14%, 34%, 1)", // darker gray
+                                700: "hsla(217, 19%, 27%, 1)", // very dark gray
+                                800: "hsla(222, 26%, 17%, 1)", // near black
+                                900: "hsla(221, 39%, 11%, 1)", // black
+                            },
                         },
                     },
                 },
@@ -35,10 +87,62 @@
         </script>
 
         <style>
+            :root {
+                /* Primary brand colors */
+                --color-lavender: hsla(248, 100%, 95%, 1);
+                --color-orange: hsla(32, 95%, 69%, 1);
+                --color-deepred: hsla(347, 99%, 35%, 1);
+                --color-darkblue: hsla(218, 17%, 22%, 1);
+                --color-skyblue: hsla(203, 89%, 68%, 1);
+
+                /* Extended color palette */
+                --color-primary-50: hsla(248, 100%, 95%, 1);
+                --color-primary-100: hsla(248, 95%, 85%, 1);
+                --color-primary-500: hsla(248, 85%, 65%, 1);
+                --color-primary-600: hsla(248, 75%, 45%, 1);
+                --color-primary-700: hsla(248, 65%, 25%, 1);
+                --color-primary-900: hsla(248, 55%, 14%, 1);
+
+                --color-secondary-50: hsla(24, 100%, 96%, 1);
+                --color-secondary-100: hsla(34, 100%, 91%, 1);
+                --color-secondary-500: hsla(32, 95%, 69%, 1);
+                --color-secondary-600: hsla(32, 77%, 60%, 1);
+                --color-secondary-700: hsla(26, 95%, 44%, 1);
+
+                --color-accent-500: hsla(347, 99%, 35%, 1);
+                --color-accent-600: hsla(0, 100%, 27%, 1);
+                --color-accent-700: hsla(0, 63%, 31%, 1);
+
+                --color-success-100: hsla(138, 76%, 92%, 1);
+                --color-success-500: hsla(142, 71%, 45%, 1);
+                --color-success-600: hsla(142, 76%, 36%, 1);
+                --color-success-700: hsla(140, 81%, 31%, 1);
+
+                --color-warning-100: hsla(48, 96%, 89%, 1);
+                --color-warning-500: hsla(38, 92%, 50%, 1);
+                --color-warning-600: hsla(26, 95%, 44%, 1);
+
+                --color-danger-100: hsla(0, 93%, 94%, 1);
+                --color-danger-500: hsla(0, 84%, 60%, 1);
+                --color-danger-600: hsla(0, 73%, 50%, 1);
+                --color-danger-700: hsla(0, 77%, 42%, 1);
+
+                --color-neutral-50: hsla(210, 20%, 98%, 1);
+                --color-neutral-100: hsla(220, 14%, 96%, 1);
+                --color-neutral-200: hsla(220, 13%, 91%, 1);
+                --color-neutral-300: hsla(216, 12%, 84%, 1);
+                --color-neutral-400: hsla(218, 11%, 65%, 1);
+                --color-neutral-500: hsla(220, 9%, 46%, 1);
+                --color-neutral-600: hsla(215, 14%, 34%, 1);
+                --color-neutral-700: hsla(217, 19%, 27%, 1);
+                --color-neutral-800: hsla(222, 26%, 17%, 1);
+                --color-neutral-900: hsla(221, 39%, 11%, 1);
+            }
+
             body {
-                background: #2d3142; /* darkblue color */
+                background: var(--color-darkblue);
                 background-attachment: fixed;
-                font-family: "Poppins", sans-serif;
+                font-family: "Roboto", sans-serif;
             }
 
             .hidden {
@@ -72,12 +176,12 @@
             }
 
             ::-webkit-scrollbar-thumb {
-                background: gray;
+                background: var(--color-neutral-500);
                 border-radius: 0px;
             }
 
             ::-webkit-scrollbar-thumb:hover {
-                background: #666;
+                background: var(--color-neutral-600);
             }
         </style>
 

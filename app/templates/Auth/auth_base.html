@@ -8,23 +8,75 @@
         <!-- Tailwind -->
         <script src="https://cdn.tailwindcss.com"></script>
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Nunito:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
         <script>
             tailwind.config = {
                 theme: {
                     extend: {
                         fontFamily: {
-                            sans: ["Poppins", "sans-serif"],
-                            heading: ["Nunito", "sans-serif"],
-                            mont: ["Montserrat", "sans-serif"],
+                            sans: ["Roboto", "sans-serif"],
+                            heading: ["Roboto", "sans-serif"],
+                            mont: ["Roboto", "sans-serif"],
                         },
                         colors: {
+                            // Primary brand colors
                             lavender: "#F6F6FF",
                             orange: "#FCAB64",
                             deepred: "#B3001B",
                             darkblue: "#2D3142",
                             skyblue: "#6CB4EE",
+
+                            // Extended color palette
+                            primary: {
+                                50: "#F6F6FF", // lavender
+                                100: "#E0F2FE", // light skyblue
+                                500: "#6CB4EE", // skyblue
+                                600: "#4A90E2", // darker skyblue
+                                700: "#2D3142", // darkblue
+                                900: "#1E2332", // very dark blue
+                            },
+                            secondary: {
+                                50: "#FFF4ED", // light orange
+                                100: "#FFEDD5", // lighter orange
+                                500: "#FCAB64", // orange
+                                600: "#E8994D", // darker orange
+                                700: "#D97706", // dark orange
+                            },
+                            accent: {
+                                500: "#B3001B", // deepred
+                                600: "#8B0000", // darker red
+                                700: "#7F1D1D", // dark red
+                            },
+                            success: {
+                                100: "#DCFCE7", // light green
+                                500: "#22C55E", // green
+                                600: "#16A34A", // dark green
+                                700: "#15803D", // darker green
+                            },
+                            warning: {
+                                100: "#FEF3C7", // light yellow
+                                500: "#F59E0B", // yellow
+                                600: "#D97706", // dark yellow
+                            },
+                            danger: {
+                                100: "#FEE2E2", // light red
+                                500: "#EF4444", // red
+                                600: "#DC2626", // dark red
+                                700: "#B91C1C", // darker red
+                            },
+                            neutral: {
+                                50: "#F9FAFB", // very light gray
+                                100: "#F3F4F6", // light gray
+                                200: "#E5E7EB", // gray
+                                300: "#D1D5DB", // medium gray
+                                400: "#9CA3AF", // gray
+                                500: "#6B7280", // dark gray
+                                600: "#4B5563", // darker gray
+                                700: "#374151", // very dark gray
+                                800: "#1F2937", // near black
+                                900: "#111827", // black
+                            },
                         },
                     },
                 },
@@ -32,10 +84,22 @@
         </script>
 
         <style>
+            :root {
+                /* Primary brand colors */
+                --color-lavender: #f6f6ff;
+                --color-orange: #fcab64;
+                --color-deepred: #b3001b;
+                --color-darkblue: #2d3142;
+                --color-skyblue: #6cb4ee;
+
+                /* Auth page specific gradient */
+                --auth-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            }
+
             body {
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                background: var(--auth-gradient);
                 background-attachment: fixed;
-                font-family: "Poppins", sans-serif;
+                font-family: "Roboto", sans-serif;
             }
         </style>
     </head>
