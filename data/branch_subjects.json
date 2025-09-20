@@ -1,395 +1,388 @@
 {
-  "branches": {
-    "AIML": {
-      "name": "Artificial Intelligence & Machine Learning",
-      "semesters": {
-        "1": [
-          {
-            "name": "Programming In 'C'",
-            "faculty": "Rachna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/code.png",
-            "code": "ES-101",
-            "credits": 3
-          },
-          
-          {
-            "name": "Applied Mathematics I",
-            "faculty": "Mr. Devesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "BS-111",
-            "credits": 4
-          },
-          {
-            "name": "Introduction to AI",
-            "faculty": "Dr. Preeti Raj Verma",
-            "icon": "https://img.icons8.com/pastel-glyph/64/intelligent-person.png",
-            "code": "AI-101",
-            "credits": 4
-          },
-          {
-            "name": "Linear Algebra",
-            "faculty": "Dr. Rajesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "MATH-101",
-            "credits": 3
-          },
-          {
-            "name": "Communication Skills",
-            "faculty": "Dr. Meghna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
-            "code": "BS-113",
-            "credits": 3
-          }
-        ],
-        "2": [
-          {
-            "name": "Object Oriented Programming",
-            "faculty": "Mr. Vikash Pandey",
-            "icon": "https://img.icons8.com/ios/100/add-node.png",
-            "code": "CS-102",
-            "credits": 4
-          },
-          {
-          
-          },
-          {
-            "name": "Machine Learning Basics",
-            "faculty": "Dr. Rahul Khanna",
-            "icon": "https://img.icons8.com/pastel-glyph/64/intelligent-person.png",
-            "code": "ML-201",
-            "credits": 3
-          },
-          {
-            "name": "Statistics & Probability",
-            "faculty": "Dr. Rajesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/statistics.png",
-            "code": "STAT-201",
-            "credits": 3
-          }
-        ],
-       "3":[  
-         {"name": "Data Structures",
-            "faculty": "Ms. Upasna Joshi",
-            "icon": "https://img.icons8.com/ios/100/add-node.png",
-            "code": "AIML201",
-            "credits": 3
-      },
-       {     "name": "Foundation Of Data Science",
-             "faculty": "Ms. Maroofa Yaseen",
-             "icon": "https://img.icons8.com/ios/100/add-node.png",
-             "code": "AIML203",
-             "credits": 3
-    }, 
-       {
-         "name": "Digital Logic Design",
-            "faculty": "Mr. Anuj Rana",
-            "icon": "",
-            "code": "AIML205",
-            "credits": 3
-       },
-         {
-           "name": "Principles Of Ai",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML207",
-            "credits": 3
-         }, 
-          {
-           "name": "Probability , Statistics And Linear Algebra",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML209",
-            "credits": 4
-         },
-         {
-           "name": "Universal Human Values-II",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML211",
-            "credits": 3
-         }, 
-          {
-           "name": "Critical Reasoning and Systems Thinking",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML213",
-            "credits": 2
-         }, 
-          {
-           "name": "Selected Readings",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML215",
-            "credits": 1
-         },
-       ] 
-        "4":[
-          { "name": "Object Oriented Programming",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML202",
-            "credits": 3
-            
-          },
-          { "name": "Database Management Systems",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML204",
-            "credits": 3 
-          },
-          {
-           "name": "Software Engineering",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML206",
-            "credits": 3
-          },
-          {
-            "name": "Computer Networks and Internet Protocol",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML208",
-            "credits": 3
-          },
-           {
-            "name": "Fundamentals Of Machine Learning",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML210",
-            "credits": 3
-          },
-           {
-            "name": "Fundaments Of Machine Learning",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML212",
-            "credits": 3
-          },
-          {
-            "name": "Effective Technical Writing*",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML214",
-            "credits": 1
-          },
-           {
-            "name": "Emerging Trends in Technological Industries* ",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML216",
-            "credits": 1
-          },
-        ]
-       "5":[
-         {
-            "name": "Operating Systems",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML301",
-            "credits": 4
-          },
-         {
-            "name": "Design And Analysis Of Algorithms",
-            "faculty": "",
-            "icon": "",
-            "code": "AIML303",
-            "credits": 4
-          },
-
-
-
-
-
-
-         
-       ]
-      }
-    },    
-    "AIDS": {
-      "name": "Artificial Intelligence & Data Science",
-      "semesters": {
-        "1": [
-          {
-            "name": "Programming In 'C'",
-            "faculty": "Rachna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/code.png",
-            "code": "ES-101",
-            "credits": 3
-          },
-          {
-            "name": "Applied Mathematics I",
-            "faculty": "Mr. Devesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "BS-111",
-            "credits": 4
-          },
-          {
-            "name": "Statistics & Probability",
-            "faculty": "Dr. Rajesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/statistics.png",
-            "code": "STAT-101",
-            "credits": 3
-          },
-          {
-            "name": "Introduction to Data Science",
-            "faculty": "Ms. Maroof",
-            "icon": "https://img.icons8.com/pulsar-line/96/database.png",
-            "code": "DS-101",
-            "credits": 4
-          },
-          {
-            "name": "Communication Skills",
-            "faculty": "Dr. Meghna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
-            "code": "BS-113",
-            "credits": 3
-          }
-        ]
-      }
-    },
-    "CST": {
-      "name": "Computer Science & Technology",
-      "semesters": {
-        "1": [
-          {
-            "name": "Programming In 'C'",
-            "faculty": "Rachna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/code.png",
-            "code": "ES-101",
-            "credits": 3
-          },
-          {
-            "name": "Applied Mathematics I",
-            "faculty": "Mr. Devesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "BS-111",
-            "credits": 4
-          },
-          {
-            "name": "Digital Electronics",
-            "faculty": "Dr. Mohan Lal",
-            "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
-            "code": "ECE-101",
-            "credits": 3
-          },
-          {
-            "name": "Computer Fundamentals",
-            "faculty": "Mr. Anuj Rajput",
-            "icon": "https://img.icons8.com/pulsar-line/96/computer.png",
-            "code": "CST-101",
-            "credits": 4
-          },
-          {
-            "name": "Communication Skills",
-            "faculty": "Dr. Meghna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
-            "code": "BS-113",
-            "credits": 3
-          }
-        ]
-      }
-    },
-    "CSE": {
-      "name": "Computer Science & Engineering",
-      "semesters": {
-        "1": [
-          {
-            "name": "Programming In 'C'",
-            "faculty": "Rachna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/code.png",
-            "code": "ES-101",
-            "credits": 3
-          },
-          {
-            "name": "Applied Chemistry",
-            "faculty": "Dr. Neeta Pandey",
-            "icon": "https://img.icons8.com/pulsar-line/96/acid-flask.png",
-            "code": "BS-103",
-            "credits": 3
-          },
-          {
-            "name": "Applied Physics",
-            "faculty": "Dr. Ajay Pal Indolia",
-            "icon": "https://img.icons8.com/pulsar-line/96/physics.png",
-            "code": "BS-105",
-            "credits": 3
-          },
-          {
-            "name": "Applied Mathematics I",
-            "faculty": "Mr. Devesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "BS-111",
-            "credits": 4
-          },
-          {
-            "name": "Communication Skills",
-            "faculty": "Dr. Meghna Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
-            "code": "BS-113",
-            "credits": 3
-          }
-        ],
-        "2": [
-          {
-            "name": "Object Oriented Programming",
-            "faculty": "Mr. Vikash Pandey",
-            "icon": "https://img.icons8.com/ios/100/add-node.png",
-            "code": "CS-102",
-            "credits": 4
-          },
-          {
-            "name": "Mathematics II",
-            "faculty": "Dr. Rajesh Kumar",
-            "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
-            "code": "MATH-102",
-            "credits": 4
-          },
-          {
-            "name": "Digital Electronics",
-            "faculty": "Dr. Mohan Lal",
-            "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
-            "code": "ECE-101",
-            "credits": 3
-          },
-          {
-            "name": "Engineering Graphics",
-            "faculty": "Mr. Suresh Yadav",
-            "icon": "https://img.icons8.com/pulsar-line/96/3d-modeling.png",
-            "code": "ME-101",
-            "credits": 2
-          }
-        ],
-        "3": [
-          {
-            "name": "Data Structures",
-            "faculty": "Ms. Upasna Joshi",
-            "icon": "https://img.icons8.com/ios/100/add-node.png",
-            "code": "DSA-301",
-            "credits": 4
-          },
-          {
-            "name": "Digital Logic Design",
-            "faculty": "Mr. Anuj Rajput",
-            "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
-            "code": "DLD-301",
-            "credits": 3
-          },
-          {
-            "name": "Database Management",
-            "faculty": "Mr. Deepak Gupta",
-            "icon": "https://img.icons8.com/pulsar-line/96/database.png",
-            "code": "DBMS-301",
-            "credits": 4
-          },
-          {
-            "name": "Computer Networks",
-            "faculty": "Ms. Kavita Sharma",
-            "icon": "https://img.icons8.com/pulsar-line/96/network.png",
-            "code": "CN-301",
-            "credits": 3
-          }
-        ]
-      }
+    "branches": {
+        "AIML": {
+            "name": "Artificial Intelligence & Machine Learning",
+            "semesters": {
+                "1": [
+                    {
+                        "name": "Programming In 'C'",
+                        "faculty": "Rachna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/code.png",
+                        "code": "ES-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Mathematics I",
+                        "faculty": "Mr. Devesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "BS-111",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Introduction to AI",
+                        "faculty": "Dr. Preeti Raj Verma",
+                        "icon": "https://img.icons8.com/pastel-glyph/64/intelligent-person.png",
+                        "code": "AI-101",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Linear Algebra",
+                        "faculty": "Dr. Rajesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "MATH-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Communication Skills",
+                        "faculty": "Dr. Meghna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
+                        "code": "BS-113",
+                        "credits": 3
+                    }
+                ],
+                "2": [
+                    {
+                        "name": "Object Oriented Programming",
+                        "faculty": "Mr. Vikash Pandey",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "CS-102",
+                        "credits": 4
+                    },
+                    {},
+                    {
+                        "name": "Machine Learning Basics",
+                        "faculty": "Dr. Rahul Khanna",
+                        "icon": "https://img.icons8.com/pastel-glyph/64/intelligent-person.png",
+                        "code": "ML-201",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Statistics & Probability",
+                        "faculty": "Dr. Rajesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/statistics.png",
+                        "code": "STAT-201",
+                        "credits": 3
+                    }
+                ],
+                "3": [
+                    {
+                        "name": "Data Structures",
+                        "faculty": "Ms. Upasna Joshi",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "AIML201",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Foundation Of Data Science",
+                        "faculty": "Ms. Maroofa Yaseen",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "AIML203",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Digital Logic Design",
+                        "faculty": "Mr. Anuj Rana",
+                        "icon": "",
+                        "code": "AIML205",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Principles Of Ai",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML207",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Probability , Statistics And Linear Algebra",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML209",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Universal Human Values-II",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML211",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Critical Reasoning and Systems Thinking",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML213",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Selected Readings",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML215",
+                        "credits": 1
+                    }
+                ],
+                "4": [
+                    {
+                        "name": "Object Oriented Programming",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML202",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Database Management Systems",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML204",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Software Engineering",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML206",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Computer Networks and Internet Protocol",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML208",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Fundamentals Of Machine Learning",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML210",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Fundaments Of Machine Learning",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML212",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Effective Technical Writing*",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML214",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Emerging Trends in Technological Industries* ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML216",
+                        "credits": 1
+                    }
+                ],
+                "5": [
+                    {
+                        "name": "Operating Systems",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML301",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Design And Analysis Of Algorithms",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML303",
+                        "credits": 4
+                    }
+                ]
+            }
+        },
+        "AIDS": {
+            "name": "Artificial Intelligence & Data Science",
+            "semesters": {
+                "1": [
+                    {
+                        "name": "Programming In 'C'",
+                        "faculty": "Rachna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/code.png",
+                        "code": "ES-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Mathematics I",
+                        "faculty": "Mr. Devesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "BS-111",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Statistics & Probability",
+                        "faculty": "Dr. Rajesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/statistics.png",
+                        "code": "STAT-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Introduction to Data Science",
+                        "faculty": "Ms. Maroof",
+                        "icon": "https://img.icons8.com/pulsar-line/96/database.png",
+                        "code": "DS-101",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Communication Skills",
+                        "faculty": "Dr. Meghna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
+                        "code": "BS-113",
+                        "credits": 3
+                    }
+                ]
+            }
+        },
+        "CST": {
+            "name": "Computer Science & Technology",
+            "semesters": {
+                "1": [
+                    {
+                        "name": "Programming In 'C'",
+                        "faculty": "Rachna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/code.png",
+                        "code": "ES-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Mathematics I",
+                        "faculty": "Mr. Devesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "BS-111",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Digital Electronics",
+                        "faculty": "Dr. Mohan Lal",
+                        "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
+                        "code": "ECE-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Computer Fundamentals",
+                        "faculty": "Mr. Anuj Rajput",
+                        "icon": "https://img.icons8.com/pulsar-line/96/computer.png",
+                        "code": "CST-101",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Communication Skills",
+                        "faculty": "Dr. Meghna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
+                        "code": "BS-113",
+                        "credits": 3
+                    }
+                ]
+            }
+        },
+        "CSE": {
+            "name": "Computer Science & Engineering",
+            "semesters": {
+                "1": [
+                    {
+                        "name": "Programming In 'C'",
+                        "faculty": "Rachna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/code.png",
+                        "code": "ES-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Chemistry",
+                        "faculty": "Dr. Neeta Pandey",
+                        "icon": "https://img.icons8.com/pulsar-line/96/acid-flask.png",
+                        "code": "BS-103",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Physics",
+                        "faculty": "Dr. Ajay Pal Indolia",
+                        "icon": "https://img.icons8.com/pulsar-line/96/physics.png",
+                        "code": "BS-105",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Applied Mathematics I",
+                        "faculty": "Mr. Devesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "BS-111",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Communication Skills",
+                        "faculty": "Dr. Meghna Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/talk-male.png",
+                        "code": "BS-113",
+                        "credits": 3
+                    }
+                ],
+                "2": [
+                    {
+                        "name": "Object Oriented Programming",
+                        "faculty": "Mr. Vikash Pandey",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "CS-102",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Mathematics II",
+                        "faculty": "Dr. Rajesh Kumar",
+                        "icon": "https://img.icons8.com/pulsar-line/96/tangent.png",
+                        "code": "MATH-102",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Digital Electronics",
+                        "faculty": "Dr. Mohan Lal",
+                        "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
+                        "code": "ECE-101",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Engineering Graphics",
+                        "faculty": "Mr. Suresh Yadav",
+                        "icon": "https://img.icons8.com/pulsar-line/96/3d-modeling.png",
+                        "code": "ME-101",
+                        "credits": 2
+                    }
+                ],
+                "3": [
+                    {
+                        "name": "Data Structures",
+                        "faculty": "Ms. Upasna Joshi",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "DSA-301",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Digital Logic Design",
+                        "faculty": "Mr. Anuj Rajput",
+                        "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
+                        "code": "DLD-301",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Database Management",
+                        "faculty": "Mr. Deepak Gupta",
+                        "icon": "https://img.icons8.com/pulsar-line/96/database.png",
+                        "code": "DBMS-301",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Computer Networks",
+                        "faculty": "Ms. Kavita Sharma",
+                        "icon": "https://img.icons8.com/pulsar-line/96/network.png",
+                        "code": "CN-301",
+                        "credits": 3
+                    }
+                ]
+            }
+        }
     }
-  }
 }
