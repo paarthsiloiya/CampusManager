@@ -194,8 +194,152 @@
                         "icon": "",
                         "code": "AIML303",
                         "credits": 4
+                    },
+                    {
+                       "name": "Fundamentals Of Deep Learning",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML305",
+                        "credits": 3
+                    },
+                     {
+                       "name": "Computer Organization And Architecture",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML307",
+                        "credits": 3
+                    },
+                     {
+                       "name": "Introduction to Internet Of Things",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML309",
+                        "credits": 3
+                    },
+                     {
+                       "name": "Principles of Entrepreneurship Mindset ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML311",
+                        "credits": 2
                     }
-                ]
+                    
+                ],
+                "6":[
+                  {
+                        "name": "Digital Image Processing ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML302",
+                        "credits": 3
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –1) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –2) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –3) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Emerging Area/Open Area Elective Paper (EAE – 1/OAE-1) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                   { 
+                        "name": "Emerging Area/Open Area Elective Paper (EAE – 2/OAE-2) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  }
+                  
+                ],
+                "7":[
+                  { 
+                       "name": "Principles Of Management For Engineers ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIML401",
+                        "credits": 2
+
+
+                  },
+                  {
+                       "name": "Programme Core Elective Paper (PCE – 4) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  
+                  },
+                  {
+                        "name": "Programme Core Elective Paper (PCE – 5) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                  {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                   {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                   {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5)",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  }
+               ],
+              "8":[
+                {       "name": "",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+
+
+                }
+              ]
+                
+
             }
         },
         "AIDS": {
@@ -237,6 +381,277 @@
                         "code": "BS-113",
                         "credits": 3
                     }
+                ],
+                "3":[
+                    { "name": "Data Structures",
+                        "faculty": "Ms. Upasna Joshi",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "AIDS201",
+                        "credits": 3
+
+                    },
+                    {
+                        "name": "Foundation Of Data Science",
+                        "faculty": "Ms. Maroofa Yaseen",
+                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "code": "AIDS203",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Digital Logic Design",
+                        "faculty": "Mr. Anuj Rana",
+                        "icon": "",
+                        "code": "AIDS205",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Principles Of Ai",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS207",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Probability , Statistics And Linear Algebra",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS209",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Universal Human Values-II",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS211",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Critical Reasoning and Systems Thinking",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS213",
+                        "credits": 2
+                    },
+                      {
+                        "name": "Selected Readings",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS215",
+                        "credits": 1
+                    }
+
+                ],
+                "4":[
+                     {
+                        "name": "Object Oriented Programming",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS202",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Database Management Systems",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS204",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Software Engineering",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS206",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Computer Networks and Internet Protocol",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS208",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Fundamentals Of Machine Learning",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS210",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Fundaments Of Machine Learning",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS212",
+                        "credits": 3
+                    },
+                    {
+                        "name": "Effective Technical Writing*",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS214",
+                        "credits": 1
+                    },
+                    {
+                        "name": "Emerging Trends in Technological Industries* ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS216",
+                        "credits": 1
+                    }
+                   
+                ],
+                "5":[
+                   {
+                        "name": "Operating Systems",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS301",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Design And Analysis Of Algorithms",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS303",
+                        "credits": 4
+                    },
+                    {
+                       "name": "Data Mining",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS305",
+                        "credits": 4
+                    },
+                     {
+                       "name": "Computer Organization And Architecture",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS307",
+                        "credits": 3
+                    },
+                     {
+                       "name": "Introduction to Internet Of Things",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS309",
+                        "credits": 3
+                    },
+                     {
+                       "name": "Principles of Entrepreneurship Mindset ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS311",
+                        "credits": 2
+                    }
+                    
+                ],
+                "6":[
+                      {
+                        "name": "Digital Image Processing ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS302",
+                        "credits": 3
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –1) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –2) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Programme Core Elective Paper (PCE –3) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                  { 
+                        "name": "Emerging Area/Open Area Elective Paper (EAE – 1/OAE-1) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  },
+                   { 
+                        "name": "Emerging Area/Open Area Elective Paper (EAE – 2/OAE-2) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+
+                  }
+                  
+                    
+                  
+                ],
+                "7":[
+                    { 
+                       "name": "Principles Of Management For Engineers ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "AIDS401",
+                        "credits": 2
+
+
+                  },
+                  {
+                       "name": "Programme Core Elective Paper (PCE – 4) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  
+                  },
+                  {
+                        "name": "Programme Core Elective Paper (PCE – 5) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                  {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                   {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  },
+                   {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5)",
+                        "faculty": "",
+                        "icon": "",
+                        "code": "",
+                        "credits": 4
+                    
+                  }
+
+                ],
+                "8":[
+                    
                 ]
             }
         },
