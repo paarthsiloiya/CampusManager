@@ -312,6 +312,7 @@ def seed_subjects():
     try:
         # First check if we can query the subjects table (if it has the branch column)
         test_query = Subject.query.first()
+        print(f"🔍 Database test query successful, existing subjects: {Subject.query.count()}")
     except Exception as e:
         print(f"⚠️  Subjects table structure outdated, skipping seeding: {str(e)}")
         return
@@ -334,6 +335,20 @@ def seed_subjects():
             semester_int = int(semester_num)
             
             for subject_data in subjects_list:
+                # Skip empty objects or objects missing required fields
+                if not subject_data or not isinstance(subject_data, dict):
+                    continue
+                
+                # Check if required fields exist and are not empty
+                if not subject_data.get('name') or not subject_data.get('code'):
+                    print(f"⚠️  Skipping incomplete subject in {branch_code} semester {semester_int}")
+                    continue
+                
+                # Skip subjects with generic or invalid codes
+                if subject_data['code'] in ['Test', '1', '']:
+                    print(f"⚠️  Skipping subject with invalid code '{subject_data['code']}' in {branch_code} semester {semester_int}")
+                    continue
+                
                 # Create a unique code that includes branch
                 unique_code = f"{branch_code}-{subject_data['code']}"
                 
@@ -345,11 +360,14 @@ def seed_subjects():
                             name=subject_data['name'],
                             code=unique_code,
                             semester=semester_int,
-                            credits=subject_data['credits'],
+                            credits=subject_data.get('credits', -1),  # Default to -1 credits if not specified
                             branch=branch_code
                         )
                         db.session.add(new_subject)
                         subjects_created += 1
+                        print(f"➕ Added: {unique_code} - {subject_data['name']}")
+                    else:
+                        print(f"⏭️  Already exists: {unique_code}")
                 except Exception as e:
                     print(f"❌ Error creating subject {unique_code}: {str(e)}")
                     continue

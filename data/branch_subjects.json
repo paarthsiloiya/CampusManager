@@ -48,7 +48,6 @@
                         "code": "CS-102",
                         "credits": 4
                     },
-                    {},
                     {
                         "name": "Machine Learning Basics",
                         "faculty": "Dr. Rahul Khanna",
@@ -88,35 +87,35 @@
                     },
                     {
                         "name": "Principles Of Ai",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/bot.png",
                         "code": "AIML207",
                         "credits": 3
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
                         "code": "AIML209",
                         "credits": 4
                     },
                     {
                         "name": "Universal Human Values-II",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
                         "code": "AIML211",
                         "credits": 3
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/thinking-bubble.png",
                         "code": "AIML213",
                         "credits": 2
                     },
                     {
                         "name": "Selected Readings",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/reading.png",
                         "code": "AIML215",
                         "credits": 1
@@ -125,56 +124,56 @@
                 "4": [
                     {
                         "name": "Object Oriented Programming",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AIML202",
                         "credits": 3
                     },
                     {
                         "name": "Database Management Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
                         "code": "AIML204",
                         "credits": 3
                     },
                     {
                         "name": "Software Engineering",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
                         "code": "AIML206",
                         "credits": 3
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/ethernet-off.png",
                         "code": "AIML208",
                         "credits": 3
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/robot-3.png",
                         "code": "AIML210",
                         "credits": 3
                     },
                     {
                         "name": "Computational Methods",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
                         "code": "AIML212",
                         "credits": 3
                     },
                     {
                         "name": "Effective Technical Writing*",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
                         "code": "AIML214",
                         "credits": 1
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/manufacturing.png",
                         "code": "AIML216",
                         "credits": 1
@@ -183,163 +182,137 @@
                 "5": [
                     {
                         "name": "Operating Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
                         "code": "AIML301",
                         "credits": 4
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
                         "code": "AIML303",
                         "credits": 4
                     },
                     {
                         "name": "Fundamentals Of Deep Learning",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/learning.png",
                         "code": "AIML305",
                         "credits": 3
                     },
-                     {
+                    {
                         "name": "Computer Organization And Architecture",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/museum.png",
                         "code": "AIML307",
                         "credits": 3
                     },
-                     {
+                    {
                         "name": "Introduction to Internet Of Things",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/internet-of-things.png",
                         "code": "AIML309",
                         "credits": 3
                     },
-                     {
+                    {
                         "name": "Principles of Entrepreneurship Mindset ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
                         "code": "AIML311",
                         "credits": 2
                     }
-                    
                 ],
-                "6":[
-                  {
+                "6": [
+                    {
                         "name": "Digital Image Processing ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/image-file.png",
                         "code": "AIML302",
                         "credits": 3
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –2) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –3) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Emerging Area/Open Area Elective Paper (EAE – 1/OAE-1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                   { 
+                    },
+                    {
                         "name": "Emerging Area/Open Area Elective Paper (EAE – 2/OAE-2) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  }
-                  
+                    }
                 ],
-                "7":[
-                  { 
+                "7": [
+                    {
                         "name": "Principles Of Management For Engineers ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
                         "code": "AIML401",
                         "credits": 2
-
-
-                  },
-                  {
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE – 4) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  
-                  },
-                  {
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE – 5) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                  {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                   {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                   {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5)",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  }
-               ],
-              "8":[
-                {       "name": "",
-                        "faculty": "",
-                        "icon": "",
-                        "code": "",
-                        "credits": 4
-
-
-
-                }
-              ]
-                
-
+                    }
+                ],
+                "8": [
+                ]
             }
         },
         "AIDS": {
@@ -382,13 +355,13 @@
                         "credits": 3
                     }
                 ],
-                "3":[
-                    { "name": "Data Structures",
+                "3": [
+                    {
+                        "name": "Data Structures",
                         "faculty": "Ms. Upasna Joshi",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
                         "code": "AIDS201",
                         "credits": 3
-
                     },
                     {
                         "name": "Foundation Of Data Science",
@@ -406,253 +379,231 @@
                     },
                     {
                         "name": "Principles Of Ai",
-                        "faculty": "https://img.icons8.com/pulsar-line/48/bot.png",
-                        "icon": "",
+                        "faculty": "",
+                        "icon": "https://img.icons8.com/pulsar-line/48/bot.png",
                         "code": "AIDS207",
                         "credits": 3
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
                         "code": "AIDS209",
                         "credits": 4
                     },
                     {
                         "name": "Universal Human Values-II",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
                         "code": "AIDS211",
                         "credits": 3
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/thinking-bubble.png",
                         "code": "AIDS213",
                         "credits": 2
                     },
-                      {
+                    {
                         "name": "Selected Readings",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/reading.png",
                         "code": "AIDS215",
                         "credits": 1
                     }
-
                 ],
-                "4":[
-                     {
+                "4": [
+                    {
                         "name": "Object Oriented Programming",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AIDS202",
                         "credits": 3
                     },
                     {
                         "name": "Database Management Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
                         "code": "AIDS204",
                         "credits": 3
                     },
                     {
                         "name": "Software Engineering",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
                         "code": "AIDS206",
                         "credits": 3
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/ethernet-off.png",
                         "code": "AIDS208",
                         "credits": 3
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/robot-3.png",
                         "code": "AIDS210",
                         "credits": 3
                     },
                     {
                         "name": "Computational Methods",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
                         "code": "AIDS212",
                         "credits": 3
                     },
                     {
                         "name": "Effective Technical Writing*",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
                         "code": "AIDS214",
                         "credits": 1
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/manufacturing.png",
                         "code": "AIDS216",
                         "credits": 1
                     }
-                   
                 ],
-                "5":[
-                   {
+                "5": [
+                    {
                         "name": "Operating Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
                         "code": "AIDS301",
                         "credits": 4
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
                         "code": "AIDS303",
                         "credits": 4
                     },
                     {
-                       "name": "Data Mining",
-                        "faculty": "",
+                        "name": "Data Mining",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/data-in-both-directions.png",
                         "code": "AIDS305",
                         "credits": 4
                     },
-                     {
-                       "name": "Computer Organization And Architecture",
-                        "faculty": "",
+                    {
+                        "name": "Computer Organization And Architecture",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/museum.png",
                         "code": "AIDS307",
                         "credits": 3
                     },
-                     {
-                       "name": "Introduction to Internet Of Things",
-                        "faculty": "",
+                    {
+                        "name": "Introduction to Internet Of Things",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/internet-of-things.png",
                         "code": "AIDS309",
                         "credits": 3
                     },
-                     {
-                       "name": "Principles of Entrepreneurship Mindset ",
-                        "faculty": "",
+                    {
+                        "name": "Principles of Entrepreneurship Mindset ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
                         "code": "AIDS311",
                         "credits": 2
                     }
-                    
                 ],
-                "6":[
-                      {
+                "6": [
+                    {
                         "name": "Digital Image Processing ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/image-file.png",
                         "code": "AIDS302",
                         "credits": 3
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –2) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –3) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                  { 
+                    },
+                    {
                         "name": "Emerging Area/Open Area Elective Paper (EAE – 1/OAE-1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  },
-                   { 
+                    },
+                    {
                         "name": "Emerging Area/Open Area Elective Paper (EAE – 2/OAE-2) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                  }
-                  
-                    
-                  
+                    }
                 ],
-                "7":[
-                    { 
+                "7": [
+                    {
                         "name": "Principles Of Management For Engineers ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
                         "code": "AIDS401",
                         "credits": 2
-
-
-                  },
-                  {
-                       "name": "Programme Core Elective Paper (PCE – 4) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Programme Core Elective Paper (PCE – 4) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  
-                  },
-                  {
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE – 5) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                  {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                   {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  },
-                   {
+                    },
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5)",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                    
-                  }
-
+                    }
                 ],
-                "8":[
-                    
-                ]
+                "8": []
             }
         },
         "CST": {
@@ -695,255 +646,242 @@
                         "credits": 3
                     }
                 ],
-               "3":[
-                     {"name": "Data Structures",
-                        "faculty": "",
+                "3": [
+                    {
+                        "name": "Data Structures",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
                         "code": "AC-209",
                         "credits": 4
                     },
                     {
                         "name": "Digital Logic And Computer Design",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
                         "code": "ECC-207",
                         "credits": 4
                     },
                     {
                         "name": "Computational Methods",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
                         "code": "ES-201",
                         "credits": 4
                     },
                     {
                         "name": "Indian Knowledge System*",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/knowledge-sharing.png",
                         "code": "HS-203",
                         "credits": 2
                     },
-                    {   "name": "Discrete Mathematics",
-                        "faculty": "",
+                    {
+                        "name": "Discrete Mathematics",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/approximately-equal-2.png",
                         "code": "AC-205",
                         "credits": 4
-
                     },
-                    {   "name": "Object Oriented Programming Using C++",
-                        "faculty": "",
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AC-211",
                         "credits": 4
- 
-                        
-
                     }
-               
-               ],
-               "4":[
-                {       "name": "Probability , Statistics And Linear Programming",
-                        "faculty": "",
+                ],
+                "4": [
+                    {
+                        "name": "Probability , Statistics And Linear Programming",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
                         "code": "BS-202",
-                        "credits": 4 
-
+                        "credits": 4
                     },
-                    {   "name": "Technical Writing*",
-                        "faculty": "https://img.icons8.com/pulsar-line/48/inscription.png",
-                        "icon": "",
+                    {
+                        "name": "Technical Writing*",
+                        "faculty": "",
+                        "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
                         "code": "HS-204",
                         "credits": 2
-
                     },
-                    {   "name": "Theory Of Computation",
-                        "faculty": "",
+                    {
+                        "name": "Theory Of Computation",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/book-philosophy.png",
                         "code": "AC-206",
                         "credits": 4
-
                     },
                     {
                         "name": "Operating Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
                         "code": "AC-214",
                         "credits": 4
                     },
-                    {"name": "Object Oriented Programming Using C++",
-                        "faculty": "",
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AC-216",
                         "credits": 4
-                },
-                {       "name": "Functional And Logic Programming",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Functional And Logic Programming",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
                         "code": "AC-218",
                         "credits": 4
-
-                }
-
-                
-               ],
-               "5":[
-                 {
+                    }
+                ],
+                "5": [
+                    {
                         "name": "Economics Of Engineers",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/e-learning.png",
                         "code": "HS-301",
                         "credits": 2
                     },
                     {
                         "name": "Compiler Design",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/developer-mode.png",
                         "code": "AC-303",
                         "credits": 3
                     },
-                     {  "name": "Software Engineering",
-                        "faculty": "",
+                    {
+                        "name": "Software Engineering",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
                         "code": "AC-309",
                         "credits": 3
-
-                     },
-                     {  "name": "Design And Analysis Of Algorithms",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Design And Analysis Of Algorithms",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
                         "code": "AC-311",
                         "credits": 4
-
-                     },
-                    {   "name": "Database Management Systems",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Database Management Systems",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
                         "code": "AC-315",
                         "credits": 4
-
                     },
-                    {   "name": "Programming In Java",
-                        "faculty": "",
+                    {
+                        "name": "Programming In Java",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/java-files.png",
                         "code": "AC-317",
                         "credits": 4
-
                     }
-
-
-                
-               ],
-               "6":[
-                 {       "name": "Principles Of Management For Engineers ",
-                        "faculty": "",
+                ],
+                "6": [
+                    {
+                        "name": "Principles Of Management For Engineers ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
                         "code": "MS-302",
                         "credits": 3
-
-                },
-                   {    "name": "Object Oriented Programming Using C++",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AC-211",
                         "credits": 4
-            },
-            {
+                    },
+                    {
                         "name": "Universal Human Values-II",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
                         "code": "HS-304",
                         "credits": 1
-
-            },
-            {
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-            },
-        {               "name": "Programme Core Elective Paper (PCE –2) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Programme Core Elective Paper (PCE –2) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-        },
-                    {   "name": "Programme Core Elective Paper (PCE –3) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Programme Core Elective Paper (PCE –3) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                 },  
-                 {      "name": "Emerging Area / Open Area Elective Paper(EAE – 1/ OAE – 1) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 1/ OAE – 1) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
                         "code": "1",
                         "credits": 4
-
-                 },
-                {       "name": "Emerging Area / Open Area Elective Paper(EAE – 2/ OAE – 2) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 2/ OAE – 2) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                }
-                
-
-                
-               ],
-               "7":[
-                 {
+                    }
+                ],
+                "7": [
+                    {
                         "name": "Programme Core Elective Paper (PCE – 4) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
                     },
-                    {   "name": "Programme Core Elective Paper (PCE – 5) ",
-                        "faculty": "",
+                    {
+                        "name": "Programme Core Elective Paper (PCE – 5) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
                         "code": "MS-401",
                         "credits": 2
                     },
-                    {   "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
-                        "faculty": "",
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
                     },
                     {
-                         "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
-                        "faculty": "",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
                     },
-                {
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                }
-                
-               ],
-              "8":[
-                {
-                    
-                }
-              ]
+                    }
+                ],
+                "8": [
+                ]
             }
         },
         "CSE": {
@@ -1016,262 +954,235 @@
                         "credits": 2
                     }
                 ],
-               
-                
-                     "3": [
-
+                "3": [
                     {
                         "name": "Data Structures",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
                         "code": "AC-209",
                         "credits": 4
                     },
                     {
                         "name": "Digital Logic And Computer Design",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/96/binary-file.png",
                         "code": "ECC-207",
                         "credits": 4
                     },
                     {
                         "name": "Computational Methods",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
                         "code": "ES-201",
                         "credits": 4
                     },
                     {
                         "name": "Indian Knowledge System*",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/knowledge-sharing.png",
                         "code": "HS-203",
                         "credits": 2
                     },
-                    {   "name": "Discrete Mathematics",
-                        "faculty": "",
+                    {
+                        "name": "Discrete Mathematics",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/approximately-equal-2.png",
                         "code": "AC-205",
                         "credits": 4
-
                     }
-                     
- 
-                        
-
-                    
                 ],
-                "4":[
-                    {   "name": "Probability , Statistics And Linear Programming",
-                        "faculty": "",
+                "4": [
+                    {
+                        "name": "Probability , Statistics And Linear Programming",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
                         "code": "BS-202",
-                        "credits": 4 
-
+                        "credits": 4
                     },
-                    {   "name": "Technical Writing*",
-                        "faculty": "",
+                    {
+                        "name": "Technical Writing*",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
                         "code": "HS-204",
                         "credits": 2
-
                     },
-                    {   "name": "Theory Of Computation",
-                        "faculty": "",
+                    {
+                        "name": "Theory Of Computation",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/book-philosophy.png",
                         "code": "AC-206",
                         "credits": 4
-
                     },
                     {
                         "name": "Operating Systems",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
                         "code": "AC-214",
                         "credits": 4
                     },
-                    {"name": "Object Oriented Programming Using C++",
-                        "faculty": "",
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AC-216",
                         "credits": 4
-                },
-                {       "name": "Functional And Logic Programming",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Functional And Logic Programming",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
                         "code": "AC-218",
                         "credits": 4
-
-                }
-            
-
-
+                    }
                 ],
-                "5":[
+                "5": [
                     {
                         "name": "Economics Of Engineers",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/e-learning.png",
                         "code": "HS-301",
                         "credits": 2
                     },
                     {
                         "name": "Compiler Design",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/developer-mode.png",
                         "code": "AC-303",
                         "credits": 3
                     },
-                     {  "name": "Software Engineering",
-                        "faculty": "",
+                    {
+                        "name": "Software Engineering",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
                         "code": "AC-309",
                         "credits": 3
-
-                     },
-                     {  "name": "Design And Analysis Of Algorithms",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Design And Analysis Of Algorithms",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
                         "code": "AC-311",
                         "credits": 4
-
-                     },
-                    {   "name": "Database Management Systems",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Database Management Systems",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
                         "code": "AC-315",
                         "credits": 4
-
                     },
-                    {   "name": "Programming In Java",
-                        "faculty": "",
+                    {
+                        "name": "Programming In Java",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/java-files.png",
                         "code": "AC-317",
                         "credits": 4
-
                     }
-
                 ],
-               
-
-                
-                
-                "6":[
-                {       "name": "Principles Of Management For Engineers ",
-                        "faculty": "",
+                "6": [
+                    {
+                        "name": "Principles Of Management For Engineers ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
                         "code": "MS-302",
                         "credits": 3
-
-                },
-                   {    "name": "Object Oriented Programming Using C++",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Object Oriented Programming Using C++",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
                         "code": "AC-211",
                         "credits": 4
-            },
-            {
+                    },
+                    {
                         "name": "Universal Human Values-II",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
                         "code": "HS-304",
                         "credits": 1
-
-            },
-            {
+                    },
+                    {
                         "name": "Programme Core Elective Paper (PCE –1) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
                         "code": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
                         "credits": 4
-            },
-        {               "name": "Programme Core Elective Paper (PCE –2) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Programme Core Elective Paper (PCE –2) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-        },
-                    {   "name": "Programme Core Elective Paper (PCE –3) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Programme Core Elective Paper (PCE –3) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                 },  
-                 {      "name": "Emerging Area / Open Area Elective Paper(EAE – 1/ OAE – 1) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 1/ OAE – 1) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
                         "code": "1",
                         "credits": 4
-
-                 },
-                {       "name": "Emerging Area / Open Area Elective Paper(EAE – 2/ OAE – 2) ",
-                        "faculty": "",
+                    },
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 2/ OAE – 2) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
-                }
-
+                    }
                 ],
-                "7":[
+                "7": [
                     {
                         "name": "Programme Core Elective Paper (PCE – 4) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
                         "code": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
                         "credits": 4
                     },
-                    {   "name": "Programme Core Elective Paper (PCE – 5) ",
-                        "faculty": "",
+                    {
+                        "name": "Programme Core Elective Paper (PCE – 5) ",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
                         "code": "MS-401",
                         "credits": 2
                     },
-                    {   "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
-                        "faculty": "",
+                    {
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 3 / OAE – 3) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-
                     },
                     {
-                         "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
-                        "faculty": "",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE – 4 / OAE – 4) ",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
                     },
-                {
+                    {
                         "name": "Emerging Area / Open Area Elective Paper(EAE – 5 / OAE – 5) ",
-                        "faculty": "",
+                        "faculty": "Test Faculty",
                         "icon": "",
-                        "code": "",
+                        "code": "Test",
                         "credits": 4
-                }
-
-                ],
-                "8":[
-                    {  
-
                     }
+                ],
+                "8": [
                 ]
-
-                
-
-
-
-
-
             }
         }
     }
