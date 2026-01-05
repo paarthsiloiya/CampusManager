@@ -5,7 +5,6 @@ Quick test to verify calendar events are being loaded properly
 
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app import create_app
 from app.views import load_calendar_events

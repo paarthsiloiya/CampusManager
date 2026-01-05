@@ -9,13 +9,13 @@ import os
 import random
 from datetime import datetime, date, timedelta
 
-# Add the app directory to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add the app directory to Python path for standalone execution
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import create_app
 from app.models import db, User, Subject, Attendance
 
-class AttendanceTestGenerator:
+class AttendanceGenerator:
     """Class to generate and manage attendance test data"""
     
     def __init__(self):

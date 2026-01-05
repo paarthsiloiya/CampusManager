@@ -4,6 +4,10 @@ Database migration script to add institution field to existing users
 Run this script to update your database schema with the new institution field.
 """
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from app import create_app
 from app.models import db, User
 

@@ -33,14 +33,67 @@ This repository contains the source code for a web-based Smart Curriculum Activi
 	echo "SECRET_KEY=your_super_secret_key_change_this_in_production" > .env
 	```
 7. Run the app:
+	
+	**Standard Run:**
 	```powershell
 	python main.py
 	```
-8. Visit: http://127.0.0.1:5000/
+
+	**Multi-Instance Run (Recommended for Development):**
+	To simulate the full ecosystem, run these commands in separate terminals:
+	```powershell
+	# Admin Panel (Port 5000)
+	python main.py --name "Admin Panel" --port 5000
+
+	# Teacher Dashboard (Port 5001)
+	python main.py --name "Teacher Dashboard" --port 5001
+
+	# Student Dashboard (Port 5002)
+	python main.py --name "Student Dashboard" --port 5002
+	```
+
+8. Visit: 
+	- Admin: http://127.0.0.1:5000/
+	- Teacher: http://127.0.0.1:5001/
+	- Student: http://127.0.0.1:5002/
+
 9. Deactivate when done:
 	```powershell
 	deactivate
 	```
+
+## Utility Scripts
+The `utility/` folder contains helpful scripts for managing the application:
+
+- **Create Admin User:**
+  ```powershell
+  python utility/create_admin.py
+  ```
+  Creates an admin account (`admin@example.com` / `admin123`).
+
+- **Add Sample Data:**
+  ```powershell
+  python utility/add_sample_data.py
+  ```
+  Populates the database with sample attendance and marks.
+
+- **Create Test Accounts:**
+  ```powershell
+  python utility/create_test_accounts.py
+  ```
+  Generates test student accounts for all semesters.
+
+- **Reset Database:**
+  ```powershell
+  python utility/reset_db.py
+  ```
+  **Warning:** Wipes the database and reseeds initial data.
+
+## Testing
+Run the test suite using pytest:
+```powershell
+pytest
+```
 
 ### Quick one-liner (initial setup)
 ```powershell

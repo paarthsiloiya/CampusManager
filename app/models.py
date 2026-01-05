@@ -14,6 +14,12 @@ class Branch(enum.Enum):
     CST = "CST"   # Computer Science & Technology
     CSE = "CSE"   # Computer Science & Engineering
 
+class UserRole(enum.Enum):
+    """Enum for user roles"""
+    STUDENT = "STUDENT"
+    TEACHER = "TEACHER"
+    ADMIN = "ADMIN"
+
 class User(UserMixin, db.Model):
     """User model for storing basic student information and authentication"""
     __tablename__ = 'users'
@@ -25,8 +31,10 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(15), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
-    semester = db.Column(db.Integer, nullable=False)
-    branch = db.Column(db.Enum(Branch), nullable=False, default=Branch.CSE)
+    semester = db.Column(db.Integer, nullable=True)
+    branch = db.Column(db.Enum(Branch), nullable=True)
+    role = db.Column(db.Enum(UserRole), nullable=False, default=UserRole.STUDENT)
+    is_password_changed = db.Column(db.Boolean, default=False)
     
     # Authentication
     password_hash = db.Column(db.String(255), nullable=False)
@@ -312,9 +320,7 @@ def seed_subjects():
     try:
         # First check if we can query the subjects table (if it has the branch column)
         test_query = Subject.query.first()
-        print(f"🔍 Database test query successful, existing subjects: {Subject.query.count()}")
-    except Exception as e:
-        print(f"⚠️  Subjects table structure outdated, skipping seeding: {str(e)}")
+    except Exception:
         return
     
     # Load branch-specific subjects from JSON
@@ -324,7 +330,6 @@ def seed_subjects():
         with open(json_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
     except FileNotFoundError:
-        print("❌ branch_subjects.json not found, skipping subject seeding")
         return
     
     subjects_created = 0
@@ -341,12 +346,10 @@ def seed_subjects():
                 
                 # Check if required fields exist and are not empty
                 if not subject_data.get('name') or not subject_data.get('code'):
-                    print(f"⚠️  Skipping incomplete subject in {branch_code} semester {semester_int}")
                     continue
                 
                 # Skip subjects with generic or invalid codes
                 if subject_data['code'] in ['Test', '1', '']:
-                    print(f"⚠️  Skipping subject with invalid code '{subject_data['code']}' in {branch_code} semester {semester_int}")
                     continue
                 
                 # Create a unique code that includes branch
@@ -365,18 +368,12 @@ def seed_subjects():
                         )
                         db.session.add(new_subject)
                         subjects_created += 1
-                        print(f"➕ Added: {unique_code} - {subject_data['name']}")
-                    else:
-                        print(f"⏭️  Already exists: {unique_code}")
-                except Exception as e:
-                    print(f"❌ Error creating subject {unique_code}: {str(e)}")
+                except Exception:
                     continue
     
     try:
         db.session.commit()
-        print(f"✅ Seeded {subjects_created} branch-specific subjects")
-    except Exception as e:
-        print(f"❌ Error committing subjects: {str(e)}")
+    except Exception:
         db.session.rollback()
     
     # Also create some common subjects that all branches share
@@ -398,13 +395,10 @@ def seed_subjects():
                 )
                 db.session.add(new_subject)
                 subjects_created += 1
-        except Exception as e:
-            print(f"❌ Error creating common subject: {str(e)}")
+        except Exception:
             continue
     
     try:
         db.session.commit()
-        print(f"✅ Total subjects seeded: {subjects_created}")
-    except Exception as e:
-        print(f"❌ Error committing common subjects: {str(e)}")
+    except Exception:
         db.session.rollback()

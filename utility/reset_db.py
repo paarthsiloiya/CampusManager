@@ -22,7 +22,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 # Add the app directory to Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import create_app
 from app.models import db, User, Subject, Attendance, Marks, AttendanceSummary, reset_database, seed_subjects

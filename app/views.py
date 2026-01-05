@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, make_response, url_for, flash
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
-from .models import db, User, Branch
+from .models import db, User, Branch, UserRole
 import json
 import os
 from datetime import datetime
@@ -75,11 +75,14 @@ def load_calendar_events():
 
 @views.route('/')
 def home():
-    return redirect('/dashboard')
+    return redirect(url_for('auth.login'))
 
-@views.route('/dashboard')
+@views.route('/student/dashboard')
 @login_required
-def dashboard():
+def student_dashboard():
+    if current_user.role != UserRole.STUDENT:
+        return redirect(url_for('auth.login'))
+
     # Load branch-specific data from JSON
     json_data = load_semester_data()
     
@@ -409,90 +412,97 @@ def calendar():
 @login_required
 def settings():
     if request.method == 'POST':
+        # Handle password change for all users
+        if 'current_password' in request.form:
+            current_password = request.form.get('current_password')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
+
+            if not current_user.check_password(current_password):
+                flash('Incorrect current password.', 'error')
+            elif new_password != confirm_password:
+                flash('New passwords do not match.', 'error')
+            elif len(new_password) < 6:
+                flash('Password must be at least 6 characters long.', 'error')
+            else:
+                current_user.set_password(new_password)
+                current_user.is_password_changed = True
+                db.session.commit()
+                flash('Password updated successfully!', 'success')
+            return redirect(url_for('views.settings'))
+
         # Handle profile update
         try:
             # Get form data (excluding name and email which are now read-only)
             phone = request.form.get('phone', '').strip()
-            date_of_birth = request.form.get('date_of_birth')
-            enrollment_number = request.form.get('enrollment_number', '').strip()
-            branch = request.form.get('branch', '').strip()
-            semester = request.form.get('semester')
-            institution = request.form.get('institution', '').strip()
-            graduation_year = request.form.get('graduation_year')
-            department = request.form.get('department', '').strip()
             
-            # Debug logging
-            print(f"🔍 Profile Update Debug Info:")
-            print(f"   Current Name: {current_user.name} (read-only)")
-            print(f"   Current Email: {current_user.email} (read-only)")
-            print(f"   Institution: {institution}")
-            print(f"   Branch: {branch}")
-            print(f"   Semester: {semester}")
-            print(f"   Current user institution: {current_user.institution}")
-            
-            # Validation (removed name and email validation since they're read-only)
-            errors = []
-            
-            if semester and (not semester.isdigit() or int(semester) < 1 or int(semester) > 8):
-                errors.append('Please select a valid semester (1-8).')
-            
-            if branch and branch not in ['AIML', 'AIDS', 'CST', 'CSE']:
-                errors.append('Please select a valid branch.')
-            
-            if graduation_year and not graduation_year.isdigit():
-                errors.append('Graduation year must be a valid number.')
-            
-            if errors:
-                for error in errors:
-                    flash(error, 'error')
-                return redirect(url_for('views.settings'))
-            
-            # Update user data (excluding name and email)
+            # Update common fields
             current_user.phone = phone if phone else None
             
-            # Handle date of birth
-            if date_of_birth:
-                try:
-                    current_user.date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
-                except ValueError:
-                    flash('Invalid date format for date of birth.', 'error')
+            # Handle student-specific fields
+            if current_user.role == UserRole.STUDENT:
+                date_of_birth = request.form.get('date_of_birth')
+                enrollment_number = request.form.get('enrollment_number', '').strip()
+                branch = request.form.get('branch', '').strip()
+                semester = request.form.get('semester')
+                institution = request.form.get('institution', '').strip()
+                graduation_year = request.form.get('graduation_year')
+                department = request.form.get('department', '').strip()
+                
+                # Validation (removed name and email validation since they're read-only)
+                errors = []
+                
+                if semester and (not semester.isdigit() or int(semester) < 1 or int(semester) > 8):
+                    errors.append('Please select a valid semester (1-8).')
+                
+                if branch and branch not in ['AIML', 'AIDS', 'CST', 'CSE']:
+                    errors.append('Please select a valid branch.')
+                
+                if graduation_year and not graduation_year.isdigit():
+                    errors.append('Graduation year must be a valid number.')
+                
+                if errors:
+                    for error in errors:
+                        flash(error, 'error')
                     return redirect(url_for('views.settings'))
-            
-            current_user.enrollment_number = enrollment_number if enrollment_number else None
-            
-            # Handle branch enum
-            if branch:
-                from .models import Branch
-                try:
-                    current_user.branch = Branch(branch)
-                except ValueError:
-                    flash('Invalid branch selection.', 'error')
-                    return redirect(url_for('views.settings'))
-            
-            if semester:
-                current_user.semester = int(semester)
-            
-            current_user.department = department if department else None
-            
-            # Handle institution
-            current_user.institution = institution if institution else 'Delhi Technical Campus'
-            
-            # Handle graduation year - calculate year_of_admission
-            if graduation_year:
-                grad_year = int(graduation_year)
-                current_user.year_of_admission = grad_year - 4  # Assuming 4-year degree
+                
+                # Handle date of birth
+                if date_of_birth:
+                    try:
+                        current_user.date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+                    except ValueError:
+                        flash('Invalid date format for date of birth.', 'error')
+                        return redirect(url_for('views.settings'))
+                
+                current_user.enrollment_number = enrollment_number if enrollment_number else None
+                
+                # Handle branch enum
+                if branch:
+                    from .models import Branch
+                    try:
+                        current_user.branch = Branch(branch)
+                    except ValueError:
+                        flash('Invalid branch selection.', 'error')
+                        return redirect(url_for('views.settings'))
+                
+                if semester:
+                    current_user.semester = int(semester)
+                
+                current_user.department = department if department else None
+                
+                # Handle institution
+                current_user.institution = institution if institution else 'Delhi Technical Campus'
+                
+                # Handle graduation year - calculate year_of_admission
+                if graduation_year:
+                    grad_year = int(graduation_year)
+                    current_user.year_of_admission = grad_year - 4  # Assuming 4-year degree
             
             # Update timestamp
             current_user.updated_at = datetime.utcnow()
             
             # Save to database
             db.session.commit()
-            
-            # Debug confirmation
-            print(f"✅ Profile Update Success:")
-            print(f"   New institution: {current_user.institution}")
-            print(f"   New branch: {current_user.branch.value if current_user.branch else 'None'}")
-            print(f"   New semester: {current_user.semester}")
             
             flash('Profile updated successfully!', 'success')
             return redirect(url_for('views.settings'))
@@ -504,6 +514,11 @@ def settings():
             return redirect(url_for('views.settings'))
     
     # GET request - show settings form
+    if current_user.role == UserRole.ADMIN:
+        return render_template("Admin/settings.html")
+    elif current_user.role == UserRole.TEACHER:
+        return render_template("Teacher/settings.html")
+
     # Use actual user data
     student_data = {
         'name': current_user.name,
@@ -589,8 +604,64 @@ def delete_account():
 @login_required
 def about():
     rendered = render_template(
-        "Student/about.html"
+        "about.html"
     )
     
     response = make_response(rendered)
     return no_cache(response)
+    
+    response = make_response(rendered)
+    return no_cache(response)
+
+@views.route('/admin/dashboard')
+@login_required
+def admin_dashboard():
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+    
+    users = User.query.all()
+    return render_template('Admin/dashboard.html', users=users)
+
+@views.route('/teacher/dashboard')
+@login_required
+def teacher_dashboard():
+    if current_user.role != UserRole.TEACHER:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+    
+    return render_template('Teacher/dashboard.html')
+
+@views.route('/admin/add_user', methods=['POST'])
+@login_required
+def add_user():
+    if current_user.role != UserRole.ADMIN:
+        return redirect(url_for('auth.login'))
+    
+    name = request.form.get('name')
+    email = request.form.get('email')
+    role_str = request.form.get('role')
+    password = request.form.get('password')
+    
+    if not all([name, email, role_str, password]):
+        flash('All fields are required', 'error')
+        return redirect(url_for('views.admin_dashboard'))
+        
+    if User.query.filter_by(email=email).first():
+        flash('Email already exists', 'error')
+        return redirect(url_for('views.admin_dashboard'))
+        
+    try:
+        role = UserRole[role_str]
+    except KeyError:
+        flash('Invalid role', 'error')
+        return redirect(url_for('views.admin_dashboard'))
+        
+    new_user = User(name=name, email=email, role=role)
+    new_user.set_password(password)
+    
+    db.session.add(new_user)
+    db.session.commit()
+    
+    flash(f'{role_str} added successfully', 'success')
+    return redirect(url_for('views.admin_dashboard'))

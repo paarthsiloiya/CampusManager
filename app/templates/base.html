@@ -197,10 +197,22 @@
             <nav class="flex-1">
                 <ul class="space-y-5 text-lg">
                     <li>
-                        <a href="{{ url_for('views.dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                        {% if current_user.role.name == 'ADMIN' %}
+                        <a href="{{ url_for('views.admin_dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.admin_dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="home" class="w-5 h-5 mr-2 text-gray-300"></i> Dashboard</a
                         >
+                        {% elif current_user.role.name == 'TEACHER' %}
+                        <a href="{{ url_for('views.teacher_dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.teacher_dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 mr-2 text-gray-300"></i> Dashboard</a
+                        >
+                        {% else %}
+                        <a href="{{ url_for('views.student_dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.student_dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 mr-2 text-gray-300"></i> Dashboard</a
+                        >
+                        {% endif %}
                     </li>
+
+                    {% if current_user.role.name == 'STUDENT' %}
                     <li>
                         <a href="{{ url_for('views.curriculum') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.curriculum' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="book-open" class="w-5 h-5 mr-2 text-gray-300"></i> Curriculum</a
@@ -216,6 +228,14 @@
                             ><i data-feather="calendar" class="w-5 h-5 mr-2 text-gray-300"></i> Calendar</a
                         >
                     </li>
+                    {% endif %} {% if current_user.role.name == 'TEACHER' %}
+                    <li>
+                        <a href="{{ url_for('views.calendar') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.calendar' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 mr-2 text-gray-300"></i> Calendar</a
+                        >
+                    </li>
+                    {% endif %}
+
                     <li>
                         <a href="{{ url_for('views.settings') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.settings' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="settings" class="w-5 h-5 mr-2 text-gray-300"></i> Settings</a
@@ -259,8 +279,8 @@
             <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between">
                 <!-- Name and Role on the left -->
                 <div class="flex-1">
-                    <h2 class="text-xl font-bold">{{ student.name if student else "Student" }}</h2>
-                    <p class="text-sm text-gray-500">{{ student.role if student else "Student" }}, {{ student.location if student else "Delhi" }}</p>
+                    <h2 class="text-xl font-bold">{{ current_user.name }}</h2>
+                    <p class="text-sm text-gray-500">{{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}</p>
                 </div>
                 <!-- Profile icon on the right -->
                 <div class="w-16 h-16 rounded-full bg-skyblue flex items-center justify-center text-2xl ml-4"><i data-feather="user" class="w-8 h-8 text-white"></i></div>
@@ -269,8 +289,8 @@
             <!-- Calendar will be inserted here from child templates -->
             {% block sidebar_content %}{% endblock %}
 
-            <!-- Queries - Only shown on Dashboard and Attendance pages -->
-            {% if request.endpoint == 'views.dashboard' or request.endpoint == 'views.attendance' %}
+            <!-- Queries - Only shown on Dashboard and Attendance pages, but NOT for Admin -->
+            {% if request.endpoint in ['views.student_dashboard', 'views.teacher_dashboard', 'views.attendance'] and current_user.role.name != 'ADMIN' %}
             <div>
                 <h3 class="font-bold flex items-center"><i data-feather="help-circle" class="w-5 h-5 mr-2 text-gray-600"></i> Queries</h3>
                 <div id="queryMessage" class="text-sm text-green-600 mt-2"></div>

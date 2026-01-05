@@ -5,6 +5,7 @@ Test script to verify that the institution field is working correctly
 
 from app import create_app
 from app.models import db, User
+import pytest
 
 def test_institution_field():
     """Test that the institution field is working"""
@@ -43,10 +44,7 @@ def test_institution_field():
             print("🎯 You can now change institution names in the settings page.")
             
         except Exception as e:
-            print(f"❌ Error testing institution field: {e}")
-            return False
-            
-    return True
+            pytest.fail(f"Error testing institution field: {e}")
 
 if __name__ == "__main__":
     print("🚀 Testing institution field functionality...")
