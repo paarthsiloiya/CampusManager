@@ -52,6 +52,12 @@ This repository contains the source code for a web-based Smart Curriculum Activi
 	python main.py --name "Student Dashboard" --port 5002
 	```
 
+	**Docker Run (Alternative):**
+	Run the entire ecosystem with a single command using Docker Compose:
+	```powershell
+	docker-compose up --build
+	```
+
 8. Visit: 
 	- Admin: http://127.0.0.1:5000/
 	- Teacher: http://127.0.0.1:5001/

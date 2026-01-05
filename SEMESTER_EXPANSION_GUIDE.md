@@ -167,7 +167,7 @@ Add a new semester with subjects:
 After making changes to branches or subjects, reset the database:
 
 ```bash
-python reset_db.py
+python utility/reset_db.py
 ```
 
 This will:
@@ -181,7 +181,7 @@ This will:
 Generate test accounts for all branches:
 
 ```bash
-python create_test_accounts.py
+python utility/create_test_accounts.py
 ```
 
 ## 🎨 Available Icons
@@ -258,10 +258,10 @@ Subject Table:
 
 ```bash
 # Reset database after JSON changes
-python reset_db.py
+python utility/reset_db.py
 
 # Create test accounts for all branches
-python create_test_accounts.py
+python utility/create_test_accounts.py
 
 # Start development server
 python main.py

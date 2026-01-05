@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  admin-server:
+    build: .
+    container_name: sih-admin-server
+    command: python main.py --name "Admin Panel" --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_DEBUG=1
+      - SECRET_KEY=dev_secret_key
+    restart: unless-stopped
+
+  teacher-server:
+    build: .
+    container_name: sih-teacher-server
+    command: python main.py --name "Teacher Dashboard" --port 5001
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_DEBUG=1
+      - SECRET_KEY=dev_secret_key
+    restart: unless-stopped
+
+  student-server:
+    build: .
+    container_name: sih-student-server
+    command: python main.py --name "Student Dashboard" --port 5002
+    ports:
+      - "5002:5002"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_DEBUG=1
+      - SECRET_KEY=dev_secret_key
+    restart: unless-stopped

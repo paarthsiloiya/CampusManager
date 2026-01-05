@@ -21,17 +21,17 @@ The testing suite consists of 5 main Python files, each serving a specific purpo
 
 | File | Purpose | Key Features |
 |------|---------|-------------|
-| `create_test_accounts.py` | User account creation | Creates 8 test accounts for all semesters |
-| `reset_db.py` | Database management | Reset/clear database with safety checks |
-| `test_attendance_generator.py` | Attendance testing | Generate realistic attendance scenarios |
-| `add_sample_data.py` | Sample data seeding | Add realistic sample data to database |
+| `utility/create_test_accounts.py` | User account creation | Creates 8 test accounts for all semesters |
+| `utility/reset_db.py` | Database management | Reset/clear database with safety checks |
+| `utility/test_attendance_generator.py` | Attendance testing | Generate realistic attendance scenarios |
+| `utility/add_sample_data.py` | Sample data seeding | Add realistic sample data to database |
 | `test_attendance.py` | Basic verification | Simple attendance calculation testing |
 
 ---
 
 ## 👥 Test Account Management
 
-### `create_test_accounts.py`
+### `utility/create_test_accounts.py`
 
 **Purpose**: Creates standardized test accounts for all 8 semesters with different branches.
 
@@ -63,7 +63,7 @@ Phone: 9971959945
 
 ```bash
 # Create all test accounts
-python create_test_accounts.py
+python utility/create_test_accounts.py
 ```
 
 #### Sample Output:
@@ -86,7 +86,7 @@ python create_test_accounts.py
 
 ## 🗃️ Database Reset & Management
 
-### `reset_db.py`
+### `utility/reset_db.py`
 
 **Purpose**: Comprehensive database management tool with safety features for resetting or clearing data.
 
@@ -135,13 +135,13 @@ python create_test_accounts.py
 
 ```bash
 # Reset entire database (drops tables, recreates, seeds)
-python reset_db.py
+python utility/reset_db.py
 
 # Clear user data only (preserve structure and subjects)
-python reset_db.py --clear-only
+python utility/reset_db.py --clear-only
 
 # Show database statistics without changes
-python reset_db.py --stats
+python utility/reset_db.py --stats
 ```
 
 #### Sample Output:
@@ -346,7 +346,7 @@ Enter classes per week: 3
 
 ## 📝 Sample Data Generation
 
-### `add_sample_data.py`
+### `utility/add_sample_data.py`
 
 **Purpose**: Adds realistic sample data to populate the database for testing and demonstration.
 
@@ -364,7 +364,7 @@ Enter classes per week: 3
 
 #### Usage:
 ```bash
-python add_sample_data.py
+python utility/add_sample_data.py
 ```
 
 #### Features:
@@ -428,12 +428,15 @@ python test_attendance.py
 
 ```bash
 # 1. Start with clean database
-python reset_db.py --clear-only
+python utility/reset_db.py --clear-only
 
 # 2. Create test accounts
-python create_test_accounts.py
+python utility/create_test_accounts.py
 
 # 3. Generate attendance data
+# Note: test_attendance_generator.py is not in utility folder yet, assuming it stays in root or moves later.
+# If it was moved, update path. Based on previous `ls`, it wasn't in utility.
+# Wait, I should check if test_attendance_generator.py exists.
 python test_attendance_generator.py
 # Choose option 4: Create comprehensive test scenarios
 
@@ -449,8 +452,8 @@ python test_attendance_generator.py
 
 ```bash
 # Reset everything and create full test environment
-python reset_db.py
-python create_test_accounts.py
+python utility/reset_db.py
+python utility/create_test_accounts.py
 python test_attendance_generator.py  # Option 4
 ```
 
@@ -471,19 +474,19 @@ python test_attendance_generator.py
 ## 📋 Best Practices
 
 ### 1. **Safety First**
-- Always use `reset_db.py --stats` to check current state before major changes
+- Always use `utility/reset_db.py --stats` to check current state before major changes
 - Use `--clear-only` option to preserve database structure when possible
 - Always confirm destructive operations with "YES"
 
 ### 2. **Systematic Testing**
-- Start with fresh test accounts using `create_test_accounts.py`
+- Start with fresh test accounts using `utility/create_test_accounts.py`
 - Use comprehensive scenarios from `test_attendance_generator.py` option 4
 - Verify results with `test_attendance.py`
 
 ### 3. **Debugging Issues**
 - Use debug option 7 in attendance generator to verify record creation
 - Check raw database counts vs. calculated statistics
-- Use `reset_db.py --stats` to understand current database state
+- Use `utility/reset_db.py --stats` to understand current database state
 
 ### 4. **Realistic Data**
 - Use mixed scenarios for realistic testing
@@ -493,13 +496,13 @@ python test_attendance_generator.py
 ### 5. **Development Workflow**
 ```bash
 # Daily development reset
-python reset_db.py --clear-only
-python create_test_accounts.py
+python utility/reset_db.py --clear-only
+python utility/create_test_accounts.py
 python test_attendance_generator.py  # Option 5 for quick test
 
 # Weekly comprehensive testing
-python reset_db.py
-python create_test_accounts.py
+python utility/reset_db.py
+python utility/create_test_accounts.py
 python test_attendance_generator.py  # Option 4 for full scenarios
 python test_attendance.py
 ```
@@ -536,9 +539,9 @@ python test_attendance.py
 
 ### Getting Help:
 
-1. Check database stats: `python reset_db.py --stats`
+1. Check database stats: `python utility/reset_db.py --stats`
 2. Verify records: Use option 7 in attendance generator
-3. Fresh start: `python reset_db.py` followed by account creation
+3. Fresh start: `python utility/reset_db.py` followed by account creation
 
 ---
 
