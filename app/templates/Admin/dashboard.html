@@ -11,15 +11,15 @@
             <!-- Common Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <label class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
                     <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Work Email</label>
+                    <label class="block text-sm font-medium text-gray-700">Work Email <span class="text-red-500">*</span></label>
                     <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Role</label>
+                    <label class="block text-sm font-medium text-gray-700">Role <span class="text-red-500">*</span></label>
                     <select name="role" id="roleSelect" required onchange="toggleFields()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
                         <option value="TEACHER">Teacher</option>
                         <option value="STUDENT">Student</option>
@@ -27,7 +27,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Temporary Password</label>
+                    <label class="block text-sm font-medium text-gray-700">Temporary Password <span class="text-red-500">*</span></label>
                     <input type="text" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                 </div>
                 <div>
@@ -45,12 +45,12 @@
                         <input type="date" name="student_dob" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Enrollment Number</label>
-                        <input type="text" name="enrollment_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Enrollment Number <span class="text-red-500">*</span></label>
+                        <input type="text" name="enrollment_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Branch</label>
-                        <select name="student_branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
+                        <label class="block text-sm font-medium text-gray-700">Branch <span class="text-red-500">*</span></label>
+                        <select name="student_branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
                             <option value="">Select Branch</option>
                             <option value="AIML">AIML - Artificial Intelligence & Machine Learning</option>
                             <option value="AIDS">AIDS - Artificial Intelligence & Data Science</option>
@@ -59,8 +59,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Semester</label>
-                        <select name="semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
+                        <label class="block text-sm font-medium text-gray-700">Semester <span class="text-red-500">*</span></label>
+                        <select name="semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
                             <option value="">Select Semester</option>
                             {% for i in range(1, 9) %}
                             <option value="{{ i }}">{{ i }}</option>
@@ -72,12 +72,12 @@
                         <input type="text" name="student_institution" value="Delhi Technical Campus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Graduation Year</label>
-                        <input type="number" name="graduation_year" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Graduation Year <span class="text-red-500">*</span></label>
+                        <input type="number" name="graduation_year" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Department</label>
-                        <input type="text" name="student_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
+                        <input type="text" name="student_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                 </div>
             </div>
@@ -91,18 +91,8 @@
                         <input type="date" name="teacher_dob" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Branch</label>
-                        <select name="teacher_branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
-                            <option value="">Select Branch</option>
-                            <option value="AIML">AIML - Artificial Intelligence & Machine Learning</option>
-                            <option value="AIDS">AIDS - Artificial Intelligence & Data Science</option>
-                            <option value="CST">CST - Computer Science & Technology</option>
-                            <option value="CSE">CSE - Computer Science & Engineering</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Department</label>
-                        <input type="text" name="teacher_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
+                        <input type="text" name="teacher_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Institution</label>
@@ -121,13 +111,26 @@
                 const studentFields = document.getElementById("studentFields");
                 const teacherFields = document.getElementById("teacherFields");
 
+                // Helper to enable/disable inputs based on visibility
+                const setInputsDisabled = (container, disabled) => {
+                    const inputs = container.querySelectorAll("input, select");
+                    inputs.forEach((input) => {
+                        input.disabled = disabled;
+                    });
+                };
+
                 studentFields.classList.add("hidden");
+                setInputsDisabled(studentFields, true);
+
                 teacherFields.classList.add("hidden");
+                setInputsDisabled(teacherFields, true);
 
                 if (role === "STUDENT") {
                     studentFields.classList.remove("hidden");
+                    setInputsDisabled(studentFields, false);
                 } else if (role === "TEACHER") {
                     teacherFields.classList.remove("hidden");
+                    setInputsDisabled(teacherFields, false);
                 }
             }
             document.addEventListener("DOMContentLoaded", toggleFields);

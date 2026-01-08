@@ -3,12 +3,12 @@
     <!-- Settings Section -->
     <section id="settings">
         <h1 class="text-4xl font-bold mb-6 flex items-center gap-2"><i data-feather="settings" class="w-8 h-8 text-skyblue"></i> Profile Settings</h1>
-        
+
         <!-- Profile Information Form -->
         <form id="profileForm" method="POST" action="{{ url_for('views.settings') }}">
             <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl">
                 <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
-                
+
                 <!-- Profile Picture Section -->
                 <div class="flex items-center space-x-4 mb-6">
                     <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
@@ -20,119 +20,92 @@
                     </div>
                 </div>
 
-            <!-- Form Fields -->
-            <div class="grid md:grid-cols-2 gap-4">
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="user" class="w-4 h-4 text-gray-600"></i> Full Name
-                        <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                    </span>
-                    <input id="name" name="name" value="{{ teacher.name or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your full name" readonly />
-                    <p class="text-xs text-gray-500">Name cannot be changed after account creation</p>
-                </label>
-                
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="mail" class="w-4 h-4 text-gray-600"></i> Email
-                        <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                    </span>
-                    <input id="email" name="email" type="email" value="{{ teacher.email or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your email" readonly />
-                    <p class="text-xs text-gray-500">Email cannot be changed after account creation</p>
-                </label>
-                
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="phone" class="w-4 h-4 text-gray-600"></i> Phone
-                    </span>
-                    <input id="phone" name="phone" value="{{ teacher.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
-                </label>
-                
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Date of Birth
-                    </span>
-                    <input id="dob" name="date_of_birth" type="date" value="{{ teacher.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
-                </label>
-            </div>
+                <!-- Form Fields -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium">
+                            <i data-feather="user" class="w-4 h-4 text-gray-600"></i> Full Name
+                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
+                        </span>
+                        <input id="name" name="name" value="{{ teacher.name or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your full name" readonly />
+                        <p class="text-xs text-gray-500">Name cannot be changed after account creation</p>
+                    </label>
 
-            <h2 class="text-2xl font-semibold mt-8 mb-4">Professional Information</h2>
-            
-            <div class="grid md:grid-cols-2 gap-4">
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="book" class="w-4 h-4 text-gray-600"></i> Branch
-                        <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                    </span>
-                    <select id="branch" name="branch" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" disabled>
-                        <option value="" disabled {% if not teacher.branch %}selected{% endif %}>Select Branch</option>
-                        <option value="CSE" {% if teacher.branch == 'CSE' %}selected{% endif %}>Computer Science & Engineering</option>
-                        <option value="AIML" {% if teacher.branch == 'AIML' %}selected{% endif %}>AI & Machine Learning</option>
-                        <option value="AIDS" {% if teacher.branch == 'AIDS' %}selected{% endif %}>AI & Data Science</option>
-                        <option value="CST" {% if teacher.branch == 'CST' %}selected{% endif %}>Computer Science & Technology</option>
-                    </select>
-                    <p class="text-xs text-gray-500">Contact admin to change</p>
-                </label>
-                
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="briefcase" class="w-4 h-4 text-gray-600"></i> Department
-                        <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                    </span>
-                    <input id="department" name="department" value="{{ teacher.department or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter department" readonly />
-                    <p class="text-xs text-gray-500">Contact admin to change</p>
-                </label>
-                
-                <label class="flex flex-col gap-2">
-                    <span class="flex items-center gap-2 font-medium">
-                        <i data-feather="building" class="w-4 h-4 text-gray-600"></i> Institution
-                    </span>
-                    <input id="inst" name="institution" value="{{ teacher.institution or 'Delhi Technical Campus' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
-                </label>
-            </div>
-            
-            <div class="flex justify-end mt-6">
-                <button type="submit" class="bg-skyblue text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition duration-200">
-                    Save Changes
-                </button>
-            </div>
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium">
+                            <i data-feather="mail" class="w-4 h-4 text-gray-600"></i> Email
+                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
+                        </span>
+                        <input id="email" name="email" type="email" value="{{ teacher.email or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your email" readonly />
+                        <p class="text-xs text-gray-500">Email cannot be changed after account creation</p>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium"> <i data-feather="phone" class="w-4 h-4 text-gray-600"></i> Phone </span>
+                        <input id="phone" name="phone" value="{{ teacher.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium"> <i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Date of Birth </span>
+                        <input id="dob" name="date_of_birth" type="date" value="{{ teacher.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
+                    </label>
+                </div>
+
+                <h2 class="text-2xl font-semibold mt-8 mb-4">Professional Information</h2>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium">
+                            <i data-feather="briefcase" class="w-4 h-4 text-gray-600"></i> Department
+                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
+                        </span>
+                        <input id="department" name="department" value="{{ teacher.department or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter department" readonly />
+                        <p class="text-xs text-gray-500">Contact admin to change</p>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="flex items-center gap-2 font-medium"> <i data-feather="building" class="w-4 h-4 text-gray-600"></i> Institution </span>
+                        <input id="inst" name="institution" value="{{ teacher.institution or 'Delhi Technical Campus' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
+                    </label>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button type="submit" class="bg-skyblue text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition duration-200">Save Changes</button>
+                </div>
             </div>
         </form>
-        
+
         <!-- Change Password Section -->
         <div class="mt-8 bg-white shadow-lg rounded-xl p-6 max-w-2xl">
             <h2 class="text-2xl font-semibold mb-4">Security</h2>
             <form method="POST" action="{{ url_for('views.settings') }}" class="space-y-4">
                 <div>
-                    <label class="block mb-2 font-medium text-gray-700">Current Password</label>
+                    <label class="block mb-2 font-medium text-gray-700">Current Password <span class="text-red-500">*</span></label>
                     <input type="password" name="current_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Enter current password" required />
                 </div>
-                
+
                 <div>
-                    <label class="block mb-2 font-medium text-gray-700">New Password</label>
+                    <label class="block mb-2 font-medium text-gray-700">New Password <span class="text-red-500">*</span></label>
                     <input type="password" name="new_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Enter new password (min. 6 characters)" required />
                 </div>
-                
+
                 <div>
-                    <label class="block mb-2 font-medium text-gray-700">Confirm New Password</label>
+                    <label class="block mb-2 font-medium text-gray-700">Confirm New Password <span class="text-red-500">*</span></label>
                     <input type="password" name="confirm_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Confirm new password" required />
                 </div>
-                
+
                 <div class="flex justify-end mt-4">
-                    <button type="submit" class="bg-orange text-white px-6 py-3 rounded-xl hover:bg-red-600 transition duration-200">
-                        Update Password
-                    </button>
+                    <button type="submit" class="bg-orange text-white px-6 py-3 rounded-xl hover:bg-red-600 transition duration-200">Update Password</button>
                 </div>
             </form>
         </div>
-        
+
         <!-- Delete Account Section -->
         <div class="mt-8 bg-white border border-red-200 shadow-lg rounded-xl p-6 max-w-2xl">
             <h2 class="text-2xl font-semibold text-red-600 mb-4">Danger Zone</h2>
             <p class="text-gray-600 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
-            
-            <button onclick="document.getElementById('deleteModal').classList.remove('hidden')" type="button" class="bg-red-100 text-red-600 border border-red-200 px-6 py-3 rounded-xl hover:bg-red-200 transition duration-200">
-                Delete Account
-            </button>
+
+            <button onclick="document.getElementById('deleteModal').classList.remove('hidden')" type="button" class="bg-red-100 text-red-600 border border-red-200 px-6 py-3 rounded-xl hover:bg-red-200 transition duration-200">Delete Account</button>
         </div>
     </section>
 
@@ -142,20 +115,16 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2">Delete Account?</h3>
             <p class="text-gray-600 mb-6">
                 This action cannot be undone. This will permanently delete your account and remove your access.
-                <br><br>
+                <br /><br />
                 Type <strong>DELETE</strong> to confirm.
             </p>
-            
+
             <form action="{{ url_for('views.delete_account') }}" method="POST">
-                <input type="text" name="confirmation" class="w-full border border-gray-300 p-3 rounded-lg mb-4" placeholder="Type DELETE" required pattern="DELETE">
-                
+                <input type="text" name="confirmation" class="w-full border border-gray-300 p-3 rounded-lg mb-4" placeholder="Type DELETE" required pattern="DELETE" />
+
                 <div class="flex gap-3 justify-end">
-                    <button type="button" onclick="document.getElementById('deleteModal').classList.add('hidden')" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                        Delete Permanently
-                    </button>
+                    <button type="button" onclick="document.getElementById('deleteModal').classList.add('hidden')" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete Permanently</button>
                 </div>
             </form>
         </div>
@@ -164,11 +133,11 @@
     <script>
         // Initialize feather icons
         feather.replace();
-        
+
         // Close modal when clicking outside
-        document.getElementById('deleteModal').addEventListener('click', function(e) {
+        document.getElementById("deleteModal").addEventListener("click", function (e) {
             if (e.target === this) {
-                this.classList.add('hidden');
+                this.classList.add("hidden");
             }
         });
     </script>

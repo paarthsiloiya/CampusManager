@@ -278,7 +278,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-8 mx-6 my-4 ml-72 mr-[21rem] overflow-y-auto bg-white rounded-l-3xl shadow-2xl">
+        <main class="flex-1 p-8 mx-6 my-4 ml-72 {% if not hide_right_sidebar %}mr-[21rem] rounded-l-3xl{% else %}mr-6 rounded-3xl{% endif %} overflow-y-auto bg-white shadow-2xl">
             <!-- Flash Messages -->
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
             <div class="mb-6">
@@ -300,6 +300,7 @@
         </main>
 
         <!-- Right Sidebar -->
+        {% if not hide_right_sidebar %}
         <aside class="w-80 bg-white shadow-lg p-6 flex flex-col space-y-6 fixed right-4 top-4 bottom-4 rounded-r-3xl">
             <!-- Profile -->
             <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between">
@@ -325,6 +326,7 @@
             </div>
             {% endif %}
         </aside>
+        {% endif %}
 
         <script>
             // Base functionality for all pages

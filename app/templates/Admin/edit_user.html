@@ -31,7 +31,7 @@
             <!-- Common Editable Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <label class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
                     <input type="text" name="name" value="{{ user.name }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                 </div>
                 <div>
@@ -50,12 +50,12 @@
                         <input type="date" name="dob" value="{{ user.dob }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Enrollment Number</label>
-                        <input type="text" name="enrollment_number" value="{{ user.enrollment_number or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Enrollment Number <span class="text-red-500">*</span></label>
+                        <input type="text" name="enrollment_number" value="{{ user.enrollment_number or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Branch</label>
-                        <select name="branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
+                        <label class="block text-sm font-medium text-gray-700">Branch <span class="text-red-500">*</span></label>
+                        <select name="branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
                             <option value="">Select Branch</option>
                             <option value="AIML" {% if user.branch == 'AIML' %}selected{% endif %}>AIML - Artificial Intelligence & Machine Learning</option>
                             <option value="AIDS" {% if user.branch == 'AIDS' %}selected{% endif %}>AIDS - Artificial Intelligence & Data Science</option>
@@ -64,8 +64,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Semester</label>
-                        <select name="semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
+                        <label class="block text-sm font-medium text-gray-700">Semester <span class="text-red-500">*</span></label>
+                        <select name="semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
                             <option value="">Select Semester</option>
                             {% for i in range(1, 9) %}
                             <option value="{{ i }}" {% if user.semester == i %}selected{% endif %}>{{ i }}</option>
@@ -77,12 +77,12 @@
                         <input type="text" name="institution" value="{{ user.institution or 'Delhi Technical Campus' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Graduation Year</label>
-                        <input type="number" name="graduation_year" value="{{ user.graduation_year or '' }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Graduation Year <span class="text-red-500">*</span></label>
+                        <input type="number" name="graduation_year" value="{{ user.graduation_year or '' }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Department</label>
-                        <input type="text" name="department" value="{{ user.department or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
+                        <input type="text" name="department" value="{{ user.department or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                 </div>
             </div>
@@ -98,18 +98,8 @@
                         <input type="date" name="dob" value="{{ user.dob }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Branch</label>
-                        <select name="branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
-                            <option value="">Select Branch</option>
-                            <option value="AIML" {% if user.branch == 'AIML' %}selected{% endif %}>AIML - Artificial Intelligence & Machine Learning</option>
-                            <option value="AIDS" {% if user.branch == 'AIDS' %}selected{% endif %}>AIDS - Artificial Intelligence & Data Science</option>
-                            <option value="CST" {% if user.branch == 'CST' %}selected{% endif %}>CST - Computer Science & Technology</option>
-                            <option value="CSE" {% if user.branch == 'CSE' %}selected{% endif %}>CSE - Computer Science & Engineering</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Department</label>
-                        <input type="text" name="department" value="{{ user.department or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
+                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
+                        <input type="text" name="department" value="{{ user.department or '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Institution</label>

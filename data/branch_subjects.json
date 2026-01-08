@@ -59,49 +59,49 @@
                     {
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AIML201",
+                        "code": "AIML-201",
                         "credits": 3
                     },
                     {
                         "name": "Foundation Of Data Science",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AIML203",
+                        "code": "AIML-203",
                         "credits": 3
                     },
                     {
                         "name": "Digital Logic Design",
                         "icon": "https://img.icons8.com/pulsar-line/48/front-gate-closed.png",
-                        "code": "AIML205",
+                        "code": "AIML-205",
                         "credits": 3
                     },
                     {
                         "name": "Principles Of Ai",
                         "icon": "https://img.icons8.com/pulsar-line/48/bot.png",
-                        "code": "AIML207",
+                        "code": "AIML-207",
                         "credits": 3
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
-                        "code": "AIML209",
+                        "code": "AIML-209",
                         "credits": 4
                     },
                     {
                         "name": "Universal Human Values-II",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
-                        "code": "AIML211",
+                        "code": "AIML-211",
                         "credits": 3
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
                         "icon": "https://img.icons8.com/pulsar-line/48/thinking-bubble.png",
-                        "code": "AIML213",
+                        "code": "AIML-213",
                         "credits": 2
                     },
                     {
                         "name": "Selected Readings",
                         "icon": "https://img.icons8.com/pulsar-line/48/reading.png",
-                        "code": "AIML215",
+                        "code": "AIML-215",
                         "credits": 1
                     }
                 ],
@@ -109,49 +109,49 @@
                     {
                         "name": "Object Oriented Programming",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AIML202",
+                        "code": "AIML-202",
                         "credits": 3
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
-                        "code": "AIML204",
+                        "code": "AIML-204",
                         "credits": 3
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
-                        "code": "AIML206",
+                        "code": "AIML-206",
                         "credits": 3
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
                         "icon": "https://img.icons8.com/pulsar-line/48/ethernet-off.png",
-                        "code": "AIML208",
+                        "code": "AIML-208",
                         "credits": 3
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
                         "icon": "https://img.icons8.com/pulsar-line/48/robot-3.png",
-                        "code": "AIML210",
+                        "code": "AIML-210",
                         "credits": 3
                     },
                     {
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
-                        "code": "AIML212",
+                        "code": "AIML-212",
                         "credits": 3
                     },
                     {
                         "name": "Effective Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
-                        "code": "AIML214",
+                        "code": "AIML-214",
                         "credits": 1
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
                         "icon": "https://img.icons8.com/pulsar-line/48/manufacturing.png",
-                        "code": "AIML216",
+                        "code": "AIML-216",
                         "credits": 1
                     }
                 ],
@@ -159,37 +159,37 @@
                     {
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
-                        "code": "AIML301",
+                        "code": "AIML-301",
                         "credits": 4
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
-                        "code": "AIML303",
+                        "code": "AIML-303",
                         "credits": 4
                     },
                     {
                         "name": "Fundamentals Of Deep Learning",
                         "icon": "https://img.icons8.com/pulsar-line/48/learning.png",
-                        "code": "AIML305",
+                        "code": "AIML-305",
                         "credits": 3
                     },
                     {
                         "name": "Computer Organization And Architecture",
                         "icon": "https://img.icons8.com/pulsar-line/48/museum.png",
-                        "code": "AIML307",
+                        "code": "AIML-307",
                         "credits": 3
                     },
                     {
                         "name": "Introduction to Internet Of Things",
                         "icon": "https://img.icons8.com/pulsar-line/48/internet-of-things.png",
-                        "code": "AIML309",
+                        "code": "AIML-309",
                         "credits": 3
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
-                        "code": "AIML311",
+                        "code": "AIML-311",
                         "credits": 2
                     }
                 ],
@@ -197,7 +197,7 @@
                     {
                         "name": "Digital Image Processing ",
                         "icon": "https://img.icons8.com/pulsar-line/48/image-file.png",
-                        "code": "AIML302",
+                        "code": "AIML-302",
                         "credits": 3
                     },
                     {
@@ -235,7 +235,7 @@
                     {
                         "name": "Principles Of Management For Engineers ",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
-                        "code": "AIML401",
+                        "code": "AIML-401",
                         "credits": 2
                     },
                     {
@@ -311,49 +311,49 @@
                     {
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AIDS201",
+                        "code": "AIDS-201",
                         "credits": 3
                     },
                     {
                         "name": "Foundation Of Data Science",
                         "icon": "https://img.icons8.com/ios/100/add-node.png",
-                        "code": "AIDS203",
+                        "code": "AIDS-203",
                         "credits": 3
                     },
                     {
                         "name": "Digital Logic Design",
                         "icon": "https://img.icons8.com/pulsar-line/48/front-gate-closed.png",
-                        "code": "AIDS205",
+                        "code": "AIDS-205",
                         "credits": 3
                     },
                     {
                         "name": "Principles Of Ai",
                         "icon": "https://img.icons8.com/pulsar-line/48/bot.png",
-                        "code": "AIDS207",
+                        "code": "AIDS-207",
                         "credits": 3
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
                         "icon": "https://img.icons8.com/pulsar-line/48/math.png",
-                        "code": "AIDS209",
+                        "code": "AIDS-209",
                         "credits": 4
                     },
                     {
                         "name": "Universal Human Values-II",
                         "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
-                        "code": "AIDS211",
+                        "code": "AIDS-211",
                         "credits": 3
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
                         "icon": "https://img.icons8.com/pulsar-line/48/thinking-bubble.png",
-                        "code": "AIDS213",
+                        "code": "AIDS-213",
                         "credits": 2
                     },
                     {
                         "name": "Selected Readings",
                         "icon": "https://img.icons8.com/pulsar-line/48/reading.png",
-                        "code": "AIDS215",
+                        "code": "AIDS-215",
                         "credits": 1
                     }
                 ],
@@ -361,49 +361,49 @@
                     {
                         "name": "Object Oriented Programming",
                         "icon": "https://img.icons8.com/pulsar-line/48/code.png",
-                        "code": "AIDS202",
+                        "code": "AIDS-202",
                         "credits": 3
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
-                        "code": "AIDS204",
+                        "code": "AIDS-204",
                         "credits": 3
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
-                        "code": "AIDS206",
+                        "code": "AIDS-206",
                         "credits": 3
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
                         "icon": "https://img.icons8.com/pulsar-line/48/ethernet-off.png",
-                        "code": "AIDS208",
+                        "code": "AIDS-208",
                         "credits": 3
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
                         "icon": "https://img.icons8.com/pulsar-line/48/robot-3.png",
-                        "code": "AIDS210",
+                        "code": "AIDS-210",
                         "credits": 3
                     },
                     {
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
-                        "code": "AIDS212",
+                        "code": "AIDS-212",
                         "credits": 3
                     },
                     {
                         "name": "Effective Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
-                        "code": "AIDS214",
+                        "code": "AIDS-214",
                         "credits": 1
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
                         "icon": "https://img.icons8.com/pulsar-line/48/manufacturing.png",
-                        "code": "AIDS216",
+                        "code": "AIDS-216",
                         "credits": 1
                     }
                 ],
@@ -411,37 +411,37 @@
                     {
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
-                        "code": "AIDS301",
+                        "code": "AIDS-301",
                         "credits": 4
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
-                        "code": "AIDS303",
+                        "code": "AIDS-303",
                         "credits": 4
                     },
                     {
                         "name": "Data Mining",
                         "icon": "https://img.icons8.com/pulsar-line/48/data-in-both-directions.png",
-                        "code": "AIDS305",
+                        "code": "AIDS-305",
                         "credits": 4
                     },
                     {
                         "name": "Computer Organization And Architecture",
                         "icon": "https://img.icons8.com/pulsar-line/48/museum.png",
-                        "code": "AIDS307",
+                        "code": "AIDS-307",
                         "credits": 3
                     },
                     {
                         "name": "Introduction to Internet Of Things",
                         "icon": "https://img.icons8.com/pulsar-line/48/internet-of-things.png",
-                        "code": "AIDS309",
+                        "code": "AIDS-309",
                         "credits": 3
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
                         "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
-                        "code": "AIDS311",
+                        "code": "AIDS-311",
                         "credits": 2
                     }
                 ],
@@ -449,7 +449,7 @@
                     {
                         "name": "Digital Image Processing ",
                         "icon": "https://img.icons8.com/pulsar-line/48/image-file.png",
-                        "code": "AIDS302",
+                        "code": "AIDS-302",
                         "credits": 3
                     },
                     {
@@ -487,7 +487,7 @@
                     {
                         "name": "Principles Of Management For Engineers ",
                         "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
-                        "code": "AIDS401",
+                        "code": "AIDS-401",
                         "credits": 2
                     },
                     {

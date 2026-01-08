@@ -1,14 +1,62 @@
-{% extends "base.html" %} {% block title %}Assign Classes{% endblock %} {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Assign Classes to Teachers</h1>
+{% extends "base.html" %} {% block title %}Assign Classes{% endblock %} {% block sidebar_content %}
+<div class="flex-1 flex flex-col min-h-0 overflow-hidden">
+    <div class="flex items-center justify-between mb-4 flex-shrink-0">
+        <h2 class="text-xl font-bold text-gray-800">Current Assignments</h2>
+        <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ assignments|length }}</span>
+    </div>
+
+    <!-- Search Assignments -->
+    <div class="relative mb-4 flex-shrink-0">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i data-feather="search" class="h-4 w-4 text-gray-400"></i>
+        </div>
+        <input type="text" id="assignmentSearchInput" placeholder="Search..." class="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm" />
+    </div>
+
+    <!-- Assignments List -->
+    <div class="overflow-y-auto flex-1 pr-1 space-y-3" id="assignmentsList">
+        {% for assignment in assignments %}
+        <div class="assignment-card bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition relative group" data-search="{{ assignment.teacher.name }} {{ assignment.subject.name }} {{ assignment.subject.code }} {{ assignment.subject.branch }}">
+            <div class="flex justify-between items-start mb-1">
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">{{ assignment.teacher.name }}</h3>
+                    <div class="text-xs text-indigo-600 font-medium mt-0.5">{{ assignment.subject.branch }}: {{ assignment.subject.code.split('-', 1)[1] if '-' in assignment.subject.code else assignment.subject.code }}</div>
+                </div>
+                <form action="{{ url_for('views.delete_assignment', id=assignment.id) }}" method="POST" onsubmit="return confirm('Remove assignment for {{ assignment.subject.code }} from {{ assignment.teacher.name }}?');">
+                    <button type="submit" class="text-gray-400 hover:text-red-600 p-1 rounded-full hover:bg-red-50 transition" title="Remove Assignment">
+                        <i data-feather="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="text-sm text-gray-600 mb-2">{{ assignment.subject.name }}</div>
+
+            <div class="flex items-center justify-between mt-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"> {{ assignment.subject.branch }} - Sem {{ assignment.subject.semester }} </span>
+                {% if assignment.section %}
+                <span class="text-xs text-gray-500 flex items-center gap-1"> <i data-feather="users" class="w-3 h-3"></i> {{ assignment.section }} </span>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500 text-sm">No classes assigned yet.</div>
+        {% endfor %}
+        <div id="noAssignmentsFound" class="hidden text-center text-gray-500 text-sm py-4">No assignments found</div>
+    </div>
+</div>
+{% endblock %} {% block content %}
+<div class="flex flex-col">
+    <div class="flex items-center justify-between mb-4 flex-shrink-0">
+        <h1 class="text-2xl font-bold text-gray-800">Class Management</h1>
         <a href="{{ url_for('views.admin_dashboard') }}" class="text-indigo-600 hover:text-indigo-800 flex items-center"> <i data-feather="arrow-left" class="w-4 h-4 mr-1"></i> Back to Dashboard </a>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <form action="{{ url_for('views.assign_class') }}" method="POST" class="space-y-6">
+    <div class="flex flex-col">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 flex-shrink-0"><i data-feather="plus-circle" class="w-5 h-5 text-indigo-600"></i> Assign Classes</h2>
+
+        <form action="{{ url_for('views.assign_class') }}" method="POST" class="space-y-4 flex flex-col">
             <!-- Teacher Selection -->
-            <div>
+            <div class="flex-shrink-0">
                 <label for="teacher_id" class="block text-sm font-medium text-gray-700 mb-1">Select Teacher</label>
                 <select name="teacher_id" id="teacher_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
                     <option value="">-- Select a Teacher --</option>
@@ -18,79 +66,161 @@
                 </select>
             </div>
 
-            <!-- Subject Selection (Multiple) -->
-            <div>
-                <label for="subject_ids" class="block text-sm font-medium text-gray-700 mb-1">Select Subjects (Hold Ctrl/Cmd to select multiple)</label>
-                <div class="h-64 overflow-y-auto border border-gray-300 rounded-md p-2">
-                    {% for branch, subjects in grouped_subjects.items() %}
-                    <div class="mb-2">
-                        <h3 class="font-bold text-gray-900 bg-gray-100 p-1">{{ branch }}</h3>
-                        {% for subject in subjects %}
-                        <div class="flex items-center p-1 hover:bg-gray-50">
-                            <input type="checkbox" name="subject_ids" value="{{ subject.id }}" id="sub_{{ subject.id }}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-                            <label for="sub_{{ subject.id }}" class="ml-2 block text-sm text-gray-700"> {{ subject.code }} - {{ subject.name }} (Sem {{ subject.semester }}) </label>
-                        </div>
+            <!-- Filters and Subject Selection -->
+            <div class="flex flex-col min-h-0">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Subjects</label>
+
+                <!-- Filters Row -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2 flex-shrink-0">
+                    <!-- Branch Filter -->
+                    <select id="branchFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm">
+                        <option value="">All Branches</option>
+                        {% for branch in grouped_subjects.keys() %}
+                        <option value="{{ branch }}">{{ branch }}</option>
                         {% endfor %}
+                    </select>
+
+                    <!-- Semester Filter -->
+                    <select id="semesterFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm">
+                        <option value="">All Semesters</option>
+                        {% for i in range(1, 9) %}
+                        <option value="{{ i }}">Semester {{ i }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Search Box -->
+                    <div class="relative md:col-span-2">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-feather="search" class="h-4 w-4 text-gray-400"></i>
+                        </div>
+                        <input type="text" id="subjectSearchInput" placeholder="Search..." class="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm" />
+                    </div>
+                </div>
+
+                <!-- Scrollable List -->
+                <div class="h-[300px] overflow-y-auto border border-gray-300 rounded-md p-2 bg-white/50" id="subjectListContainer">
+                    {% for branch, subjects in grouped_subjects.items() %}
+                    <div class="branch-group mb-3" data-branch="{{ branch }}">
+                        <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider bg-gray-50 p-1 rounded mb-1 sticky top-0 backdrop-blur-sm">{{ branch }}</h3>
+                        <div class="space-y-1">
+                            {% for subject in subjects %}
+                            <div class="flex items-center p-2 hover:bg-indigo-50 rounded cursor-pointer transition subject-item" data-search="{{ subject.code }} {{ subject.name }} {{ branch }}" data-branch="{{ branch }}" data-semester="{{ subject.semester }}">
+                                <input type="checkbox" name="subject_ids" value="{{ subject.id }}" id="sub_{{ subject.id }}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer" />
+                                <label for="sub_{{ subject.id }}" class="ml-2 block text-sm text-gray-700 cursor-pointer w-full">
+                                    <span class="font-medium text-indigo-700">{{ subject.branch }}: {{ subject.code.split('-', 1)[1] if '-' in subject.code else subject.code }}</span> - {{ subject.name }}
+                                    <span class="text-xs text-gray-500 ml-1">(Sem {{ subject.semester }})</span>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                     {% endfor %}
+                    <div id="noSubjectsFound" class="hidden text-center text-gray-500 text-sm py-4">No subjects match your filters</div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">Select all the subjects this teacher will teach.</p>
+                <p class="text-xs text-gray-500 mt-1 flex-shrink-0">Filtered view. Check multiple subjects to assign them in bulk.</p>
             </div>
 
             <!-- Optional Section Name -->
-            <div>
-                <label for="section" class="block text-sm font-medium text-gray-700 mb-1">Section (Optional)</label>
+            <div class="flex-shrink-0">
+                <label for="section" class="block text-sm font-medium text-gray-700 mb-1">Section / Group (Optional)</label>
                 <input type="text" name="section" id="section" placeholder="e.g. Group A, Section 1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                <p class="text-xs text-gray-500 mt-1">Leave blank if not applicable. Applies to all selected subjects.</p>
             </div>
 
-            <div class="pt-4">
-                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-medium">Assign Classes</button>
+            <div class="pt-2 flex-shrink-0 pb-2">
+                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 font-medium shadow-sm transition flex justify-center items-center gap-2"><i data-feather="check-square" class="w-4 h-4"></i> Assign Selected Classes</button>
             </div>
         </form>
     </div>
 
-    <!-- Existing Assignments List -->
-    <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Current Assignments</h2>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teacher</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch/Sem</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for assignment in assignments %}
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ assignment.teacher.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ assignment.subject.name }}</div>
-                            <div class="text-sm text-gray-500">{{ assignment.subject.code }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ assignment.subject.branch }}</span>
-                            <span class="ml-1 text-xs text-gray-500">Sem {{ assignment.subject.semester }}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <form action="{{ url_for('views.delete_assignment', id=assignment.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                <button type="submit" class="text-red-600 hover:text-red-900">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <script>
-        if (typeof feather !== "undefined") {
-            feather.replace();
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Icons
+            if (typeof feather !== "undefined") {
+                feather.replace();
+            }
+
+            // --- Subject Search Logic ---
+            const subjectSearch = document.getElementById("subjectSearchInput");
+            const branchFilter = document.getElementById("branchFilter");
+            const semesterFilter = document.getElementById("semesterFilter");
+            const subjectItems = document.querySelectorAll(".subject-item");
+            const branchGroups = document.querySelectorAll(".branch-group");
+            const noSubjectsMsg = document.getElementById("noSubjectsFound");
+
+            function filterSubjects() {
+                const term = subjectSearch.value.toLowerCase();
+                const selectedBranch = branchFilter.value;
+                const selectedSemester = semesterFilter.value;
+                let hasVisibleSubjects = false;
+
+                // 1. Filter individual subjects
+                subjectItems.forEach((item) => {
+                    const text = item.getAttribute("data-search").toLowerCase();
+                    const branch = item.getAttribute("data-branch");
+                    const semester = item.getAttribute("data-semester");
+
+                    const matchesSearch = text.includes(term);
+                    const matchesBranch = !selectedBranch || branch === selectedBranch;
+                    const matchesSemester = !selectedSemester || semester === selectedSemester;
+
+                    if (matchesSearch && matchesBranch && matchesSemester) {
+                        item.classList.remove("hidden");
+                        hasVisibleSubjects = true;
+                    } else {
+                        item.classList.add("hidden");
+                    }
+                });
+
+                // 2. Hide empty branch headers
+                branchGroups.forEach((group) => {
+                    const visibleChildren = group.querySelectorAll(".subject-item:not(.hidden)");
+                    if (visibleChildren.length === 0) {
+                        group.classList.add("hidden");
+                    } else {
+                        group.classList.remove("hidden");
+                    }
+                });
+
+                // 3. Show no results message
+                if (!hasVisibleSubjects) {
+                    noSubjectsMsg.classList.remove("hidden");
+                } else {
+                    noSubjectsMsg.classList.add("hidden");
+                }
+            }
+
+            subjectSearch.addEventListener("input", filterSubjects);
+            branchFilter.addEventListener("change", filterSubjects);
+            semesterFilter.addEventListener("change", filterSubjects);
+
+            // --- Assignment Search Logic ---
+            const assignmentSearch = document.getElementById("assignmentSearchInput");
+            const assignmentCards = document.querySelectorAll(".assignment-card");
+            const noAssignmentsMsg = document.getElementById("noAssignmentsFound");
+
+            if (assignmentSearch) {
+                assignmentSearch.addEventListener("input", function (e) {
+                    const term = e.target.value.toLowerCase();
+                    let hasVisible = false;
+
+                    assignmentCards.forEach((card) => {
+                        const text = card.getAttribute("data-search").toLowerCase();
+                        if (text.includes(term)) {
+                            card.classList.remove("hidden");
+                            hasVisible = true;
+                        } else {
+                            card.classList.add("hidden");
+                        }
+                    });
+
+                    if (!hasVisible && assignmentCards.length > 0) {
+                        noAssignmentsMsg.classList.remove("hidden");
+                    } else {
+                        noAssignmentsMsg.classList.add("hidden");
+                    }
+                });
+            }
+        });
     </script>
 </div>
 {% endblock %}
