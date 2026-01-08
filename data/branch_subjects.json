@@ -429,13 +429,13 @@
                     {
                         "name": "Summer Training Report - 1*",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
-                        "code": "ES-159",
+                        "code": "AIML-159",
                         "credits": 2
                     },
                     {
                         "name": "Seminar on Case Study of Emerging Areas of Technology*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
-                        "code": "ES-161",
+                        "code": "AIML-161",
                         "credits": 2
                     }
                 ],
@@ -479,7 +479,7 @@
                     {
                         "name": "Digital Image Processing Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/image.png",
-                        "code": "ES-162",
+                        "code": "AIML-162",
                         "credits": 2
                     }
                 ],
@@ -757,218 +757,345 @@
                 "3": [
                     {
                         "name": "Data Structures",
-                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
                         "code": "AIDS-201",
                         "credits": 3
                     },
                     {
                         "name": "Foundation Of Data Science",
-                        "icon": "https://img.icons8.com/ios/100/add-node.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/graph.png",
                         "code": "AIDS-203",
                         "credits": 3
                     },
                     {
                         "name": "Digital Logic Design",
-                        "icon": "https://img.icons8.com/pulsar-line/48/front-gate-closed.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
                         "code": "AIDS-205",
                         "credits": 3
                     },
                     {
-                        "name": "Principles Of Ai",
-                        "icon": "https://img.icons8.com/pulsar-line/48/bot.png",
+                        "name": "Principles Of AI",
+                        "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-text.png",
                         "code": "AIDS-207",
                         "credits": 3
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
-                        "icon": "https://img.icons8.com/pulsar-line/48/math.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "AIDS-209",
                         "credits": 4
                     },
                     {
                         "name": "Universal Human Values-II",
-                        "icon": "https://img.icons8.com/pulsar-line/48/learn-information.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "AIDS-211",
                         "credits": 3
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
-                        "icon": "https://img.icons8.com/pulsar-line/48/thinking-bubble.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/learning.png",
                         "code": "AIDS-213",
                         "credits": 2
                     },
                     {
-                        "name": "Selected Readings",
-                        "icon": "https://img.icons8.com/pulsar-line/48/reading.png",
+                        "name": "Selected Readings*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/reading.png",
                         "code": "AIDS-215",
                         "credits": 1
+                    },
+                    {
+                        "name": "Data Structures Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
+                        "code": "AIDS-251",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Foundation Of Data Science Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/scatter-plot.png",
+                        "code": "AIDS-253",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Digital Logic Design Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
+                        "code": "AIDS-255",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Principles Of AI Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-code.png",
+                        "code": "AIDS-257",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Web Programming Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/html.png",
+                        "code": "AIDS-259",
+                        "credits": 2
                     }
                 ],
                 "4": [
                     {
                         "name": "Object Oriented Programming",
-                        "icon": "https://img.icons8.com/pulsar-line/48/code.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "AIDS-202",
                         "credits": 3
                     },
                     {
                         "name": "Database Management Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/bar-chart.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "AIDS-204",
                         "credits": 3
                     },
                     {
                         "name": "Software Engineering",
-                        "icon": "https://img.icons8.com/pulsar-line/48/my-computer.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "AIDS-206",
                         "credits": 3
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
-                        "icon": "https://img.icons8.com/pulsar-line/48/ethernet-off.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
                         "code": "AIDS-208",
                         "credits": 3
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
-                        "icon": "https://img.icons8.com/pulsar-line/48/robot-3.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/artificial-intelligence.png",
                         "code": "AIDS-210",
                         "credits": 3
                     },
                     {
                         "name": "Computational Methods",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mind-map.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "AIDS-212",
                         "credits": 3
                     },
                     {
                         "name": "Effective Technical Writing*",
-                        "icon": "https://img.icons8.com/pulsar-line/48/inscription.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "AIDS-214",
                         "credits": 1
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/manufacturing.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
                         "code": "AIDS-216",
                         "credits": 1
+                    },
+                    {
+                        "name": "Object Oriented Programming Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/network.png",
+                        "code": "AIDS-252",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Database Management Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/database.png",
+                        "code": "AIDS-254",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Computer Networks and Internet Protocol Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
+                        "code": "AIDS-256",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Fundamentals Of Machine Learning Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/machine-learning.png",
+                        "code": "AIDS-258",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Practicum (Integrated Project)*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/project.png",
+                        "code": "AIDS-260",
+                        "credits": 2
                     }
                 ],
                 "5": [
                     {
                         "name": "Operating Systems",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pc-on-desk.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "AIDS-301",
                         "credits": 4
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
-                        "icon": "https://img.icons8.com/pulsar-line/48/pen-2.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "AIDS-303",
                         "credits": 4
                     },
                     {
                         "name": "Data Mining",
-                        "icon": "https://img.icons8.com/pulsar-line/48/data-in-both-directions.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/cloud-mining.png",
                         "code": "AIDS-305",
                         "credits": 4
                     },
                     {
                         "name": "Computer Organization And Architecture",
-                        "icon": "https://img.icons8.com/pulsar-line/48/museum.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/electronics.png",
                         "code": "AIDS-307",
                         "credits": 3
                     },
                     {
                         "name": "Introduction to Internet Of Things",
-                        "icon": "https://img.icons8.com/pulsar-line/48/internet-of-things.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
                         "code": "AIDS-309",
                         "credits": 3
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/make-decision.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
                         "code": "AIDS-311",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Operating Systems Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/what.png",
+                        "code": "AIDS-351",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Design And Analysis Of Algorithms Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/tree-structure.png",
+                        "code": "AIDS-353",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Data Mining Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/cloud-mining.png",
+                        "code": "AIDS-355",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Introduction to Internet Of Things Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
+                        "code": "AIDS-357",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Summer Training Report - 1*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
+                        "code": "AIDS-159",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Seminar on Case Study of Emerging Areas of Technology*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/training.png",
+                        "code": "AIDS-161",
                         "credits": 2
                     }
                 ],
                 "6": [
                     {
-                        "name": "Digital Image Processing ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/image-file.png",
+                        "name": "Digital Image Processing",
+                        "icon": "https://img.icons8.com/pulsar-line/512/photo-editor.png",
                         "code": "AIDS-302",
                         "credits": 3
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c1) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c2) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c3) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-3)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area/Open Area Elective Paper (EAE \u00e2\u20ac\u201c 1/OAE-1) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area/Open Area Elective Paper (EAE \u00e2\u20ac\u201c 2/OAE-2) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
+                    },
+                    {
+                        "name": "Digital Image Processing Lab",
+                        "icon": "https://img.icons8.com/pulsar-line/512/image.png",
+                        "code": "AIDS-162",
+                        "credits": 2
                     }
                 ],
                 "7": [
                     {
                         "name": "Principles Of Management For Engineers ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/mission-of-a-company.png",
+                        "icon": "https://img.icons8.com/pulsar-line/512/commercial-development-management.png",
                         "code": "AIDS-401",
                         "credits": 2
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 4) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-4)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Programme Core Elective Paper (PCE \u00e2\u20ac\u201c 5) ",
-                        "icon": "https://img.icons8.com/pulsar-line/48/sheet-of-paper.png",
-                        "code": "Test",
+                        "name": "Programme Core Elective Paper (PCE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 3 / OAE \u00e2\u20ac\u201c 3) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 4 / OAE \u00e2\u20ac\u201c 4) ",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
                     },
                     {
-                        "name": "Emerging Area / Open Area Elective Paper(EAE \u00e2\u20ac\u201c 5 / OAE \u00e2\u20ac\u201c 5)",
-                        "icon": "",
-                        "code": "Test",
+                        "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
+                        "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
+                        "code": "",
                         "credits": 4
+                    },
+                    {
+                        "name": "Minor Project*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "AIDS-451",
+                        "credits": 2
+                    },
+                    {
+                        "name": "Summer Training Report - 2*",
+                        "icon": "https://img.icons8.com/pulsar-line/512/training.png",
+                        "code": "AIDS-453",
+                        "credits": 2
                     }
                 ],
-                "8": []
+                "8": [
+                    {
+                        "name": "Major Project",
+                        "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
+                        "code": "AIDS-452",
+                        "credits": 4
+                    },
+                    {
+                        "name": "Project Progress Evaluation",
+                        "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
+                        "code": "AIDS-454",
+                        "credits": 2
+                    }
+                ]
             }
         },
         "CST": {
