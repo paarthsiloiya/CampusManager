@@ -8,97 +8,113 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-101",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-103",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/physics.png",
                         "code": "BS-105",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-107",
-                        "credits": 3
+                        "code": "ES-107",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-109",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/math.png",
                         "code": "BS-111",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-113",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-115",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-117",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Manufacturing Processes",
                         "icon": "https://img.icons8.com/pulsar-line/512/manufacturing.png",
                         "code": "ES-119",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab I",
                         "icon": "https://img.icons8.com/pulsar-line/512/magnet-1.png",
                         "code": "BS-151",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-153",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-155",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-157",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-159",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
                         "code": "BS-161",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "2": [
@@ -106,103 +122,120 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-102",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-104",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/infrared-beam-sending.png",
                         "code": "BS-106",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-108",
-                        "credits": 3
+                        "code": "ES-108",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-110",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/tangent.png",
                         "code": "BS-112",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-116",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-118",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Engineering Mechanics",
                         "icon": "https://img.icons8.com/pulsar-line/512/bouncing-ball.png",
                         "code": "ES-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab II",
                         "icon": "https://img.icons8.com/pulsar-line/512/laser-beam.png",
                         "code": "BS-152",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-154",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-156",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-158",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-160",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
-                        "code": "ES-162",
-                        "credits": 2
+                        "code": "BS-162",
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Workshop Practice",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-164",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "3": [
@@ -210,79 +243,92 @@
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
                         "code": "AIML-201",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Foundation Of Data Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/graph.png",
                         "code": "AIML-203",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Logic Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
                         "code": "AIML-205",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Principles Of AI",
                         "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-text.png",
                         "code": "AIML-207",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "AIML-209",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Universal Human Values-II",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "AIML-211",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
                         "icon": "https://img.icons8.com/pulsar-line/512/learning.png",
                         "code": "AIML-213",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Selected Readings*",
                         "icon": "https://img.icons8.com/pulsar-line/512/reading.png",
                         "code": "AIML-215",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Data Structures Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
                         "code": "AIML-251",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Foundation Of Data Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/scatter-plot.png",
                         "code": "AIML-253",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital Logic Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
                         "code": "AIML-255",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Principles Of AI Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-code.png",
                         "code": "AIML-257",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Web Programming Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/html.png",
                         "code": "AIML-259",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "4": [
@@ -290,79 +336,92 @@
                         "name": "Object Oriented Programming",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "AIML-202",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "AIML-204",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "AIML-206",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
                         "code": "AIML-208",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
                         "icon": "https://img.icons8.com/pulsar-line/512/artificial-intelligence.png",
                         "code": "AIML-210",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "AIML-212",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Effective Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "AIML-214",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
                         "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
                         "code": "AIML-216",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Object Oriented Programming Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "AIML-252",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Database Management Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "AIML-254",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Computer Networks and Internet Protocol Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
                         "code": "AIML-256",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Fundamentals Of Machine Learning Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/machine-learning.png",
                         "code": "AIML-258",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Practicum (Integrated Project)*",
                         "icon": "https://img.icons8.com/pulsar-line/512/project.png",
                         "code": "AIML-260",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "5": [
@@ -370,73 +429,85 @@
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "AIML-301",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "AIML-303",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Fundamentals Of Deep Learning",
                         "icon": "https://img.icons8.com/pulsar-line/512/mind-map.png",
                         "code": "AIML-305",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Organization And Architecture",
                         "icon": "https://img.icons8.com/pulsar-line/512/electronics.png",
                         "code": "AIML-307",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Introduction to Internet Of Things",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
                         "code": "AIML-309",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
                         "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
                         "code": "AIML-311",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Operating Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/what.png",
                         "code": "AIML-351",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Design And Analysis Of Algorithms Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/tree-structure.png",
                         "code": "AIML-353",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Fundamentals Of Deep Learning Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/brain.png",
                         "code": "AIML-355",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Introduction to Internet Of Things Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
                         "code": "AIML-357",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 1*",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "AIML-159",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Seminar on Case Study of Emerging Areas of Technology*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "AIML-161",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "6": [
@@ -444,43 +515,50 @@
                         "name": "Digital Image Processing",
                         "icon": "https://img.icons8.com/pulsar-line/512/photo-editor.png",
                         "code": "AIML-302",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-3)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Image Processing Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/image.png",
                         "code": "AIML-162",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "7": [
@@ -488,49 +566,57 @@
                         "name": "Principles Of Management For Engineers ",
                         "icon": "https://img.icons8.com/pulsar-line/512/commercial-development-management.png",
                         "code": "AIML-401",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-4)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Minor Project*",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "AIML-451",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 2*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "AIML-453",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "8": [
@@ -538,13 +624,15 @@
                         "name": "Major Project",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "AIML-452",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": true
                     },
                     {
                         "name": "Project Progress Evaluation",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "AIML-454",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ]
             }
@@ -557,97 +645,113 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-101",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-103",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/physics.png",
                         "code": "BS-105",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-107",
-                        "credits": 3
+                        "code": "ES-107",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-109",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/math.png",
                         "code": "BS-111",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-113",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-115",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-117",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Manufacturing Processes",
                         "icon": "https://img.icons8.com/pulsar-line/512/manufacturing.png",
                         "code": "ES-119",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab I",
                         "icon": "https://img.icons8.com/pulsar-line/512/magnet-1.png",
                         "code": "BS-151",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-153",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-155",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-157",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-159",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
                         "code": "BS-161",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "2": [
@@ -655,103 +759,120 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-102",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-104",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/infrared-beam-sending.png",
                         "code": "BS-106",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-108",
-                        "credits": 3
+                        "code": "ES-108",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-110",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/tangent.png",
                         "code": "BS-112",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-116",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-118",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Engineering Mechanics",
                         "icon": "https://img.icons8.com/pulsar-line/512/bouncing-ball.png",
                         "code": "ES-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab II",
                         "icon": "https://img.icons8.com/pulsar-line/512/laser-beam.png",
                         "code": "BS-152",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-154",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-156",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-158",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-160",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
-                        "code": "ES-162",
-                        "credits": 2
+                        "code": "BS-162",
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Workshop Practice",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-164",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "3": [
@@ -759,79 +880,92 @@
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
                         "code": "AIDS-201",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Foundation Of Data Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/graph.png",
                         "code": "AIDS-203",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Logic Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
                         "code": "AIDS-205",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Principles Of AI",
                         "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-text.png",
                         "code": "AIDS-207",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "AIDS-209",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Universal Human Values-II",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "AIDS-211",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Critical Reasoning and Systems Thinking",
                         "icon": "https://img.icons8.com/pulsar-line/512/learning.png",
                         "code": "AIDS-213",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Selected Readings*",
                         "icon": "https://img.icons8.com/pulsar-line/512/reading.png",
                         "code": "AIDS-215",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Data Structures Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
                         "code": "AIDS-251",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Foundation Of Data Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/scatter-plot.png",
                         "code": "AIDS-253",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital Logic Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
                         "code": "AIDS-255",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Principles Of AI Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/ai-generated-code.png",
                         "code": "AIDS-257",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Web Programming Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/html.png",
                         "code": "AIDS-259",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "4": [
@@ -839,79 +973,92 @@
                         "name": "Object Oriented Programming",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "AIDS-202",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "AIDS-204",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "AIDS-206",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Networks and Internet Protocol",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
                         "code": "AIDS-208",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Fundamentals Of Machine Learning",
                         "icon": "https://img.icons8.com/pulsar-line/512/artificial-intelligence.png",
                         "code": "AIDS-210",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "AIDS-212",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Effective Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "AIDS-214",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Trends in Technological Industries* ",
                         "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
                         "code": "AIDS-216",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Object Oriented Programming Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "AIDS-252",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Database Management Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "AIDS-254",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Computer Networks and Internet Protocol Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet.png",
                         "code": "AIDS-256",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Fundamentals Of Machine Learning Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/machine-learning.png",
                         "code": "AIDS-258",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Practicum (Integrated Project)*",
                         "icon": "https://img.icons8.com/pulsar-line/512/project.png",
                         "code": "AIDS-260",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "5": [
@@ -919,73 +1066,85 @@
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "AIDS-301",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Design And Analysis Of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "AIDS-303",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Data Mining",
                         "icon": "https://img.icons8.com/pulsar-line/512/cloud-mining.png",
                         "code": "AIDS-305",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Organization And Architecture",
                         "icon": "https://img.icons8.com/pulsar-line/512/electronics.png",
                         "code": "AIDS-307",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Introduction to Internet Of Things",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
                         "code": "AIDS-309",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Principles of Entrepreneurship Mindset ",
                         "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
                         "code": "AIDS-311",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Operating Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/what.png",
                         "code": "AIDS-351",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Design And Analysis Of Algorithms Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/tree-structure.png",
                         "code": "AIDS-353",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Data Mining Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/cloud-mining.png",
                         "code": "AIDS-355",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Introduction to Internet Of Things Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/internet-of-things.png",
                         "code": "AIDS-357",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 1*",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "AIDS-159",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Seminar on Case Study of Emerging Areas of Technology*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "AIDS-161",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "6": [
@@ -993,43 +1152,50 @@
                         "name": "Digital Image Processing",
                         "icon": "https://img.icons8.com/pulsar-line/512/photo-editor.png",
                         "code": "AIDS-302",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-3)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Image Processing Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/image.png",
                         "code": "AIDS-162",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "7": [
@@ -1037,49 +1203,57 @@
                         "name": "Principles Of Management For Engineers ",
                         "icon": "https://img.icons8.com/pulsar-line/512/commercial-development-management.png",
                         "code": "AIDS-401",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-4)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Minor Project*",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "AIDS-451",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 2*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "AIDS-453",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "8": [
@@ -1087,13 +1261,15 @@
                         "name": "Major Project",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "AIDS-452",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": true
                     },
                     {
                         "name": "Project Progress Evaluation",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "AIDS-454",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ]
             }
@@ -1106,97 +1282,113 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-101",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-103",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/physics.png",
                         "code": "BS-105",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-107",
-                        "credits": 3
+                        "code": "ES-107",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-109",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/math.png",
                         "code": "BS-111",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-113",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-115",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-117",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Manufacturing Processes",
                         "icon": "https://img.icons8.com/pulsar-line/512/manufacturing.png",
                         "code": "ES-119",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab I",
                         "icon": "https://img.icons8.com/pulsar-line/512/magnet-1.png",
                         "code": "BS-151",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-153",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-155",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-157",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-159",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
                         "code": "BS-161",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "2": [
@@ -1204,103 +1396,120 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-102",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-104",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/infrared-beam-sending.png",
                         "code": "BS-106",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-108",
-                        "credits": 3
+                        "code": "ES-108",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-110",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/tangent.png",
                         "code": "BS-112",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-116",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-118",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Engineering Mechanics",
                         "icon": "https://img.icons8.com/pulsar-line/512/bouncing-ball.png",
                         "code": "ES-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab II",
                         "icon": "https://img.icons8.com/pulsar-line/512/laser-beam.png",
                         "code": "BS-152",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-154",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-156",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-158",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-160",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
-                        "code": "ES-162",
-                        "credits": 2
+                        "code": "BS-162",
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Workshop Practice",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-164",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "3": [
@@ -1308,61 +1517,71 @@
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-201",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Knowledge System*",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-203",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Discrete Mathematics",
                         "icon": "https://img.icons8.com/pulsar-line/512/empty-set.png",
                         "code": "CIC-205",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Logic And Computer Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
                         "code": "ECC-207",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
                         "code": "CIC-209",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Object Oriented Programming Using C++",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "CIC-211",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computational Methods Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-251",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital Logic And Computer Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
                         "code": "ECC-253",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Data Structures Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
                         "code": "CIC-255",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Object Oriented Programming Using C++ Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-257",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "4": [
@@ -1370,61 +1589,71 @@
                         "name": "Probability , Statistics And Linear Programming",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-202",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "HS-204",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Theory Of Computation",
                         "icon": "https://img.icons8.com/pulsar-line/512/informatics-book.png",
                         "code": "CIC-206",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Circuit and Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
                         "code": "EEC-208",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "CIC-210",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programming In Java",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
                         "code": "CIC-212",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-252",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Circuit and Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/integrated-circuit.png",
                         "code": "EEC-254",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Database Management Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "CIC-256",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In Java Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "CIC-258",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "5": [
@@ -1432,73 +1661,85 @@
                         "name": "Economics Of Engineers",
                         "icon": "https://img.icons8.com/pulsar-line/512/economic-improvement.png",
                         "code": "HS-301",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Compiler Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
                         "code": "CIC-303",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "CIC-305",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Networks",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-307",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "CIC-309",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Design and Analysis of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "CIC-311",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Compiler Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
                         "code": "CIC-351",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Operating Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "CIC-353",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Computer Networks Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-355",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Software Engineering Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "CIC-357",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital and Analysis of Algorithm Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "CIC-359",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 1*",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "ES-361",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     }
                 ],
                 "6": [
@@ -1506,43 +1747,50 @@
                         "name": "Principles Of Management For Engineers",
                         "icon": "https://img.icons8.com/pulsar-line/512/management.png",
                         "code": "MS-302",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Universal Human Values*",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-304",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-3)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     }
                 ],
                 "7": [
@@ -1550,49 +1798,57 @@
                         "name": "Principles of Entrepreneurship Mindset",
                         "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
                         "code": "AIML-401",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-4)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Minor Project*",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "ES-451",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 2*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "ES-453",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "8": [
@@ -1600,25 +1856,29 @@
                         "name": "Major Project - Dissertation and Viva-Voce",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "ES-452",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": true
                     },
                     {
                         "name": "Project Progress Evaluation*",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "ES-454",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Internship Report and Viva-Voce",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "ES-456",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Internship Progress Evaluation*",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "ES-458",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     }
                 ]
             }
@@ -1631,97 +1891,113 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-101",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-103",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/physics.png",
                         "code": "BS-105",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-107",
-                        "credits": 3
+                        "code": "ES-107",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-109",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/math.png",
                         "code": "BS-111",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-113",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-115",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-117",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Manufacturing Processes",
                         "icon": "https://img.icons8.com/pulsar-line/512/manufacturing.png",
                         "code": "ES-119",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab I",
                         "icon": "https://img.icons8.com/pulsar-line/512/magnet-1.png",
                         "code": "BS-151",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-153",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-155",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics I",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-157",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-159",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
                         "code": "BS-161",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "2": [
@@ -1729,103 +2005,120 @@
                         "name": "Programming In 'C'",
                         "icon": "https://img.icons8.com/pulsar-line/512/programming.png",
                         "code": "ES-102",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Chemistry",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-tube.png",
                         "code": "BS-104",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Physics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/infrared-beam-sending.png",
                         "code": "BS-106",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Electrical Science",
                         "icon": "https://img.icons8.com/pulsar-line/512/electrical.png",
-                        "code": "BS-108",
-                        "credits": 3
+                        "code": "ES-108",
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Environmental Studies",
                         "icon": "https://img.icons8.com/pulsar-line/512/environment-care.png",
                         "code": "BS-110",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Applied Mathematics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/tangent.png",
                         "code": "BS-112",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Communication Skills",
                         "icon": "https://img.icons8.com/pulsar-line/512/collaboration.png",
                         "code": "HS-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Constitution",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-116",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Human Values and Ethics",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-118",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Engineering Mechanics",
                         "icon": "https://img.icons8.com/pulsar-line/512/bouncing-ball.png",
                         "code": "ES-114",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Physics Lab II",
                         "icon": "https://img.icons8.com/pulsar-line/512/laser-beam.png",
                         "code": "BS-152",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In 'C' Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/code.png",
                         "code": "ES-154",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Applied Chemistry Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/laboratory.png",
                         "code": "BS-156",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Engineering Graphics II",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-158",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Electrical Science Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/led-diode.png",
                         "code": "ES-160",
-                        "credits": 2
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Environmental Studies Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/doctors-laboratory-coat.png",
-                        "code": "ES-162",
-                        "credits": 2
+                        "code": "BS-162",
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Workshop Practice",
                         "icon": "https://img.icons8.com/pulsar-line/512/caliper.png",
                         "code": "ES-164",
-                        "credits": 4
+                        "credits": 2,
+                        "is_lab": true
                     }
                 ],
                 "3": [
@@ -1833,61 +2126,71 @@
                         "name": "Computational Methods",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-201",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Indian Knowledge System*",
                         "icon": "https://img.icons8.com/pulsar-line/512/story-book.png",
                         "code": "HS-203",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Discrete Mathematics",
                         "icon": "https://img.icons8.com/pulsar-line/512/empty-set.png",
                         "code": "CIC-205",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Digital Logic And Computer Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/lcd.png",
                         "code": "ECC-207",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Data Structures",
                         "icon": "https://img.icons8.com/pulsar-line/512/flow-chart.png",
                         "code": "CIC-209",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Object Oriented Programming Using C++",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "CIC-211",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computational Methods Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/rubiks-cube.png",
                         "code": "ES-251",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital Logic And Computer Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/circuit.png",
                         "code": "ECC-253",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Data Structures Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/connected-no-data.png",
                         "code": "CIC-255",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Object Oriented Programming Using C++ Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-257",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "4": [
@@ -1895,61 +2198,71 @@
                         "name": "Probability , Statistics And Linear Programming",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-202",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Technical Writing*",
                         "icon": "https://img.icons8.com/pulsar-line/512/inscription.png",
                         "code": "HS-204",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Theory Of Computation",
                         "icon": "https://img.icons8.com/pulsar-line/512/informatics-book.png",
                         "code": "CIC-206",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Circuit and Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/motherboard.png",
                         "code": "EEC-208",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Database Management Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "CIC-210",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programming In Java",
                         "icon": "https://img.icons8.com/pulsar-line/48/rubiks-cube.png",
                         "code": "CIC-212",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Probability , Statistics And Linear Algebra Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/normal-distribution-histogram.png",
                         "code": "BS-252",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Circuit and Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/integrated-circuit.png",
                         "code": "EEC-254",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Database Management Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/database.png",
                         "code": "CIC-256",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Programming In Java Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/curly-brackets.png",
                         "code": "CIC-258",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     }
                 ],
                 "5": [
@@ -1957,73 +2270,85 @@
                         "name": "Economics Of Engineers",
                         "icon": "https://img.icons8.com/pulsar-line/512/economic-improvement.png",
                         "code": "HS-301",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Compiler Design",
                         "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
                         "code": "CIC-303",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Operating Systems",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "CIC-305",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Computer Networks",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-307",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Software Engineering",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "CIC-309",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Design and Analysis of Algorithms",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "CIC-311",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Compiler Design Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/online-coding.png",
                         "code": "CIC-351",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Operating Systems Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/operating-system.png",
                         "code": "CIC-353",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Computer Networks Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/network.png",
                         "code": "CIC-355",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Software Engineering Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/imac-settings.png",
                         "code": "CIC-357",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Digital and Analysis of Algorithm Lab",
                         "icon": "https://img.icons8.com/pulsar-line/512/serial-tasks.png",
                         "code": "CIC-359",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 1*",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "ES-361",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     }
                 ],
                 "6": [
@@ -2031,43 +2356,50 @@
                         "name": "Principles Of Management For Engineers",
                         "icon": "https://img.icons8.com/pulsar-line/512/management.png",
                         "code": "MS-302",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Universal Human Values*",
                         "icon": "https://img.icons8.com/pulsar-line/512/morale.png",
                         "code": "HS-304",
-                        "credits": 1
+                        "credits": 1,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-3)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-1/OAE-1)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area/Open Area Elective Paper (EAE-2/OAE-2)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     }
                 ],
                 "7": [
@@ -2075,49 +2407,57 @@
                         "name": "Principles of Entrepreneurship Mindset",
                         "icon": "https://img.icons8.com/pulsar-line/512/make-decision.png",
                         "code": "AIML-401",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-4)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Programme Core Elective Paper (PCE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-3 / OAE-3) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-4 / OAE-4) ",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Emerging Area / Open Area Elective Paper(EAE-5 / OAE-5)",
                         "icon": "https://img.icons8.com/pulsar-line/512/elective.png",
                         "code": "",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": false
                     },
                     {
                         "name": "Minor Project*",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "ES-451",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Summer Training Report - 2*",
                         "icon": "https://img.icons8.com/pulsar-line/512/training.png",
                         "code": "ES-453",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": false
                     }
                 ],
                 "8": [
@@ -2125,25 +2465,29 @@
                         "name": "Major Project - Dissertation and Viva-Voce",
                         "icon": "https://img.icons8.com/pulsar-line/512/group-of-projects.png",
                         "code": "ES-452",
-                        "credits": 4
+                        "credits": 4,
+                        "is_lab": true
                     },
                     {
                         "name": "Project Progress Evaluation*",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "ES-454",
-                        "credits": 2
+                        "credits": 2,
+                        "is_lab": true
                     },
                     {
                         "name": "Internship Report and Viva-Voce",
                         "icon": "https://img.icons8.com/pulsar-line/512/test-results.png",
                         "code": "ES-456",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     },
                     {
                         "name": "Internship Progress Evaluation*",
                         "icon": "https://img.icons8.com/pulsar-line/512/health-graph.png",
                         "code": "ES-458",
-                        "credits": 3
+                        "credits": 3,
+                        "is_lab": false
                     }
                 ]
             }

@@ -198,6 +198,7 @@ class Subject(db.Model):
     semester = db.Column(db.Integer, nullable=False)
     credits = db.Column(db.Integer, default=3)
     branch = db.Column(db.String(10), nullable=False, default='COMMON')  # Branch-specific or COMMON
+    is_lab = db.Column(db.Boolean, default=False)
     
     # Relationships
     attendance_records = db.relationship('Attendance', backref='subject', lazy=True)
@@ -453,6 +454,7 @@ def seed_subjects():
                 tgt_code = f"{branch_code}-{subject_data['code']}"
                 tgt_name = subject_data['name']
                 tgt_credits = subject_data.get('credits', -1)
+                tgt_is_lab = subject_data.get('is_lab', False)
                 
                 # Strategy:
                 # 1. Try to find by EXACT Code (Preferred)
@@ -473,7 +475,8 @@ def seed_subjects():
                         code=tgt_code,
                         semester=semester_int,
                         credits=tgt_credits,
-                        branch=branch_code
+                        branch=branch_code,
+                        is_lab=tgt_is_lab
                     )
                     db.session.add(new_subject)
                     db.session.flush() # Get ID
@@ -498,6 +501,9 @@ def seed_subjects():
                         changed = True
                     if existing.branch != branch_code:
                         existing.branch = branch_code
+                        changed = True
+                    if existing.is_lab != tgt_is_lab:
+                        existing.is_lab = tgt_is_lab
                         changed = True
                         
                     if changed:

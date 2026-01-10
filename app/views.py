@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, make_response, url_for, flash
+from flask import Blueprint, request, redirect, make_response, url_for, flash, send_file
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
 from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry
@@ -9,6 +9,7 @@ import string
 import csv
 import io
 from datetime import datetime, timezone, time
+from .excel_export import generate_timetable_excel
 
 views = Blueprint('views', __name__)
 
@@ -1530,3 +1531,90 @@ def timetable():
         lunch_break_after=lunch_break_after,
         period_duration_mins=period_duration_mins
     )
+
+@views.route('/admin/timetable/download')
+@login_required
+def download_timetable():
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+        
+    fmt = request.args.get('format', 'pdf')
+    branch_arg = request.args.get('branch')
+    
+    # Query logic: if 'all' is passed or no branch, get all.
+    query = TimetableEntry.query
+    if branch_arg and branch_arg != 'all':
+        query = query.filter_by(branch=branch_arg)
+        
+    entries = query.order_by(TimetableEntry.branch, TimetableEntry.semester, TimetableEntry.day, TimetableEntry.period_number).all()
+    
+    if not entries:
+        flash('No data found.', 'warning')
+        return redirect(url_for('views.timetable'))
+
+    # Group entries by branch
+    entries_by_branch = {}
+    for entry in entries:
+        if entry.branch not in entries_by_branch:
+            entries_by_branch[entry.branch] = []
+        entries_by_branch[entry.branch].append(entry)
+
+    if fmt == 'excel':
+        out = generate_timetable_excel(entries_by_branch)
+        
+        return send_file(
+            out,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f'timetable_export_{branch_arg if branch_arg else "all"}.xlsx'
+        )
+        
+    else:
+        # PDF / Print View
+        settings = TimetableSettings.query.first()
+        lunch_break_after = 4
+        if settings and settings.periods:
+            lunch_break_after = settings.periods // 2
+            
+        # Structure: { branch_name: { semester: { ... } } }
+        all_timetables = {}
+        
+        week_days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        
+        for branch_name, branch_entries in entries_by_branch.items():
+            semesters = sorted(list(set(e.semester for e in branch_entries)))
+            branch_data = {}
+            
+            for sem in semesters:
+                sem_entries = [e for e in branch_entries if e.semester == sem]
+                grid = {} 
+                periods_set = sorted(list(set(e.period_number for e in sem_entries)))
+                
+                for e in sem_entries:
+                    if e.day not in grid: grid[e.day] = {}
+                    grid[e.day][e.period_number] = e
+                
+                sorted_days = sorted(grid.keys(), key=lambda d: week_days_order.index(d) if d in week_days_order else 99)
+                
+                period_headers = {}
+                for p in periods_set:
+                     sample = next((x for x in sem_entries if x.period_number == p), None)
+                     if sample:
+                         period_headers[p] = f"{sample.start_time.strftime('%H:%M')} - {sample.end_time.strftime('%H:%M')}"
+                
+                branch_data[sem] = {
+                    'days': sorted_days,
+                    'periods': periods_set,
+                    'grid': grid,
+                    'period_headers': period_headers
+                }
+            all_timetables[branch_name] = branch_data
+            
+        return render_template(
+            'Admin/timetable_print.html',
+            all_timetables=all_timetables,
+            current_branch=branch_arg if branch_arg else 'All Branches',
+            lunch_break_after=lunch_break_after,
+            date_generated=datetime.now().strftime('%Y-%m-%d %H:%M')
+        )

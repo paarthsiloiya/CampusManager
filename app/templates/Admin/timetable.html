@@ -1,4 +1,49 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block sidebar_content %} {% if has_timetable %}
+<!-- Export Section -->
+<div class="mb-4">
+    <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Export Timetable</h4>
+    <div class="space-y-3">
+        <a href="{{ url_for('views.download_timetable', format='pdf', branch='all') }}" target="_blank" class="w-full flex items-center justify-center px-4 py-3 bg-red-50 text-red-600 rounded-xl border border-red-100 hover:bg-red-100 transition font-medium">
+            <i data-feather="file-text" class="w-5 h-5 mr-3"></i> Download All (PDF)
+        </a>
+        <a href="{{ url_for('views.download_timetable', format='excel', branch='all') }}" class="w-full flex items-center justify-center px-4 py-3 bg-green-50 text-green-600 rounded-xl border border-green-100 hover:bg-green-100 transition font-medium">
+            <i data-feather="file" class="w-5 h-5 mr-3"></i> Download All (Excel)
+        </a>
+    </div>
+</div>
+
+<!-- Management Section -->
+<div class="mb-4">
+    <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Management</h4>
+    <form method="POST" action="{{ url_for('views.timetable') }}" onsubmit="return confirm('WARNING: This will completely delete the existing timetable for ALL branches. Continue?');">
+        <input type="hidden" name="action" value="reset" />
+        <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-gray-50 text-gray-700 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition font-medium group">
+            <i data-feather="refresh-cw" class="w-5 h-5 mr-3 group-hover:rotate-180 transition-transform duration-500"></i> Reset Timetable
+        </button>
+    </form>
+</div>
+
+<!-- Stats Section -->
+<div>
+    <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Quick Stats</h4>
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+        <div class="flex justify-between items-center">
+            <span class="text-gray-600 text-sm">Valid Entries</span>
+            <span class="font-bold text-blue-600 text-sm">{{ timetables|length * 30 }} approx</span>
+        </div>
+        <div class="flex justify-between items-center">
+            <span class="text-gray-600 text-sm">Active Branch</span>
+            <span class="font-bold text-gray-800 text-sm">{{ current_branch }}</span>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="bg-blue-50 p-4 rounded-xl text-blue-800 text-sm">
+    <p class="font-bold mb-1"><i data-feather="info" class="w-4 h-4 inline mr-1"></i> No Active Timetable</p>
+    <p>Use the form on the left to generate a new schedule based on your parameters.</p>
+</div>
+{% endif %} {% endblock %} {% block content %}
 <div class="container mx-auto">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Timetable Management</h2>
@@ -28,16 +73,9 @@
     </div>
     {% endif %}
 
-    <div class="flex justify-end mb-6">
-        <form method="POST" action="{{ url_for('views.timetable') }}" onsubmit="return confirm('Are you sure you want to reset the timetable? This will delete all generated entries.');">
-            <input type="hidden" name="action" value="reset" />
-            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition shadow">Reset & Re-Configure</button>
-        </form>
-    </div>
-
     <div class="space-y-12">
         {% for sem, data in timetables.items() %}
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden animate-fadeIn" style="animation-delay: {{ (loop.index * 100) ~ 'ms' }};">
             <div class="bg-primary-700 bg-darkblue text-white p-4 text-center">
                 <h4 class="text-xl font-bold">Semester {{ sem }} ({{ current_branch }})</h4>
             </div>

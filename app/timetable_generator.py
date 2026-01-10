@@ -156,15 +156,31 @@ class TimetableGenerator:
                             continue
                             
                         # Constraint 2: Subject distribution (Soft)
-                        weight = 10
+                        # Weigh based on Validated Partitioning (Lab vs Lecture) + Credit Priority
+                        
+                        subj_credits = cls.subject.credits if cls.subject.credits and cls.subject.credits > 0 else 3
+                        
+                        # Apply Partition Bias:
+                        if getattr(cls.subject, 'is_lab', False):
+                            # Partition: Labs
+                            # Base weight is low (2) * credits. 
+                            # e.g., 2 credit value lab -> weight 4. 4 credit value max -> weight 8.
+                            weight = 2.0 * subj_credits
+                        else:
+                            # Partition: Lectures
+                            # Base weight is high (8) * credits.
+                            # e.g., 3 credit value lecture -> weight 24. 4 credit value -> weight 32.
+                            weight = 8.0 * subj_credits
+
+                        # Handle special 'elective/optional' markers - reduce priority slightly compared to core
                         if cls.subject.name.strip().endswith('*'):
-                            weight = 3 
+                            weight = weight * 0.7 
                             
                         # Downweight if already scheduled today for this cohort
-                        # Key must include branch and sem
+                        # Minimize multiple sessions of same subject per day (unless it's a block, which we don't strictly support yet)
                         usage_key = (branch, sem, subj_id)
                         if daily_subjects_count.get(usage_key, 0) > 0:
-                            weight = 0.1 
+                             weight = 0.01 # Strong penalty for repeats to encourage variety
                             
                         candidates.append((cls, weight))
                     

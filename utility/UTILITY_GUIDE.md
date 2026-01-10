@@ -6,27 +6,23 @@ This guide explains the purpose and usage of the helper scripts located in the `
 
 1. [Overview](#overview)
 2. [Database Management](#database-management)
-3. [User Management](#user-management)
-4. [Data Generation](#data-generation)
-5. [Migration Tools](#migration-tools)
+3. [User & Data Setup](#user--data-setup)
+4. [Data Synchronization](#data-synchronization)
 
 ---
 
 ## 🎯 Overview
 
-The `utility/` folder contains the following scripts:
+The `utility/` folder contains the following core scripts:
 
 | Script | Purpose |
 |--------|---------|
-| `reset_db.py` | Completely resets the database (drops tables, reseeds subjects) |
-| `create_admin.py` | Creates a default admin user |
-| `create_test_accounts.py` | Creates test student accounts for all semesters |
-| `add_sample_data.py` | Populates the database with realistic attendance and marks data |
-| `add_institution_field.py` | Migration script to add the 'institution' field to existing users |
-| `sync_subjects.py` | Forces synchronization between `branch_subjects.json` and the database subjects table |
-| `fix_subject_codes.py` | Resolves data collisions (e.g. duplicate codes) in `branch_subjects.json` |
-| `debug_subject_sync.py` | Detailed comparison report between JSON source and Database records |
-| `upgrade_timetable_table.py` | Schema migration to enable branch-aware timetables (adds column) |
+| `setup_data.py` | **Primary Setup Tool**: Configures teachers, subjects, and class assignments. |
+| `reset_db.py` | Completely resets the database (drops tables, reseeds subjects). |
+| `sync_subjects.py` | Forces synchronization between `branch_subjects.json` and the database. |
+| `create_admin.py` | Creates a default admin user. |
+| `create_test_accounts.py` | Creates test student accounts for all semesters. |
+| `add_sample_data.py` | Populates the database with realistic attendance and marks data. |
 
 ---
 
@@ -52,11 +48,30 @@ python utility/reset_db.py --stats
 **When to use:**
 - When you want to start fresh.
 - After modifying the database schema (models).
-- After updating `branch_subjects.json`.
+- After updating `branch_subjects.json` significantly.
 
 ---
 
-## 👥 User Management
+## 👥 User & Data Setup
+
+### `setup_data.py`
+
+**Purpose:**  
+The main configuration script for the application. You should edit this file to define your real-world faculty members and their subject assignments.
+
+**Features:**
+- Validates that all subjects exist in the database before running.
+- Creates Teacher accounts if they don't exist.
+- Assigns subjects to teachers (creating `AssignedClass` records).
+- Prevents duplicate assignments.
+
+**Usage:**
+1. Open `utility/setup_data.py`.
+2. Edit the `TEACHERS_DATA` list with your faculty details.
+3. Run:
+```bash
+python utility/setup_data.py
+```
 
 ### `create_admin.py`
 
@@ -67,76 +82,43 @@ Creates a default administrator account if one doesn't already exist.
 ```bash
 python utility/create_admin.py
 ```
-
-**Default Credentials:**
-- **Email:** `admin@example.com`
-- **Password:** `admin123`
+**Credentials:** `admin@example.com` / `admin123`
 
 ### `create_test_accounts.py`
 
 **Purpose:**  
-Generates a set of student accounts, one for each semester (1-8), rotating through different branches (AIML, AIDS, CST, CSE).
+Generates a set of student accounts, one for each semester (1-8), rotating through different branches.
 
 **Usage:**
 ```bash
 python utility/create_test_accounts.py
 ```
-
-**Generated Accounts:**
-- **Emails:** `sem1test@gmail.com` to `sem8test@gmail.com`
-- **Password:** `12345678` (for all accounts)
-
----
-
-## 📝 Data Generation
+**Credentials:** `semXtest@gmail.com` / `12345678`
 
 ### `add_sample_data.py`
 
 **Purpose:**  
-Fills the database with realistic-looking data for demonstration and testing. It generates attendance records (present/absent/late) and marks for the test users.
+Fills the database with realistic-looking attendance and marks data for demonstration.
 
 **Usage:**
 ```bash
-# Add data for all users
 python utility/add_sample_data.py
-
-# Add data for a specific user ID
-python utility/add_sample_data.py --user-id 1
 ```
-
-**When to use:**
-- After running `create_test_accounts.py` to give the students some history.
-- Before demonstrating the application to show off the charts and analytics.
 
 ---
 
-## 🔄 Migration Tools
+## 🔄 Data Synchronization
 
-### `add_institution_field.py`
+### `sync_subjects.py`
 
 **Purpose:**  
-A one-time migration script used to add the `institution` column to the `user` table for existing databases that were created before this field was introduced.
+Refreshes the database subject list from the source file `data/branch_subjects.json`.
+
+**When to use:**
+- If you have manually edited `data/branch_subjects.json` (e.g., added new subjects, fixed codes, or changed credits).
+- Run this **before** running `setup_data.py` if you have added new subjects ensuring they are available for assignment.
 
 **Usage:**
 ```bash
-python utility/add_institution_field.py
+python utility/sync_subjects.py
 ```
-
-**Note:**  
-If you have just run `reset_db.py`, you do **not** need to run this, as the new table structure will already include the field. Use this only if you have an old database you want to preserve.
-
-### `sync_subjects.py`
-**Purpose:**
-Updates the database to match `data/branch_subjects.json`. It adds new subjects and updates existing ones (credits, names) if changed.
-
-### `fix_subject_codes.py`
-**Purpose:**
-Fixes specific known data errors in the JSON source file, such as duplicate subject codes across semesters.
-
-### `debug_subject_sync.py`
-**Purpose:**
-A diagnostic tool that prints out mismatches between the JSON file and the SQLite database. Use this to verify data integrity after a sync.
-
-### `upgrade_timetable_table.py`
-**Purpose:**
-Adds the `branch` column to the `timetable_entries` table. Essential for upgrading older databases to support the new branch-specific timetable feature.
