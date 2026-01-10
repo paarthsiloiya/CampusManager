@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime, timezone
+from datetime import datetime, timezone, time
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
 import enum
@@ -351,6 +351,40 @@ class AttendanceSummary(db.Model):
     
     def __repr__(self):
         return f'<AttendanceSummary {self.student.name} - {self.subject.code}: {self.attendance_percentage:.1f}%>'
+
+class TimetableSettings(db.Model):
+    """Model for storing timetable configuration"""
+    __tablename__ = 'timetable_settings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    start_time = db.Column(db.Time, nullable=False, default=time(9, 30))
+    end_time = db.Column(db.Time, nullable=False, default=time(16, 30))
+    lunch_duration = db.Column(db.Integer, nullable=False, default=30) # in minutes
+    min_class_duration = db.Column(db.Integer, nullable=False, default=40) # in minutes
+    max_class_duration = db.Column(db.Integer, nullable=False, default=50) # in minutes
+    periods = db.Column(db.Integer, nullable=False, default=8)
+    working_days = db.Column(db.String(20), nullable=False, default="MTWTF")
+    
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+class TimetableEntry(db.Model):
+    """Model for storing generated timetable entries"""
+    __tablename__ = 'timetable_entries'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    semester = db.Column(db.Integer, nullable=False)
+    branch = db.Column(db.String(10), nullable=False, default='COMMON') # Added branch column
+    day = db.Column(db.String(10), nullable=False) # Mon, Tue, Wed, Thu, Fri
+    period_number = db.Column(db.Integer, nullable=False) # 1-based index
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    
+    assigned_class_id = db.Column(db.Integer, db.ForeignKey('assigned_classes.id'), nullable=False)
+    
+    assigned_class = db.relationship('AssignedClass', backref='timetable_entries')
+    
+    def __repr__(self):
+        return f'<TimetableEntry Sem{self.semester} {self.day} P{self.period_number}: {self.assigned_class.subject.code}>'
 
 # Database utility functions
 def create_tables():

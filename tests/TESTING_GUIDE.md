@@ -22,6 +22,8 @@ The project uses `pytest` for automated unit and integration testing. The test s
 | `test_student_views.py` | Student specific workflows (Curriculum, Join Class) |
 | `test_admin_teacher_views.py` | Admin and Teacher operations |
 | `test_account_management.py` | Account lifecycle tests |
+| `test_timetable_full.py` | Extensive coverage of Timetable Generator (collisions, constraints, parity logic) |
+| `test_views_coverage.py` | Additional coverage for Timetable views, Teacher schedule rendering, and Student dashboards |
 
 ### Running Tests
 

@@ -23,6 +23,10 @@ The `utility/` folder contains the following scripts:
 | `create_test_accounts.py` | Creates test student accounts for all semesters |
 | `add_sample_data.py` | Populates the database with realistic attendance and marks data |
 | `add_institution_field.py` | Migration script to add the 'institution' field to existing users |
+| `sync_subjects.py` | Forces synchronization between `branch_subjects.json` and the database subjects table |
+| `fix_subject_codes.py` | Resolves data collisions (e.g. duplicate codes) in `branch_subjects.json` |
+| `debug_subject_sync.py` | Detailed comparison report between JSON source and Database records |
+| `upgrade_timetable_table.py` | Schema migration to enable branch-aware timetables (adds column) |
 
 ---
 
@@ -120,3 +124,19 @@ python utility/add_institution_field.py
 
 **Note:**  
 If you have just run `reset_db.py`, you do **not** need to run this, as the new table structure will already include the field. Use this only if you have an old database you want to preserve.
+
+### `sync_subjects.py`
+**Purpose:**
+Updates the database to match `data/branch_subjects.json`. It adds new subjects and updates existing ones (credits, names) if changed.
+
+### `fix_subject_codes.py`
+**Purpose:**
+Fixes specific known data errors in the JSON source file, such as duplicate subject codes across semesters.
+
+### `debug_subject_sync.py`
+**Purpose:**
+A diagnostic tool that prints out mismatches between the JSON file and the SQLite database. Use this to verify data integrity after a sync.
+
+### `upgrade_timetable_table.py`
+**Purpose:**
+Adds the `branch` column to the `timetable_entries` table. Essential for upgrading older databases to support the new branch-specific timetable feature.

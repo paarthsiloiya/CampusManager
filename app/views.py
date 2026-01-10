@@ -1,13 +1,14 @@
 from flask import Blueprint, request, redirect, make_response, url_for, flash
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
-from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus
+from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry
+from .timetable_generator import TimetableGenerator
 import json
 import os
 import string
 import csv
 import io
-from datetime import datetime, timezone
+from datetime import datetime, timezone, time
 
 views = Blueprint('views', __name__)
 
@@ -859,6 +860,109 @@ def teacher_dashboard():
     
     return render_template('Teacher/dashboard.html', stats=stats)
 
+
+@views.route('/teacher/schedule')
+@login_required
+def teacher_schedule():
+    if current_user.role != UserRole.TEACHER:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+
+    settings = TimetableSettings.query.first()
+        
+    # Semester Group Toggle (Odd/Even)
+    sem_group = request.args.get('group', 'odd') # Default to odd
+    
+    # Get teacher's assigned class IDs
+    my_classes = AssignedClass.query.filter_by(teacher_id=current_user.id).all()
+    class_ids = [c.id for c in my_classes]
+    
+    # Get entries filtered by teacher's classes AND semester parity
+    entries = []
+    if class_ids:
+        query = TimetableEntry.query.filter(TimetableEntry.assigned_class_id.in_(class_ids))
+        
+        # Apply parity filter
+        if sem_group == 'even':
+            # SQLite modulo operator might need verify, but SQLAlchemy % works usually
+            query = query.filter(TimetableEntry.semester % 2 == 0)
+        else: # odd
+            query = query.filter(TimetableEntry.semester % 2 != 0)
+            
+        entries = query.all()
+    
+    # Determine periods and headers
+    periods = []
+    period_headers = {}
+    lunch_break_after = 4
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] # Default
+    period_duration_mins = 0
+    
+    if settings:
+        periods = list(range(1, settings.periods + 1))
+        lunch_break_after = settings.periods // 2
+        
+        # Parse days
+        if ',' in settings.working_days:
+            days = [d.strip() for d in settings.working_days.split(',') if d.strip()]
+        elif settings.working_days == "MTWTF":
+             days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+             
+        # Calculate headers
+        start_min = settings.start_time.hour * 60 + settings.start_time.minute
+        end_min = settings.end_time.hour * 60 + settings.end_time.minute
+        lunch_dur = settings.lunch_duration
+        
+        total_class_mins = (end_min - start_min) - lunch_dur
+        if settings.periods > 0:
+            p_dur = total_class_mins // settings.periods
+        else:
+            p_dur = 60
+        
+        period_duration_mins = p_dur
+        
+        for p in periods:
+            # Recreate calc logic to match generator
+            cur_min = (p - 1) * p_dur
+            if p > lunch_break_after:
+                cur_min += lunch_dur
+            
+            p_s = start_min + cur_min
+            p_e = p_s + p_dur
+            
+            # Using simple math instead of timedelta to avoid import issues if not present
+            sh, sm = divmod(p_s, 60)
+            eh, em = divmod(p_e, 60)
+            
+            period_headers[p] = f"{sh:02d}:{sm:02d} - {eh:02d}:{em:02d}"
+    else:
+        # Fallback if no settings
+        if entries:
+             periods = sorted(list(set(e.period_number for e in entries)))
+        else:
+             periods = range(1, 9)
+
+    # Build Grid
+    grid = {} # Day -> {Period -> Entry}
+    # Initialize grid with all days to ensure template doesn't crash on empty days
+    for d in days:
+        grid[d] = {}
+        
+    for e in entries:
+        # Only add entries for days that are in the schedule (in case settings changed but old entries exist)
+        if e.day in days:
+            grid[e.day][e.period_number] = e
+             
+    return render_template('Teacher/schedule.html',
+        grid=grid,
+        periods=periods,
+        days=days,
+        period_headers=period_headers,
+        lunch_break_after=lunch_break_after,
+        period_duration_mins=period_duration_mins,
+        current_group=sem_group
+    )
+
 @views.route('/teacher/classes')
 @login_required
 def teacher_classes():
@@ -1273,3 +1377,156 @@ def add_user():
     
     flash(f'{role_str} added successfully', 'success')
     return redirect(url_for('views.admin_dashboard'))
+
+@views.route('/admin/timetable', methods=['GET', 'POST'])
+@login_required
+def timetable():
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+        
+    settings = TimetableSettings.query.first()
+    
+    if request.method == 'POST':
+        action = request.form.get('action')
+        
+        if action == 'generate':
+            # Create or Update Settings
+            start_time_str = request.form.get('start_time', '09:30')
+            try:
+                # If format is HH:MM
+                start_time = datetime.strptime(start_time_str, '%H:%M').time()
+            except ValueError:
+                start_time = time(9, 30)
+            
+            end_time_str = request.form.get('end_time', '16:30')
+            try:
+                end_time = datetime.strptime(end_time_str, '%H:%M').time()
+            except ValueError:
+                end_time = time(16, 30)
+
+            lunch_duration = int(request.form.get('lunch_duration', 30))
+            min_class_duration = int(request.form.get('min_duration', 40))
+            max_class_duration = int(request.form.get('max_duration', 50))
+            periods = int(request.form.get('periods', 8))
+            
+            # Handle working days as list from checkboxes
+            working_days_list = request.form.getlist('working_days')
+            if working_days_list:
+                working_days = ",".join(working_days_list)
+            else:
+                working_days = request.form.get('working_days', 'MTWTF')
+            
+            if not settings:
+                settings = TimetableSettings()
+                db.session.add(settings)
+            
+            settings.start_time = start_time
+            settings.end_time = end_time
+            settings.lunch_duration = lunch_duration
+            settings.min_class_duration = min_class_duration
+            settings.max_class_duration = max_class_duration
+            settings.periods = periods
+            settings.working_days = working_days
+            
+            db.session.commit()
+            
+            # Generate
+            generator = TimetableGenerator(db, settings)
+            if not generator.validate():
+                for err in generator.errors:
+                    flash(f'Error: {err}', 'error')
+            else:
+                if generator.generate_schedule():
+                    flash('Timetable generated successfully', 'success')
+                else:
+                    for err in generator.errors:
+                        flash(f'Generation failed: {err}', 'error')
+            
+            return redirect(url_for('views.timetable'))
+        
+        elif action == 'reset':
+             # Delete entries
+             try:
+                 TimetableEntry.query.delete()
+                 db.session.commit()
+                 flash('Timetable reset.', 'info')
+             except Exception as e:
+                 db.session.rollback()
+                 flash(f'Error resetting timetable: {e}', 'error')
+                 
+             return redirect(url_for('views.timetable'))
+
+    # GET
+    # 1. Get Distinct Branches available in the generated timetable
+    active_branches = [r[0] for r in db.session.query(TimetableEntry.branch).distinct().all()]
+    active_branches.sort()
+    
+    selected_branch = request.args.get('branch')
+    if not selected_branch and active_branches:
+        selected_branch = active_branches[0] # Default to first branch
+        
+    entries = []
+    if selected_branch:
+        entries = TimetableEntry.query.filter_by(branch=selected_branch).order_by(TimetableEntry.semester, TimetableEntry.day, TimetableEntry.period_number).all()
+    
+    has_timetable = len(entries) > 0
+    
+    timetables = {}
+    if has_timetable:
+        semesters = sorted(list(set(e.semester for e in entries)))
+        
+        week_days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        
+        for sem in semesters:
+            sem_entries = [e for e in entries if e.semester == sem]
+            
+            # Build grid
+            grid = {} # Day -> {Period -> Entry}
+            periods_set = sorted(list(set(e.period_number for e in sem_entries)))
+            
+            for e in sem_entries:
+                if e.day not in grid: grid[e.day] = {}
+                grid[e.day][e.period_number] = e
+            
+            sorted_days = sorted(grid.keys(), key=lambda d: week_days_order.index(d) if d in week_days_order else 99)
+            
+            # Headers
+            period_headers = {}
+            for p in periods_set:
+                 sample = next((x for x in sem_entries if x.period_number == p), None)
+                 if sample:
+                     period_headers[p] = f"{sample.start_time.strftime('%H:%M')} - {sample.end_time.strftime('%H:%M')}"
+            
+            timetables[sem] = {
+                'days': sorted_days,
+                'periods': periods_set,
+                'grid': grid,
+                'period_headers': period_headers
+            }
+
+    # Calculate lunch break position
+    lunch_break_after = 4
+    period_duration_mins = 0
+    
+    if settings and settings.periods:
+        lunch_break_after = settings.periods // 2
+        
+        # Calculate Period Duration in minutes for display
+        start_min = settings.start_time.hour * 60 + settings.start_time.minute
+        end_min = settings.end_time.hour * 60 + settings.end_time.minute
+        total_minutes = end_min - start_min
+        available_minutes = total_minutes - settings.lunch_duration
+        if settings.periods > 0:
+            period_duration_mins = available_minutes // settings.periods
+
+    return render_template(
+        'Admin/timetable.html', 
+        settings=settings, 
+        timetables=timetables, 
+        has_timetable=has_timetable,
+        branches=active_branches,
+        current_branch=selected_branch,
+        lunch_break_after=lunch_break_after,
+        period_duration_mins=period_duration_mins
+    )

@@ -216,6 +216,12 @@
                         <a href="{{ url_for('views.assign_class') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.assign_class' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="book" class="w-5 h-5 mr-2 text-gray-300"></i> Assign Classes</a
                         >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.timetable') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.timetable' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 mr-2 text-gray-300"></i> Timetable</a
+                        >
+                    </li>
                         {% elif current_user.role.name == 'TEACHER' %}
                         <a href="{{ url_for('views.teacher_dashboard') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.teacher_dashboard' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="home" class="w-5 h-5 mr-2 text-gray-300"></i> Dashboard</a
@@ -229,6 +235,11 @@
                     <li>
                         <a href="{{ url_for('views.teacher_enrollments') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.teacher_enrollments' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="user-check" class="w-5 h-5 mr-2 text-gray-300"></i> Requests</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.teacher_schedule') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.teacher_schedule' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 mr-2 text-gray-300"></i> My Schedule</a
                         >
                     </li>
                         {% else %}
