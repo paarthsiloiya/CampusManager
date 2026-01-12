@@ -49,6 +49,10 @@ We have organized the test suite into 6 core "Feature Suites" containing **75 te
 *   **Route Availability**: Iterates through all registered Flask routes to ensure no 500 errors.
 *   **Static Assets**: Verifies critical templates and static files are reachable.
 
+#### 7. `test_active_class_dashboard.py` (Real-Time Logic)
+*   **Student Dashboard**: Verifies "Active Class" widget correctly identifies classes based on current time (IST/UTC conversion) and Branch (handling collisions between streams like AIML/CSE).
+*   **Teacher Actions**: Verifies "Take Attendance" button only appears during scheduled class hours.
+
 ### Running Tests
 
 Run **all tests** from the project root:

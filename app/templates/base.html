@@ -256,6 +256,11 @@
                         >
                     </li>
                     <li>
+                        <a href="{{ url_for('views.student_timetable') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.student_timetable' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
+                            ><i data-feather="clock" class="w-5 h-5 mr-2 text-gray-300"></i> Timetable</a
+                        >
+                    </li>
+                    <li>
                         <a href="{{ url_for('views.attendance') }}" class="w-full text-left py-2 hover:text-skyblue flex items-center {% if request.endpoint == 'views.attendance' %}text-skyblue bg-skyblue/10 rounded-lg px-2{% endif %}"
                             ><i data-feather="bar-chart" class="w-5 h-5 mr-2 text-gray-300"></i> Attendance</a
                         >

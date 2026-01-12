@@ -1,5 +1,5 @@
 import pytest
-from app.models import User, UserRole, Enrollment, Subject, AssignedClass
+from app.models import User, UserRole, Enrollment, Subject, AssignedClass, TimetableSettings, Branch
 from flask import url_for
 from datetime import datetime, date
 from app.views import load_calendar_events
@@ -8,12 +8,16 @@ class TestStudentFeatures:
 
     @pytest.fixture(autouse=True)
     def setup(self, db):
-        self.student = User(name="Student", email="student@test.com", role=UserRole.STUDENT, semester=1)
+        self.student = User(name="Student", email="student@test.com", role=UserRole.STUDENT, semester=1, branch=Branch.CSE)
         self.student.set_password("password")
 
         self.subject = Subject(name="Math", code="CSE-101", semester=1, branch="CSE")
         self.teacher = User(name="Teacher", email="teacher@test.com", role=UserRole.TEACHER)
         self.teacher.set_password("password")
+        
+        # Add basic timetable settings
+        self.tt_settings = TimetableSettings(periods=8)
+        db.session.add(self.tt_settings)
 
         db.session.add_all([self.student, self.teacher, self.subject])
         db.session.commit()
@@ -21,6 +25,44 @@ class TestStudentFeatures:
         self.assignment = AssignedClass(teacher_id=self.teacher.id, subject_id=self.subject.id)
         db.session.add(self.assignment)
         db.session.commit()
+
+    def test_student_dashboard_active_class(self, client, auth, db):
+        """Test that the active class appears on the student dashboard"""
+        from datetime import datetime, time, timezone
+        from unittest.mock import patch
+        from app.models import TimetableEntry, AssignedClass
+        
+        # Use valid start/end times
+        start_t = time(10, 0)
+        end_t = time(11, 0)
+        
+        entry = TimetableEntry(
+            semester=self.student.semester,
+            branch="CSE",
+            day="Monday",
+            period_number=1,
+            start_time=start_t, 
+            end_time=end_t,
+            assigned_class_id=self.assignment.id
+        )
+        db.session.add(entry)
+        db.session.commit()
+        
+        auth.login(email=self.student.email, password="password")
+        
+        # Mock Time: Monday 10:30 (IST) -> 05:00 (UTC)
+        mock_utc_now = datetime(2026, 1, 12, 5, 0, 0, tzinfo=timezone.utc)
+        
+        with patch('app.views.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_utc_now
+            mock_datetime.strptime.side_effect = lambda *args, **kwargs: datetime.strptime(*args, **kwargs)
+            
+            response = client.get('/student/dashboard')
+            
+            assert response.status_code == 200
+            assert b"Active Class" in response.data
+            assert b"Math" in response.data
+            assert b"Live" in response.data
 
     def login_student(self, client):
         return client.post('/auth/login', data={'email': 'student@test.com', 'password': 'password'}, follow_redirects=True)
@@ -174,3 +216,9 @@ class TestStudentFeatures:
         assert response.status_code == 200
         # Check for attendance chart canvas or similar
         assert b"Attendance" in response.data
+
+    def test_student_timetable_view(self, client):
+        self.login_student(client)
+        response = client.get('/student/timetable')
+        assert response.status_code == 200
+        assert b"My Class Schedule" in response.data

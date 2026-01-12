@@ -24,6 +24,21 @@
 
     <h2 class="text-xl font-bold text-gray-800 mb-4">Class Management</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {% if is_active %}
+        <!-- Active Class Attendance Card -->
+        <div class="bg-green-50 p-6 rounded-lg shadow-md hover:shadow-lg transition border border-green-200">
+            <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <i data-feather="clock" class="text-green-600 w-6 h-6"></i>
+            </div>
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-semibold text-green-900">Class Active</h3>
+                <span class="px-2 py-1 bg-green-200 text-green-800 text-xs rounded-full font-bold">LIVE</span>
+            </div>
+            <p class="text-green-700 text-sm mb-4">This class is currently in progress.</p>
+            <a href="{{ url_for('views.teacher_mark_attendance', class_id=assigned_class.id) }}" class="block w-full text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 transition font-medium shadow-sm"> Take Attendance Now </a>
+        </div>
+        {% endif %}
+
         <!-- Edit Class Details Card -->
         <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
             <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">

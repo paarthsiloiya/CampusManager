@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, time, date, timedelta
+from datetime import datetime, time, date, timedelta, timezone
 from unittest.mock import patch
 from app.models import User, UserRole, Branch, Subject, TimetableSettings, AssignedClass, TimetableEntry, Enrollment, EnrollmentStatus, Attendance
 from flask import url_for as base_url_for
@@ -57,10 +57,11 @@ class TestTeacherFeatures:
         db.session.commit()
         
         auth.login(email=dashboard_teacher.email, password="password")
-        
-        # Mock time: Monday 10:30 AM
-        mock_now = datetime(2024, 1, 1, 10, 30, 0) # Jan 1 2024 is Monday
-        
+
+        # Mock time: Monday 10:30 AM IST (which is 05:00 AM UTC)
+        # The view adds +5:30 to the UTC time returned by .now()
+        mock_now = datetime(2024, 1, 1, 5, 0, 0) # Jan 1 2024 is Monday
+
         with patch('app.views.datetime') as mock_datetime:
             mock_datetime.now.return_value = mock_now
             mock_datetime.strptime.side_effect = lambda *args, **kwargs: datetime.strptime(*args, **kwargs)
@@ -88,6 +89,100 @@ class TestTeacherFeatures:
             
             response = client.get('/teacher/dashboard')
             assert b"Live Class" not in response.data
+
+    def test_dashboard_active_class_ignores_semester_setting(self, client, auth, db):
+        """Test that active live class is shown even if it belongs to a semester currently marked 'inactive' in settings"""
+        # 1. Setup Teacher
+        teacher = User(name="MismatchTeacher", email="mismatch@test.com", role=UserRole.TEACHER)
+        teacher.set_password("password")
+        db.session.add(teacher)
+        
+        # 2. Setup Settings: Active Semester = EVEN
+        settings = TimetableSettings(active_semester_type='even')
+        db.session.add(settings)
+        
+        # 3. Setup Subject: Semester 1 (ODD)
+        subject = Subject(name="Odd Subject", code="ODD101", semester=1, branch="CSE")
+        db.session.add(subject)
+        db.session.commit()
+        
+        # 4. Assign Class
+        ac = AssignedClass(teacher_id=teacher.id, subject_id=subject.id, section="A")
+        db.session.add(ac)
+        db.session.commit()
+        
+        # 5. Create Timetable Entry: Monday 10:00-11:00
+        entry = TimetableEntry(
+            semester=1, branch="CSE", day="Monday", period_number=1,
+            start_time=time(10, 0), end_time=time(11, 0), assigned_class_id=ac.id
+        )
+        db.session.add(entry)
+        db.session.commit()
+        
+        auth.login(email="mismatch@test.com", password="password")
+
+        # 6. Mock Time: Monday 10:30 AM IST (05:00 UTC)
+        mock_now = datetime(2024, 1, 1, 5, 0, 0)
+
+        with patch('app.views.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime.side_effect = lambda *args, **kwargs: datetime.strptime(*args, **kwargs)
+            
+            response = client.get('/teacher/dashboard')
+            
+            # Should show "Odd Subject" even though settings say "Even" is active
+            assert b"Odd Subject" in response.data
+
+    def test_dashboard_real_data_scenario(self, client, auth, db):
+        # Recreate the data from debug output
+        
+        # Teacher ID 13 (approx) - "EGTech"
+        teacher = User(name="EGTech", email="egtech@test.com", role=UserRole.TEACHER)
+        teacher.set_password("password")
+        db.session.add(teacher)
+        db.session.commit() # Get ID
+        
+        # Subject AIML-ES-157
+        subject = Subject(name="Engineering Graphics I", code="AIML-ES-157-TEST", semester=1, branch="AIML")
+        db.session.add(subject)
+        db.session.commit()
+        
+        # Assigned Class
+        ac = AssignedClass(teacher_id=teacher.id, subject_id=subject.id)
+        db.session.add(ac)
+        db.session.commit()
+        
+        # Timetable Entry: Monday 09:30 - 10:25
+        entry = TimetableEntry(
+            semester=1, 
+            branch="AIML", 
+            day="Monday", 
+            period_number=1,
+            start_time=time(9, 30), 
+            end_time=time(10, 25), 
+            assigned_class_id=ac.id
+        )
+        db.session.add(entry)
+        db.session.commit()
+        
+        # Login
+        auth.login(email="egtech@test.com", password="password")
+        
+        # Mock Time: Server is UTC (04:18), so +5:30 makes it 09:48 IST (Active Class Time)
+        mock_now = datetime(2026, 1, 12, 4, 18, 0)
+        
+        with patch('app.views.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now.replace(tzinfo=timezone.utc) # Mock UTC
+            mock_datetime.strptime.side_effect = lambda *args, **kwargs: datetime.strptime(*args, **kwargs)
+            
+            response = client.get('/teacher/dashboard')
+            
+            # Checks
+            assert response.status_code == 200
+            if b"Engineering Graphics I" not in response.data:
+                 print(response.data.decode())
+            assert b"Engineering Graphics I" in response.data
+            assert b"Live Class" in response.data
 
     # --- Attendance Tests ---
     def test_mark_attendance_page_loads(self, client, auth, basic_teacher_setup):

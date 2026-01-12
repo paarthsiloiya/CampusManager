@@ -32,7 +32,7 @@
                 <div class="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-gray-600">
                     <div class="flex items-center text-sm">
                         <i data-feather="map-pin" class="w-4 h-4 mr-2 text-gray-400"></i>
-                        {{ active_class_info.entry.room }}
+                        {{ active_class_info.entry.room if active_class_info.entry.room is defined else 'Classroom' }}
                     </div>
                     <div class="flex items-center text-sm">
                         <i data-feather="book" class="w-4 h-4 mr-2 text-gray-400"></i>

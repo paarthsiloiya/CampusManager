@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect, make_response, url_for, flash, send_file
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
+from sqlalchemy import or_, and_
 from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry
 from .timetable_generator import TimetableGenerator
 import json
@@ -8,7 +9,7 @@ import os
 import string
 import csv
 import io
-from datetime import datetime, timezone, time
+from datetime import datetime, timezone, time, timedelta
 from .excel_export import generate_timetable_excel
 
 views = Blueprint('views', __name__)
@@ -219,12 +220,34 @@ def student_dashboard():
             {'subject': 'No Data', 'missed_count': 0, 'backlog_item': 'Start attending classes to track'}
         ]
     
-    # Static data that doesn't depend on semester
-    missed_classes = [
-        {'subject': 'DS', 'missed_count': 4, 'backlog_item': '1 Assignment'},
-        {'subject': 'OS', 'missed_count': 3, 'backlog_item': 'Lab Record'},
-        {'subject': 'CN', 'missed_count': 2, 'backlog_item': 'Project Work'}
-    ]
+    # --- Active Class Logic (Student Side) ---
+    # Use IST (UTC + 5:30) for calculations
+    current_time_obj = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+    day_name = current_time_obj.strftime('%A')
+    time_now = current_time_obj.time()
+    
+    # Student sees classes for their Semester & Branch
+    # Query logic:
+    # 1. Start with TimetableEntries
+    # 2. Join AssignedClass (to get details)
+    # 3. Join Subject (to filter by student's branch/semester)
+    # 4. Filter by Day and Time
+    active_entry = TimetableEntry.query.join(AssignedClass).join(Subject).filter(
+        Subject.semester == current_user.semester,
+        or_(Subject.branch == 'COMMON', Subject.branch == user_branch),
+        TimetableEntry.day == day_name,
+        TimetableEntry.start_time <= time_now,
+        TimetableEntry.end_time > time_now
+    ).first()
+    
+    # Refined Query to respect Branch at the Subject level strictly
+    active_class_info = None
+    if active_entry:
+         active_class_info = {
+            'class': active_entry.assigned_class,
+            'entry': active_entry
+         }
+
     # Generate dynamic notifications based on actual attendance
     notifications = []
     
@@ -283,7 +306,8 @@ def student_dashboard():
         notifications=notifications,
         upcoming_events=upcoming_events,
         attendance_chart_data=attendance_chart_data,
-        calendar_events=calendar_events
+        calendar_events=calendar_events,
+        active_class_info=active_class_info
     )
     
     response = make_response(rendered)
@@ -366,6 +390,82 @@ def curriculum():
     
     response = make_response(rendered)
     return no_cache(response)
+
+@views.route('/student/timetable')
+@login_required
+def student_timetable():
+    if current_user.role != UserRole.STUDENT:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+
+    settings = TimetableSettings.query.first()
+    if not settings:
+        flash('Timetable configuration not found. Please contact admin.', 'warning')
+        return redirect(url_for('views.student_dashboard'))
+    
+    # Calculate Schedule Metadata (Same as Teacher View)
+    periods = list(range(1, settings.periods + 1))
+    lunch_break_after = settings.periods // 2
+    period_duration_mins = 0
+    period_headers = {}
+    
+    # Parse days
+    if ',' in settings.working_days:
+        days = [d.strip() for d in settings.working_days.split(',') if d.strip()]
+    elif settings.working_days == "MTWTF":
+         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    else:
+         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+    # Calculate headers
+    start_min = settings.start_time.hour * 60 + settings.start_time.minute
+    end_min = settings.end_time.hour * 60 + settings.end_time.minute
+    lunch_dur = settings.lunch_duration
+    
+    total_class_mins = (end_min - start_min) - lunch_dur
+    if settings.periods > 0:
+        p_dur = total_class_mins // settings.periods
+    else:
+        p_dur = 60
+    
+    period_duration_mins = p_dur
+    
+    for p in periods:
+        cur_min = (p - 1) * p_dur
+        if p > lunch_break_after:
+            cur_min += lunch_dur
+        
+        p_s = start_min + cur_min
+        p_e = p_s + p_dur
+        
+        sh, sm = divmod(p_s, 60)
+        eh, em = divmod(p_e, 60)
+        period_headers[p] = f"{sh:02d}:{sm:02d} - {eh:02d}:{em:02d}"
+
+    # Get entries for student's semester and branch
+    entries = TimetableEntry.query.filter_by(
+        semester=current_user.semester,
+        branch=current_user.branch.name
+    ).all()
+    
+    # Build Grid
+    grid = {} # Day -> {Period -> Entry}
+    for d in days:
+        grid[d] = {}
+        
+    for e in entries:
+        if e.day in days:
+            grid[e.day][e.period_number] = e
+
+    return render_template(
+        'Student/timetable.html',
+        grid=grid,
+        days=days,
+        periods=periods,
+        lunch_break_after=lunch_break_after,
+        period_headers=period_headers,
+        period_duration_mins=period_duration_mins
+    )
 
 @views.route('/attendance')
 @login_required
@@ -873,25 +973,20 @@ def teacher_dashboard():
         ).count()
     
     # --- Find Active Class (Current Time) ---
-    current_time_obj = datetime.now()
+    # Use IST (UTC + 5:30) for calculations
+    current_time_obj = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
     day_name = current_time_obj.strftime('%A')
     time_now = current_time_obj.time()
     
     # Query for a class currently in session for this teacher
-    # Must also respect the active semester filter
+    # Note: We do NOT filter by active_semester_type here. 
+    # If a class is in the timetable schedule and the time matches, it IS active regardless of the semester setting.
     active_entry = TimetableEntry.query.join(AssignedClass).join(Subject).filter(
         AssignedClass.teacher_id == current_user.id,
         TimetableEntry.day == day_name,
         TimetableEntry.start_time <= time_now,
         TimetableEntry.end_time > time_now
-    )
-    
-    if active_sem_type == 'even':
-         active_entry = active_entry.filter(Subject.semester % 2 == 0)
-    else:
-         active_entry = active_entry.filter(Subject.semester % 2 != 0)
-         
-    active_entry = active_entry.first()
+    ).first()
     
     active_class_info = None
     if active_entry:
@@ -1038,8 +1133,23 @@ def teacher_class_details(class_id):
     if assigned_class.teacher_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('views.teacher_dashboard'))
+
+    # Check if currently active (UTC + 5:30 for IST)
+    now_utc = datetime.now(timezone.utc)
+    ist_now = now_utc + timedelta(hours=5, minutes=30)
+    day_name = ist_now.strftime('%A')
+    time_now = ist_now.time()
+    
+    active_entry = TimetableEntry.query.filter(
+        TimetableEntry.assigned_class_id == class_id,
+        TimetableEntry.day == day_name,
+        TimetableEntry.start_time <= time_now,
+        TimetableEntry.end_time > time_now
+    ).first()
+    
+    is_active = active_entry is not None
         
-    return render_template('Teacher/class_details.html', assigned_class=assigned_class)
+    return render_template('Teacher/class_details.html', assigned_class=assigned_class, is_active=is_active)
 
 @views.route('/teacher/class/<int:class_id>/attendance', methods=['GET', 'POST'])
 @login_required

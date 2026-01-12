@@ -50,7 +50,7 @@ Add the new branch option in `app/templates/Auth/signin.html`:
 
 ### Step 3: Update Profile Settings
 
-Add the branch option in the dashboard profile settings in `app/templates/Student/student_dashboard.html`:
+Add the branch option in the dashboard profile settings in `app/templates/Student/dashboard.html`:
 
 ```html
 <select id="branch" class="border p-2 w-full ml-2">

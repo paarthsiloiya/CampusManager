@@ -2,36 +2,16 @@
 <div class="container mx-auto">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">My Class Schedule</h2>
-        <a href="{{ url_for('views.teacher_dashboard') }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 bg-white">Back to Dashboard</a>
+        <a href="{{ url_for('views.student_dashboard') }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 bg-white">Back to Dashboard</a>
     </div>
 
     <!-- Flashed Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
     <div class="p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">{{ message }}</div>
-    {% endfor %} {% endif %} {% endwith %}
-
-    <!-- Semester Toggle -->
-    <div class="flex justify-center mb-6">
-        <div class="inline-flex rounded-lg shadow-sm border border-gray-300 bg-white p-1" role="group">
-            <a href="{{ url_for('views.teacher_schedule', group='odd') }}" class="px-6 py-2 text-sm font-medium rounded-md transition-colors {{ 'bg-blue-600 text-white shadow-sm' if current_group == 'odd' else 'text-gray-700 hover:bg-gray-100' }}">
-                <div class="flex items-center gap-2">
-                    <i data-feather="calendar" class="w-4 h-4"></i>
-                    Odd Semester
-                </div>
-            </a>
-            <a href="{{ url_for('views.teacher_schedule', group='even') }}" class="px-6 py-2 text-sm font-medium rounded-md transition-colors {{ 'bg-blue-600 text-white shadow-sm' if current_group == 'even' else 'text-gray-700 hover:bg-gray-100' }}">
-                <div class="flex items-center gap-2">
-                    <i data-feather="calendar" class="w-4 h-4"></i>
-                    Even Semester
-                </div>
-            </a>
-        </div>
-    </div>
-
-    {% if periods %}
+    {% endfor %} {% endif %} {% endwith %} {% if periods %}
     <div class="bg-white shadow-lg rounded-xl overflow-hidden">
         <div class="bg-primary-700 bg-darkblue text-white p-4 text-center">
-            <h4 class="text-xl font-bold">Weekly Timetable</h4>
+            <h4 class="text-xl font-bold">Weekly Timetable (Semester {{ current_user.semester }})</h4>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full table-auto border-collapse">
@@ -64,11 +44,11 @@
                             {% if entry %}
                             <div class="font-bold text-sm text-gray-800">{{ entry.assigned_class.subject.name }}</div>
 
-                            <div class="flex flex-wrap gap-1 justify-center mt-2">
-                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded border border-blue-200 font-medium"> {{ entry.branch }} </span>
-                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded border border-purple-200 font-medium"> Sem {{ entry.semester }} </span>
-                            </div>
+                            {% if entry.assigned_class.subject.code %}
                             <div class="text-xs text-gray-500 mt-1">({{ entry.assigned_class.subject.code }})</div>
+                            {% endif %}
+
+                            <div class="text-xs text-blue-600 mt-2 flex items-center justify-center gap-1"><i data-feather="user" class="w-3 h-3"></i> {{ entry.assigned_class.teacher.name }}</div>
                             {% else %}
                             <!-- Blank cell for free period -->
                             <span class="block w-full h-full"></span>
@@ -84,7 +64,7 @@
     {% else %}
     <div class="bg-yellow-50 text-yellow-800 p-6 rounded-lg text-center border border-yellow-200">
         <p class="font-bold text-lg mb-2">No Timetable Available</p>
-        <p>Your class schedule has not been generated yet. Please contact the administrator.</p>
+        <p>Values for Schedule have not been configured yet.</p>
     </div>
     {% endif %}
 </div>

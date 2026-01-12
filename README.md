@@ -7,9 +7,11 @@ This repository contains the source code for a web-based Smart Curriculum Activi
   - Assign Classes to Teachers (multiple subjects per teacher).
 - **Teacher Dashboard**: 
   - View assigned classes and enrollment statistics.
+  - **Live Class Support**: "Class in Progress" indicator with one-click attendance during scheduled hours.
   - Manage Enrollment Requests from students (Approve/Reject).
 - **Student Dashboard**: 
   - View Branch-Specific Curriculum.
+  - **Active Class Widget**: Real-time display of currently serving class.
   - Request to join classes.
   - Track attendance and view simplified academic calendar.
 - **Attendance Tracking**: Automated tracking (currently simulates data).

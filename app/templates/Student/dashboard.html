@@ -64,20 +64,44 @@
         {% endfor %}
     </div>
 
-    <!-- Notifications Panel -->
-    <div class="mt-10 bg-white shadow-xl rounded-2xl p-6">
-        <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-feather="bell" class="w-5 h-5 text-gray-600"></i> Notifications</h2>
-        <ul id="notifications" class="space-y-3">
-            {% for notification in notifications %}
-            <li class="flex items-start gap-3 p-3 rounded-xl shadow-sm animate-fadeIn {{ notification.bg_class }}">
-                <span class="text-lg">{{ notification.icon }}</span>
-                <p class="text-sm font-medium">{{ notification.message }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <!-- Notifications Panel (Removed as per request) -->
 </section>
 {% endblock %} {% block sidebar_content %}
+<!-- Active Class Section -->
+{% if active_class_info %}
+<div class="mb-8">
+    <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="clock" class="w-4 h-4 text-gray-600"></i> Active Class</h3>
+    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 shadow-sm relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-full -mr-8 -mt-8 opacity-50"></div>
+
+        <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 animate-pulse"> <span class="w-1.5 h-1.5 bg-red-600 rounded-full mr-1.5"></span> Live </span>
+            <span className="text-xs text-gray-500 font-medium">{{ active_class_info.entry.start_time.strftime('%I:%M %p') }} - {{ active_class_info.entry.end_time.strftime('%I:%M %p') }}</span>
+        </div>
+
+        <h4 class="font-bold text-lg text-blue-900 leading-tight mb-1">{{ active_class_info.class.subject.name }}</h4>
+        <div class="text-sm text-gray-600 mb-3">{{ active_class_info.class.subject.code }}</div>
+
+        <div class="flex items-center gap-2 text-sm text-gray-700">
+            <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <i data-feather="user" class="w-3 h-3"></i>
+            </div>
+            <span class="font-medium truncated">{{ active_class_info.class.teacher.name }}</span>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="mb-8">
+    <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="clock" class="w-4 h-4 text-gray-600"></i> Active Class</h3>
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 text-gray-400">
+            <i data-feather="coffee" class="w-5 h-5"></i>
+        </div>
+        <p class="text-sm text-gray-500 font-medium">No active class right now.</p>
+    </div>
+</div>
+{% endif %}
+
 <!-- Full Calendar in Sidebar -->
 <div>
     <h3 class="font-bold mb-2 flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Calendar</h3>
@@ -118,14 +142,16 @@
 
     const templateData = getTemplateData();
 
-        <!-- Subject-wise Attendance (if you want bars on Dashboard too, ensure this logic runs) -->
+    function setGreeting() {
+        // Subject-wise Attendance (if you want bars on Dashboard too, ensure this logic runs)
         const progressBars = document.querySelectorAll("[data-percentage]");
         progressBars.forEach((bar) => {
-             const percentage = parseFloat(bar.getAttribute("data-percentage"));
-             setTimeout(() => {
-                 bar.style.width = percentage + "%";
-             }, 50);
+            const percentage = parseFloat(bar.getAttribute("data-percentage"));
+            setTimeout(() => {
+                bar.style.width = percentage + "%";
+            }, 50);
         });
+
         const hour = new Date().getHours();
         let greet = "Good Evening";
         if (hour < 12) greet = "Good Morning";
