@@ -32,7 +32,7 @@
                 <div class="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-gray-600">
                     <div class="flex items-center text-sm">
                         <i data-feather="map-pin" class="w-4 h-4 mr-2 text-gray-400"></i>
-                        {{ active_class_info.entry.room if active_class_info.entry.room is defined else 'Classroom' }}
+                        {{ active_class_info.class.location or 'Classroom' }}
                     </div>
                     <div class="flex items-center text-sm">
                         <i data-feather="book" class="w-4 h-4 mr-2 text-gray-400"></i>
@@ -45,13 +45,20 @@
                 </div>
             </div>
 
-            <div class="mt-6 md:mt-0 md:ml-8 flex-shrink-0">
+            <div class="mt-6 md:mt-0 md:ml-8 flex-shrink-0 flex flex-col gap-2">
                 <a
                     href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     <i data-feather="check-square" class="w-5 h-5 mr-2"></i>
                     Take Attendance
+                </a>
+                <a
+                    href="{{ url_for('views.teacher_class_details', class_id=active_class_info.class.id) }}"
+                    class="inline-flex items-center justify-center px-6 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    <i data-feather="eye" class="w-4 h-4 mr-2"></i>
+                    View Details
                 </a>
             </div>
         </div>

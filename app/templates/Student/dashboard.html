@@ -43,9 +43,9 @@
             <!-- Action Area -->
             <div>
                 {% if subject.enrollment_status == 'APPROVED' %}
-                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-skyblue hover:text-white transition-colors cursor-pointer">
+                <a href="{{ url_for('views.student_class_view', class_id=subject.enrolled_class_id) }}" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-skyblue hover:text-white transition-colors cursor-pointer">
                     <i data-feather="chevron-right" class="w-4 h-4"></i>
-                </div>
+                </a>
                 {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
                 <div class="flex flex-col gap-2">
                     {% for cls in subject.assigned_classes %}
@@ -87,6 +87,13 @@
                 <i data-feather="user" class="w-3 h-3"></i>
             </div>
             <span class="font-medium truncated">{{ active_class_info.class.teacher.name }}</span>
+        </div>
+
+        <div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
+            <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
+                <i data-feather="map-pin" class="w-3 h-3"></i>
+            </div>
+            <span class="font-medium truncated">{{ active_class_info.class.location or 'Classroom' }}</span>
         </div>
     </div>
 </div>

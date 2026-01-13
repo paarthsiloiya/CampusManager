@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, make_response, url_for, flash, s
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
 from sqlalchemy import or_, and_
-from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry
+from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry, Attendance
 from .timetable_generator import TimetableGenerator
 import json
 import os
@@ -176,6 +176,7 @@ def student_dashboard():
             'attended_classes': db_subject['attended_classes'],
             'status': db_subject['status'],
             'enrollment_status': user_enrollment.status.value if user_enrollment else 'NOT_ENROLLED',
+            'enrolled_class_id': user_enrollment.class_id if user_enrollment else None,
             'assigned_classes': assigned_classes
         }
         subjects_data.append(merged_subject)
@@ -312,6 +313,45 @@ def student_dashboard():
     
     response = make_response(rendered)
     return no_cache(response)
+
+@views.route('/student/class/<int:class_id>')
+@login_required
+def student_class_view(class_id):
+    if current_user.role != UserRole.STUDENT:
+        return redirect(url_for('auth.login'))
+        
+    enrollment = Enrollment.query.filter_by(
+        student_id=current_user.id,
+        class_id=class_id, 
+        status=EnrollmentStatus.APPROVED
+    ).first_or_404()
+    
+    assigned_class = enrollment.assigned_class
+    subject = assigned_class.subject
+    
+    # Get attendance records
+    attendance_records = Attendance.query.filter_by(
+        user_id=current_user.id,
+        subject_id=subject.id
+    ).order_by(Attendance.date.desc()).all()
+    
+    # Calculate stats for this specific class
+    total = len(attendance_records)
+    attended = sum(1 for a in attendance_records if a.status == 'present')
+    percentage = (attended / total * 100) if total > 0 else 0
+    
+    return render_template('Student/class_view.html',
+        student=current_user,
+        assigned_class=assigned_class,
+        subject=subject,
+        attendance_records=attendance_records,
+        stats={
+            'total': total, 
+            'attended': attended, 
+            'percentage': round(percentage, 1),
+            'status': 'good' if percentage >= 75 else ('warning' if percentage >= 60 else 'danger')
+        }
+    )
 
 @views.route('/curriculum')
 @login_required
@@ -1247,7 +1287,13 @@ def teacher_edit_class(class_id):
         
     if request.method == 'POST':
         section = request.form.get('section')
+        google_classroom_link = request.form.get('google_classroom_link')
+        location = request.form.get('location')
+        
         assigned_class.section = section
+        assigned_class.google_classroom_link = google_classroom_link
+        assigned_class.location = location
+        
         db.session.commit()
         flash('Class details updated successfully', 'success')
         return redirect(url_for('views.teacher_class_details', class_id=class_id))

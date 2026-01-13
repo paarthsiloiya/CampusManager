@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}{{ subject.name }} - Class Details{% endblock %} {% block content %}
+<section class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl font-heading font-bold text-darkblue">{{ subject.name }}</h2>
+        <a href="{{ url_for('views.student_dashboard') }}" class="text-gray-600 hover:text-darkblue flex items-center gap-2 transition-colors"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
+    </div>
+
+    <!-- Class Info Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+            <div>
+                <h3 class="text-xl font-bold text-darkblue mb-2">{{ subject.code }}</h3>
+                <p class="text-gray-600 mb-4 flex items-center gap-2"><i data-feather="user" class="w-4 h-4"></i> Faculty: {{ assigned_class.teacher.name }}</p>
+
+                <div class="flex flex-wrap gap-3">
+                    {% if assigned_class.google_classroom_link %}
+                    <a href="{{ assigned_class.google_classroom_link }}" target="_blank" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+                        <i data-feather="external-link" class="w-4 h-4"></i> Google Classroom
+                    </a>
+                    {% else %}
+                    <span class="inline-flex items-center gap-2 bg-gray-100 text-gray-500 px-4 py-2 rounded-lg font-medium text-sm cursor-not-allowed"> <i data-feather="external-link" class="w-4 h-4"></i> Classroom Not Linked </span>
+                    {% endif %}
+
+                    <button disabled class="inline-flex items-center gap-2 bg-purple-50 text-purple-600 px-4 py-2 rounded-lg transition-colors font-medium text-sm cursor-not-allowed opacity-70" title="Coming Soon"><i data-feather="book-open" class="w-4 h-4"></i> Syllabus</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-gray-50 rounded-xl p-6 flex items-center justify-around">
+                <div class="text-center">
+                    <div class="text-3xl font-bold {% if stats.percentage >= 75 %}text-green-600{% elif stats.percentage >= 60 %}text-orange-600{% else %}text-red-600{% endif %}">{{ stats.percentage }}%</div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Attendance</div>
+                </div>
+                <div class="w-px h-12 bg-gray-200"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-darkblue">{{ stats.attended }}</div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Attended</div>
+                </div>
+                <div class="w-px h-12 bg-gray-200"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-gray-600">{{ stats.total }}</div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Total</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Wise Attendance -->
+    <h3 class="text-xl font-bold text-darkblue mb-4 flex items-center gap-2"><i data-feather="calendar" class="w-5 h-5"></i> Day-wise Attendance</h3>
+
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        {% if attendance_records %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 border-b border-gray-100">
+                        <th class="p-4 font-semibold text-gray-600 text-sm">Date</th>
+                        <th class="p-4 font-semibold text-gray-600 text-sm">Type</th>
+                        <th class="p-4 font-semibold text-gray-600 text-sm">Status</th>
+                        <th class="p-4 font-semibold text-gray-600 text-sm">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for record in attendance_records %}
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-4 text-sm text-gray-700">{{ record.date.strftime('%B %d, %Y') }}</td>
+                        <td class="p-4 text-sm text-gray-600 capitalize">
+                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium">{{ record.class_type }}</span>
+                        </td>
+                        <td class="p-4">
+                            {% if record.status == 'present' %}
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700"> <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Present </span>
+                            {% elif record.status == 'late' %}
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800"> <span class="w-1.5 h-1.5 rounded-full bg-yellow-600"></span> Late </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700"> <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> Absent </span>
+                            {% endif %}
+                        </td>
+                        <td class="p-4 text-sm text-gray-500 italic">{{ record.remarks or "-" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-8 text-center text-gray-500">
+            <i data-feather="calendar" class="w-12 h-12 mx-auto mb-3 text-gray-300"></i>
+            <p>No attendance records found yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -19,6 +19,7 @@ The `utility/` folder contains the following core scripts:
 |--------|---------|
 | `setup_data.py` | **Primary Setup Tool**: Configures teachers, subjects, and class assignments. |
 | `reset_db.py` | Completely resets the database (drops tables, reseeds subjects). |
+| `update_db_schema.py` | **Safe Schema Updater**: Adds missing columns/tables without losing data. |
 | `sync_subjects.py` | Forces synchronization between `branch_subjects.json` and the database. |
 | `create_admin.py` | Creates a default admin user. |
 | `create_test_accounts.py` | Creates test student accounts for all semesters. |
@@ -47,8 +48,17 @@ python utility/reset_db.py --stats
 
 **When to use:**
 - When you want to start fresh.
-- After modifying the database schema (models).
 - After updating `branch_subjects.json` significantly.
+
+### `update_db_schema.py`
+
+**Purpose:**
+Safe way to apply database schema changes (like new columns) to an existing database containing data. It checks for missing elements and adds them if necessary.
+
+**Usage:**
+```bash
+python utility/update_db_schema.py
+```
 
 ---
 

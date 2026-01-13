@@ -219,6 +219,12 @@ class AssignedClass(db.Model):
     # Can add things like 'section' (A, B, C) or 'group' here if multiple teachers teach same subject
     section = db.Column(db.String(10), nullable=True) 
     
+    # Optional links
+    google_classroom_link = db.Column(db.String(255), nullable=True)
+    
+    # Physical Location (Room No, Lab Name)
+    location = db.Column(db.String(100), nullable=True)
+
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Relationships
