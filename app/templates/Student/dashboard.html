@@ -64,7 +64,20 @@
         {% endfor %}
     </div>
 
-    <!-- Notifications Panel (Removed as per request) -->
+    <!-- Attendance Notifications Panel -->
+    {% if attendance_notifications %}
+    <div class="mt-8">
+        <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="bell" class="w-4 h-4 text-gray-600"></i> Attendance Alerts</h3>
+        <div class="space-y-3">
+            {% for notif in attendance_notifications %}
+            <div class="{{ notif.bg_class }} p-3 rounded-lg text-sm flex items-start gap-3">
+                <span class="text-lg">{{ notif.icon }}</span>
+                <p>{{ notif.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </section>
 {% endblock %} {% block sidebar_content %}
 <!-- Active Class Section -->

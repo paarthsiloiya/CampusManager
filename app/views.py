@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, make_response, url_for, flash, s
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
 from sqlalchemy import or_, and_
-from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry, Attendance
+from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry, Attendance, Query, QueryTag, Notification
 from .timetable_generator import TimetableGenerator
 import json
 import os
@@ -96,6 +96,13 @@ def load_calendar_events():
     except FileNotFoundError:
         # Fallback to empty dict if JSON file not found
         return {}
+
+@views.context_processor
+def inject_notifications():
+    if current_user.is_authenticated:
+        notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
+        return dict(notifications=notifications)
+    return dict(notifications=[])
 
 @views.route('/')
 def home():
@@ -250,20 +257,20 @@ def student_dashboard():
          }
 
     # Generate dynamic notifications based on actual attendance
-    notifications = []
+    attendance_notifications = []
     
     # Add attendance-based notifications
     for subject in subjects_data:
         if subject['attendance_percentage'] < 75 and subject['total_classes'] > 0:
-            notifications.append({
+            attendance_notifications.append({
                 'icon': '⚠️',
                 'message': f'Low attendance in {subject["code"]}: {subject["attendance_percentage"]}%',
                 'bg_class': 'bg-red-100 text-red-700'
             })
     
     # Add default notifications if no attendance data
-    if not notifications:
-        notifications = [
+    if not attendance_notifications:
+        attendance_notifications = [
             {
                 'icon': '📚',
                 'message': 'Welcome! Start attending classes to track your progress',
@@ -304,7 +311,7 @@ def student_dashboard():
         semester_info=semester_info,
         attendance_stats=attendance_stats,
         missed_classes=missed_classes,
-        notifications=notifications,
+        attendance_notifications=attendance_notifications,
         upcoming_events=upcoming_events,
         attendance_chart_data=attendance_chart_data,
         calendar_events=calendar_events,
@@ -1848,3 +1855,112 @@ def download_timetable():
             lunch_break_after=lunch_break_after,
             date_generated=datetime.now().strftime('%Y-%m-%d %H:%M')
         )
+
+# --- QUERY SYSTEM ROUTES ---
+
+@views.route('/query/submit', methods=['POST'])
+@login_required
+def submit_query():
+    title = request.form.get('title')
+    tag_str = request.form.get('tag')
+    description = request.form.get('description')
+    
+    # Map string to Enum
+    tag_map = {
+        'BUG': QueryTag.BUG,
+        'FEATURE': QueryTag.FEATURE,
+        'ACCOUNT': QueryTag.ACCOUNT,
+        'SYLLABUS': QueryTag.SYLLABUS,
+        'OTHER': QueryTag.OTHER
+    }
+    tag = tag_map.get(tag_str, QueryTag.OTHER)
+    
+    new_query = Query(
+        user_id=current_user.id,
+        title=title,
+        description=description,
+        tag=tag
+    )
+    
+    db.session.add(new_query)
+    db.session.commit()
+    
+    flash('Query submitted successfully. Administrators will review it.', 'success')
+    return redirect(request.referrer or url_for('views.home'))
+
+@views.route('/notification/<int:notification_id>/read', methods=['POST'])
+@login_required
+def mark_notification_read(notification_id):
+    notif = Notification.query.get_or_404(notification_id)
+    if notif.user_id != current_user.id:
+        return "Unauthorized", 403
+        
+    db.session.delete(notif)
+    db.session.commit()
+    return redirect(request.referrer or url_for('views.home'))
+    
+@views.route('/admin/queries')
+@login_required
+def admin_queries():
+    if current_user.role != UserRole.ADMIN:
+        return redirect(url_for('auth.login'))
+        
+    filter_tag = request.args.get('tag')
+    filter_role = request.args.get('role')
+    sort_order = request.args.get('sort', 'desc')
+    
+    query_obj = Query.query
+    
+    # 1. Filter by Tag
+    if filter_tag:
+        tag_map = { t.name: t for t in QueryTag }
+        if filter_tag in tag_map:
+             query_obj = query_obj.filter_by(tag=tag_map[filter_tag])
+
+    # 2. Filter by Role (requires join with User)
+    if filter_role:
+        if filter_role == 'STUDENT':
+            query_obj = query_obj.join(User).filter(User.role == UserRole.STUDENT)
+        elif filter_role == 'TEACHER':
+            query_obj = query_obj.join(User).filter(User.role == UserRole.TEACHER)
+    
+    # 3. Sort by Date
+    if sort_order == 'asc':
+        query_obj = query_obj.order_by(Query.created_at.asc())
+    else:
+        query_obj = query_obj.order_by(Query.created_at.desc())
+             
+    queries = query_obj.all()
+    
+    return render_template('Admin/queries.html', queries=queries, QueryTag=QueryTag)
+
+@views.route('/admin/query/<int:query_id>/resolve', methods=['POST'])
+@login_required
+def resolve_query(query_id):
+    if current_user.role != UserRole.ADMIN:
+        return redirect(url_for('auth.login'))
+        
+    query = Query.query.get_or_404(query_id)
+    action = request.form.get('action') # 'resolve' or 'dismiss'
+    admin_response = request.form.get('response') # Optional response text
+    
+    # Notify User
+    if action == 'resolve':
+        msg = f"Your query '{query.title}' has been resolved by the admin."
+        if admin_response:
+             msg += f" Response: {admin_response}"
+    else:
+        msg = f"Your query '{query.title}' has been dismissed/closed."
+        if admin_response:
+             msg += f" Note: {admin_response}"
+             
+    notif = Notification(user_id=query.user_id, message=msg)
+    db.session.add(notif)
+    
+    # Delete Query
+    db.session.delete(query)
+    db.session.commit()
+    
+    verb = "resolved" if action == "resolve" else "dismissed"
+    flash(f"Query {verb} successfully.", 'success')
+    return redirect(url_for('views.admin_queries'))

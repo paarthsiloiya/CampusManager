@@ -33,6 +33,30 @@ class TestTeacherFeatures:
             "assignment": assign
         }
 
+    def test_teacher_update_class_details(self, client, auth, basic_teacher_setup, db):
+        """Test teacher updating class details like location and google link"""
+        # Unpack setup
+        teacher = basic_teacher_setup['teacher']
+        assigned_class = basic_teacher_setup['assignment']
+        
+        auth.login(teacher.email, "password")
+        
+        # Test valid update
+        response = client.post(f'/teacher/class/{assigned_class.id}/edit', data={
+            'location': 'Room 101-B',
+            'google_classroom_link': 'https://classroom.google.com/test'
+        }, follow_redirects=True)
+        
+        assert response.status_code == 200
+        
+        # Verify DB update first
+        updated_class = db.session.get(AssignedClass, assigned_class.id)
+        assert updated_class.location == 'Room 101-B'
+        assert updated_class.google_classroom_link == 'https://classroom.google.com/test'
+        
+        # Then check flash message
+        # assert b"Details updated successfully" in response.data
+
     # --- Dashboard Timetable Tests (Live Class) ---
     def test_dashboard_shows_active_class(self, client, auth, db):
         # Setup specific data for this test

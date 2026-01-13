@@ -68,7 +68,12 @@ def run_migrations():
                 connection.commit()
                 print("💾 Changes committed to database.")
             else:
-                print("✨ Database schema is up to date.")
+                print("✨ Database schema columns are up to date.")
+        
+        # Ensure new tables are created
+        print("🔧 Checking for new tables...")
+        db.create_all()
+        print("✅ Tables synced.")
 
 if __name__ == "__main__":
     run_migrations()

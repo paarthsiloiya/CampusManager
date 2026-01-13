@@ -13,28 +13,35 @@ The project uses `pytest` for automated unit and integration testing. The test s
 
 ### Test Architecture (in `tests/` directory)
 
-We have organized the test suite into 6 core "Feature Suites" containing **75 tests** (Coverage: ~80%):
+We have organized the test suite into 7 core "Feature Suites":
 
-#### 1. `test_auth_models.py` (Foundation & Security)
+#### 1. `test_query_system.py` (Support & Communication) - *NEW*
+*   **Submission**: Student/Teacher submitting queries with tags (Bug, Feature, etc.).
+*   **Administration**: Admin viewing, filtering (by role/tag), and sorting queries.
+*   **Resolution**: Admin resolving or dismissing queries with optional response notes.
+*   **Notifications**: Automated feedback loops upon ticket resolution.
+
+#### 2. `test_auth_models.py` (Foundation & Security)
 *   **Authentication**: Login success/failure, Logout, Session cleanup.
 *   **Models**: User creation, Password hashing verification (including empty string checks), String representation.
 *   **Security**: RBAC (Role-Based Access Control) ensuring Students/Teachers cannot access Admin routes.
 *   **Edge Cases**: Duplicate email registration prevention, Enum handling (string vs Enum object).
 
-#### 2. `test_student_features.py` (Student Experience)
+#### 3. `test_student_features.py` (Student Experience)
 *   **Dashboard**: Verifies access to attendance stats and upcoming classes.
-*   **Academics**: Curriculum view, Calendar event loading, Subject filtering.
+*   **Academics**: Dashboard, Curriculum view, Calendar event loading, Subject filtering.
+*   **Class View**: Detailed subject view (Syllabus, Resources).
 *   **Class Actions**: Joining classes (including prevention of duplicate joins), Viewing attendance history.
 *   **Profile**: Updating personal details (Phone, DOB), Changing passwords (with validation).
 *   **Account**: Account deletion flow and confirmation security.
 
-#### 3. `test_teacher_features.py` (Teacher Tools)
-*   **Class Management**: Dashboard "Live Class" detection, Editing class details (Sections), Viewing assigned classes (Active/Past semester filter).
+#### 4. `test_teacher_features.py` (Teacher Tools)
+*   **Class Management**: Dashboard "Live Class" detection, Editing class details (Sections, Google Classroom Link, Location), Viewing assigned classes.
 *   **Attendance**: Marking attendance (Lecture vs Lab handling), Preventing unauthorized modifications.
 *   **Enrollments**: Viewing enrollment requests, Approving/Rejecting students.
 *   **Security**: Ensuring teachers cannot edit or view reports for classes they don't own.
 
-#### 4. `test_admin_features.py` (System Administration)
+#### 5. `test_admin_features.py` (System Administration)
 *   **User Management**: Adding Users with detailed profiles (Branch, DOB, Institution), Editing Users, Deleting Users (with self-delete protection).
 *   **Timetables**: Generating timetables (algorithm integration), Exporting to Excel/PDF.
 *   **System Settings**: Toggling Semester types (Odd/Even), managing global constraints.

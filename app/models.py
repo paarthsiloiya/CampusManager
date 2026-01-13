@@ -394,6 +394,34 @@ class TimetableEntry(db.Model):
     def __repr__(self):
         return f'<TimetableEntry Sem{self.semester} {self.day} P{self.period_number}: {self.assigned_class.subject.code}>'
 
+class QueryTag(enum.Enum):
+    BUG = "Bug Report"
+    FEATURE = "Feature Request"
+    ACCOUNT = "Account Issue"
+    SYLLABUS = "Syllabus Error"
+    OTHER = "Other"
+
+class Query(db.Model):
+    __tablename__ = 'queries'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    tag = db.Column(db.Enum(QueryTag), nullable=False, default=QueryTag.OTHER)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    
+    user = db.relationship('User', backref='queries')
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    message = db.Column(db.String(500), nullable=False)
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = db.relationship('User', backref='notifications')
+
 # Database utility functions
 def create_tables():
     """Create all database tables"""
