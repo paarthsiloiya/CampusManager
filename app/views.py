@@ -104,6 +104,19 @@ def inject_notifications():
         return dict(notifications=notifications)
     return dict(notifications=[])
 
+@views.app_errorhandler(403)
+def forbidden_error(error):
+    return render_template('errors/403.html'), 403
+
+@views.app_errorhandler(404)
+def not_found_error(error):
+    return render_template('errors/404.html'), 404
+
+@views.app_errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('errors/500.html'), 500
+
 @views.route('/')
 def home():
     return redirect(url_for('auth.login'))

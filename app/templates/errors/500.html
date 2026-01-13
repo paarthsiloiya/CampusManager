@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}500 - Server Recess{% endblock %} {% block content %}
+<div class="min-h-[80vh] flex items-center justify-center p-4">
+    <div class="max-w-md w-full text-center">
+        <!-- Illustration -->
+        <div class="mb-8 relative group">
+            <div class="w-48 h-48 bg-orange-50 rounded-full flex items-center justify-center mx-auto overflow-hidden">
+                <i data-feather="server" class="w-24 h-24 text-orange-300 group-hover:rotate-12 transition-transform duration-500"></i>
+            </div>
+            <div class="absolute top-8 right-1/4 animate-bounce">
+                <i data-feather="alert-triangle" class="w-10 h-10 text-orange-500 fill-orange-100"></i>
+            </div>
+        </div>
+
+        <!-- content -->
+        <h1 class="text-2xl font-bold text-gray-800 mb-3">Something Broke</h1>
+        <p class="text-gray-600 mb-8 leading-relaxed">Our server encountered an unexpected hiccup. It's not your fault – we've already dispatched a team of digital mechanics to fix it.</p>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('views.home') }}" class="px-6 py-3 bg-gray-800 text-white rounded-xl font-medium hover:bg-gray-900 transition-all shadow-lg text-sm flex items-center justify-center gap-2">
+                <i data-feather="refresh-cw" class="w-4 h-4"></i>
+                Try Reloading Dashboard
+            </a>
+        </div>
+
+        <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100 text-left">
+            <p class="text-xs text-gray-500 font-mono">Error Code: 500 CTE (Critical Timetable Error)</p>
+            <p class="text-xs text-gray-400 mt-1">If this persists, please let the admin know.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
