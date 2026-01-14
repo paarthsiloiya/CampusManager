@@ -1,96 +1,143 @@
-{% extends "base.html" %} {% block title %}{{ subject.name }} - Class Details{% endblock %} {% block content %}
-<section class="mb-8">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-3xl font-heading font-bold text-darkblue">{{ subject.name }}</h2>
-        <a href="{{ url_for('views.student_dashboard') }}" class="text-gray-600 hover:text-darkblue flex items-center gap-2 transition-colors"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
+{% extends "base.html" %} {% block title %}{{ subject.name }} | Student{% endblock %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-2xl font-bold text-text-dark">{{ subject.name }}</h2>
+            <p class="text-sm text-text-light font-mono mt-0.5">{{ subject.code }}</p>
+        </div>
+        <a href="{{ url_for('views.student_dashboard') }}" class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm">
+            <i data-feather="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+            Back
+        </a>
     </div>
 
     <!-- Class Info Card -->
-    <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
+    <div class="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 relative overflow-hidden shadow-sm">
+        <!-- Abstract Decoration -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-            <div>
-                <h3 class="text-xl font-bold text-darkblue mb-2">{{ subject.code }}</h3>
-                <p class="text-gray-600 mb-4 flex items-center gap-2"><i data-feather="user" class="w-4 h-4"></i> Faculty: {{ assigned_class.teacher.name }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+            <!-- Left: Info -->
+            <div class="md:col-span-2 space-y-6">
+                <!-- Teacher Info -->
+                <div class="flex items-start gap-4">
+                    <div class="w-24 h-24 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-primary">
+                        <i data-feather="user" class="w-12 h-12"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-text-dark">{{ assigned_class.teacher.name }}</h3>
+                        <p class="text-sm text-text-light">Faculty Instructor</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            {% if assigned_class.google_classroom_link %}
+                            <a href="{{ assigned_class.google_classroom_link }}" target="_blank" class="inline-flex items-center gap-2 bg-green-50 text-green-700 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-lg transition-colors text-xs font-bold">
+                                <i data-feather="external-link" class="w-3.5 h-3.5"></i> Google Classroom
+                            </a>
+                            {% else %}
+                            <span class="inline-flex items-center gap-2 bg-gray-50 text-gray-400 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-medium cursor-not-allowed"> <i data-feather="slash" class="w-3.5 h-3.5"></i> Classroom Not Linked </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
 
-                <div class="flex flex-wrap gap-3">
-                    {% if assigned_class.google_classroom_link %}
-                    <a href="{{ assigned_class.google_classroom_link }}" target="_blank" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors font-medium text-sm">
-                        <i data-feather="external-link" class="w-4 h-4"></i> Google Classroom
-                    </a>
-                    {% else %}
-                    <span class="inline-flex items-center gap-2 bg-gray-100 text-gray-500 px-4 py-2 rounded-lg font-medium text-sm cursor-not-allowed"> <i data-feather="external-link" class="w-4 h-4"></i> Classroom Not Linked </span>
-                    {% endif %}
-
-                    <button disabled class="inline-flex items-center gap-2 bg-purple-50 text-purple-600 px-4 py-2 rounded-lg transition-colors font-medium text-sm cursor-not-allowed opacity-70" title="Coming Soon"><i data-feather="book-open" class="w-4 h-4"></i> Syllabus</button>
-                    <button disabled class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg transition-colors font-medium text-sm cursor-not-allowed opacity-70" title="Coming Soon"><i data-feather="folder" class="w-4 h-4"></i> Resources</button>
+                <!-- Resources (Placeholder) -->
+                <div class="pt-4 border-t border-gray-100">
+                    <h4 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-3">Course Materials</h4>
+                    <div class="flex gap-3">
+                        <button disabled class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 text-gray-400 border border-gray-100 text-sm font-medium cursor-not-allowed hover:bg-gray-100 transition-colors"><i data-feather="book-open" class="w-4 h-4"></i> Syllabus</button>
+                        <button disabled class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 text-gray-400 border border-gray-100 text-sm font-medium cursor-not-allowed hover:bg-gray-100 transition-colors"><i data-feather="folder" class="w-4 h-4"></i> Resources</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Stats -->
-            <div class="bg-gray-50 rounded-xl p-6 flex items-center justify-around">
-                <div class="text-center">
-                    <div class="text-3xl font-bold {% if stats.percentage >= 75 %}text-green-600{% elif stats.percentage >= 60 %}text-orange-600{% else %}text-red-600{% endif %}">{{ stats.percentage }}%</div>
-                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Attendance</div>
-                </div>
-                <div class="w-px h-12 bg-gray-200"></div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-darkblue">{{ stats.attended }}</div>
-                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Attended</div>
-                </div>
-                <div class="w-px h-12 bg-gray-200"></div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-gray-600">{{ stats.total }}</div>
-                    <div class="text-xs text-gray-500 uppercase font-semibold mt-1">Total</div>
+            <!-- Right: Stats -->
+            <div class="md:col-span-1">
+                <div class="bg-gray-50/80 rounded-2xl p-6 border border-gray-100 h-full flex flex-col justify-center items-center text-center relative">
+                    {% set att_color = 'text-status-success' if stats.percentage >= 75 else 'text-status-warning' if stats.percentage >= 60 else 'text-status-error' %} {% set att_bg = 'bg-status-success' if stats.percentage >= 75 else 'bg-status-warning' if stats.percentage >= 60 else
+                    'bg-status-error' %}
+
+                    <div class="relative mb-4">
+                        <svg class="w-32 h-32 transform -rotate-90">
+                            <circle class="text-gray-200" stroke-width="8" stroke="currentColor" fill="transparent" r="58" cx="64" cy="64" />
+                            <circle class="{{ att_color }}" stroke-width="8" stroke-dasharray="{{ 365 * (stats.percentage / 100) }} 365" stroke-linecap="round" stroke="currentColor" fill="transparent" r="58" cx="64" cy="64" />
+                        </svg>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <span class="text-3xl font-bold text-text-dark">{{ stats.percentage }}<span class="text-sm text-text-light">%</span></span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 w-full mt-2">
+                        <div class="p-1 rounded-lg bg-white shadow-sm border border-gray-100">
+                            <div class="text-xl font-bold text-text-dark">{{ stats.attended }}</div>
+                            <div class="text-[10px] uppercase font-bold text-text-lighter tracking-wider">Present</div>
+                        </div>
+                        <div class="p-1 rounded-lg bg-white shadow-sm border border-gray-100">
+                            <div class="text-xl font-bold text-text-light">{{ stats.total }}</div>
+                            <div class="text-[10px] uppercase font-bold text-text-lighter tracking-wider">Total</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Day Wise Attendance -->
-    <h3 class="text-xl font-bold text-darkblue mb-4 flex items-center gap-2"><i data-feather="calendar" class="w-5 h-5"></i> Day-wise Attendance</h3>
+    <!-- Attendance History -->
+    <div>
+        <div class="flex items-center gap-3 mb-4">
+            <h3 class="text-lg font-bold text-text-dark">Attendance History</h3>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-text-light">{{ attendance_records|length }} Classes</span>
+        </div>
 
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-        {% if attendance_records %}
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-50 border-b border-gray-100">
-                        <th class="p-4 font-semibold text-gray-600 text-sm">Date</th>
-                        <th class="p-4 font-semibold text-gray-600 text-sm">Type</th>
-                        <th class="p-4 font-semibold text-gray-600 text-sm">Status</th>
-                        <th class="p-4 font-semibold text-gray-600 text-sm">Remarks</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    {% for record in attendance_records %}
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="p-4 text-sm text-gray-700">{{ record.date.strftime('%B %d, %Y') }}</td>
-                        <td class="p-4 text-sm text-gray-600 capitalize">
-                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium">{{ record.class_type }}</span>
-                        </td>
-                        <td class="p-4">
-                            {% if record.status == 'present' %}
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700"> <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Present </span>
-                            {% elif record.status == 'late' %}
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800"> <span class="w-1.5 h-1.5 rounded-full bg-yellow-600"></span> Late </span>
-                            {% else %}
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700"> <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> Absent </span>
-                            {% endif %}
-                        </td>
-                        <td class="p-4 text-sm text-gray-500 italic">{{ record.remarks or "-" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            {% if attendance_records %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/50 border-b border-gray-100 text-xs uppercase tracking-wider text-text-light font-bold">
+                            <th class="p-4 pl-6">Date</th>
+                            <th class="p-4">Type</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 pr-6">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        {% for record in attendance_records %}
+                        <tr class="group hover:bg-gray-50 transition-colors">
+                            <td class="p-4 pl-6 text-sm font-medium text-text-dark">{{ record.date.strftime('%b %d, %Y') }}</td>
+                            <td class="p-4">
+                                <span class="px-2 py-1 bg-white border border-gray-100 rounded text-[10px] font-bold text-text-light uppercase tracking-wide">{{ record.class_type }}</span>
+                            </td>
+                            <td class="p-4">
+                                {% if record.status == 'present' %}
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-success/10 text-status-success border border-status-success/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Present </span>
+                                {% elif record.status == 'late' %}
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-warning/10 text-status-warning border border-status-warning/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-warning"></span> Late </span>
+                                {% else %}
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-error/10 text-status-error border border-status-error/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-error"></span> Absent </span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4 pr-6 text-sm text-text-light group-hover:text-text-dark transition-colors">
+                                {% if record.remarks %}
+                                <div class="flex items-center gap-2"><i data-feather="message-square" class="w-3 h-3 text-primary/50"></i> {{ record.remarks }}</div>
+                                {% else %}
+                                <span class="text-gray-300">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="py-12 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                    <i data-feather="calendar" class="w-8 h-8 text-gray-300"></i>
+                </div>
+                <h4 class="text-base font-bold text-text-dark">No records found</h4>
+                <p class="text-sm text-text-light mt-1">Attendance records will appear here once classes start.</p>
+            </div>
+            {% endif %}
         </div>
-        {% else %}
-        <div class="p-8 text-center text-gray-500">
-            <i data-feather="calendar" class="w-12 h-12 mx-auto mb-3 text-gray-300"></i>
-            <p>No attendance records found yet.</p>
-        </div>
-        {% endif %}
     </div>
 </section>
 {% endblock %}

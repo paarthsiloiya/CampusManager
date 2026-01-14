@@ -1,78 +1,107 @@
 {% extends "base.html" %} {% block title %}Dashboard - Smart Curriculum & Attendance{% endblock %} {% block content %}
-<!-- Dashboard -->
-<section id="dashboard">
-    <h2 id="greeting" class="text-4xl font-heading font-bold text-center mb-6">Welcome, {{ student.name or "Student" }}!</h2>
-    <h3 class="text-2xl text-center font-semibold text-darkblue mb-2">{{ semester_info or "Semester Error" }} - {{ student.branch or "Unknown Branch" }}</h3>
-    <h4 class="text-lg text-center text-gray-600 mb-10">Subjects & Faculty</h4>
-
-    <!-- Subjects -->
-    <div class="space-y-4">
-        {% for subject in subjects %}
-        <div class="bg-white shadow-xl rounded-2xl p-6 flex items-center w-full h-24 pl-1 hover:shadow-2xl transition-shadow duration-300">
-            <!-- Big Icon on the Left -->
-            <div class="w-24 h-24 flex items-center justify-center mr-6">
-                <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-16 h-16 object-contain rounded-lg" />
-            </div>
-
-            <!-- Subject Information - Stacked Vertically -->
-            <div class="flex-1">
-                <div class="text-xl font-bold text-darkblue mb-1">{{ subject.name }}</div>
-                <div class="text-sm text-gray-600 mb-1"><span class="font-medium">Faculty:</span> {{ subject.faculty }}</div>
-
-                <div class="flex items-center gap-4 text-sm mt-2">
-                    <span class="text-gray-500">Code: {{ subject.code }}</span>
-
-                    {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold {% if subject.status == 'good' %}bg-green-100 text-green-700 {% elif subject.status == 'warning' %}bg-orange-100 text-orange-700 {% else %}bg-red-100 text-red-700{% endif %}">
-                        {{ subject.attendance_percentage }}% ({{ subject.attended_classes }}/{{ subject.total_classes }})
-                    </span>
-                    {% else %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">No Attendance Data</span>
-                    {% endif %} {% elif subject.enrollment_status == 'PENDING' %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Enrollment Pending</span>
-                    {% elif subject.enrollment_status == 'REJECTED' %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">Enrollment Rejected</span>
-                    {% else %}
-                    <!-- Not Enrolled -->
-                    {% if subject.assigned_classes|length == 0 %}
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-400">Not assigned</span>
-                    {% endif %} {% endif %}
-                </div>
-            </div>
-
-            <!-- Action Area -->
-            <div>
-                {% if subject.enrollment_status == 'APPROVED' %}
-                <a href="{{ url_for('views.student_class_view', class_id=subject.enrolled_class_id) }}" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-skyblue hover:text-white transition-colors cursor-pointer">
-                    <i data-feather="chevron-right" class="w-4 h-4"></i>
-                </a>
-                {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
-                <div class="flex flex-col gap-2">
-                    {% for cls in subject.assigned_classes %}
-                    <form action="{{ url_for('views.join_class', class_id=cls.id) }}" method="POST">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-md transition">Join {% if cls.section %}({{ cls.section }}){% endif %}</button>
-                    </form>
-                    {% endfor %}
-                </div>
-                {% endif %} {% else %}
-                <div class="text-gray-400">
-                    <i data-feather="clock" class="w-5 h-5"></i>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
+<!-- Dashboard Container -->
+<section id="dashboard" class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-8">
+        <h2 id="greeting" class="text-3xl font-bold text-text-darker tracking-tight mb-1">Welcome, {{ student.name or "Student" }}!</h2>
+        <p class="text-text-light font-medium">{{ semester_info or "Semester Info Unavailable" }} • {{ student.branch or "General Branch" }}</p>
     </div>
 
-    <!-- Attendance Notifications Panel -->
+    <!-- Subjects Section -->
+    <div class="mb-6">
+        <h3 class="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+            <span class="p-1.5 bg-primary/10 rounded-lg text-primary">
+                <i data-feather="book-open" class="w-4 h-4"></i>
+            </span>
+            Enrolled Courses
+        </h3>
+
+        <!-- List View -->
+        <div class="flex flex-col gap-3">
+            {% for subject in subjects %}
+            <div class="group bg-white rounded-xl border border-gray-100 p-3 hover:border-primary/30 hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                <div class="flex items-center gap-4 relative z-10">
+                    <!-- Icon/Avatar -->
+                    <div class="w-14 h-14 flex items-center justify-center flex-shrink-0">
+                        {% if subject.icon %}
+                        <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-10 h-10 object-contain" />
+                        {% else %}
+                        <span class="text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <!-- Info -->
+                        <div class="md:col-span-5">
+                            <h4 class="text-base font-bold text-text-dark truncate leading-tight group-hover:text-primary transition-colors" title="{{ subject.name }}">{{ subject.name }}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs font-mono text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100">{{ subject.code }}</span>
+                                <span class="text-xs text-text-light truncate flex items-center gap-1"><i data-feather="user" class="w-3 h-3"></i> {{ subject.faculty }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="md:col-span-4 flex items-center md:justify-center">
+                            {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %} {% set att_status = 'success' if subject.status == 'good' else 'warning' if subject.status == 'warning' else 'error' %}
+                            <div class="flex items-center gap-3 w-full max-w-[180px]">
+                                {% set att_bg = 'bg-emerald-500' if att_status == 'success' else 'bg-amber-400' if att_status == 'warning' else 'bg-rose-500' %} {% set att_text = 'text-emerald-600' if att_status == 'success' else 'text-amber-500' if att_status == 'warning' else 'text-rose-500' %}
+                                <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full {{ att_bg }}" style="width: {{ subject.attendance_percentage }}%;"></div>
+                                </div>
+                                <span class="text-sm font-bold {{ att_text }} w-10 text-right">{{ subject.attendance_percentage }}%</span>
+                            </div>
+                            {% else %}
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">New</span>
+                            {% endif %} {% elif subject.enrollment_status == 'PENDING' %}
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Pending</span>
+                            {% elif subject.enrollment_status == 'REJECTED' %}
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-status-error/10 text-status-error">Rejected</span>
+                            {% else %}
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Not Enrolled</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Action -->
+                        <div class="md:col-span-3 flex justify-end items-center h-full">
+                            {% if subject.enrollment_status == 'APPROVED' %}
+                            <a href="{{ url_for('views.student_class_view', class_id=subject.enrolled_class_id) }}" class="text-sm font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-primary/5">
+                                Open <i data-feather="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                            {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
+                            <div class="flex gap-2 items-center">
+                                {% for cls in subject.assigned_classes %}
+                                <form action="{{ url_for('views.join_class', class_id=cls.id) }}" method="POST" class="flex items-center m-0 mr-3">
+                                    <button type="submit" class="text-xs font-bold bg-primary hover:bg-primary-dark text-white px-3 py-2 rounded shadow-sm hover:shadow transition-all">Join {% if cls.section %}{{ cls.section }}{% endif %}</button>
+                                </form>
+                                {% endfor %}
+                            </div>
+                            {% endif %} {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Attendance Alerts -->
     {% if attendance_notifications %}
     <div class="mt-8">
-        <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="bell" class="w-4 h-4 text-gray-600"></i> Attendance Alerts</h3>
-        <div class="space-y-3">
+        <h3 class="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+            <span class="p-1.5 bg-warning/10 rounded-lg text-warning-dark">
+                <i data-feather="bell" class="w-4 h-4"></i>
+            </span>
+            Attention Required
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for notif in attendance_notifications %}
-            <div class="{{ notif.bg_class }} p-3 rounded-lg text-sm flex items-start gap-3">
-                <span class="text-lg">{{ notif.icon }}</span>
-                <p>{{ notif.message }}</p>
+            <div class="bg-white border border-gray-100 border-l-4 {% if 'red' in notif.bg_class %}border-l-status-error{% elif 'orange' in notif.bg_class %}border-l-status-warning{% else %}border-l-status-info{% endif %} rounded-xl p-4 shadow-sm flex items-start gap-4">
+                <div class="p-2 bg-gray-50 rounded-full shrink-0">{{ notif.icon|safe }}</div>
+                <div>
+                    <h5 class="text-text font-semibold text-sm">{{ notif.message }}</h5>
+                    <p class="text-xs text-text-light mt-1">Attendance is below threshold.</p>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -80,67 +109,69 @@
     {% endif %}
 </section>
 {% endblock %} {% block sidebar_content %}
-<!-- Active Class Section -->
-{% if active_class_info %}
-<div class="mb-8">
-    <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="clock" class="w-4 h-4 text-gray-600"></i> Active Class</h3>
-    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 shadow-sm relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-full -mr-8 -mt-8 opacity-50"></div>
+<!-- Active Class Widget -->
+<div class="mb-6">
+    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Live Status</h3>
 
-        <div class="flex items-center gap-2 mb-2">
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 animate-pulse"> <span class="w-1.5 h-1.5 bg-red-600 rounded-full mr-1.5"></span> Live </span>
-            <span className="text-xs text-gray-500 font-medium">{{ active_class_info.entry.start_time.strftime('%I:%M %p') }} - {{ active_class_info.entry.end_time.strftime('%I:%M %p') }}</span>
-        </div>
+    {% if active_class_info %}
+    <div class="bg-gradient-to-br from-primary to-primary-dark rounded-xl p-5 text-white shadow-lg shadow-primary/20 relative overflow-hidden group">
+        <!-- Floating shape -->
+        <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-white/20 transition-colors"></div>
 
-        <h4 class="font-bold text-lg text-blue-900 leading-tight mb-1">{{ active_class_info.class.subject.name }}</h4>
-        <div class="text-sm text-gray-600 mb-3">{{ active_class_info.class.subject.code }}</div>
-
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-            <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                <i data-feather="user" class="w-3 h-3"></i>
+        <div class="relative z-10">
+            <div class="flex items-center justify-between mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-sm text-xs font-bold border border-white/10"> <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse"></span> Live </span>
+                <span class="text-xs font-medium text-white/90">{{ active_class_info.entry.start_time.strftime('%I:%M %p') }}</span>
             </div>
-            <span class="font-medium truncated">{{ active_class_info.class.teacher.name }}</span>
-        </div>
 
-        <div class="flex items-center gap-2 text-sm text-gray-700 mt-2">
-            <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
-                <i data-feather="map-pin" class="w-3 h-3"></i>
+            <h4 class="text-lg font-bold mb-1 line-clamp-1" title="{{ active_class_info.class.subject.name }}">{{ active_class_info.class.subject.name }}</h4>
+            <div class="text-xs text-primary-light bg-white/10 inline-block px-1.5 py-0.5 rounded mb-4 font-mono">{{ active_class_info.class.subject.code }}</div>
+
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-2 text-sm text-white/90">
+                    <i data-feather="user" class="w-3.5 h-3.5 opacity-70"></i>
+                    <span class="truncate">{{ active_class_info.class.teacher.name }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-white/90">
+                    <i data-feather="map-pin" class="w-3.5 h-3.5 opacity-70"></i>
+                    <span class="truncate">{{ active_class_info.class.location or 'Classroom' }}</span>
+                </div>
             </div>
-            <span class="font-medium truncated">{{ active_class_info.class.location or 'Classroom' }}</span>
         </div>
     </div>
-</div>
-{% else %}
-<div class="mb-8">
-    <h3 class="font-bold mb-3 flex items-center gap-2"><i data-feather="clock" class="w-4 h-4 text-gray-600"></i> Active Class</h3>
-    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
-        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 text-gray-400">
-            <i data-feather="coffee" class="w-5 h-5"></i>
+    {% else %}
+    <div class="bg-gray-50 border border-gray-100 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-2">
+            <i data-feather="coffee" class="w-5 h-5 text-gray-400"></i>
         </div>
-        <p class="text-sm text-gray-500 font-medium">No active class right now.</p>
+        <p class="text-sm font-semibold text-gray-500">No active class</p>
+        <p class="text-xs text-gray-400">Enjoy your break!</p>
     </div>
+    {% endif %}
 </div>
-{% endif %}
 
-<!-- Full Calendar in Sidebar -->
+<!-- Mini Calendar Widget -->
 <div>
-    <h3 class="font-bold mb-2 flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Calendar</h3>
-    <div id="sideMonthYear" class="text-center font-semibold mb-2">Loading...</div>
-    <div class="grid grid-cols-7 gap-1 text-center text-xs mb-1 font-semibold text-gray-600">
-        <div>S</div>
-        <div>M</div>
-        <div>T</div>
-        <div>W</div>
-        <div>T</div>
-        <div>F</div>
-        <div>S</div>
-    </div>
-    <div id="sideCalendar" class="grid grid-cols-7 gap-1 text-center text-xs">
-        <div class="p-1 text-xs">Loading...</div>
+    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Calendar</h3>
+    <div class="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
+        <div id="sideMonthYear" class="text-center font-bold text-text mb-4 text-sm">Loading...</div>
+
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-gray-400 uppercase mb-2">
+            <div>S</div>
+            <div>M</div>
+            <div>T</div>
+            <div>W</div>
+            <div>T</div>
+            <div>F</div>
+            <div>S</div>
+        </div>
+
+        <div id="sideCalendar" class="grid grid-cols-7 gap-1">
+            <!-- Calendar days generated by JS -->
+        </div>
     </div>
 </div>
 {% endblock %} {% block scripts %}
-<!-- Template Data Injection -->
 <script id="template-data" type="application/json">
     {
         "calendarEvents": {{ calendar_events | tojson | safe }},
@@ -149,167 +180,70 @@
 </script>
 
 <script>
-    // Get template data from JSON script tag
+    // Get template data safely
     function getTemplateData() {
         try {
-            const dataScript = document.getElementById("template-data");
-            return JSON.parse(dataScript.textContent);
+            const el = document.getElementById("template-data");
+            return el ? JSON.parse(el.textContent) : {};
         } catch (e) {
-            console.warn("Could not parse template data:", e);
+            console.error("Template data parse error", e);
             return {};
         }
     }
 
     const templateData = getTemplateData();
 
-    function setGreeting() {
-        // Subject-wise Attendance (if you want bars on Dashboard too, ensure this logic runs)
-        const progressBars = document.querySelectorAll("[data-percentage]");
-        progressBars.forEach((bar) => {
-            const percentage = parseFloat(bar.getAttribute("data-percentage"));
-            setTimeout(() => {
-                bar.style.width = percentage + "%";
-            }, 50);
-        });
+    // Greeter logic
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+    const greetingEl = document.getElementById("greeting");
+    if (greetingEl) greetingEl.textContent = `${greet}, ${templateData.studentName || "Student"}!`;
 
-        const hour = new Date().getHours();
-        let greet = "Good Evening";
-        if (hour < 12) greet = "Good Morning";
-        else if (hour < 18) greet = "Good Afternoon";
+    // Calendar logic
+    const events = templateData.calendarEvents || {};
+    const today = new Date();
 
-        const studentName = templateData ? templateData.studentName : "Student";
-        const greetingElement = document.getElementById("greeting");
-        if (greetingElement) {
-            greetingElement.textContent = `${greet}, ${studentName}!`;
-        }
-    }
+    function renderCalendar(month, year) {
+        const container = document.getElementById("sideCalendar");
+        const label = document.getElementById("sideMonthYear");
+        if (!container || !label) return;
 
-    // Set greeting immediately when script runs
-    setGreeting();
+        container.innerHTML = "";
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        label.textContent = `${months[month]} ${year}`;
 
-    // Also set greeting when DOM is fully loaded
-    document.addEventListener("DOMContentLoaded", function () {
-        setGreeting();
-
-        // Initialize Feather icons
-        if (typeof feather !== "undefined") {
-            feather.replace();
-        }
-    });
-
-    // Notifications
-    const notiList = document.getElementById("notifications");
-    function addNotification(type, message) {
-        let icon = "📢",
-            bg = "bg-skyblue/10 text-skyblue";
-        if (type === "present") {
-            icon = "✅";
-            bg = "bg-green-100 text-green-700";
-        }
-        if (type === "absent") {
-            icon = "❌";
-            bg = "bg-red-100 text-red-700";
-        }
-        if (type === "query") {
-            icon = "❓";
-            bg = "bg-orange-100 text-orange-700";
-        }
-
-        const li = document.createElement("li");
-        li.className = `flex items-start gap-3 p-3 rounded-xl shadow-sm animate-fadeIn ${bg}`;
-        li.innerHTML = `<span class="text-lg">${icon}</span> <p class="text-sm font-medium">${message}</p>`;
-        notiList.prepend(li);
-    }
-
-    // Academic Calendar - events loaded from JSON
-    const events = templateData ? templateData.calendarEvents : {};
-
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    let calendarsInitialized = false;
-
-    function renderSideCalendar(month, year, targetDays, targetHeader) {
-        if (!targetDays || !targetHeader) return;
-
-        targetDays.innerHTML = "";
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        targetHeader.textContent = `${monthNames[month]} ${year}`;
 
+        // Empty slots
         for (let i = 0; i < firstDay; i++) {
-            targetDays.appendChild(document.createElement("div"));
+            container.appendChild(document.createElement("div"));
         }
 
+        // Days
         for (let d = 1; d <= daysInMonth; d++) {
-            const dayDiv = document.createElement("div");
-            dayDiv.className = "p-1 text-xs cursor-pointer hover:bg-gray-100 rounded relative";
-            dayDiv.textContent = d;
+            const btn = document.createElement("div");
+            const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+            const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+            const hasEvent = events[dateKey];
 
-            const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-            if (events && events[dateStr]) {
-                // Set tooltip for hover
-                dayDiv.title = events[dateStr];
-                dayDiv.setAttribute("data-event", events[dateStr]);
+            btn.className = `aspect-square flex items-center justify-center rounded-lg text-xs cursor-default transition-all relative ${isToday ? "bg-primary text-white font-bold shadow-md shadow-primary/30" : "text-text hover:bg-gray-50"}`;
+            btn.textContent = d;
 
-                // Add dot indicator for events
-                const eventDot = document.createElement("div");
-                eventDot.className = "calendar-event-dot";
-                dayDiv.appendChild(eventDot);
+            if (hasEvent) {
+                const dot = document.createElement("div");
+                dot.className = `absolute bottom-1 w-1 h-1 rounded-full ${isToday ? "bg-white" : "bg-accent"}`;
+                btn.appendChild(dot);
+                btn.title = hasEvent;
             }
 
-            const today = new Date();
-            if (year === today.getFullYear() && month === today.getMonth() && d === today.getDate()) {
-                dayDiv.className += " calendar-today-sidebar";
-            }
-
-            targetDays.appendChild(dayDiv);
+            container.appendChild(btn);
         }
     }
 
-    // Initialize calendar when DOM is ready
-    document.addEventListener("DOMContentLoaded", function () {
-        const sideMonthYear = document.getElementById("sideMonthYear");
-        const sideCalendar = document.getElementById("sideCalendar");
-
-        function updateSideCalendar() {
-            if (sideMonthYear && sideCalendar) {
-                renderSideCalendar(currentMonth, currentYear, sideCalendar, sideMonthYear);
-                console.log("Side calendar rendered for dashboard");
-            }
-        }
-
-        // Initial render
-        if (!calendarsInitialized) {
-            updateSideCalendar();
-            calendarsInitialized = true;
-        }
+    document.addEventListener("DOMContentLoaded", () => {
+        renderCalendar(today.getMonth(), today.getFullYear());
+        if (typeof feather !== "undefined") feather.replace();
     });
-
-    console.log("Dashboard script loaded");
 </script>
-
-<!-- Calendar Today Highlighting CSS -->
-<style>
-    .calendar-today-sidebar {
-        background-color: var(--color-skyblue) !important;
-        color: white !important;
-        border: 1px solid var(--color-skyblue) !important;
-        font-weight: bold !important;
-    }
-
-    /* Event dot styling for sidebar calendar */
-    .calendar-event-dot {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 8px;
-        height: 8px;
-        background-color: var(--color-orange);
-        border-radius: 50%;
-        transform: translate(2px, -2px);
-        z-index: 10;
-        border: 1px solid white;
-    }
-</style>
 {% endblock %}
