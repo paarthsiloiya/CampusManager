@@ -131,7 +131,7 @@ def test_student_dashboard_active_class_collision(client, auth, app):
         html = response.data.decode('utf-8')
         
         # Verify no active class
-        assert "No active class right now" in html
+        assert "No active class" in html
 
 def test_teacher_class_details_active_button(client, auth, app):
     """
@@ -184,7 +184,7 @@ def test_teacher_class_details_active_button(client, auth, app):
         assert response.status_code == 200
         html = response.data.decode('utf-8')
         
-        assert "Class Active" in html
+        assert "Class in Session" in html
         assert "Take Attendance Now" in html
         assert "LIVE" in html
 

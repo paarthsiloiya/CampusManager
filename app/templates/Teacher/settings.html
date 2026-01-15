@@ -1,145 +1,280 @@
-{% extends "base.html" %} {% block title %}Teacher Settings{% endblock %} {% block content %}
-<div class="container mx-auto">
-    <!-- Settings Section -->
-    <section id="settings">
-        <h1 class="text-4xl font-bold mb-6 flex items-center gap-2"><i data-feather="settings" class="w-8 h-8 text-skyblue"></i> Profile Settings</h1>
+{% extends "base.html" %} {% block title %}Settings | Teacher{% endblock %} {% block content %}
+<section class="max-w-4xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex items-end justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark">Settings</h1>
+            <p class="text-text-light mt-1">Manage your profile and account preferences</p>
+        </div>
+    </div>
 
-        <!-- Profile Information Form -->
-        <form id="profileForm" method="POST" action="{{ url_for('views.settings') }}">
-            <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-2xl">
-                <h2 class="text-2xl font-semibold mb-4">Personal Information</h2>
+    <!-- Personal & Professional Information Form -->
+    <form id="profileForm" method="POST" action="{{ url_for('views.settings') }}" class="space-y-8">
+        <!-- Personal Information -->
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100">
+                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <i data-feather="user" class="w-5 h-5"></i>
+                    </span>
+                    Personal Information
+                </h2>
+            </div>
 
-                <!-- Profile Picture Section -->
-                <div class="flex items-center space-x-4 mb-6">
-                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-                        <i data-feather="user" class="w-10 h-10 text-gray-500"></i>
+            <div class="p-8 space-y-8">
+                <!-- Avatar -->
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-text-light border-4 border-white shadow-lg overflow-hidden">
+                            {% if teacher.profile_pic %}
+                            <img src="{{ teacher.profile_pic }}" alt="Profile" class="w-full h-full object-cover" />
+                            {% else %}
+                            <i data-feather="user" class="w-10 h-10"></i>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border-2 border-white shadow-sm hover:scale-110 transition-transform">
+                            <i data-feather="camera" class="w-4 h-4"></i>
+                        </button>
                     </div>
                     <div>
-                        <button type="button" class="bg-skyblue text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">Change Photo</button>
-                        <p class="text-sm text-gray-500 mt-1">JPG, PNG or GIF (max. 2MB)</p>
+                        <h3 class="font-bold text-text-dark">Profile Photo</h3>
+                        <p class="text-xs text-text-light mt-1">Update your profile picture.</p>
+                        <p class="text-[10px] text-text-lighter mt-2">Allowed: JPG, PNG. Max 2MB.</p>
                     </div>
                 </div>
 
-                <!-- Form Fields -->
-                <div class="grid md:grid-cols-2 gap-4">
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium">
-                            <i data-feather="user" class="w-4 h-4 text-gray-600"></i> Full Name
-                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                        </span>
-                        <input id="name" name="name" value="{{ teacher.name or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your full name" readonly />
-                        <p class="text-xs text-gray-500">Name cannot be changed after account creation</p>
-                    </label>
+                <!-- Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Full Name</label>
+                        <div class="relative">
+                            <input value="{{ teacher.name or '' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
+                            <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                        </div>
+                    </div>
 
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium">
-                            <i data-feather="mail" class="w-4 h-4 text-gray-600"></i> Email
-                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                        </span>
-                        <input id="email" name="email" type="email" value="{{ teacher.email or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter your email" readonly />
-                        <p class="text-xs text-gray-500">Email cannot be changed after account creation</p>
-                    </label>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
+                        <div class="relative">
+                            <input value="{{ teacher.email or '' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
+                            <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                        </div>
+                    </div>
 
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium"> <i data-feather="phone" class="w-4 h-4 text-gray-600"></i> Phone </span>
-                        <input id="phone" name="phone" value="{{ teacher.phone or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter your phone number" />
-                    </label>
+                    <div class="space-y-2">
+                        <label for="phone" class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
+                        <input id="phone" name="phone" value="{{ teacher.phone or '' }}" placeholder="+91 ..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                    </div>
 
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium"> <i data-feather="calendar" class="w-4 h-4 text-gray-600"></i> Date of Birth </span>
-                        <input id="dob" name="date_of_birth" type="date" value="{{ teacher.date_of_birth or '' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" />
-                    </label>
-                </div>
-
-                <h2 class="text-2xl font-semibold mt-8 mb-4">Professional Information</h2>
-
-                <div class="grid md:grid-cols-2 gap-4">
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium">
-                            <i data-feather="briefcase" class="w-4 h-4 text-gray-600"></i> Department
-                            <span class="text-xs text-red-600 ml-1">(Read-only)</span>
-                        </span>
-                        <input id="department" name="department" value="{{ teacher.department or '' }}" class="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed" placeholder="Enter department" readonly />
-                        <p class="text-xs text-gray-500">Contact admin to change</p>
-                    </label>
-
-                    <label class="flex flex-col gap-2">
-                        <span class="flex items-center gap-2 font-medium"> <i data-feather="building" class="w-4 h-4 text-gray-600"></i> Institution </span>
-                        <input id="inst" name="institution" value="{{ teacher.institution or 'Delhi Technical Campus' }}" class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" placeholder="Enter institution name" />
-                    </label>
-                </div>
-
-                <div class="flex justify-end mt-6">
-                    <button type="submit" class="bg-skyblue text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition duration-200">Save Changes</button>
+                    <div class="space-y-2">
+                        <label for="dob" class="text-xs font-bold text-text-dark uppercase tracking-wide">Date of Birth</label>
+                        <input
+                            id="dob"
+                            name="date_of_birth"
+                            type="date"
+                            value="{{ teacher.date_of_birth or '' }}"
+                            class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        />
+                    </div>
                 </div>
             </div>
-        </form>
-
-        <!-- Change Password Section -->
-        <div class="mt-8 bg-white shadow-lg rounded-xl p-6 max-w-2xl">
-            <h2 class="text-2xl font-semibold mb-4">Security</h2>
-            <form method="POST" action="{{ url_for('views.settings') }}" class="space-y-4">
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700">Current Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="current_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Enter current password" required />
-                </div>
-
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700">New Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="new_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Enter new password (min. 6 characters)" required />
-                </div>
-
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700">Confirm New Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="confirm_password" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-skyblue" placeholder="Confirm new password" required />
-                </div>
-
-                <div class="flex justify-end mt-4">
-                    <button type="submit" class="bg-orange text-white px-6 py-3 rounded-xl hover:bg-red-600 transition duration-200">Update Password</button>
-                </div>
-            </form>
         </div>
 
-        <!-- Delete Account Section -->
-        <div class="mt-8 bg-white border border-red-200 shadow-lg rounded-xl p-6 max-w-2xl">
-            <h2 class="text-2xl font-semibold text-red-600 mb-4">Danger Zone</h2>
-            <p class="text-gray-600 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+        <!-- Professional Information -->
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100">
+                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
+                        <i data-feather="briefcase" class="w-5 h-5"></i>
+                    </span>
+                    Professional Information
+                </h2>
+            </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-text-light uppercase tracking-wide">Department</label>
+                    <div class="relative">
+                        <input value="{{ teacher.department or 'Not Assigned' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
+                        <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                    </div>
+                </div>
 
-            <button onclick="document.getElementById('deleteModal').classList.remove('hidden')" type="button" class="bg-red-100 text-red-600 border border-red-200 px-6 py-3 rounded-xl hover:bg-red-200 transition duration-200">Delete Account</button>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Institution</label>
+                    <div class="relative">
+                        <input
+                            id="institution"
+                            name="institution"
+                            value="{{ teacher.institution or 'Delhi Technical Campus' }}"
+                            class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
 
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Delete Account?</h3>
-            <p class="text-gray-600 mb-6">
-                This action cannot be undone. This will permanently delete your account and remove your access.
-                <br /><br />
-                Type <strong>DELETE</strong> to confirm.
-            </p>
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-4">
+            <button type="button" onclick="window.location.reload()" class="px-6 py-3 rounded-xl text-text-light font-bold hover:bg-gray-100 transition-colors">Discard</button>
+            <button type="submit" class="px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">Save Changes</button>
+        </div>
+    </form>
 
-            <form action="{{ url_for('views.delete_account') }}" method="POST">
-                <input type="text" name="confirmation" class="w-full border border-gray-300 p-3 rounded-lg mb-4" placeholder="Type DELETE" required pattern="DELETE" />
+    <!-- Security Section (Separate Form) -->
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="p-8 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <i data-feather="shield" class="w-5 h-5"></i>
+                </span>
+                Security
+            </h2>
+        </div>
+        <div class="p-8">
+            <form method="POST" action="{{ url_for('views.settings') }}" class="max-w-xl space-y-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Password</label>
+                    <input type="password" name="current_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Enter current password" />
+                </div>
 
-                <div class="flex gap-3 justify-end">
-                    <button type="button" onclick="document.getElementById('deleteModal').classList.add('hidden')" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete Permanently</button>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">New Password</label>
+                        <input type="password" name="new_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Min. 6 characters" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Confirm Password</label>
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            required
+                            class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            placeholder="Re-enter new password"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">Update Password</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        // Initialize feather icons
-        feather.replace();
+    <!-- Danger Zone -->
+    <div class="bg-red-50/30 rounded-3xl border border-red-100 overflow-hidden">
+        <div class="p-8 border-b border-red-100">
+            <h2 class="text-xl font-bold text-red-700 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+                    <i data-feather="alert-triangle" class="w-5 h-5"></i>
+                </span>
+                Danger Zone
+            </h2>
+        </div>
+        <div class="p-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-text-dark">Delete Account</h3>
+                    <p class="text-sm text-text-light max-w-md mt-1">Permanently delete your account and all of your content. This action is not reversible, so please continue with caution.</p>
+                </div>
+                <button type="button" onclick="showDeleteConfirmation()" class="px-6 py-3 rounded-xl bg-white border-2 border-red-100 text-red-600 font-bold hover:bg-red-50 hover:border-red-200 transition-colors">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Close modal when clicking outside
-        document.getElementById("deleteModal").addEventListener("click", function (e) {
-            if (e.target === this) {
-                this.classList.add("hidden");
+<!-- Delete Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
+        <div class="p-8 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-red-600">
+                <i data-feather="alert-octagon" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-text-dark mb-2">Delete Account?</h3>
+            <p class="text-text-light mb-8">This action cannot be undone. All your data will be permanently removed.</p>
+
+            <div class="space-y-4">
+                <div class="relative">
+                    <input id="deleteConfirmation" type="text" placeholder='Type "DELETE" to confirm' class="w-full border border-gray-200 rounded-xl px-4 py-3 text-center font-bold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
+                </div>
+
+                <form action="{{ url_for('views.delete_account') }}" method="POST">
+                    <button type="submit" id="confirmDeleteBtn" disabled class="w-full bg-red-600 text-white font-bold py-3.5 rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-red-600/20">Yes, Delete My Account</button>
+                </form>
+
+                <button type="button" onclick="hideDeleteConfirmation()" class="text-text-light font-bold text-sm hover:text-text-dark transition-colors">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof feather !== "undefined") {
+            feather.replace();
+        }
+    });
+
+    // Delete Modal Logic
+    const deleteInput = document.getElementById("deleteConfirmation");
+    const deleteBtn = document.getElementById("confirmDeleteBtn");
+    const deleteModal = document.getElementById("deleteModal");
+
+    if (deleteInput && deleteBtn) {
+        deleteInput.addEventListener("input", function () {
+            if (this.value.trim().toUpperCase() === "DELETE") {
+                deleteBtn.disabled = false;
+                deleteBtn.classList.remove("disabled:bg-gray-400", "disabled:cursor-not-allowed");
+            } else {
+                deleteBtn.disabled = true;
+                deleteBtn.classList.add("disabled:bg-gray-400", "disabled:cursor-not-allowed");
             }
         });
-    </script>
-</div>
+    }
+
+    function showDeleteConfirmation() {
+        if (deleteModal) {
+            deleteModal.classList.remove("hidden");
+            // Simple animation
+            setTimeout(() => {
+                const innerDiv = deleteModal.querySelector("div");
+                if (innerDiv) {
+                    innerDiv.classList.remove("scale-95", "opacity-0");
+                    innerDiv.classList.add("scale-100", "opacity-100");
+                }
+            }, 10);
+
+            // Focus input
+            if (deleteInput) setTimeout(() => deleteInput.focus(), 100);
+        }
+    }
+
+    function hideDeleteConfirmation() {
+        if (deleteModal) {
+            deleteModal.classList.add("hidden");
+            if (deleteInput) deleteInput.value = "";
+            if (deleteBtn) {
+                deleteBtn.disabled = true;
+                deleteBtn.classList.add("disabled:bg-gray-400", "disabled:cursor-not-allowed");
+            }
+        }
+    }
+
+    // Close modal when clicking outside
+    if (deleteModal) {
+        deleteModal.addEventListener("click", function (e) {
+            if (e.target === this) {
+                hideDeleteConfirmation();
+            }
+        });
+    }
+
+    // Close modal with Escape key
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            hideDeleteConfirmation();
+        }
+    });
+</script>
 {% endblock %}
