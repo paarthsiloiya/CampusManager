@@ -107,18 +107,13 @@
                 <ul class="space-y-2 text-sm font-medium">
                     <li>
                         {% if current_user.role.name == 'ADMIN' %}
-                        <a href="{{ url_for('views.admin_dashboard', section='add') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.args.get('section') == 'add' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                        <a href="{{ url_for('views.admin_dashboard') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors"></i> Dashboard</a
+                        >
+                    </li>
+                    <li>
+                        <a href="{{ url_for('views.add_user') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"
                             ><i data-feather="user-plus" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors"></i> Add New User</a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.admin_dashboard', section='edit') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.args.get('section') == 'edit' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="edit" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors"></i> Edit Users</a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.admin_dashboard', section='view') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' and (request.args.get('section') == 'view' or not request.args.get('section')) %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="users" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors"></i> View Users</a
                         >
                     </li>
                     <li>

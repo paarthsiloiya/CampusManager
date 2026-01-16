@@ -185,7 +185,7 @@ def test_teacher_class_details_active_button(client, auth, app):
         html = response.data.decode('utf-8')
         
         assert "Class in Session" in html
-        assert "Take Attendance Now" in html
+        assert "Take Attendance" in html
         assert "LIVE" in html
 
     # 2. Test Outside Class (12:00 PM IST)

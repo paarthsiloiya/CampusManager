@@ -1,207 +1,110 @@
-{% extends "base.html" %} {% block title %}Admin Dashboard{% endblock %} {% block content %}
-<div class="container mx-auto">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">{% if section == 'add' %}Add New User {% elif section == 'edit' %}Edit Existing User {% else %}View Users{% endif %}</h1>
+{% extends "base.html" %} 
+{% block title %}Dashboard | Admin{% endblock %} 
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark">User Management</h1>
+            <p class="text-text-light mt-1">View, search, and manage all users in the system.</p>
+        </div>
+        <a href="{{ url_for('views.add_user') }}" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:scale-105 transition-all shadow-lg shadow-primary/20">
+            <i data-feather="plus" class="w-5 h-5"></i>
+            <span>Add New User</span>
+        </a>
     </div>
 
-    <!-- ADD USER SECTION -->
-    {% if section == 'add' %}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-        <form action="{{ url_for('views.add_user') }}" method="POST" class="space-y-4">
-            <!-- Common Fields -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Work Email <span class="text-red-500">*</span></label>
-                    <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Role <span class="text-red-500">*</span></label>
-                    <select name="role" id="roleSelect" required onchange="toggleFields()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2">
-                        <option value="TEACHER">Teacher</option>
-                        <option value="STUDENT">Student</option>
-                        <option value="ADMIN">Admin</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Temporary Password <span class="text-red-500">*</span></label>
-                    <input type="text" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Phone</label>
-                    <input type="text" name="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                </div>
+    <!-- Search Toolbar -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+        <form method="GET" action="{{ url_for('views.admin_dashboard') }}" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-grow relative">
+                <i data-feather="search" class="w-5 h-5 text-gray-400 absolute left-4 top-3.5"></i>
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search by name, email, or role..." class="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark" />
             </div>
-
-            <!-- Student Specific Fields -->
-            <div id="studentFields" class="hidden mt-4 border-t pt-4">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Student Details</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                        <input type="date" name="student_dob" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Enrollment Number <span class="text-red-500">*</span></label>
-                        <input type="text" name="enrollment_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Branch <span class="text-red-500">*</span></label>
-                        <select name="student_branch" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
-                            <option value="">Select Branch</option>
-                            <option value="AIML">AIML - Artificial Intelligence & Machine Learning</option>
-                            <option value="AIDS">AIDS - Artificial Intelligence & Data Science</option>
-                            <option value="CST">CST - Computer Science & Technology</option>
-                            <option value="CSE">CSE - Computer Science & Engineering</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Semester <span class="text-red-500">*</span></label>
-                        <select name="semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required>
-                            <option value="">Select Semester</option>
-                            {% for i in range(1, 9) %}
-                            <option value="{{ i }}">{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Institution</label>
-                        <input type="text" name="student_institution" value="Delhi Technical Campus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Graduation Year <span class="text-red-500">*</span></label>
-                        <input type="number" name="graduation_year" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
-                        <input type="text" name="student_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Teacher Specific Fields -->
-            <div id="teacherFields" class="hidden mt-4 border-t pt-4">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Teacher Details</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                        <input type="date" name="teacher_dob" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Department <span class="text-red-500">*</span></label>
-                        <input type="text" name="teacher_department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" required />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Institution</label>
-                        <input type="text" name="teacher_institution" value="Delhi Technical Campus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-4">
-                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add User</button>
-            </div>
-        </form>
-        <script>
-            function toggleFields() {
-                const role = document.getElementById("roleSelect").value;
-                const studentFields = document.getElementById("studentFields");
-                const teacherFields = document.getElementById("teacherFields");
-
-                // Helper to enable/disable inputs based on visibility
-                const setInputsDisabled = (container, disabled) => {
-                    const inputs = container.querySelectorAll("input, select");
-                    inputs.forEach((input) => {
-                        input.disabled = disabled;
-                    });
-                };
-
-                studentFields.classList.add("hidden");
-                setInputsDisabled(studentFields, true);
-
-                teacherFields.classList.add("hidden");
-                setInputsDisabled(teacherFields, true);
-
-                if (role === "STUDENT") {
-                    studentFields.classList.remove("hidden");
-                    setInputsDisabled(studentFields, false);
-                } else if (role === "TEACHER") {
-                    teacherFields.classList.remove("hidden");
-                    setInputsDisabled(teacherFields, false);
-                }
-            }
-            document.addEventListener("DOMContentLoaded", toggleFields);
-        </script>
-    </div>
-    {% endif %}
-
-    <!-- SEARCH & LIST SECTION (For View and Edit) -->
-    {% if section != 'add' %}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <form method="GET" action="{{ url_for('views.admin_dashboard') }}" class="flex gap-4">
-            <input type="hidden" name="section" value="{{ section }}" />
-            <input type="text" name="search" value="{{ search_query }}" placeholder="Search by name or email..." class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2" />
-            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition">Search</button>
+            <button type="submit" class="px-8 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">
+                Search
+            </button>
             {% if search_query %}
-            <a href="{{ url_for('views.admin_dashboard', section=section) }}" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 flex items-center transition">Clear</a>
+            <a href="{{ url_for('views.admin_dashboard') }}" class="px-6 py-3 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 transition-colors flex items-center justify-center">
+                Clear
+            </a>
             {% endif %}
         </form>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md">
+    <!-- Users Table -->
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        {% if section == 'edit' %}
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                        {% endif %}
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-100 bg-gray-50/50">
+                        <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">User Info</th>
+                        <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">Role</th>
+                        <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">Contact</th>
+                        <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="divide-y divide-gray-100">
                     {% for user in users %}
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ user.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ user.email }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 bg-gray-100 rounded-full text-xs font-semibold">{{ user.role.name }}</span>
+                    <tr class="group hover:bg-gray-50/50 transition-colors">
+                        <td class="p-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-text-lighter font-bold text-lg">
+                                    {{ user.name[0] | upper }}
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-text-dark group-hover:text-primary transition-colors">{{ user.name }}</h3>
+                                    <p class="text-xs text-text-light">{{ user.email }}</p>
+                                </div>
+                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            {% if user.is_password_changed %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                            {% else %}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
-                            {% endif %}
+                        <td class="p-5">
+                            <span class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider
+                                {% if user.role.name == 'ADMIN' %}bg-purple-50 text-purple-600
+                                {% elif user.role.name == 'TEACHER' %}bg-blue-50 text-blue-600
+                                {% else %}bg-green-50 text-green-600{% endif %}">
+                                {{ user.role.name }}
+                            </span>
                         </td>
-                        {% if section == 'edit' %}
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{{ url_for('views.edit_user', user_id=user.id) }}" class="text-indigo-600 hover:text-indigo-900 font-medium flex items-center"> <i data-feather="edit-2" class="w-4 h-4 mr-1"></i> Edit </a>
+                        <td class="p-5">
+                            <div class="text-sm font-medium text-text-light">
+                                {% if user.phone %}
+                                <div class="flex items-center gap-2">
+                                    <i data-feather="phone" class="w-3 h-3"></i> {{ user.phone }}
+                                </div>
+                                {% else %}
+                                <span class="text-text-lighter italic">No phone</span>
+                                {% endif %}
+                            </div>
                         </td>
-                        {% endif %}
+                        <td class="p-5 text-right">
+                            <a href="{{ url_for('views.edit_user', user_id=user.id) }}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-text-light hover:bg-primary/10 hover:text-primary transition-colors" title="Edit User">
+                                <i data-feather="edit-2" class="w-4 h-4"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="{% if section == 'edit' %}5{% else %}4{% endif %}" class="px-6 py-8 text-center text-gray-500">No users found matching your search.</td>
+                        <td colspan="4" class="p-12 text-center">
+                            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+                                <i data-feather="users" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-text-dark">No users found</h3>
+                            <p class="text-text-light">Try adjusting your search criteria.</p>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    {% endif %}
+</div>
 
-    <script>
-        // Re-init generic icons if any new ones appear, though handled by base usually
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
         if (typeof feather !== "undefined") {
             feather.replace();
         }
-    </script>
-</div>
+    });
+</script>
 {% endblock %}

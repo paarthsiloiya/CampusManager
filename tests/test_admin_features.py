@@ -54,7 +54,13 @@ class TestAdminFeatures:
         self.login_admin(client)
         response = client.get('/admin/dashboard')
         assert response.status_code == 200
-        assert b"Admin" in response.data or b"Dashboard" in response.data
+        assert b"User Management" in response.data or b"Dashboard" in response.data
+
+    def test_admin_add_user_page_access(self, client):
+        self.login_admin(client)
+        response = client.get('/admin/add_user')
+        assert response.status_code == 200
+        assert b"Add New User" in response.data
 
     def test_admin_add_user(self, client, db):
         self.login_admin(client)

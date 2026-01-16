@@ -866,7 +866,6 @@ def admin_dashboard():
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    section = request.args.get('section', 'view')
     search_query = request.args.get('search', '')
     
     query = User.query
@@ -874,7 +873,7 @@ def admin_dashboard():
         query = query.filter(User.name.ilike(f'%{search_query}%') | User.email.ilike(f'%{search_query}%'))
         
     users = query.all()
-    return render_template('Admin/dashboard.html', users=users, section=section, search_query=search_query)
+    return render_template('Admin/dashboard.html', users=users, search_query=search_query)
 
 @views.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -903,7 +902,6 @@ def edit_user(user_id):
             
             branch_str = request.form.get('branch')
             if branch_str:
-                from .models import Branch
                 try:
                     user_to_edit.branch = Branch(branch_str)
                 except ValueError:
@@ -1507,11 +1505,14 @@ def delete_assignment(id):
     return redirect(url_for('views.assign_class'))
 
 
-@views.route('/admin/add_user', methods=['POST'])
+@views.route('/admin/add_user', methods=['GET', 'POST'])
 @login_required
 def add_user():
     if current_user.role != UserRole.ADMIN:
         return redirect(url_for('auth.login'))
+    
+    if request.method == 'GET':
+        return render_template('Admin/add_user.html', Branch=Branch)
     
     name = request.form.get('name')
     email = request.form.get('email')
@@ -1560,7 +1561,6 @@ def add_user():
         
         # Handle Branch
         if branch_str:
-            from .models import Branch
             try:
                 new_user.branch = Branch(branch_str)
             except ValueError:
@@ -1599,7 +1599,6 @@ def add_user():
         
         # Handle Branch
         if branch_str:
-            from .models import Branch
             try:
                 new_user.branch = Branch(branch_str)
             except ValueError:

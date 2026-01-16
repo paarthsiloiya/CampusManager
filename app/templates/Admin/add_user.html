@@ -1,0 +1,178 @@
+{% extends "base.html" %} {% block title %}Add New User | Admin{% endblock %} {% block content %}
+<div class="max-w-4xl mx-auto space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark">Add New User</h1>
+            <p class="text-text-light mt-1">Create a new student, teacher, or admin account.</p>
+        </div>
+        <a href="{{ url_for('views.admin_dashboard') }}" class="flex items-center gap-2 text-text-light hover:text-primary transition-colors font-medium"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="p-8 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <i data-feather="user-plus" class="w-5 h-5"></i>
+                </span>
+                User Details
+            </h2>
+        </div>
+
+        <div class="p-8">
+            <form action="{{ url_for('views.add_user') }}" method="POST" class="space-y-6">
+                <!-- Role Selection -->
+                <div class="space-y-2">
+                    <label for="roleSelect" class="text-xs font-bold text-text-dark uppercase tracking-wide">Select Role <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <select name="role" id="roleSelect" required onchange="toggleFields()" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                            <option value="TEACHER">Teacher</option>
+                            <option value="STUDENT">Student</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                        <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Common Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Full Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="John Doe" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Work Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="email@college.edu" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
+                        <input type="text" name="phone" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="+91..." />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Temporary Password <span class="text-red-500">*</span></label>
+                        <input type="text" name="password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" value="password123" />
+                    </div>
+                </div>
+
+                <!-- Student Specific Fields -->
+                <div id="studentFields" class="hidden space-y-6 pt-6 border-t border-gray-100">
+                    <h3 class="font-bold text-text-dark flex items-center gap-2"><i data-feather="book" class="w-4 h-4 text-primary"></i> Student Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Enrollment Number <span class="text-red-500">*</span></label>
+                            <input type="text" name="enrollment_number" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Date of Birth</label>
+                            <input type="date" name="student_dob" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Branch <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="student_branch" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                    {% for branch in Branch %}
+                                    <option value="{{ branch.value }}">{{ branch.value }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Semester <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="semester" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                    {% for i in range(1, 9) %}
+                                    <option value="{{ i }}">Semester {{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Institution</label>
+                            <input type="text" name="institution" value="Delhi Technical Campus" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Graduation Year</label>
+                            <input type="number" name="graduation_year" value="2026" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Specific Fields -->
+                <div id="teacherFields" class="hidden space-y-6 pt-6 border-t border-gray-100">
+                    <h3 class="font-bold text-text-dark flex items-center gap-2"><i data-feather="briefcase" class="w-4 h-4 text-primary"></i> Teacher Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Department</label>
+                            <div class="relative">
+                                <select name="department" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                    <option value="">Select Department</option>
+                                    {% for branch in Branch %}
+                                    <option value="{{ branch.value }}">{{ branch.value }}</option>
+                                    {% endfor %}
+                                    <option value="Applied Sciences">Applied Sciences</option>
+                                </select>
+                                <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Date of Birth</label>
+                            <input type="date" name="teacher_dob" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Institution</label>
+                            <input type="text" name="teacher_institution" value="Delhi Technical Campus" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button type="submit" class="px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:scale-105 transition-all shadow-lg shadow-primary/20">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof feather !== "undefined") {
+            feather.replace();
+        }
+        toggleFields();
+    });
+
+    function toggleFields() {
+        const role = document.getElementById("roleSelect").value;
+        const studentFields = document.getElementById("studentFields");
+        const teacherFields = document.getElementById("teacherFields");
+
+        // Helper to enable/disable inputs
+        const setInputsState = (container, disabled) => {
+            const inputs = container.querySelectorAll("input, select");
+            inputs.forEach((input) => {
+                input.disabled = disabled;
+                if (disabled) {
+                    input.classList.add("opacity-50", "cursor-not-allowed");
+                } else {
+                    input.classList.remove("opacity-50", "cursor-not-allowed");
+                }
+            });
+        };
+
+        studentFields.classList.add("hidden");
+        setInputsState(studentFields, true);
+
+        teacherFields.classList.add("hidden");
+        setInputsState(teacherFields, true);
+
+        if (role === "STUDENT") {
+            studentFields.classList.remove("hidden");
+            setInputsState(studentFields, false);
+        } else if (role === "TEACHER") {
+            teacherFields.classList.remove("hidden");
+            setInputsState(teacherFields, false);
+        }
+    }
+</script>
+{% endblock %}
