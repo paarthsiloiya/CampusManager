@@ -32,6 +32,9 @@ class TimetableGenerator:
             self.period_duration = available_minutes // self.periods
         else:
             self.period_duration = 0 # Will cause error
+
+        # store available minutes for later adjustments in validate
+        self.available_minutes = available_minutes
         
         # Lunch logic: Place lunch as close to middle as possible
         self.lunch_after_period = self.periods // 2
@@ -61,14 +64,52 @@ class TimetableGenerator:
             
         # 2. Check time feasibility
         # Logic is already in __init__ for period_duration calculation
-        # We need to see if calculated period duration is within [Min, Max]
-        if self.period_duration < self.settings.min_class_duration:
-             self.errors.append(f"Calculated period duration ({self.period_duration} min) is less than minimum required ({self.settings.min_class_duration} min). Increase total time or reduce number of periods.")
-             return False
-        
-        if self.period_duration > self.settings.max_class_duration:
-             self.errors.append(f"Calculated period duration ({self.period_duration} min) exceeds maximum allowed ({self.settings.max_class_duration} min). Decrease total time or increase number of periods.")
-             return False
+        # Try to adjust number of periods to respect min/max class duration where possible
+        min_d = getattr(self.settings, 'min_class_duration', None)
+        max_d = getattr(self.settings, 'max_class_duration', None)
+
+        if min_d is not None and max_d is not None and self.available_minutes > 0:
+            p = self.periods
+            p_dur = self.period_duration
+            orig_periods = p
+
+            # If duration is too large, increase number of periods until within max
+            if p_dur > max_d:
+                while p_dur > max_d and p < max(1, self.available_minutes):
+                    p += 1
+                    p_dur = self.available_minutes // p if p > 0 else 0
+
+                if p != self.periods:
+                    self.errors.append(f"Adjusted number of periods from {self.periods} to {p} to respect max_class_duration ({max_d} min).")
+                    self.periods = p
+                    self.period_duration = p_dur
+                    self.lunch_after_period = self.periods // 2
+
+            # If duration is too small, decrease number of periods until within min
+            elif p_dur < min_d:
+                while p_dur < min_d and p > 1:
+                    p -= 1
+                    p_dur = self.available_minutes // p if p > 0 else 0
+
+                if p != self.periods:
+                    self.errors.append(f"Adjusted number of periods from {self.periods} to {p} to respect min_class_duration ({min_d} min).")
+                    self.periods = p
+                    self.period_duration = p_dur
+                    self.lunch_after_period = self.periods // 2
+
+            # Final safety: if still out of bounds, cap to min/max but continue with a warning
+            if self.period_duration < min_d:
+                self.errors.append(f"Capped period duration to min_class_duration ({min_d} min).")
+                self.period_duration = min_d
+            if self.period_duration > max_d:
+                self.errors.append(f"Capped period duration to max_class_duration ({max_d} min).")
+                self.period_duration = max_d
+
+        else:
+            # If no min/max provided or no available minutes, skip strict validation but warn
+            if self.period_duration <= 0:
+                self.errors.append("Calculated period duration is non-positive. Check timetable start/end times and lunch duration.")
+                return False
 
         # 3. Check if we have classes assigned for the semesters
         # If no classes assigned, we can't make a timetable

@@ -508,6 +508,9 @@ def student_timetable():
         branch=current_user.branch.name
     ).all()
     
+    # Check if any entries exist
+    has_entries = len(entries) > 0
+    
     # Build Grid
     grid = {} # Day -> {Period -> Entry}
     for d in days:
@@ -524,7 +527,8 @@ def student_timetable():
         periods=periods,
         lunch_break_after=lunch_break_after,
         period_headers=period_headers,
-        period_duration_mins=period_duration_mins
+        period_duration_mins=period_duration_mins,
+        has_entries=has_entries
     )
 
 @views.route('/attendance')
@@ -1149,6 +1153,8 @@ def teacher_schedule():
         # Only add entries for days that are in the schedule (in case settings changed but old entries exist)
         if e.day in days:
             grid[e.day][e.period_number] = e
+            
+    has_entries = len(entries) > 0
              
     return render_template('Teacher/schedule.html',
         grid=grid,
@@ -1157,7 +1163,8 @@ def teacher_schedule():
         period_headers=period_headers,
         lunch_break_after=lunch_break_after,
         period_duration_mins=period_duration_mins,
-        current_group=sem_group
+        current_group=sem_group,
+        has_entries=has_entries
     )
 
 @views.route('/teacher/classes')
@@ -1646,9 +1653,11 @@ def timetable():
             min_class_duration = int(request.form.get('min_duration', 40))
             max_class_duration = int(request.form.get('max_duration', 50))
             periods = int(request.form.get('periods', 8))
+            lunch_break_after = int(request.form.get('lunch_break_after', periods // 2))
+            min_classes_per_week = int(request.form.get('classes_per_week', 3))
             
             # Handle working days as list from checkboxes
-            working_days_list = request.form.getlist('working_days')
+            working_days_list = request.form.getlist('days')
             if working_days_list:
                 working_days = ",".join(working_days_list)
             else:
@@ -1664,6 +1673,8 @@ def timetable():
             settings.min_class_duration = min_class_duration
             settings.max_class_duration = max_class_duration
             settings.periods = periods
+            settings.lunch_break_after = lunch_break_after
+            settings.min_classes_per_week = min_classes_per_week
             settings.working_days = working_days
             
             db.session.commit()
