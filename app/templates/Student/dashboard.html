@@ -42,6 +42,7 @@
                         </div>
 
                         <!-- Status -->
+                        {% set has_action = (subject.enrollment_status == 'APPROVED') or ((subject.enrollment_status in ['NOT_ENROLLED','REJECTED']) and (subject.assigned_classes|length > 0)) %}
                         <div class="md:col-span-4 flex items-center md:justify-center">
                             {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %} {% set att_status = 'success' if subject.status == 'good' else 'warning' if subject.status == 'warning' else 'error' %}
                             <div class="flex items-center gap-3 w-full max-w-[180px]">
@@ -57,9 +58,11 @@
                             <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Pending</span>
                             {% elif subject.enrollment_status == 'REJECTED' %}
                             <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-status-error/10 text-status-error">Rejected</span>
+                            {% else %} {% if not has_action %}
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-400">Unavailable</span>
                             {% else %}
                             <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Not Enrolled</span>
-                            {% endif %}
+                            {% endif %} {% endif %}
                         </div>
 
                         <!-- Action -->
@@ -84,29 +87,6 @@
             {% endfor %}
         </div>
     </div>
-
-    <!-- Attendance Alerts -->
-    {% if attendance_notifications %}
-    <div class="mt-8">
-        <h3 class="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
-            <span class="p-1.5 bg-warning/10 rounded-lg text-warning-dark">
-                <i data-feather="bell" class="w-4 h-4"></i>
-            </span>
-            Attention Required
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for notif in attendance_notifications %}
-            <div class="bg-white border border-gray-100 border-l-4 {% if 'red' in notif.bg_class %}border-l-status-error{% elif 'orange' in notif.bg_class %}border-l-status-warning{% else %}border-l-status-info{% endif %} rounded-xl p-4 shadow-sm flex items-start gap-4">
-                <div class="p-2 bg-gray-50 rounded-full shrink-0">{{ notif.icon|safe }}</div>
-                <div>
-                    <h5 class="text-text font-semibold text-sm">{{ notif.message }}</h5>
-                    <p class="text-xs text-text-light mt-1">Attendance is below threshold.</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 </section>
 {% endblock %} {% block sidebar_content %}
 <!-- Active Class Widget -->
@@ -125,7 +105,7 @@
             </div>
 
             <h4 class="text-lg font-bold mb-1 line-clamp-1" title="{{ active_class_info.class.subject.name }}">{{ active_class_info.class.subject.name }}</h4>
-            <div class="text-xs text-primary-light bg-white/10 inline-block px-1.5 py-0.5 rounded mb-4 font-mono">{{ active_class_info.class.subject.code }}</div>
+            <div class="text-xs text-primary-lighter bg-white/10 inline-block px-1.5 py-0.5 rounded mb-4 font-mono">{{ active_class_info.class.subject.code }}</div>
 
             <div class="space-y-1.5">
                 <div class="flex items-center gap-2 text-sm text-white/90">

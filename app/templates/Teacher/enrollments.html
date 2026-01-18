@@ -48,14 +48,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 text-sm text-text-light font-medium">{{ req.request_date.strftime('%B %d, %Y') }}</td>
+                        <td class="px-4 py-4 text-sm text-text-light font-medium text-center">{{ req.request_date.strftime('%B %d, %Y') }}</td>
                         <td class="px-4 py-4">
-                            <div class="flex items-center justify-end gap-2">
-                                <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="inline">
+                            <div class="flex items-center justify-center gap-2">
+                                <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="inline m-0">
                                     <input type="hidden" name="action" value="approve" />
                                     <button type="submit" class="inline-flex items-center gap-1 bg-green-50 text-green-700 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all"><i data-feather="check" class="w-3 h-3"></i> Approve</button>
                                 </form>
-                                <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="inline">
+                                <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="inline m-0">
                                     <input type="hidden" name="action" value="reject" />
                                     <button type="submit" class="inline-flex items-center gap-1 bg-red-50 text-red-700 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all"><i data-feather="x" class="w-3 h-3"></i> Reject</button>
                                 </form>

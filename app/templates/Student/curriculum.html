@@ -57,8 +57,8 @@
             <div class="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mt-16 group-hover:bg-primary/5 transition-colors"></div>
 
             <!-- Header -->
-            <div class="flex items-start justify-between mb-6 relative z-10">
-                <div class="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative">
+            <div class="flex items-start justify-between mb-4 relative z-10">
+                <div class="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 transition-transform duration-300 relative">
                     {% if subject.icon %}
                     <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-8 h-8 object-contain" />
                     {% else %}
@@ -74,20 +74,20 @@
                 <p class="text-sm text-text-light flex items-center gap-1.5 mt-2"><i data-feather="user" class="w-3.5 h-3.5"></i> {{ subject.faculty }}</p>
 
                 <!-- Expanded Metadata -->
-                <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-50">
+                <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-gray-50">
                     <div class="bg-gray-50/50 rounded-lg p-2">
                         <span class="block text-[10px] uppercase font-bold text-text-lighter tracking-wider">Credits</span>
-                        <span class="text-sm font-bold text-text-dark">3.0</span>
+                        <span class="text-sm font-bold text-text-dark">{{ subject.credits }}</span>
                     </div>
                     <div class="bg-gray-50/50 rounded-lg p-2">
                         <span class="block text-[10px] uppercase font-bold text-text-lighter tracking-wider">Type</span>
-                        <span class="text-sm font-bold text-text-dark">Core</span>
+                        <span class="text-sm font-bold text-text-dark">{{ subject.type }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Action -->
-            <div class="mt-6 pt-4 border-t border-gray-100 flex gap-2">
+            <div class="mt-2 pt-2 border-t border-gray-100 flex gap-2">
                 <button class="flex-1 flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-text-dark text-xs font-bold py-2.5 rounded-xl transition-colors border border-gray-200" onclick="alert('Syllabus coming soon!')">
                     <i data-feather="book-open" class="w-3.5 h-3.5 text-text-light"></i> Syllabus
                 </button>

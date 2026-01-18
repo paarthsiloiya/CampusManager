@@ -234,6 +234,8 @@ def student_dashboard():
                     'missed_count': missed_count,
                     'backlog_item': f'{missed_count} Classes Missed'
                 })
+    # Only show alert when there is at least one real missed item (>0)
+    show_missed_alert = any(item.get('missed_count', 0) > 0 for item in missed_classes)
     
     # If no real data, show empty state
     if not missed_classes:
@@ -328,7 +330,8 @@ def student_dashboard():
         upcoming_events=upcoming_events,
         attendance_chart_data=attendance_chart_data,
         calendar_events=calendar_events,
-        active_class_info=active_class_info
+        active_class_info=active_class_info,
+        show_missed_alert=show_missed_alert
     )
     
     response = make_response(rendered)
@@ -415,13 +418,23 @@ def curriculum():
              # Fallback to JSON if no DB assignment (legacy support)
              faculty_name = json_subject.get('faculty')
              
+        # Determine credits and type
+        name = json_subject.get('name', db_subject['name']) if json_subject else db_subject['name']
+        credits = json_subject.get('credits', 'N/A') if json_subject else 'N/A'
+        
+        subject_type = 'Core'
+        if '*' in name:
+            subject_type = 'NUES'
+
         # Create merged subject data
         merged_subject = {
             'id': db_subject['id'],
-            'name': db_subject['name'],
+            'name': name,
             'code': db_subject['code'],
             'faculty': faculty_name,
             'icon': json_subject.get('icon', 'https://img.icons8.com/ios/96/book--v1.png') if json_subject else 'https://img.icons8.com/ios/96/book--v1.png',
+            'credits': credits,
+            'type': subject_type
         }
         subjects_data.append(merged_subject)
     
@@ -587,14 +600,16 @@ def attendance():
                     'missed_count': missed_count,
                     'backlog_item': f'{missed_count} Classes Missed'
                 })
-    
+
     # If no real data, show placeholder
     if not missed_classes:
         missed_classes = [
             {'subject': 'No Data', 'missed_count': 0, 'backlog_item': 'Start attending classes to track'}
         ]
-    
-    # Generate chart data from subjects
+    # Only show alert when there is at least one real missed item (>0)
+    show_missed_alert = any(item.get('missed_count', 0) > 0 for item in missed_classes)
+
+    # --- Add attendance chart data (was missing, causing NameError) ---
     if subjects_data:
         attendance_chart_data = {
             'labels': [generate_acronym(subject['name']) for subject in subjects_data],
@@ -605,7 +620,7 @@ def attendance():
             'labels': ['No Data'],
             'data': [0]
         }
-    
+
     # Load calendar events
     calendar_events = load_calendar_events()
     
@@ -615,7 +630,8 @@ def attendance():
         attendance_stats=attendance_stats,
         missed_classes=missed_classes,
         attendance_chart_data=attendance_chart_data,
-        calendar_events=calendar_events
+        calendar_events=calendar_events,
+        show_missed_alert=show_missed_alert
     )
     
     response = make_response(rendered)
@@ -786,9 +802,11 @@ def settings():
         'graduation_year': current_user.year_of_admission + 4 if current_user.year_of_admission else '',
     }
     
+    # pass can_delete flag to template (students cannot delete)
     rendered = render_template(
         "Student/settings.html",
-        student=student_data
+        student=student_data,
+        can_delete=(current_user.role != UserRole.STUDENT)
     )
     
     response = make_response(rendered)
@@ -799,6 +817,11 @@ def settings():
 def delete_account():
     """Handle account deletion with proper data cleanup"""
     try:
+        # Prevent students from deleting their own accounts
+        if current_user.role == UserRole.STUDENT:
+            flash('Students cannot delete their accounts. Please contact an administrator for account removal.', 'error')
+            return redirect(url_for('views.settings'))
+
         # Get confirmation input
         confirmation = request.form.get('confirmation', '').strip()
         
@@ -843,7 +866,6 @@ def delete_account():
         else:
             flash('Account deletion failed. User not found.', 'error')
             return redirect(url_for('auth.login'))
-            
     except Exception as e:
         print(f"❌ Account Deletion Error: {str(e)}")
         db.session.rollback()
@@ -1474,9 +1496,10 @@ def assign_class():
     assignments = AssignedClass.query.order_by(AssignedClass.created_at.desc()).all()
 
     # Group subjects by Branch -> Semester for easier display
-    grouped_subjects = {}  # { 'AIML': [sub1, sub2], ... }
+    # Dict format: { branch_name: { semester: [sub1, sub2, ...] } }
+    grouped_subjects = {}
     for sub in all_subjects:
-        key = sub.branch
+        key = (sub.branch, sub.semester)
         if key not in grouped_subjects:
             grouped_subjects[key] = []
         grouped_subjects[key].append(sub)
@@ -1972,6 +1995,7 @@ def resolve_query(query_id):
         msg = f"Your query '{query.title}' has been resolved by the admin."
         if admin_response:
              msg += f" Response: {admin_response}"
+
     else:
         msg = f"Your query '{query.title}' has been dismissed/closed."
         if admin_response:

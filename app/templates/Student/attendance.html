@@ -91,7 +91,7 @@
     </div>
 
     <!-- Alert / Backlogs -->
-    {% if missed_classes %}
+    {% if show_missed_alert %}
     <div class="bg-red-50/50 rounded-3xl border border-red-100 p-6 flex flex-col md:flex-row items-center gap-6">
         <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0">
             <i data-feather="alert-octagon" class="w-6 h-6"></i>
@@ -100,9 +100,9 @@
             <h3 class="text-lg font-bold text-red-700 mb-1">Attendance Alert</h3>
             <p class="text-red-600/80 text-sm">You have low attendance in the following subjects:</p>
             <div class="mt-3 flex flex-wrap gap-2">
-                {% for backlog in missed_classes %}
+                {% for backlog in missed_classes %} {% if backlog.missed_count > 0 %}
                 <span class="inline-flex items-center px-3 py-1 rounded-lg bg-white border border-red-200 text-red-700 text-xs font-bold shadow-sm"> {{ backlog.subject }}: {{ backlog.missed_count }} missed </span>
-                {% endfor %}
+                {% endif %} {% endfor %}
             </div>
         </div>
     </div>
@@ -192,13 +192,21 @@
 {% endblock %} {% block sidebar_content %}
 <div class="space-y-6">
     <!-- Quick Stats Widget -->
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm" aria-label="Attendance Summary">
         <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">Attendance Summary</h3>
-        <div class="flex items-center justify-center p-6 relative">
-            <!-- Circular Progress Placeholder or just big number -->
-            <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-4 border-gray-100">
-                <div class="text-center">
-                    <span class="block text-3xl font-bold text-text-dark">{{ attendance_stats.attendance_percentage }}%</span>
+        <div class="flex items-center justify-center p-0 relative">
+            <div class="relative w-36 h-36">
+                <!-- SVG ring -->
+                <svg viewBox="0 0 120 120" class="w-36 h-36">
+                    <!-- Background circle -->
+                    <circle cx="60" cy="60" r="52" stroke-width="12" stroke="#f3f4f6" fill="none"></circle>
+                    <!-- Foreground ring (animated) -->
+                    <circle id="attendance-ring" cx="60" cy="60" r="52" stroke-width="12" stroke="#3b82f6" stroke-linecap="round" fill="none" transform="rotate(-90 60 60)" style="stroke-dasharray: 326.7256; stroke-dashoffset: 326.7256; transition: stroke-dashoffset 900ms ease"></circle>
+                </svg>
+
+                <!-- Center label -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span id="sidebar-agg-percent" data-percent="{{ attendance_stats.attendance_percentage }}" class="block text-2xl font-bold text-text-dark">{{ attendance_stats.attendance_percentage }}%</span>
                     <span class="text-[10px] text-text-light uppercase font-bold">Aggregate</span>
                 </div>
             </div>
@@ -230,7 +238,8 @@
 <script id="template-data" type="application/json">
     {
         "attendanceChartData": {{ attendance_chart_data | tojson | safe }},
-        "calendarEvents": {{ calendar_events | tojson | safe }}
+        "calendarEvents": {{ calendar_events | tojson | safe }},
+        "subjects": {{ subjects | tojson | safe }}
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -257,6 +266,7 @@
             const attendanceData = templateData ? templateData.attendanceChartData : null;
             const chartLabels = attendanceData ? attendanceData.labels : ["No Data"];
             const chartData = attendanceData ? attendanceData.data : [0];
+            const subjects = templateData ? templateData.subjects || [] : [];
 
             new Chart(ctx, {
                 type: "bar",
@@ -266,7 +276,7 @@
                         {
                             label: "Attendance %",
                             data: chartData,
-                            backgroundColor: "#3b82f6", // Primary Blue
+                            backgroundColor: "#3b82f6",
                             borderRadius: 6,
                             barThickness: 20,
                         },
@@ -277,6 +287,21 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function (context) {
+                                    const idx = context && context[0] ? context[0].dataIndex : null;
+                                    if (idx !== null && subjects[idx] && subjects[idx].name) {
+                                        return subjects[idx].name;
+                                    }
+                                    return context && context[0] ? context[0].label : "";
+                                },
+                                label: function (context) {
+                                    const val = context.formattedValue !== undefined ? context.formattedValue : context.raw;
+                                    return "Attendance: " + val + "%";
+                                },
+                            },
+                        },
                     },
                     scales: {
                         y: {
@@ -342,6 +367,27 @@
 
                 sideCalendar.appendChild(dayEl);
             }
+        }
+    });
+</script>
+<script>
+    // Animate sidebar circular progress (separate to avoid touching main chart code)
+    document.addEventListener("DOMContentLoaded", function () {
+        const pctEl = document.getElementById("sidebar-agg-percent");
+        const ring = document.getElementById("attendance-ring");
+        if (pctEl && ring) {
+            const raw = parseFloat(pctEl.dataset.percent || pctEl.textContent.replace("%", "")) || 0;
+            const pct = Math.max(0, Math.min(100, raw));
+            const r = parseFloat(ring.getAttribute("r"));
+            const circumference = 2 * Math.PI * r;
+            // ensure dasharray is set consistently
+            ring.style.strokeDasharray = circumference;
+            // compute offset
+            const offset = circumference * (1 - pct / 100);
+            // small delay so transition is visible
+            setTimeout(() => {
+                ring.style.strokeDashoffset = offset;
+            }, 60);
         }
     });
 </script>

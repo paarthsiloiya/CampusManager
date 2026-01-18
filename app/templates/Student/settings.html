@@ -1,7 +1,4 @@
-{% extends "base.html" %}
-{% block title %}Settings | Student{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Settings | Student{% endblock %} {% block content %}
 <section class="max-w-4xl mx-auto space-y-8">
     <!-- Header -->
     <div class="flex items-end justify-between">
@@ -22,7 +19,7 @@
                     Personal Information
                 </h2>
             </div>
-            
+
             <div class="p-8 space-y-8">
                 <!-- Avatar -->
                 <div class="flex items-center gap-6">
@@ -52,7 +49,7 @@
                     </div>
 
                     <div class="space-y-2">
-                         <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
+                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
                         <div class="relative">
                             <input value="{{ student.email or '' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
                             <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
@@ -60,13 +57,19 @@
                     </div>
 
                     <div class="space-y-2">
-                         <label for="phone" class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
-                         <input id="phone" name="phone" value="{{ student.phone or '' }}" placeholder="+91 ..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        <label for="phone" class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
+                        <input id="phone" name="phone" value="{{ student.phone or '' }}" placeholder="+91 ..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
                     </div>
 
                     <div class="space-y-2">
-                         <label for="dob" class="text-xs font-bold text-text-dark uppercase tracking-wide">Date of Birth</label>
-                         <input id="dob" name="date_of_birth" type="date" value="{{ student.date_of_birth or '' }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                        <label for="dob" class="text-xs font-bold text-text-dark uppercase tracking-wide">Date of Birth</label>
+                        <input
+                            id="dob"
+                            name="date_of_birth"
+                            type="date"
+                            value="{{ student.date_of_birth or '' }}"
+                            class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        />
                     </div>
                 </div>
             </div>
@@ -82,53 +85,61 @@
                     Academic Details
                 </h2>
             </div>
-             <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Enrollment Number</label>
-                        <div class="relative">
-                            <input value="{{ student.enrollment_number or '' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
-                            <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
-                        </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-text-light uppercase tracking-wide">Enrollment Number</label>
+                    <div class="relative">
+                        <input value="{{ student.enrollment_number or '' }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none" readonly />
+                        <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Branch</label>
-                         <div class="relative">
-                             <select class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none appearance-none" disabled>
-                                 <option>{{ student.branch or 'Not Set' }}</option>
-                             </select>
-                             <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
-                         </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-text-light uppercase tracking-wide">Branch</label>
+                    <div class="relative">
+                        <select class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none appearance-none" disabled>
+                            <option>{{ student.branch or 'Not Set' }}</option>
+                        </select>
+                        <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                         <label for="semester" class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Semester</label>
-                         <div class="relative">
-                            <select id="semester" name="semester" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
-                                {% for i in range(1, 9) %}
-                                <option value="{{ i }}" {% if student.semester == i %}selected{% endif %}>Semester {{ i }}</option>
-                                {% endfor %}
-                            </select>
-                            <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
-                         </div>
+                <div class="space-y-2">
+                    <label for="semester" class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Semester</label>
+                    <div class="relative">
+                        <select id="semester" name="semester" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                            {% for i in range(1, 9) %} 
+                            <option value="{{ i }}" {{ 'selected' if student.semester == i else '' }}>Semester {{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
                     </div>
+                </div>
 
-                     <div class="space-y-2">
-                         <label for="grad" class="text-xs font-bold text-text-dark uppercase tracking-wide">Graduation Year</label>
-                         <input id="grad" name="graduation_year" type="number" value="{{ student.graduation_year or '' }}" min="2024" max="2030" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
-                    </div>
-             </div>
+                <div class="space-y-2">
+                    <label for="grad" class="text-xs font-bold text-text-dark uppercase tracking-wide">Graduation Year</label>
+                    <input
+                        id="grad"
+                        name="graduation_year"
+                        type="number"
+                        value="{{ student.graduation_year or '' }}"
+                        min="2024"
+                        max="2030"
+                        class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    />
+                </div>
+            </div>
         </div>
-        
+
         <!-- Actions -->
         <div class="flex items-center justify-end gap-4">
-             <button type="button" onclick="window.location.reload()" class="px-6 py-3 rounded-xl text-text-light font-bold hover:bg-gray-100 transition-colors">Discard</button>
-             <button type="submit" class="px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">Save Changes</button>
+            <button type="button" onclick="window.location.reload()" class="px-6 py-3 rounded-xl text-text-light font-bold hover:bg-gray-100 transition-colors">Discard</button>
+            <button type="submit" class="px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">Save Changes</button>
         </div>
     </form>
 
     <!-- Security Section (Separate Form) -->
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mt-8">
+    <div id="securitySection" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mt-8">
         <div class="p-8 border-b border-gray-100">
             <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
                 <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -138,120 +149,113 @@
             </h2>
         </div>
         <div class="p-8">
-            <form method="POST" action="{{ url_for('views.settings') }}" class="max-w-xl space-y-6">
+            <form method="POST" action="{{ url_for('views.settings') }}" class="space-y-6">
                 <!-- Hidden inputs to identify update type if backend needs it, although field names might be enough -->
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Password</label>
                     <input type="password" name="current_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Enter current password" />
                 </div>
-                
+
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                         <label class="text-xs font-bold text-text-dark uppercase tracking-wide">New Password</label>
-                         <input type="password" name="new_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Min. 6 characters" />
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">New Password</label>
+                        <input type="password" name="new_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Min. 6 characters" />
                     </div>
-                    
+
                     <div class="space-y-2">
-                         <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Confirm Password</label>
-                         <input type="password" name="confirm_password" required class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Re-enter new password" />
+                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Confirm Password</label>
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            required
+                            class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            placeholder="Re-enter new password"
+                        />
                     </div>
                 </div>
 
                 <div class="flex justify-end pt-2">
-                    <button type="submit" class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">
-                        Update Password
-                    </button>
+                    <button type="submit" class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">Update Password</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Danger Zone -->
+    {% if can_delete %}
     <div class="bg-red-50/30 rounded-3xl border border-red-100 overflow-hidden mt-12">
-         <div class="p-8 border-b border-red-100">
-             <h2 class="text-xl font-bold text-red-700 flex items-center gap-3">
-                 <span class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
-                     <i data-feather="alert-triangle" class="w-5 h-5"></i>
-                 </span>
-                 Danger Zone
-             </h2>
-         </div>
-         <div class="p-8">
-             <div class="flex items-center justify-between">
-                 <div>
-                     <h3 class="font-bold text-text-dark">Delete Account</h3>
-                     <p class="text-sm text-text-light max-w-md mt-1">Permanently delete your account and all of your content. This action is not reversible, so please continue with caution.</p>
-                 </div>
-                 <button type="button" onclick="showDeleteConfirmation()" class="px-6 py-3 rounded-xl bg-white border-2 border-red-100 text-red-600 font-bold hover:bg-red-50 hover:border-red-200 transition-colors">
-                     Delete Account
-                 </button>
-             </div>
-         </div>
-    </div>
-</section>
-
-<!-- Delete Modal -->
-<div id="deleteModal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
-        <div class="p-8 text-center">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-red-600">
-                <i data-feather="alert-octagon" class="w-8 h-8"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-text-dark mb-2">Delete Account?</h3>
-            <p class="text-text-light mb-8">This action cannot be undone. All your data will be permanently removed.</p>
-            
-            <div class="space-y-4">
-                <div class="relative">
-                    <input id="deleteConfirmation" type="text" placeholder='Type "DELETE" to confirm' class="w-full border border-gray-200 rounded-xl px-4 py-3 text-center font-bold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
+        <div class="p-8 border-b border-red-100">
+            <h2 class="text-xl font-bold text-red-700 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+                    <i data-feather="alert-triangle" class="w-5 h-5"></i>
+                </span>
+                Danger Zone
+            </h2>
+        </div>
+        <div class="p-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-text-dark">Delete Account</h3>
+                    <p class="text-sm text-text-light max-w-md mt-1">Permanently delete your account and all of your content. This action is not reversible, so please continue with caution.</p>
                 </div>
-                
-                <form action="{{ url_for('views.delete_account') }}" method="POST">
-                    <button type="submit" id="confirmDeleteBtn" disabled class="w-full bg-red-600 text-white font-bold py-3.5 rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-red-600/20">
-                        Yes, Delete My Account
-                    </button>
-                </form>
-                
-                <button type="button" onclick="hideDeleteConfirmation()" class="text-text-light font-bold text-sm hover:text-text-dark transition-colors">
-                    Cancel
-                </button>
+                <button type="button" onclick="showDeleteConfirmation()" class="px-6 py-3 rounded-xl bg-white border-2 border-red-100 text-red-600 font-bold hover:bg-red-50 hover:border-red-200 transition-colors">Delete Account</button>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    <!-- Delete Modal -->
+    {% if can_delete %}
+    <div id="deleteModal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
+            <div class="p-8 text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-red-600">
+                    <i data-feather="alert-octagon" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-text-dark mb-2">Delete Account?</h3>
+                <p class="text-text-light mb-8">This action cannot be undone. All your data will be permanently removed.</p>
 
-{% block sidebar_content %}
+                <div class="space-y-4">
+                    <div class="relative">
+                        <input id="deleteConfirmation" type="text" placeholder='Type "DELETE" to confirm' class="w-full border border-gray-200 rounded-xl px-4 py-3 text-center font-bold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
+                    </div>
+
+                    <form action="{{ url_for('views.delete_account') }}" method="POST">
+                        <button type="submit" id="confirmDeleteBtn" disabled class="w-full bg-red-600 text-white font-bold py-3.5 rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-red-600/20">Yes, Delete My Account</button>
+                    </form>
+
+                    <button type="button" onclick="hideDeleteConfirmation()" class="text-text-light font-bold text-sm hover:text-text-dark transition-colors">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %} {% endif %}
+</section>
+
+{% endblock %} {% block sidebar_content %}
 <div class="space-y-6">
     <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm text-center">
         <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-text-light">
-             <i data-feather="user" class="w-8 h-8"></i>
+            <i data-feather="user" class="w-8 h-8"></i>
         </div>
         <h3 class="text-base font-bold text-text-dark">{{ student.name }}</h3>
         <p class="text-xs text-text-light mt-1">{{ student.email }}</p>
         <div class="mt-4 flex justify-center gap-2">
             <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">{{ student.branch }}</span>
-             <span class="px-3 py-1 bg-gray-100 text-text-light text-[10px] font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
+            <span class="px-3 py-1 bg-gray-100 text-text-light text-[10px] font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
         </div>
     </div>
-    
+
     <div class="space-y-2">
-        <button class="w-full text-left px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold text-sm flex items-center justify-between border border-primary/10">
+        <a href="#profileForm" class="block w-full text-left px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold text-sm flex items-center justify-between border border-primary/10">
             <span>Profile Settings</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
-        </button>
-         <button class="w-full text-left px-4 py-3 rounded-xl bg-transparent text-text-light font-medium text-sm flex items-center justify-between hover:bg-gray-50 transition-colors">
-            <span>Notifications</span>
-            <i data-feather="chevron-right" class="w-4 h-4"></i>
-        </button>
-         <button class="w-full text-left px-4 py-3 rounded-xl bg-transparent text-text-light font-medium text-sm flex items-center justify-between hover:bg-gray-50 transition-colors">
+        </a>
+        <a href="#securitySection" class="block w-full text-left px-4 py-3 rounded-xl bg-transparent text-text-light font-medium text-sm flex items-center justify-between hover:bg-gray-50 transition-colors">
             <span>Security</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
-        </button>
+        </a>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         if (typeof feather !== "undefined") {
@@ -260,53 +264,53 @@
     });
 
     // Delete Modal Logic
-    const deleteInput = document.getElementById('deleteConfirmation');
-    const deleteBtn = document.getElementById('confirmDeleteBtn');
-    const deleteModal = document.getElementById('deleteModal');
+    const deleteInput = document.getElementById("deleteConfirmation");
+    const deleteBtn = document.getElementById("confirmDeleteBtn");
+    const deleteModal = document.getElementById("deleteModal");
 
     if (deleteInput && deleteBtn) {
-        deleteInput.addEventListener('input', function() {
-            if (this.value.trim().toUpperCase() === 'DELETE') {
+        deleteInput.addEventListener("input", function () {
+            if (this.value.trim().toUpperCase() === "DELETE") {
                 deleteBtn.disabled = false;
-                deleteBtn.classList.remove('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
+                deleteBtn.classList.remove("disabled:bg-gray-400", "disabled:cursor-not-allowed");
             } else {
                 deleteBtn.disabled = true;
-                deleteBtn.classList.add('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
+                deleteBtn.classList.add("disabled:bg-gray-400", "disabled:cursor-not-allowed");
             }
         });
     }
 
     function showDeleteConfirmation() {
         if (deleteModal) {
-            deleteModal.classList.remove('hidden');
+            deleteModal.classList.remove("hidden");
             // Simple animation
             setTimeout(() => {
-                const innerDiv = deleteModal.querySelector('div');
-                if(innerDiv) {
-                    innerDiv.classList.remove('scale-95', 'opacity-0');
-                    innerDiv.classList.add('scale-100', 'opacity-100');
+                const innerDiv = deleteModal.querySelector("div");
+                if (innerDiv) {
+                    innerDiv.classList.remove("scale-95", "opacity-0");
+                    innerDiv.classList.add("scale-100", "opacity-100");
                 }
             }, 10);
-            
+
             // Focus input
-            if(deleteInput) setTimeout(() => deleteInput.focus(), 100);
+            if (deleteInput) setTimeout(() => deleteInput.focus(), 100);
         }
     }
 
     function hideDeleteConfirmation() {
         if (deleteModal) {
-            deleteModal.classList.add('hidden');
-            if(deleteInput) deleteInput.value = '';
-            if(deleteBtn) {
+            deleteModal.classList.add("hidden");
+            if (deleteInput) deleteInput.value = "";
+            if (deleteBtn) {
                 deleteBtn.disabled = true;
-                deleteBtn.classList.add('disabled:bg-gray-400', 'disabled:cursor-not-allowed');
+                deleteBtn.classList.add("disabled:bg-gray-400", "disabled:cursor-not-allowed");
             }
         }
     }
 
     // Close modal when clicking outside
     if (deleteModal) {
-        deleteModal.addEventListener('click', function(e) {
+        deleteModal.addEventListener("click", function (e) {
             if (e.target === this) {
                 hideDeleteConfirmation();
             }
@@ -314,8 +318,8 @@
     }
 
     // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
             hideDeleteConfirmation();
         }
     });

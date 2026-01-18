@@ -1,262 +1,138 @@
 {% extends "base.html" %} {% block title %}About - Smart Curriculum & Attendance{% endblock %} {% block content %}
-<!-- About Section -->
-<section id="about">
-    <h1 class="text-4xl font-bold mb-6 flex items-center gap-2"><i data-feather="info" class="w-8 h-8 text-skyblue"></i> About</h1>
-
-    <!-- Application Information -->
-    <div class="bg-white shadow-lg rounded-xl p-6 space-y-6 max-w-4xl">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-darkblue mb-2">Smart Curriculum & Attendance</h2>
-            <p class="text-lg text-gray-600">Your comprehensive academic management platform</p>
-            <div class="flex justify-center mt-4">
-                <span class="bg-skyblue text-white px-4 py-2 rounded-full text-sm font-medium">Version 1.0.0</span>
-            </div>
+<section class="max-w-7xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex items-end justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark">About</h1>
+            <p class="text-text-light mt-1">Smart Curriculum & Attendance — a unified academic management platform</p>
         </div>
-
-        <!-- Features Section -->
-        <div class="grid md:grid-cols-2 gap-8">
-            <div>
-                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <i data-feather="star" class="w-5 h-5 text-skyblue"></i>
-                    Key Features
-                </h3>
-                <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Real-time attendance tracking
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Interactive academic calendar
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Comprehensive curriculum management
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Performance analytics and insights
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Personalized dashboard and notifications
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <i data-feather="check" class="w-4 h-4 text-green-500"></i>
-                        Multi-branch support (CSE, AIML, AIDS, CST)
-                    </li>
-                </ul>
-            </div>
-
-            <div>
-                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <i data-feather="target" class="w-5 h-5 text-skyblue"></i>
-                    Our Mission
-                </h3>
-                <p class="text-gray-600 mb-4">To revolutionize academic management by providing students and educators with powerful, intuitive tools that enhance learning outcomes and streamline administrative processes.</p>
-                <p class="text-gray-600">We believe in leveraging technology to create seamless educational experiences that help students focus on what matters most - their learning and growth.</p>
-            </div>
-        </div>
-
-        <!-- Technology Stack -->
-        <div class="border-t pt-6">
-            <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <i data-feather="code" class="w-5 h-5 text-skyblue"></i>
-                Technology Stack
-            </h3>
-            <div class="grid md:grid-cols-3 gap-4">
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <i data-feather="server" class="w-8 h-8 mx-auto mb-2 text-skyblue"></i>
-                    <h4 class="font-semibold">Backend</h4>
-                    <p class="text-sm text-gray-600">Flask, SQLAlchemy, Python</p>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <i data-feather="monitor" class="w-8 h-8 mx-auto mb-2 text-skyblue"></i>
-                    <h4 class="font-semibold">Frontend</h4>
-                    <p class="text-sm text-gray-600">HTML5, Tailwind CSS, JavaScript</p>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <i data-feather="database" class="w-8 h-8 mx-auto mb-2 text-skyblue"></i>
-                    <h4 class="font-semibold">Database</h4>
-                    <p class="text-sm text-gray-600">SQLite, Flask-SQLAlchemy</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact and Support -->
-        <div class="border-t pt-6">
-            <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <i data-feather="help-circle" class="w-5 h-5 text-skyblue"></i>
-                Support & Contact
-            </h3>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                    <h4 class="font-semibold mb-2">Need Help?</h4>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <i data-feather="mail" class="w-4 h-4"></i>
-                            support@smartattendance.edu
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i data-feather="phone" class="w-4 h-4"></i>
-                            +91 11 1234 5678
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i data-feather="clock" class="w-4 h-4"></i>
-                            Mon-Fri: 9:00 AM - 6:00 PM
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-2">Quick Links</h4>
-                    <ul class="space-y-2 text-gray-600">
-                        <li><a href="#" class="hover:text-skyblue transition">User Guide</a></li>
-                        <li><a href="#" class="hover:text-skyblue transition">FAQ</a></li>
-                        <li><a href="#" class="hover:text-skyblue transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-skyblue transition">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- System Information -->
-        <div class="border-t pt-6">
-            <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <i data-feather="settings" class="w-5 h-5 text-skyblue"></i>
-                System Information
-            </h3>
-            <div class="grid md:grid-cols-3 gap-4 text-sm">
-                <div>
-                    <span class="font-medium">Application Version:</span>
-                    <span class="text-gray-600 ml-2">1.0.0</span>
-                </div>
-                <div>
-                    <span class="font-medium">Last Updated:</span>
-                    <span class="text-gray-600 ml-2">{{ moment().format('MMMM DD, YYYY') if moment else 'September 2024' }}</span>
-                </div>
-                <div>
-                    <span class="font-medium">License:</span>
-                    <span class="text-gray-600 ml-2">MIT License</span>
-                </div>
-            </div>
+        <div class="hidden md:block text-sm text-text-light">
+            <span class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-primary/5 text-primary font-bold border border-primary/10">Version 1.0.0</span>
         </div>
     </div>
 
-    <!-- Feedback Section -->
-    <div class="bg-white shadow-lg rounded-xl p-6 max-w-4xl mt-8">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-            <i data-feather="message-circle" class="w-5 h-5 text-skyblue"></i>
-            Send Feedback
-        </h3>
-        <p class="text-gray-600 mb-4">We value your feedback! Help us improve the platform by sharing your thoughts and suggestions.</p>
-        <div class="space-y-4">
-            <textarea placeholder="Share your feedback, suggestions, or report issues..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-skyblue focus:border-transparent" rows="4"></textarea>
-            <div class="flex gap-3">
-                <button class="bg-skyblue text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition">Send Feedback</button>
-                <button class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition">Cancel</button>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <h2 class="text-xl font-bold text-text-dark mb-2 flex items-center gap-2"><i data-feather="info" class="w-5 h-5 text-primary"></i> What is Smart Curriculum & Attendance?</h2>
+                <p class="text-sm text-text-light">A comprehensive academic management platform for students and educators — attendance tracking, curriculum management, timetables, analytics and notifications in a single intuitive interface.</p>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="star" class="w-4 h-4 text-primary"></i> Key Features</h3>
+                    <ul class="space-y-2 text-sm text-text-light">
+                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Real-time attendance tracking</li>
+                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Interactive academic calendar</li>
+                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Curriculum & timetable management</li>
+                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Performance analytics and alerts</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="target" class="w-4 h-4 text-primary"></i> Our Mission</h3>
+                    <p class="text-sm text-text-light">Empower students and educators with tools that simplify academic workflows and surface insights that improve learning outcomes.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="code" class="w-4 h-4 text-primary"></i> Technology Stack</h3>
+                <div class="grid md:grid-cols-3 gap-4 text-sm text-text-light">
+                    <div class="p-3 bg-gray-50 rounded-lg text-center">
+                        <div class="text-base font-semibold text-text-dark">Backend</div>
+                        <div class="text-xs">Flask · SQLAlchemy · Python</div>
+                    </div>
+                    <div class="p-3 bg-gray-50 rounded-lg text-center">
+                        <div class="text-base font-semibold text-text-dark">Frontend</div>
+                        <div class="text-xs">Tailwind CSS · Chart.js · Vanilla JS</div>
+                    </div>
+                    <div class="p-3 bg-gray-50 rounded-lg text-center">
+                        <div class="text-base font-semibold text-text-dark">Database</div>
+                        <div class="text-xs">SQLite / SQLAlchemy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedbackSection" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="message-circle" class="w-4 h-4 text-primary"></i> Send Feedback</h3>
+                <p class="text-sm text-text-light mb-4">We appreciate your feedback. Share suggestions or report issues and we'll review them.</p>
+
+                <div class="space-y-3">
+                    <textarea id="aboutFeedback" class="w-full p-3 border border-gray-200 rounded-xl resize-none h-28 text-text-dark" placeholder="Type your feedback here..."></textarea>
+                    <div class="flex justify-end gap-3">
+                        <button id="aboutFeedbackCancel" class="px-4 py-2 rounded-xl bg-gray-100 text-text-light">Cancel</button>
+                        <button id="aboutFeedbackSend" class="px-4 py-2 rounded-xl bg-primary text-white font-bold">Send Feedback</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 {% endblock %} {% block sidebar_content %}
-<!-- App Information in Sidebar -->
-<div>
-    <h3 class="font-bold mb-2 flex items-center gap-2"><i data-feather="info" class="w-4 h-4 text-gray-600"></i> App Info</h3>
-    <div class="space-y-2 text-sm">
-        <div class="p-2 bg-skyblue/10 rounded">
-            <div class="font-medium text-skyblue">Version 1.0.0</div>
-            <div class="text-xs text-gray-600">Latest Release</div>
-        </div>
 
-        <div class="space-y-1 text-xs text-gray-600">
-            <div><strong>Built with:</strong> Flask & Python</div>
-            <div><strong>UI:</strong> Tailwind CSS</div>
-            <div><strong>Database:</strong> SQLite</div>
+<!-- Right column / Sidebar box -->
+<aside class="space-y-6">
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5 text-center">
+        <div class="w-16 h-16 bg-gray-50 rounded-full mx-auto mb-4 flex items-center justify-center text-text-light">
+            <i data-feather="info" class="w-6 h-6"></i>
+        </div>
+        <h4 class="font-bold text-text-dark">Smart App</h4>
+        <p class="text-xs text-text-light mt-1">Version 1.0.0</p>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5">
+        <h4 class="font-semibold text-text-dark mb-3">Support</h4>
+        <div class="text-sm text-text-light space-y-2">
+            <div class="flex items-center gap-2"><i data-feather="mail" class="w-4 h-4"></i> support@smartattendance.edu</div>
+            <div class="flex items-center gap-2"><i data-feather="phone" class="w-4 h-4"></i> +91 11 1234 5678</div>
+            <div class="flex items-center gap-2"><i data-feather="clock" class="w-4 h-4"></i> Mon–Fri, 9:00–18:00</div>
         </div>
     </div>
 
-    <div class="mt-4">
-        <h4 class="font-semibold text-sm mb-2">Quick Actions</h4>
-        <div class="space-y-1 text-xs">
-            <button onclick="scrollToFeedback()" class="w-full text-left p-2 hover:bg-gray-100 rounded">Send Feedback</button>
-            <button onclick="checkUpdates()" class="w-full text-left p-2 hover:bg-gray-100 rounded">Check Updates</button>
-            <button onclick="showSystemInfo()" class="w-full text-left p-2 hover:bg-gray-100 rounded">System Info</button>
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5">
+        <h4 class="font-semibold text-text-dark mb-3">Quick Actions</h4>
+        <div class="space-y-2 text-sm">
+            <button onclick="document.getElementById('feedbackSection').scrollIntoView({ behavior: 'smooth' })" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">Send Feedback</button>
+            <button onclick="alert('You are running the latest version (1.0.0)')" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">Check Updates</button>
+            <button onclick="showSystemInfo()" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">System Info</button>
         </div>
     </div>
-</div>
+</aside>
 {% endblock %} {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Initialize Feather icons
-        if (typeof feather !== "undefined") {
-            feather.replace();
-        }
+        if (typeof feather !== "undefined") feather.replace();
 
-        // Add interactive features
-        initializeFeedbackForm();
-        addScrollAnimations();
+        const sendBtn = document.getElementById("aboutFeedbackSend");
+        const cancelBtn = document.getElementById("aboutFeedbackCancel");
+        const textarea = document.getElementById("aboutFeedback");
+
+        if (sendBtn && textarea) {
+            sendBtn.addEventListener("click", function () {
+                const val = textarea.value.trim();
+                if (!val) {
+                    alert("Please enter feedback before sending.");
+                    return;
+                }
+                // Simple local acknowledgement; keep server-side submission via modal/queries if required
+                alert("Thank you for your feedback! We will review it.");
+                textarea.value = "";
+            });
+        }
+        if (cancelBtn && textarea) {
+            cancelBtn.addEventListener("click", () => (textarea.value = ""));
+        }
     });
-
-    function scrollToFeedback() {
-        const feedbackSection = document.querySelector('h3:contains("Send Feedback")');
-        if (feedbackSection) {
-            feedbackSection.scrollIntoView({ behavior: "smooth" });
-        }
-    }
-
-    function checkUpdates() {
-        alert("You are running the latest version (1.0.0)");
-    }
 
     function showSystemInfo() {
         const info = `
-Application: Smart Curriculum & Attendance
+Smart Curriculum & Attendance
 Version: 1.0.0
-Platform: Web Application
-Technology: Flask + Python
+Backend: Flask · SQLAlchemy
+Frontend: Tailwind CSS · Chart.js
 Database: SQLite
-Last Updated: January 2026
-        `;
+    `;
         alert(info);
     }
-
-    function initializeFeedbackForm() {
-        const feedbackBtn = document.querySelector('button:contains("Send Feedback")');
-        const textarea = document.querySelector("textarea");
-
-        if (feedbackBtn && textarea) {
-            feedbackBtn.addEventListener("click", function () {
-                const feedback = textarea.value.trim();
-                if (feedback) {
-                    alert("Thank you for your feedback! We will review it and get back to you.");
-                    textarea.value = "";
-                } else {
-                    alert("Please enter your feedback before submitting.");
-                }
-            });
-        }
-    }
-
-    function addScrollAnimations() {
-        const sections = document.querySelectorAll(".bg-white");
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
-                }
-            });
-        });
-
-        sections.forEach((section) => {
-            section.style.opacity = "0";
-            section.style.transform = "translateY(20px)";
-            section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-            observer.observe(section);
-        });
-    }
-
-    console.log("About script loaded");
 </script>
 {% endblock %}
