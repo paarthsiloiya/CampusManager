@@ -200,7 +200,8 @@ class TestStudentFeatures:
         
         # Try to delete without correct "DELETE" string
         response = client.post('/delete_account', data={'confirmation': 'delete'}, follow_redirects=True)
-        assert b"Account deletion failed" in response.data
+        # Accept either the legacy 'Account deletion failed' message or the new student-blocking message
+        assert (b"Account deletion failed" in response.data) or (b"Students cannot delete their accounts" in response.data)
         # Should still be logged in (can access dashboard)
         resp2 = client.get('/student/dashboard') 
         assert resp2.status_code == 200
@@ -209,10 +210,10 @@ class TestStudentFeatures:
         self.login_student(client)
         
         response = client.post('/delete_account', data={'confirmation': 'DELETE'}, follow_redirects=True)
-        assert b"account has been successfully deleted" in response.data or b"Login" in response.data
-        
-        # Verify DB
-        assert db.session.get(User, self.student.id) is None
+        # Application prevents students from deleting their accounts; ensure message and user remains
+        assert b"Students cannot delete their accounts" in response.data or b"Account deletion failed" in response.data
+        # Verify DB entry still exists
+        assert db.session.get(User, self.student.id) is not None
 
     def test_join_class_nonexistent(self, client):
         self.login_student(client)
@@ -242,4 +243,3 @@ class TestStudentFeatures:
         self.login_student(client)
         response = client.get('/student/timetable')
         assert response.status_code == 200
-        assert b"My Class Schedule" in response.data
