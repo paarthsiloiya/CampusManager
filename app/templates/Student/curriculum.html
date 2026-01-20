@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-text-dark">Curriculum</h1>
+            <h1 class="text-2xl font-bold text-text-dark">Curriculum</h1>
             <p class="text-text-light mt-1">Explore your academic subjects and course details</p>
         </div>
         <div class="hidden lg:block">
@@ -65,7 +65,7 @@
                     <span class="text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
                     {% endif %}
                 </div>
-                <span class="text-[10px] font-mono font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">{{ subject.code }}</span>
+                <span class="text-xs font-mono font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">{{ subject.code }}</span>
             </div>
 
             <!-- Content -->
@@ -76,11 +76,11 @@
                 <!-- Expanded Metadata -->
                 <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-gray-50">
                     <div class="bg-gray-50/50 rounded-lg p-2">
-                        <span class="block text-[10px] uppercase font-bold text-text-lighter tracking-wider">Credits</span>
+                        <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Credits</span>
                         <span class="text-sm font-bold text-text-dark">{{ subject.credits }}</span>
                     </div>
                     <div class="bg-gray-50/50 rounded-lg p-2">
-                        <span class="block text-[10px] uppercase font-bold text-text-lighter tracking-wider">Type</span>
+                        <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Type</span>
                         <span class="text-sm font-bold text-text-dark">{{ subject.type }}</span>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
         <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-100">
             <div style="width:{{ (student.semester / 8 * 100)|round|int }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-1000"></div>
         </div>
-        <p class="text-[10px] text-text-light text-center">You are currently in your {{ student.semester }}{% if student.semester == 1 %}st{% elif student.semester == 2 %}nd{% elif student.semester == 3 %}rd{% else %}th{% endif %} semester of 8.</p>
+        <p class="text-xs text-text-light text-center">You are currently in your {{ student.semester }}{% if student.semester == 1 %}st{% elif student.semester == 2 %}nd{% elif student.semester == 3 %}rd{% else %}th{% endif %} semester of 8.</p>
     </div>
 </div>
 
@@ -174,11 +174,11 @@
     <div class="grid grid-row-2 lg:grid-cols-2 gap-3">
         <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
             <div class="text-xl font-bold text-text-dark">{{ subjects|length }}</div>
-            <div class="text-[10px] text-text-light font-medium">Subjects</div>
+            <div class="text-xs text-text-light font-medium">Subjects</div>
         </div>
         <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
             <div class="text-xl font-bold text-status-success">{{ subjects|length * 3 }}</div>
-            <div class="text-[10px] text-text-light font-medium">Credits</div>
+            <div class="text-xs text-text-light font-medium">Credits</div>
         </div>
     </div>
 </div>

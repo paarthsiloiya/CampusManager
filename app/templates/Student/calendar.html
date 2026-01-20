@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-text-dark">Academic Calendar</h1>
+            <h1 class="text-2xl font-bold text-text-dark">Academic Calendar</h1>
             <p class="text-text-light mt-1">Schedule, events, and important deadlines</p>
         </div>
         <div class="flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end">
@@ -172,7 +172,7 @@
 
                     // Tooltip
                     const hint = document.createElement("div");
-                    hint.className = "absolute hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[150px] bg-gray-800 text-white text-[10px] px-2 py-1 rounded-lg z-20 pointer-events-none";
+                    hint.className = "absolute hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[150px] bg-gray-800 text-white text-xs px-2 py-1 rounded-lg z-20 pointer-events-none";
                     hint.textContent = events[dateStr];
                     dayEl.appendChild(hint);
                 }
@@ -215,7 +215,7 @@
                         <div class="text-xs font-bold text-text-dark line-clamp-2" title="${ev.title}">${ev.title}</div>
                     </td>
                     <td class="py-3 pl-2 text-right align-middle whitespace-nowrap">
-                         <span class="text-[10px] font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg group-hover:bg-white group-hover:border-primary/20 transition-colors">
+                         <span class="text-xs font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg group-hover:bg-white group-hover:border-primary/20 transition-colors">
                             ${dateString}
                         </span>
                     </td>
@@ -235,7 +235,7 @@
                         <i data-feather="bell" class="w-4 h-4 text-primary mt-0.5"></i>
                         <div>
                             <span class="text-sm font-bold text-primary block">${events[todayStr]}</span>
-                            <span class="text-[10px] text-text-light">Happening today</span>
+                            <span class="text-xs text-text-light">Happening today</span>
                         </div>
                     </div>
                  `;

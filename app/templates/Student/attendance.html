@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-text-dark">Attendance</h1>
+            <h1 class="text-2xl font-bold text-text-dark">Attendance</h1>
             <p class="text-text-light mt-1">Track your presence and meet requirements</p>
         </div>
         <div class="hidden lg:block">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div>
-                <h3 class="text-3xl font-bold text-text-dark mb-1">{{ attendance_stats.this_week_classes }}</h3>
+                <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.this_week_classes }}</h3>
                 <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures This Week</p>
             </div>
         </div>
@@ -36,7 +36,7 @@
             </div>
             <div>
                 <div class="flex items-baseline gap-1">
-                    <h3 class="text-3xl font-bold text-text-dark mb-1">{{ attendance_stats.attended_classes }}</h3>
+                    <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.attended_classes }}</h3>
                     <span class="text-lg font-bold text-text-lighter">/ {{ attendance_stats.total_classes }}</span>
                 </div>
                 <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures Attended</p>
@@ -149,7 +149,7 @@
                     </div>
                     <div class="text-right">
                         <span class="text-lg font-bold text-text-dark">{{ subject.attended_classes }}<span class="text-text-lighter text-sm">/{{ subject.total_classes }}</span></span>
-                        <p class="text-[10px] uppercase font-bold text-text-light tracking-wide">Classes</p>
+                        <p class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -187,7 +187,7 @@
                         <td class="p-1 text-center">
                             <div class="flex flex-col items-center justify-center">
                                 <span class="text-lg font-bold text-text-dark">{{ subject.attended_classes }}<span class="text-text-lighter text-sm">/{{ subject.total_classes }}</span></span>
-                                <span class="text-[10px] uppercase font-bold text-text-light tracking-wide">Classes</span>
+                                <span class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</span>
                             </div>
                         </td>
                         <td class="p-1">
@@ -233,7 +233,7 @@
             <!-- Center label -->
             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span id="sidebar-agg-percent" data-percent="{{ attendance_stats.attendance_percentage }}" class="block text-2xl font-bold text-text-dark">{{ attendance_stats.attendance_percentage }}%</span>
-                <span class="text-[10px] text-text-light uppercase font-bold">Aggregate</span>
+                <span class="text-xs text-text-light uppercase font-bold">Aggregate</span>
             </div>
         </div>
     </div>
@@ -246,7 +246,7 @@
         <span id="sideMonthYear" class="text-xs font-bold text-primary"></span>
     </div>
 
-    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-text-light mb-2">
+    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-text-light mb-2">
         <div>S</div>
         <div>M</div>
         <div>T</div>
