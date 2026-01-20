@@ -1,25 +1,28 @@
 {% extends "base.html" %} {% block title %}{{ subject.name }} | Student{% endblock %} {% block content %}
-<section class="max-w-5xl mx-auto space-y-6">
+<section class="max-w-5xl mx-auto space-y-4 lg:space-y-6 p-4 lg:p-0">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-text-dark">{{ subject.name }}</h2>
+            <h2 class="text-xl lg:text-2xl font-bold text-text-dark">{{ subject.name }}</h2>
             <p class="text-sm text-text-light font-mono mt-0.5">{{ subject.code }}</p>
         </div>
-        <a href="{{ url_for('views.student_dashboard') }}" class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm">
+        <a
+            href="{{ url_for('views.student_dashboard') }}"
+            class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm w-full lg:w-auto justify-center lg:justify-start"
+        >
             <i data-feather="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
             Back
         </a>
     </div>
 
     <!-- Class Info Card -->
-    <div class="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 relative overflow-hidden shadow-sm">
+    <div class="bg-white rounded-2xl lg:rounded-3xl border border-gray-100 p-4 lg:p-8 relative overflow-hidden shadow-sm">
         <!-- Abstract Decoration -->
         <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
             <!-- Left: Info -->
-            <div class="md:col-span-2 space-y-6">
+            <div class="lg:col-span-2 space-y-6">
                 <!-- Teacher Info -->
                 <div class="flex items-start gap-4">
                     <div class="w-24 h-24 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-primary">
@@ -51,7 +54,7 @@
             </div>
 
             <!-- Right: Stats -->
-            <div class="md:col-span-1">
+            <div class="lg:col-span-1">
                 <div class="bg-gray-50/80 rounded-2xl p-6 border border-gray-100 h-full flex flex-col justify-center items-center text-center relative">
                     {% set att_color = 'text-status-success' if stats.percentage >= 75 else 'text-status-warning' if stats.percentage >= 60 else 'text-status-error' %} {% set att_bg = 'bg-status-success' if stats.percentage >= 75 else 'bg-status-warning' if stats.percentage >= 60 else
                     'bg-status-error' %}

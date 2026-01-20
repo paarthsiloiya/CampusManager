@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% block title %}Dashboard - Smart Curriculum & Attendance{% endblock %} {% block content %}
 <!-- Dashboard Container -->
-<section id="dashboard" class="max-w-7xl mx-auto">
+<section id="dashboard" class="max-w-7xl mx-auto p-0">
     <!-- Header Section -->
-    <div class="mb-8">
-        <h2 id="greeting" class="text-3xl font-bold text-text-darker tracking-tight mb-1">Welcome, {{ student.name or "Student" }}!</h2>
-        <p class="text-text-light font-medium">{{ semester_info or "Semester Info Unavailable" }} • {{ student.branch or "General Branch" }}</p>
+    <div class="mb-4 lg:mb-8">
+        <h2 id="greeting" class="text-2xl lg:text-3xl font-bold text-text-darker tracking-tight mb-1">Welcome, {{ student.name or "Student" }}!</h2>
+        <p class="text-sm lg:text-base text-text-light font-medium">{{ semester_info or "Semester Info Unavailable" }} • {{ student.branch or "General Branch" }}</p>
     </div>
 
     <!-- Subjects Section -->
@@ -19,21 +19,27 @@
         <!-- List View -->
         <div class="flex flex-col gap-3">
             {% for subject in subjects %}
-            <div class="group bg-white rounded-xl border border-gray-100 p-3 hover:border-primary/30 hover:shadow-md transition-all duration-200 relative overflow-hidden">
-                <div class="flex items-center gap-4 relative z-10">
-                    <!-- Icon/Avatar -->
-                    <div class="w-14 h-14 flex items-center justify-center flex-shrink-0">
+            <div class="group bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                <div class="flex flex-row lg:flex-row lg:items-center gap-3 lg:gap-4 relative z-10">
+                    <!-- Icon -->
+                    <div class="w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center flex-shrink-0 bg-gray-50 rounded-lg">
                         {% if subject.icon %}
-                        <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-10 h-10 object-contain" />
+                        <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-8 h-8 lg:w-10 lg:h-10 object-contain" />
                         {% else %}
-                        <span class="text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
+                        <span class="text-xl lg:text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
                         {% endif %}
                     </div>
 
                     <!-- Content -->
-                    <div class="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <!-- Info -->
-                        <div class="md:col-span-5">
+                    <div class="flex-1 min-w-0 flex flex-col gap-2 lg:grid lg:grid-cols-12 lg:gap-4">
+                        <!-- Mobile Header -->
+                        <div class="lg:hidden">
+                            <h4 class="font-bold text-text-dark text-base line-clamp-1">{{ subject.name }}</h4>
+                            <p class="text-xs text-text-light font-mono">{{ subject.code }}</p>
+                        </div>
+
+                        <!-- Desktop Info -->
+                        <div class="lg:col-span-5 hidden lg:block">
                             <h4 class="text-base font-bold text-text-dark truncate leading-tight group-hover:text-primary transition-colors" title="{{ subject.name }}">{{ subject.name }}</h4>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="text-xs font-mono text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100">{{ subject.code }}</span>
@@ -41,45 +47,52 @@
                             </div>
                         </div>
 
-                        <!-- Status -->
-                        {% set has_action = (subject.enrollment_status == 'APPROVED') or ((subject.enrollment_status in ['NOT_ENROLLED','REJECTED']) and (subject.assigned_classes|length > 0)) %}
-                        <div class="md:col-span-4 flex items-center md:justify-center">
-                            {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %} {% set att_status = 'success' if subject.status == 'good' else 'warning' if subject.status == 'warning' else 'error' %}
-                            <div class="flex items-center gap-3 w-full max-w-[180px]">
-                                {% set att_bg = 'bg-emerald-500' if att_status == 'success' else 'bg-amber-400' if att_status == 'warning' else 'bg-rose-500' %} {% set att_text = 'text-emerald-600' if att_status == 'success' else 'text-amber-500' if att_status == 'warning' else 'text-rose-500' %}
-                                <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full {{ att_bg }}" style="width: {{ subject.attendance_percentage }}%;"></div>
+                        <!-- Status and Action Row -->
+                        <div class="flex items-center justify-between gap-3 lg:contents">
+                            <!-- Status -->
+                            {% set has_action = (subject.enrollment_status == 'APPROVED') or ((subject.enrollment_status in ['NOT_ENROLLED','REJECTED']) and (subject.assigned_classes|length > 0)) %}
+                            <div class="flex-1 lg:col-span-4 flex items-center justify-between lg:justify-center py-2 lg:py-0 border-t lg:border-0 border-gray-50 lg:border-none">
+                                {% if subject.enrollment_status == 'APPROVED' %} {% if subject.total_classes > 0 %} {% set att_status = 'success' if subject.status == 'good' else 'warning' if subject.status == 'warning' else 'error' %}
+                                <div class="flex items-center gap-3 w-full max-w-[200px] lg:max-w-[180px] justify-end lg:justify-center">
+                                    {% set att_bg = 'bg-emerald-500' if att_status == 'success' else 'bg-amber-400' if att_status == 'warning' else 'bg-rose-500' %} {% set att_text = 'text-emerald-600' if att_status == 'success' else 'text-amber-500' if att_status == 'warning' else 'text-rose-500'
+                                    %}
+                                    <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden w-24 lg:w-auto">
+                                        <div class="h-full {{ att_bg }}" style="width: {{ subject.attendance_percentage }}%;"></div>
+                                    </div>
+                                    <span class="text-sm font-bold {{ att_text }} w-10 text-right">{{ subject.attendance_percentage }}%</span>
                                 </div>
-                                <span class="text-sm font-bold {{ att_text }} w-10 text-right">{{ subject.attendance_percentage }}%</span>
+                                {% else %}
+                                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">New</span>
+                                {% endif %} {% elif subject.enrollment_status == 'PENDING' %}
+                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Pending</span>
+                                {% elif subject.enrollment_status == 'REJECTED' %}
+                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-status-error/10 text-status-error">Rejected</span>
+                                {% else %} {% if not has_action %}
+                                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-400">Unavailable</span>
+                                {% else %}
+                                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Not Enrolled</span>
+                                {% endif %} {% endif %}
                             </div>
-                            {% else %}
-                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">New</span>
-                            {% endif %} {% elif subject.enrollment_status == 'PENDING' %}
-                            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Pending</span>
-                            {% elif subject.enrollment_status == 'REJECTED' %}
-                            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-status-error/10 text-status-error">Rejected</span>
-                            {% else %} {% if not has_action %}
-                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-400">Unavailable</span>
-                            {% else %}
-                            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Not Enrolled</span>
-                            {% endif %} {% endif %}
-                        </div>
 
-                        <!-- Action -->
-                        <div class="md:col-span-3 flex justify-end items-center h-full">
-                            {% if subject.enrollment_status == 'APPROVED' %}
-                            <a href="{{ url_for('views.student_class_view', class_id=subject.enrolled_class_id) }}" class="text-sm font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-primary/5">
-                                Open <i data-feather="chevron-right" class="w-4 h-4"></i>
-                            </a>
-                            {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
-                            <div class="flex gap-2 items-center">
-                                {% for cls in subject.assigned_classes %}
-                                <form action="{{ url_for('views.join_class', class_id=cls.id) }}" method="POST" class="flex items-center m-0 mr-3">
-                                    <button type="submit" class="text-xs font-bold bg-primary hover:bg-primary-dark text-white px-3 py-2 rounded shadow-sm hover:shadow transition-all">Join {% if cls.section %}{{ cls.section }}{% endif %}</button>
-                                </form>
-                                {% endfor %}
+                            <!-- Action -->
+                            <div class="lg:col-span-3 flex justify-end items-center h-full">
+                                {% if subject.enrollment_status == 'APPROVED' %}
+                                <a
+                                    href="{{ url_for('views.student_class_view', class_id=subject.enrolled_class_id) }}"
+                                    class="w-full lg:w-auto text-sm font-semibold bg-primary/5 text-primary hover:bg-primary/10 hover:text-primary-dark transition-colors flex items-center justify-center gap-1 px-4 py-2 rounded-xl"
+                                >
+                                    Open <i data-feather="chevron-right" class="w-4 h-4"></i>
+                                </a>
+                                {% elif subject.enrollment_status == 'NOT_ENROLLED' or subject.enrollment_status == 'REJECTED' %} {% if subject.assigned_classes|length > 0 %}
+                                <div class="flex flex-wrap gap-2 items-center justify-end w-full">
+                                    {% for cls in subject.assigned_classes %}
+                                    <form action="{{ url_for('views.join_class', class_id=cls.id) }}" method="POST" class="flex items-center m-0">
+                                        <button type="submit" class="text-xs font-bold bg-primary hover:bg-primary-dark text-white px-3 py-2 rounded-xl shadow-sm hover:shadow transition-all w-full lg:w-auto">Join {% if cls.section %}{{ cls.section }}{% endif %}</button>
+                                    </form>
+                                    {% endfor %}
+                                </div>
+                                {% endif %} {% endif %}
                             </div>
-                            {% endif %} {% endif %}
                         </div>
                     </div>
                 </div>
@@ -90,7 +103,7 @@
 </section>
 {% endblock %} {% block sidebar_content %}
 <!-- Active Class Widget -->
-<div class="mb-6">
+<div class="w-full">
     <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Live Status</h3>
 
     {% if active_class_info %}
@@ -131,7 +144,7 @@
 </div>
 
 <!-- Mini Calendar Widget -->
-<div>
+<div class="w-full">
     <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Calendar</h3>
     <div class="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
         <div id="sideMonthYear" class="text-center font-bold text-text mb-4 text-sm">Loading...</div>

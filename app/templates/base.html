@@ -129,124 +129,135 @@
             ::-webkit-scrollbar-thumb:hover {
                 @apply bg-primary;
             }
+
+            @media (max-width: 768px) {
+                .no-scrollbar-mobile::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar-mobile {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            }
         </style>
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex min-h-screen text-text bg-background font-sans antialiased selection:bg-accent selection:text-white">
+    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
-        <aside id="sidebar" class="w-64 bg-primary-darker text-white px-6 py-6 flex flex-col gap-6 fixed top-4 bottom-4 left-4 rounded-3xl shadow-2xl border border-primary-dark/50 overflow-hidden z-20 transition-all duration-300 ease-in-out">
-            <h1 id="sidebar-toggle" class="text-2xl font-bold tracking-tight mb-2 flex items-center gap-3 text-white cursor-pointer group justify-start">
-                <div class="p-2 bg-gradient-to-br from-accent to-primary rounded-xl shadow-lg flex-shrink-0">
+        <aside id="sidebar" class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
+            <h1 id="sidebar-toggle" class="text-2xl font-bold tracking-tight mb-0 lg:mb-2 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
+                <div class="p-2 bg-gradient-to-br from-accent to-primary rounded-xl shadow-lg flex-shrink-0 scale-75 lg:scale-100">
                     <i data-feather="book" class="w-6 h-6 text-white"></i>
                 </div>
-                <span id="sidebar-title-text" class="font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-nowrap overflow-hidden transition-all duration-300 select-none">Smart App</span>
+                <span id="sidebar-title-text" class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-nowrap overflow-hidden transition-all duration-300 select-none">Smart App</span>
             </h1>
-            <nav class="flex-1 overflow-y-auto p-0 custom-scrollbar">
-                <ul class="space-y-2 text-sm font-medium">
+            <nav class="flex-1 lg:mx-6 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
+                <ul class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
                     <li>
                         {% if current_user.role.name == 'ADMIN' %}
-                        <a href="{{ url_for('views.admin_dashboard') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Dashboard</span></a
+                        <a href="{{ url_for('views.admin_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.add_user') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="user-plus" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Add New User</span></a
+                        <a href="{{ url_for('views.add_user') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="user-plus" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Add New User</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.assign_class') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Assign Classes</span></a
+                        <a href="{{ url_for('views.assign_class') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="book" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Assign Classes</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.timetable') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Timetable</span></a
+                        <a href="{{ url_for('views.timetable') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.admin_queries') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="help-circle" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Queries</span></a
+                        <a href="{{ url_for('views.admin_queries') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="help-circle" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a
                         >
                     </li>
                         {% elif current_user.role.name == 'TEACHER' %}
-                        <a href="{{ url_for('views.teacher_dashboard') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Dashboard</span></a
+                        <a href="{{ url_for('views.teacher_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.teacher_classes') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">My Classes</span></a
+                        <a href="{{ url_for('views.teacher_classes') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Classes</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.teacher_enrollments') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="user-check" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Requests</span></a
+                        <a href="{{ url_for('views.teacher_enrollments') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="user-check" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Requests</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.teacher_schedule') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">My Schedule</span></a
+                        <a href="{{ url_for('views.teacher_schedule') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Schedule</span></a
                         >
                     </li>
                         {% else %}
-                        <a href="{{ url_for('views.student_dashboard') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Dashboard</span></a
+                        <a href="{{ url_for('views.student_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
                         >
                         {% endif %}
                     </li>
 
                     {% if current_user.role.name == 'STUDENT' %}
                     <li>
-                        <a href="{{ url_for('views.curriculum') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Curriculum</span></a
+                        <a href="{{ url_for('views.curriculum') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Curriculum</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.student_timetable') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="clock" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Timetable</span></a
+                        <a href="{{ url_for('views.student_timetable') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="clock" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.attendance') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="bar-chart" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Attendance</span></a
+                        <a href="{{ url_for('views.attendance') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="bar-chart" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Attendance</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.calendar') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Calendar</span></a
+                        <a href="{{ url_for('views.calendar') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a
                         >
                     </li>
                     {% endif %} {% if current_user.role.name == 'TEACHER' %}
                     <li>
-                        <a href="{{ url_for('views.calendar') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Calendar</span></a
+                        <a href="{{ url_for('views.calendar') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a
                         >
                     </li>
                     {% endif %}
 
                     <li>
-                        <a href="{{ url_for('views.settings') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="settings" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Settings</span></a
+                        <a href="{{ url_for('views.settings') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"
+                            ><i data-feather="settings" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Settings</span></a
                         >
                     </li>
                     <li>
-                        <a href="{{ url_for('views.about') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">About</span></a>
+                        <a href="{{ url_for('views.about') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
                     </li>
                     {% if current_user.role.name != 'ADMIN' %}
                     {% endif %}
                 </ul>
             </nav>
-            <div class="border-t border-primary-dark pt-3 mt-auto">
-                <a href="{{ url_for('auth.logout') }}" class="w-full text-left py-3 px-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300" onclick="return confirm('Are you sure you want to logout?')">
-                    <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap">Logout</span>
+            <div class="border-t lg:border-t border-l lg:border-l-0 border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
+                <a href="{{ url_for('auth.logout') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300" onclick="return confirm('Are you sure you want to logout?')">
+                    <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Logout</span>
                 </a>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <main id="main-content" class="flex-1 p-8 mx-6 my-4 ml-72 {% if not hide_right_sidebar %}mr-[21rem] rounded-l-3xl{% else %}mr-6 rounded-3xl{% endif %} overflow-y-auto bg-white shadow-xl border border-gray-100/50 transition-all duration-300 ease-in-out">
+        <div id="content-wrapper" class="flex flex-col-reverse lg:contents w-full relative">
+        <main id="main-content" class="w-full lg:w-auto lg:flex-1 p-4 lg:p-8 mx-0 lg:mx-6 my-0 lg:my-4 ml-0 lg:ml-72 {% if not hide_right_sidebar %}mr-0 lg:mr-[21rem] rounded-none lg:rounded-l-3xl{% else %}mr-0 lg:mr-6 rounded-none lg:rounded-3xl{% endif %} overflow-visible lg:overflow-y-auto bg-white shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 transition-all duration-300 ease-in-out pb-20 lg:pb-8">
             <!-- Flash Messages -->
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
             <div class="mb-6">
@@ -269,7 +280,7 @@
 
         <!-- Right Sidebar -->
         {% if not hide_right_sidebar %}
-        <aside class="w-80 bg-white shadow-xl px-6 py-6 flex flex-col fixed right-4 top-4 bottom-4 rounded-r-3xl border-l border-gray-100 z-10">
+        <aside class="w-full lg:w-80 bg-white shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 z-10 lg:h-auto h-auto">
             <!-- Profile -->
             <div class="flex-shrink-0 mb-6">
                 <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between group">
@@ -306,8 +317,8 @@
             {% endif %}
 
             <!-- Calendar will be inserted here from child templates -->
-            <div class="flex-1 overflow-y-auto -mr-4 pr-4 custom-scrollbar">
-                <div class="space-y-6">
+            <div class="w-full lg:flex-1 overflow-x-auto lg:overflow-y-auto lg:-mr-4 lg:pr-4 custom-scrollbar no-scrollbar-mobile pb-2 lg:pb-0">
+                <div class="flex flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-6 items-stretch [&>*]:w-72 [&>*]:shrink-0 lg:[&>*]:w-auto lg:[&>*]:shrink">
                     {% block sidebar_content %}{% endblock %}
                 </div>
             </div>
@@ -321,6 +332,7 @@
             {% endif %}
         </aside>
         {% endif %}
+        </div>
 
         <!-- Query Modal -->
         <div id="queryModal" class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
@@ -403,7 +415,8 @@
                 }
 
                 sidebarToggle.addEventListener('click', function() {
-                    if (sidebar.classList.contains('w-64')) {
+                    if (!window.matchMedia("(min-width: 768px)").matches) return;
+                    if (sidebar.classList.contains('lg:w-64')) {
                         applyCollapse(false);
                         localStorage.setItem('sidebar-collapsed', 'true');
                     } else {
@@ -418,24 +431,24 @@
                         mainContent.classList.add('transition-none');
                     }
 
-                    sidebar.classList.remove('w-64', 'px-6');
-                    sidebar.classList.add('w-20', 'px-3');
+                    sidebar.classList.remove('lg:w-64', 'lg:px-6');
+                    sidebar.classList.add('lg:w-20', 'lg:px-3');
 
                     sidebarToggle.classList.remove('justify-start');
                     sidebarToggle.classList.add('justify-center');
 
-                    mainContent.classList.remove('ml-72');
-                    mainContent.classList.add('ml-28');
+                    mainContent.classList.remove('lg:ml-72');
+                    mainContent.classList.add('lg:ml-28');
 
-                    sidebarTitleText.classList.add('hidden');
+                    sidebarTitleText.classList.remove('lg:block');
 
-                    sidebarTexts.forEach(text => text.classList.add('hidden'));
+                    sidebarTexts.forEach(text => text.classList.remove('lg:inline'));
 
                     // Center icons
                     const links = sidebar.querySelectorAll('a');
                     links.forEach(link => {
-                        link.classList.remove('px-4', 'text-left');
-                        link.classList.add('px-0', 'justify-center');
+                        link.classList.remove('lg:px-4', 'lg:text-left', 'lg:justify-start');
+                        link.classList.add('lg:px-0', 'lg:justify-center');
                     });
 
                     if (noAnimate) {
@@ -452,23 +465,23 @@
                         mainContent.classList.add('transition-none');
                     }
 
-                    sidebar.classList.add('w-64', 'px-6');
-                    sidebar.classList.remove('w-20', 'px-3');
+                    sidebar.classList.add('lg:w-64', 'lg:px-6');
+                    sidebar.classList.remove('lg:w-20', 'lg:px-3');
 
                     sidebarToggle.classList.add('justify-start');
                     sidebarToggle.classList.remove('justify-center');
 
-                    mainContent.classList.add('ml-72');
-                    mainContent.classList.remove('ml-28');
+                    mainContent.classList.add('lg:ml-72');
+                    mainContent.classList.remove('lg:ml-28');
 
-                    sidebarTitleText.classList.remove('hidden');
-                    sidebarTexts.forEach(text => text.classList.remove('hidden'));
+                    sidebarTitleText.classList.add('lg:block');
+                    sidebarTexts.forEach(text => text.classList.add('lg:inline'));
 
                     // Restore links
                     const links = sidebar.querySelectorAll('a');
                     links.forEach(link => {
-                        link.classList.add('px-4', 'text-left');
-                        link.classList.remove('px-0', 'justify-center');
+                        link.classList.add('lg:px-4', 'lg:text-left', 'lg:justify-start');
+                        link.classList.remove('lg:px-0', 'lg:justify-center');
                     });
 
                     if (noAnimate) {
