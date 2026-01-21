@@ -2,7 +2,7 @@
 <div class="max-w-7xl mx-auto space-y-8">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-text-dark">Enrollment Requests</h1>
+            <h1 class="text-2xl font-bold text-text-dark">Enrollment Requests</h1>
             <p class="text-text-light mt-1">Manage student access to your classes.</p>
         </div>
     </div>
@@ -27,7 +27,8 @@
             <span class="bg-orange-100 text-orange-700 py-1 px-3 rounded-lg text-xs font-bold shadow-sm shadow-orange-100"> {{ requests|length }} Pending </span>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Desktop Table -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-white border-b border-gray-100">
                     <tr>
@@ -65,6 +66,32 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="lg:hidden p-4 space-y-4">
+            {% for req in requests %}
+            <div class="bg-gray-50 rounded-2xl border border-gray-100 p-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 font-bold text-sm">{{ req.student.name[:2].upper() }}</div>
+                    <div>
+                        <h3 class="text-sm font-bold text-text-dark">{{ req.student.name }}</h3>
+                        <div class="text-xs text-text-light">{{ req.student.enrollment_number or 'No Enrollment No.' }}</div>
+                    </div>
+                </div>
+                <div class="text-xs text-text-light mb-4 flex items-center gap-2"><i data-feather="calendar" class="w-3 h-3"></i> {{ req.request_date.strftime('%B %d, %Y') }}</div>
+                <div class="flex gap-2">
+                    <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="flex-1">
+                        <input type="hidden" name="action" value="approve" />
+                        <button type="submit" class="w-full flex items-center justify-center gap-1 bg-green-100 text-green-700 hover:bg-green-600 hover:text-white py-2 rounded-xl text-xs font-bold transition-all">Approve</button>
+                    </form>
+                    <form action="{{ url_for('views.handle_enrollment', id=req.id) }}" method="POST" class="flex-1">
+                        <input type="hidden" name="action" value="reject" />
+                        <button type="submit" class="w-full flex items-center justify-center gap-1 bg-red-100 text-red-700 hover:bg-red-600 hover:text-white py-2 rounded-xl text-xs font-bold transition-all">Reject</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     {% endfor %} {% else %}

@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %}Class Details - {{ assigned_class.subject.name }}{% endblock %} {% block content %}
 <div class="max-w-7xl mx-auto space-y-8">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
-            <h1 class="text-3xl font-bold text-text-dark">{{ assigned_class.subject.name }}</h1>
+            <h1 class="text-2xl font-bold text-text-dark">{{ assigned_class.subject.name }}</h1>
             <div class="flex items-center gap-2 mt-1">
                 <span class="text-text-light font-bold">{{ assigned_class.subject.code }}</span>
                 {% if assigned_class.subject.is_lab %}
@@ -10,12 +10,16 @@
                 {% endif %}
             </div>
         </div>
-        <a href="{{ url_for('views.teacher_classes') }}" class="flex items-center gap-2 text-text-light hover:text-primary font-bold transition-colors"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Classes </a>
+
+        <a href="{{ url_for('views.teacher_classes') }}" class="inline-flex w-full sm:w-auto justify-center sm:justify-end items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors">
+            <i data-feather="arrow-left" class="w-4 h-4"></i>
+            Back to Classes
+        </a>
     </div>
 
     <!-- Info Stats -->
     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="space-y-1">
                 <p class="text-xs font-bold text-text-light uppercase tracking-wider">Semester / Branch</p>
                 <div class="flex items-center gap-2">
@@ -47,7 +51,7 @@
     </div>
 
     <h2 class="text-xl font-bold text-text-dark">Class Management</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {% if is_active %}
         <!-- Active Class Card -->
         <div class="bg-white rounded-3xl p-6 border-2 border-green-500 shadow-lg shadow-green-500/10 relative overflow-hidden group flex flex-col justify-between">
