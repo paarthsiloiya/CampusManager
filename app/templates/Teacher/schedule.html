@@ -24,27 +24,6 @@
     </div>
     {% endif %} {% endwith %}
 
-    <!-- Semester Toggle (scrollable on small screens) -->
-    <div class="justify-self-center mb-4 p-1 bg-gray-50 rounded-xl border border-gray-200 overflow-x-auto w-fit">
-        <div class="inline-flex items-center gap-2 px-1 whitespace-nowrap">
-            <a
-                href="{{ url_for('views.teacher_schedule', group='odd') }}"
-                class="inline-flex shrink-0 items-center px-3 py-2 rounded-lg text-sm font-bold transition-all gap-2 {% if current_group == 'odd' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark hover:bg-white/50{% endif %}"
-            >
-                <i data-feather="calendar" class="w-4 h-4"></i>
-                Odd Semesters
-            </a>
-
-            <a
-                href="{{ url_for('views.teacher_schedule', group='even') }}"
-                class="inline-flex shrink-0 items-center px-3 py-2 rounded-lg text-sm font-bold transition-all gap-2 {% if current_group == 'even' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark hover:bg-white/50{% endif %}"
-            >
-                <i data-feather="calendar" class="w-4 h-4"></i>
-                Even Semesters
-            </a>
-        </div>
-    </div>
-
     {% if has_entries and periods %}
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto custom-scrollbar">
@@ -130,4 +109,33 @@
         writing-mode: vertical-rl;
     }
 </style>
+{% endblock %}
+
+{% block sidebar_content %}
+<!-- Settings Widget -->
+<div class="w-full">
+    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">View Settings</h3>
+    <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+        <div>
+            <div class="flex items-center gap-2 mb-3">
+                <i data-feather="filter" class="w-4 h-4 text-primary"></i>
+                <span class="text-sm font-bold text-text-dark">Semester Group</span>
+            </div>
+            
+            <div class="flex flex-col gap-2">
+                <a href="{{ url_for('views.teacher_schedule', group='odd') }}" 
+                   class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'odd' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}">
+                    <span>Odd Semesters</span>
+                    {% if current_group == 'odd' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
+                </a>
+
+                <a href="{{ url_for('views.teacher_schedule', group='even') }}" 
+                   class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'even' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}">
+                    <span>Even Semesters</span>
+                    {% if current_group == 'even' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

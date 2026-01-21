@@ -115,4 +115,43 @@
 <script>
     feather.replace();
 </script>
+{% endblock %} {% block sidebar_content %}
+<!-- Class Info Widget -->
+<div class="w-full">
+    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Class Info</h3>
+    <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+        <!-- Branch/Sem -->
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <i data-feather="git-branch" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Branch</p>
+                <p class="font-bold text-text-dark text-sm leading-tight">{{ assigned_class.subject.branch }} (Sem {{ assigned_class.subject.semester }})</p>
+            </div>
+        </div>
+
+        <!-- Section -->
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                <i data-feather="layers" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Section</p>
+                <p class="font-bold text-text-dark text-sm leading-tight">{{ assigned_class.section or 'All Sections' }}</p>
+            </div>
+        </div>
+
+        <!-- Enrollment -->
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                <i data-feather="users" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Students</p>
+                <p class="font-bold text-text-dark text-sm leading-tight">{{ enrollments|length }} Enrolled</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

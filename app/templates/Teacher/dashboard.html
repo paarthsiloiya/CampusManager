@@ -6,9 +6,6 @@
             <h1 class="text-2xl font-bold text-text-dark">Dashboard</h1>
             <p class="text-text-light mt-1">Welcome back, {{ current_user.name }}</p>
         </div>
-        <div>
-            <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> {{ stats.total_classes }} Active Classes </span>
-        </div>
     </div>
 
     <!-- Active Class Section -->
@@ -65,112 +62,92 @@
     </div>
     {% endif %}
 
-    <!-- Quick Management Table -->
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-gray-100">
-            <h2 class="text-lg font-bold text-text-dark">Quick Management</h2>
-            <p class="text-sm text-text-light">Access your teaching tools and reports.</p>
-        </div>
-
-        <!-- Desktop Table -->
-        <div class="hidden lg:block overflow-x-auto">
-            <table class="w-full text-left">
-                <tbody class="divide-y divide-gray-50">
-                    <tr class="group hover:bg-gray-50 transition-colors cursor-pointer" onclick="window.location.href='{{ url_for('views.teacher_schedule') }}'">
-                        <td class="px-6 py-4 w-16">
-                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                                <i data-feather="calendar" class="w-5 h-5"></i>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="font-bold text-text-dark text-sm">My Schedule</div>
-                            <div class="text-xs text-text-light">View your weekly timetable</div>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <i data-feather="chevron-right" class="w-4 h-4 text-gray-400"></i>
-                        </td>
-                    </tr>
-                    <tr class="group hover:bg-gray-50 transition-colors cursor-pointer" onclick="window.location.href='{{ url_for('views.teacher_classes') }}'">
-                        <td class="px-6 py-4 w-16">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                <i data-feather="book-open" class="w-5 h-5"></i>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="font-bold text-text-dark text-sm">My Classes</div>
-                            <div class="text-xs text-text-light">View enrolled students and history</div>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <i data-feather="chevron-right" class="w-4 h-4 text-gray-400"></i>
-                        </td>
-                    </tr>
-                    <tr class="group hover:bg-gray-50 transition-colors cursor-pointer" onclick="window.location.href='{{ url_for('views.teacher_enrollments') }}'">
-                        <td class="px-6 py-4 w-16">
-                            <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
-                                <i data-feather="users" class="w-5 h-5"></i>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="font-bold text-text-dark text-sm">Enrollments</div>
-                            <div class="text-xs text-text-light">Manage student access requests</div>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <span class="text-xs font-bold bg-gray-100 text-text-dark px-2 py-1 rounded-lg">{{ stats.pending_requests }} Pending</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Mobile List View -->
-        <div class="lg:hidden p-4 space-y-3">
-            <div onclick="window.location.href='{{ url_for('views.teacher_schedule') }}'" class="bg-gray-50 p-4 rounded-xl flex items-center justify-between cursor-pointer active:bg-gray-100 transition-colors">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <i data-feather="calendar" class="w-5 h-5"></i>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof feather !== "undefined") {
+                feather.replace();
+            }
+        });
+    </script>
+    {% endblock %} {% block sidebar_content %}
+    <!-- Stats Widget -->
+    <div class="w-full">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Overview</h3>
+        <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <i data-feather="book-open" class="w-4 h-4"></i>
                     </div>
-                    <div>
-                        <div class="font-bold text-text-dark text-sm">My Schedule</div>
-                        <div class="text-xs text-text-light">View your weekly timetable</div>
-                    </div>
+                    <span class="text-sm font-medium text-gray-600">Total Classes</span>
                 </div>
-                <i data-feather="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                <span class="text-lg font-bold text-text-dark">{{ stats.total_classes }}</span>
             </div>
 
-            <div onclick="window.location.href='{{ url_for('views.teacher_classes') }}'" class="bg-gray-50 p-4 rounded-xl flex items-center justify-between cursor-pointer active:bg-gray-100 transition-colors">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                        <i data-feather="book-open" class="w-5 h-5"></i>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <i data-feather="users" class="w-4 h-4"></i>
                     </div>
-                    <div>
-                        <div class="font-bold text-text-dark text-sm">My Classes</div>
-                        <div class="text-xs text-text-light">View enrolled students and history</div>
-                    </div>
+                    <span class="text-sm font-medium text-gray-600">Students</span>
                 </div>
-                <i data-feather="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                <span class="text-lg font-bold text-text-dark">{{ stats.total_students }}</span>
             </div>
 
-            <div onclick="window.location.href='{{ url_for('views.teacher_enrollments') }}'" class="bg-gray-50 p-4 rounded-xl flex items-center justify-between cursor-pointer active:bg-gray-100 transition-colors">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
-                        <i data-feather="users" class="w-5 h-5"></i>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
+                        <i data-feather="clock" class="w-4 h-4"></i>
                     </div>
-                    <div>
-                        <div class="font-bold text-text-dark text-sm">Enrollments</div>
-                        <div class="text-xs text-text-light">Manage student access requests</div>
-                    </div>
+                    <span class="text-sm font-medium text-gray-600">Pending Req.</span>
                 </div>
-                <span class="text-xs font-bold bg-white text-text-dark px-2 py-1 rounded-lg border border-gray-100 shadow-sm">{{ stats.pending_requests }}</span>
+                <span class="text-lg font-bold text-text-dark">{{ stats.pending_requests }}</span>
             </div>
         </div>
     </div>
-</section>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (typeof feather !== "undefined") {
-            feather.replace();
-        }
-    });
-</script>
-{% endblock %}
+    <!-- Quick Actions Widget -->
+    <div class="w-full">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Quick Actions</h3>
+        <div class="flex flex-col gap-3">
+            <a href="{{ url_for('views.teacher_schedule') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i data-feather="calendar" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Schedule</h4>
+                    <p class="text-xs text-text-light mt-0.5">View weekly timetable</p>
+                </div>
+                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+            </a>
+
+            <a href="{{ url_for('views.teacher_classes') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i data-feather="briefcase" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Classes</h4>
+                    <p class="text-xs text-text-light mt-0.5">Manage class details</p>
+                </div>
+                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+            </a>
+
+            <a href="{{ url_for('views.teacher_enrollments') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i data-feather="user-check" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">Enrollments</h4>
+                        {% if stats.pending_requests > 0 %}
+                        <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ stats.pending_requests }}</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-xs text-text-light mt-0.5">Approve requests</p>
+                </div>
+                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+            </a>
+        </div>
+    </div>
+    {% endblock %}
+</section>
