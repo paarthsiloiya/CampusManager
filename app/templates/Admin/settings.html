@@ -1,4 +1,32 @@
-{% extends "base.html" %} {% block title %}Settings | Admin{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Settings | Admin{% endblock %} {% block sidebar_content %}
+<div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full h-full lg:h-auto">
+    <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2"><i data-feather="shield" class="w-4 h-4 text-primary"></i> Security Status</h3>
+    <div class="space-y-4">
+        <div class="p-3 bg-green-50 rounded-xl border border-green-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <i data-feather="lock" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-green-700 uppercase">Password</p>
+                    <p class="text-sm font-medium text-green-900">Strong</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-3 bg-blue-50 rounded-xl border border-blue-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <i data-feather="shield-check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-blue-700 uppercase">Role</p>
+                    <p class="text-sm font-medium text-blue-900">Administrator</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block content %}
 <section class="max-w-4xl mx-auto space-y-8">
     <div class="flex items-end justify-between">
         <div>

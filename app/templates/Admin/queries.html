@@ -1,21 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Queries | Admin{% endblock %}
 
-{% block content %}
-<div class="max-w-7xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-text-dark">User Queries</h1>
-            <p class="text-text-light mt-1">Manage and respond to support tickets from students and teachers.</p>
-        </div>
-    </div>
-
-    <!-- Filters -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-        <form method="GET" class="flex flex-wrap items-center gap-4 m-0">
-             <!-- Category Filter -->
-             <div class="relative group">
-                 <select name="tag" onchange="this.form.submit()" class="pl-4 pr-10 py-2.5 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer hover:bg-gray-100">
+{% block sidebar_content %}
+<div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full">
+    <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
+        <i data-feather="filter" class="w-4 h-4 text-primary"></i> Filter Queries
+    </h3>
+    <form method="GET" class="space-y-4">
+         <!-- Category -->
+         <div class="space-y-2">
+             <label class="text-xs font-bold text-text-light uppercase tracking-wide">Category</label>
+             <div class="relative">
+                 <select name="tag" onchange="this.form.submit()" class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer text-sm">
                      <option value="">All Categories</option>
                      {% for tag in QueryTag %}
                      <option value="{{ tag.name }}" {% if request.args.get('tag') == tag.name %}selected{% endif %}>{{ tag.value }}</option>
@@ -23,32 +19,51 @@
                  </select>
                  <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
              </div>
+         </div>
 
-             <!-- Role Filter -->
-             <div class="relative group">
-                 <select name="role" onchange="this.form.submit()" class="pl-4 pr-10 py-2.5 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer hover:bg-gray-100">
+         <!-- Role -->
+         <div class="space-y-2">
+             <label class="text-xs font-bold text-text-light uppercase tracking-wide">User Role</label>
+             <div class="relative">
+                 <select name="role" onchange="this.form.submit()" class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer text-sm">
                      <option value="">All Users</option>
                      <option value="STUDENT" {% if request.args.get('role') == 'STUDENT' %}selected{% endif %}>Students</option>
                      <option value="TEACHER" {% if request.args.get('role') == 'TEACHER' %}selected{% endif %}>Teachers</option>
                  </select>
                  <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
              </div>
+         </div>
 
-             <!-- Sort -->
-             <div class="relative group">
-                 <select name="sort" onchange="this.form.submit()" class="pl-4 pr-10 py-2.5 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer hover:bg-gray-100">
+         <!-- Sort -->
+         <div class="space-y-2">
+             <label class="text-xs font-bold text-text-light uppercase tracking-wide">Sort Order</label>
+             <div class="relative">
+                 <select name="sort" onchange="this.form.submit()" class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark appearance-none cursor-pointer text-sm">
                      <option value="desc" {% if request.args.get('sort') != 'asc' %}selected{% endif %}>Newest First</option>
                      <option value="asc" {% if request.args.get('sort') == 'asc' %}selected{% endif %}>Oldest First</option>
                  </select>
                  <i data-feather="chevron-down" class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
              </div>
+         </div>
+         
+         {% if request.args.get('tag') or request.args.get('role') or request.args.get('sort') == 'asc' %}
+         <div class="pt-2">
+            <a href="{{ url_for('views.admin_queries') }}" class="w-full py-2.5 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                <i data-feather="x" class="w-4 h-4"></i> Clear Filters
+            </a>
+         </div>
+         {% endif %}
+    </form>
+</div>
+{% endblock %}
 
-             {% if request.args.get('tag') or request.args.get('role') or request.args.get('sort') == 'asc' %}
-             <a href="{{ url_for('views.admin_queries') }}" class="px-4 py-2.5 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors flex items-center gap-2 text-sm">
-                 <i data-feather="x" class="w-4 h-4"></i> Clear
-             </a>
-             {% endif %}
-        </form>
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark">User Queries</h1>
+            <p class="text-text-light mt-1">Manage and respond to support tickets from students and teachers.</p>
+        </div>
     </div>
 
     <!-- Queries List -->
