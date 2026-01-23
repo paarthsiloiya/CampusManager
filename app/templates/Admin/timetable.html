@@ -1,402 +1,478 @@
-{% extends "base.html" %} {% block title %}Timetable Management — CampusManager{% endblock %} {% block sidebar_content %} {% if has_timetable %}
-<!-- Export Section -->
-<div class="mb-6">
-    <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Export Data</h4>
-    <div class="space-y-2">
-        <a href="{{ url_for('views.download_timetable', format='pdf', branch='all') }}" target="_blank" class="w-full flex items-center justify-center px-4 py-2.5 bg-red-50 text-red-600 rounded-xl border border-red-100 hover:bg-red-100 transition-colors text-sm font-bold">
-            <i data-feather="file-text" class="w-4 h-4 mr-2"></i> PDF Export
-        </a>
-        <a href="{{ url_for('views.download_timetable', format='excel', branch='all') }}" class="w-full flex items-center justify-center px-4 py-2.5 bg-green-50 text-green-600 rounded-xl border border-green-100 hover:bg-green-100 transition-colors text-sm font-bold">
-            <i data-feather="grid" class="w-4 h-4 mr-2"></i> Excel Export
-        </a>
-    </div>
-</div>
-
-<!-- Semester Toggle Section -->
-<div class="mb-6">
-    <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Active Session</h4>
-    <form method="POST" action="{{ url_for('views.timetable') }}" onsubmit="return confirm('Are you sure you want to switch the active semester type? This will change which classes are visible to teachers.');">
-        <input type="hidden" name="action" value="toggle_semester" />
-        <div class="grid grid-cols-2 gap-2 p-1 bg-gray-50 rounded-xl border border-gray-200">
-            <button type="submit" name="semester_type" value="odd" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'odd' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
-                Odd Semesters
-            </button>
-            <button type="submit" name="semester_type" value="even" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'even' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
-                Even Semesters
-            </button>
-        </div>
-        <p class="text-[10px] text-text-light mt-2 px-1">Controls visibility for Teacher dashboards.</p>
-    </form>
-</div>
-
-<!-- Management Section -->
-<div class="mb-6">
-    <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Danger Zone</h4>
-    <form method="POST" action="{{ url_for('views.timetable') }}" onsubmit="return confirm('WARNING: This will completely delete the existing timetable for ALL branches. Continue?');">
-        <input type="hidden" name="action" value="reset" />
-        <button type="submit" class="w-full flex items-center justify-center px-4 py-2.5 bg-gray-50 text-text-dark rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors text-sm font-bold group">
-            <i data-feather="refresh-cw" class="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-500"></i> Reset Timetable
-        </button>
-    </form>
-</div>
-
-<!-- Stats Section -->
-<div>
-    <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Quick Stats</h4>
-    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
-        <div class="flex justify-between items-center text-sm">
-            <span class="text-text-light">Valid Entries</span>
-            <span class="font-bold text-primary">{{ timetables|length * 30 }} approx</span>
-        </div>
-        <div class="flex justify-between items-center text-sm">
-            <span class="text-text-light">Active Branch</span>
-            <span class="font-bold text-text-dark">{{ current_branch }}</span>
-        </div>
-    </div>
-</div>
-
-{% else %}
-<div class="bg-primary/5 p-4 rounded-xl text-primary text-sm border border-primary/10">
-    <p class="font-bold mb-1 flex items-center gap-2"><i data-feather="info" class="w-4 h-4"></i> Setup Required</p>
-    <p class="opacity-80 text-xs">Use the configuration form to generate your first timetable.</p>
-</div>
-{% endif %} {% endblock %} {% block content %}
-<div class="mx-0 pb-10">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Timetable Management</h1>
-            <p class="text-text-light text-sm mt-1">View and manage schedules for all branches.</p>
-        </div>
-        <a href="{{ url_for('views.admin_dashboard') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors"> <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back to Dashboard </a>
-    </div>
-
+{% extends "base.html" %}
+{% block title %}Timetable Management — CampusManager{% endblock %}
+{% block sidebar_content %}
     {% if has_timetable %}
-    <!-- Branch Selector -->
-    {% if branches %}
-    <div class="mb-8 overflow-x-auto pb-2 custom-scrollbar">
-        <div class="flex items-center gap-2 min-w-max">
-            {% for branch in branches %}
-            <a
-                href="{{ url_for('views.timetable', branch=branch) }}"
-                class="px-5 py-2.5 rounded-xl border text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-2 {% if branch == current_branch %} bg-primary text-white border-primary shadow-lg shadow-primary/20 {% else %} bg-white text-text-light border-gray-200 hover:border-primary hover:text-primary hover:bg-primary/5 {% endif %}"
-            >
-                {{ branch }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
-    <div class="space-y-12">
-        {% for sem, data in timetables.items() %} {% if (settings.active_semester_type == 'odd' and sem % 2 != 0) or (settings.active_semester_type == 'even' and sem % 2 == 0) %}
-        <div class="space-y-4">
-            <!-- Table Header -->
-            <div class="flex items-center gap-3 px-1">
-                <span class="px-3 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider border border-primary/20">Semester {{ sem }}</span>
-                <h3 class="font-bold text-text-dark">{{ current_branch }} Department</h3>
+        <!-- Export Section -->
+        <div class="mb-6">
+            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Export Data</h4>
+            <div class="space-y-2">
+                <a href="{{ url_for('views.download_timetable', format='pdf', branch='all') }}"
+                   target="_blank"
+                   class="w-full flex items-center justify-center px-4 py-2.5 bg-red-50 text-red-600 rounded-xl border border-red-100 hover:bg-red-100 transition-colors text-sm font-bold">
+                    <i data-feather="file-text" class="w-4 h-4 mr-2"></i> PDF Export
+                </a>
+                <a href="{{ url_for('views.download_timetable', format='excel', branch='all') }}"
+                   class="w-full flex items-center justify-center px-4 py-2.5 bg-green-50 text-green-600 rounded-xl border border-green-100 hover:bg-green-100 transition-colors text-sm font-bold">
+                    <i data-feather="grid" class="w-4 h-4 mr-2"></i> Excel Export
+                </a>
             </div>
-
-            <!-- Table Container -->
-            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[1000px]">
-                        <thead>
-                            <tr class="bg-gray-50/80 border-b border-gray-200">
-                                <th class="p-3 text-xs font-bold text-text-light uppercase tracking-wide w-24 border-r border-gray-100 text-center sticky left-0 bg-gray-50 z-10">Day</th>
-                                {% for p in data.periods %} {% if loop.index == lunch_break_after + 1 %}
-                                <th class="p-3 text-[10px] font-bold text-text-light uppercase tracking-wide w-12 bg-gray-100/50 text-center border-r border-gray-100">Break</th>
-                                {% endif %}
-
-                                <th class="p-3 border-r border-gray-100 min-w-[160px] text-center">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <span class="text-sm font-bold text-text-dark">Period {{ p }}</span>
-                                        <span class="text-[10px] font-medium text-text-light bg-white border border-gray-200 px-1.5 py-0.5 rounded mt-1 shadow-sm">{{ data.period_headers[p] }}</span>
-                                    </div>
-                                </th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            {% for day in data.days %} {% set is_first_day = loop.first %}
-                            <tr class="group hover:bg-gray-50/30 transition-colors">
-                                <th class="p-3 text-xs font-bold text-text-dark border-r border-gray-100 bg-white sticky left-0 group-hover:bg-gray-50 text-center z-10">{{ day[:3] | upper }}</th>
-
-                                {% for p in data.periods %} {% if loop.index == lunch_break_after + 1 %} {% if is_first_day %}
-                                <td rowspan="{{ data.days|length }}" class="p-2 border-r border-gray-100 text-center align-middle">
-                                    <span class="text-lg font-bold text-text-light uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
-                                </td>
-                                {% endif %} {% endif %} {% set entry = data.grid[day].get(p) %}
-                                <td class="p-2 border-r border-gray-100 justify-between hover:bg-white transition-shadow hover:shadow-inner text-center">
-                                    {% if entry %}
-                                    <div class="flex flex-col items-center justify-between gap-1.5 h-full w-full">
-                                        <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">{{ entry.assigned_class.subject.name }}</div>
-
-                                        <div class="flex flex-col items-center gap-2 justify-center mt-1">
-                                            {% if entry.assigned_class.subject.code %}
-                                            <div class="text-[10px] uppercase font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10">{{ entry.assigned_class.subject.code }}</div>
-                                            {% endif %}
-
-                                            <div class="text-[10px] font-medium text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100 flex items-center gap-1"><i data-feather="user" class="w-3 h-3"></i> {{ entry.assigned_class.teacher.name }}</div>
-                                        </div>
-                                    </div>
-                                    {% else %}
-                                    <div class="h-16 w-full flex items-center justify-center">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
-                                    </div>
-                                    {% endif %}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        </div>
+        <!-- Semester Toggle Section -->
+        <div class="mb-6">
+            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Active Session</h4>
+            <form method="post"
+                  action="{{ url_for("views.timetable") }}"
+                  onsubmit="return confirm('Are you sure you want to switch the active semester type? This will change which classes are visible to teachers.');">
+                <input type="hidden" name="action" value="toggle_semester" />
+                <div class="grid grid-cols-2 gap-2 p-1 bg-gray-50 rounded-xl border border-gray-200">
+                    <button type="submit"
+                            name="semester_type"
+                            value="odd"
+                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'odd' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
+                        Odd Semesters
+                    </button>
+                    <button type="submit"
+                            name="semester_type"
+                            value="even"
+                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'even' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
+                        Even Semesters
+                    </button>
+                </div>
+                <p class="text-[10px] text-text-light mt-2 px-1">Controls visibility for Teacher dashboards.</p>
+            </form>
+        </div>
+        <!-- Management Section -->
+        <div class="mb-6">
+            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Danger Zone</h4>
+            <form method="post"
+                  action="{{ url_for("views.timetable") }}"
+                  onsubmit="return confirm('WARNING: This will completely delete the existing timetable for ALL branches. Continue?');">
+                <input type="hidden" name="action" value="reset" />
+                <button type="submit"
+                        class="w-full flex items-center justify-center px-4 py-2.5 bg-gray-50 text-text-dark rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors text-sm font-bold group">
+                    <i data-feather="refresh-cw"
+                       class="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-500"></i> Reset Timetable
+                </button>
+            </form>
+        </div>
+        <!-- Stats Section -->
+        <div>
+            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Quick Stats</h4>
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-text-light">Valid Entries</span>
+                    <span class="font-bold text-primary">{{ timetables|length * 30 }} approx</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-text-light">Active Branch</span>
+                    <span class="font-bold text-text-dark">{{ current_branch }}</span>
                 </div>
             </div>
         </div>
-        {% endif %} {% endfor %}
-    </div>
-
     {% else %}
-    <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
-            <div class="p-8 pb-6 border-b border-gray-100 bg-gray-50/50">
-                <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary">
-                    <i data-feather="calendar" class="w-6 h-6"></i>
-                </div>
-                <h2 class="text-xl font-bold text-text-dark">Initialize Timetable</h2>
-                <p class="text-text-light text-sm mt-1">Configure parameters to automatically generate the class schedule.</p>
+        <div class="bg-primary/5 p-4 rounded-xl text-primary text-sm border border-primary/10">
+            <p class="font-bold mb-1 flex items-center gap-2">
+                <i data-feather="info" class="w-4 h-4"></i> Setup Required
+            </p>
+            <p class="opacity-80 text-xs">Use the configuration form to generate your first timetable.</p>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="mx-0 pb-10">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-text-dark">Timetable Management</h1>
+                <p class="text-text-light text-sm mt-1">View and manage schedules for all branches.</p>
             </div>
-
-            <form method="POST" action="{{ url_for('views.timetable') }}" class="p-8 space-y-8">
-                <input type="hidden" name="action" value="generate" />
-
-                <!-- Time Config -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label for="start_time" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            College Starts
-                            <span class="text-text-light font-normal" title="First class start time. All periods are calculated from this time.">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="time"
-                            id="start_time"
-                            name="start_time"
-                            value="{{ settings.start_time.strftime('%H:%M') if settings else '09:30' }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                    <div class="space-y-2">
-                        <label for="end_time" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            College Ends
-                            <span class="text-text-light font-normal" title="Last class end time. Total available time = End - Start - Lunch Duration.">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="time"
-                            id="end_time"
-                            name="end_time"
-                            value="{{ settings.end_time.strftime('%H:%M') if settings else '16:30' }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                </div>
-
-                <!-- Working Days -->
-                <div class="space-y-3">
-                    <label class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                        Working Days
-                        <span class="text-text-light font-normal" title="Days when classes are held. Timetable will only generate for selected days."
-                            ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                <path
-                                    d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                ></path>
-                            </svg>
-                        </span>
-                    </label>
-                    <div class="flex flex-wrap gap-2">
-                        {% set active_days = settings.working_days.split(',') if settings and settings.working_days and ',' in settings.working_days else (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] if not settings or settings.working_days == 'MTWTF' else []) %} {% for day in ['Monday',
-                        'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
-                        <label class="relative cursor-pointer group">
-                            <input type="checkbox" name="days" value="{{ day }}" {% if day in active_days %}checked{% endif %} class="peer sr-only" />
-                            <span class="inline-block px-4 py-2 rounded-xl bg-gray-50 border border-transparent text-sm font-medium text-text-light peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 peer-checked:font-bold transition-all group-hover:bg-gray-100">
-                                {{ day[:3] }}
-                            </span>
-                        </label>
+            <a href="{{ url_for("views.admin_dashboard") }}"
+               class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors"> <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back to Dashboard </a>
+        </div>
+        {% if has_timetable %}
+            <!-- Branch Selector -->
+            {% if branches %}
+                <div class="mb-8 overflow-x-auto pb-2 custom-scrollbar">
+                    <div class="flex items-center gap-2 min-w-max">
+                        {% for branch in branches %}
+                            <a href="{{ url_for('views.timetable', branch=branch) }}"
+                               class="px-5 py-2.5 rounded-xl border text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-2 {% if branch == current_branch %} bg-primary text-white border-primary shadow-lg shadow-primary/20 {% else %} bg-white text-text-light border-gray-200 hover:border-primary hover:text-primary hover:bg-primary/5 {% endif %}">
+                                {{ branch }}
+                            </a>
                         {% endfor %}
                     </div>
                 </div>
-
-                <!-- Structure Config -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label for="periods" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Total Periods
-                            <span class="text-text-light font-normal" title="Number of class periods per day. System calculates duration by dividing available time."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                                ></span
-                            >
-                        </label>
-                        <input
-                            type="number"
-                            id="periods"
-                            name="periods"
-                            min="4"
-                            max="12"
-                            value="{{ settings.periods_per_day if settings else 8 }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
+            {% endif %}
+            <div class="space-y-12">
+                {% for sem, data in timetables.items() %}
+                    {% if (settings.active_semester_type == 'odd' and sem % 2 != 0) or (settings.active_semester_type == 'even' and sem % 2 == 0) %}
+                        <div class="space-y-4">
+                            <!-- Table Header -->
+                            <div class="flex items-center gap-3 px-1">
+                                <span class="px-3 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider border border-primary/20">Semester {{ sem }}</span>
+                                <h3 class="font-bold text-text-dark">{{ current_branch }} Department</h3>
+                            </div>
+                            <!-- Table Container -->
+                            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                                <div class="overflow-x-auto custom-scrollbar">
+                                    <table class="w-full text-left border-collapse min-w-[1000px]">
+                                        <thead>
+                                            <tr class="bg-gray-50/80 border-b border-gray-200">
+                                                <th class="p-3 text-xs font-bold text-text-light uppercase tracking-wide w-24 border-r border-gray-100 text-center sticky left-0 bg-gray-50 z-10">
+                                                    Day
+                                                </th>
+                                                {% for p in data.periods %}
+                                                    {% if loop.index == lunch_break_after + 1 %}
+                                                        <th class="p-3 text-[10px] font-bold text-text-light uppercase tracking-wide w-12 bg-gray-100/50 text-center border-r border-gray-100">
+                                                            Break
+                                                        </th>
+                                                    {% endif %}
+                                                    <th class="p-3 border-r border-gray-100 min-w-[160px] text-center">
+                                                        <div class="flex flex-col items-center justify-center">
+                                                            <span class="text-sm font-bold text-text-dark">Period {{ p }}</span>
+                                                            <span class="text-[10px] font-medium text-text-light bg-white border border-gray-200 px-1.5 py-0.5 rounded mt-1 shadow-sm">{{ data.period_headers[p] }}</span>
+                                                        </div>
+                                                    </th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            {% for day in data.days %}
+                                                {% set is_first_day = loop.first %}
+                                                <tr class="group hover:bg-gray-50/30 transition-colors">
+                                                    <th class="p-3 text-xs font-bold text-text-dark border-r border-gray-100 bg-white sticky left-0 group-hover:bg-gray-50 text-center z-10">
+                                                        {{ day[:3] | upper }}
+                                                    </th>
+                                                    {% for p in data.periods %}
+                                                        {% if loop.index == lunch_break_after + 1 %}
+                                                            {% if is_first_day %}
+                                                                <td rowspan="{{ data.days|length }}"
+                                                                    class="p-2 border-r border-gray-100 text-center align-middle">
+                                                                    <span class="text-lg font-bold text-text-light uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
+                                                                </td>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        {% set entry = data.grid[day].get(p) %}
+                                                        <td class="p-2 border-r border-gray-100 justify-between hover:bg-white transition-shadow hover:shadow-inner text-center">
+                                                            {% if entry %}
+                                                                <div class="flex flex-col items-center justify-between gap-1.5 h-full w-full">
+                                                                    <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
+                                                                        {{ entry.assigned_class.subject.name }}
+                                                                    </div>
+                                                                    <div class="flex flex-col items-center gap-2 justify-center mt-1">
+                                                                        {% if entry.assigned_class.subject.code %}
+                                                                            <div class="text-[10px] uppercase font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
+                                                                                {{ entry.assigned_class.subject.code }}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        <div class="text-[10px] font-medium text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100 flex items-center gap-1">
+                                                                            <i data-feather="user" class="w-3 h-3"></i> {{ entry.assigned_class.teacher.name }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="h-16 w-full flex items-center justify-center">
+                                                                    <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
+                                                                </div>
+                                                            {% endif %}
+                                                        </td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
+                    <div class="p-8 pb-6 border-b border-gray-100 bg-gray-50/50">
+                        <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary">
+                            <i data-feather="calendar" class="w-6 h-6"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-text-dark">Initialize Timetable</h2>
+                        <p class="text-text-light text-sm mt-1">Configure parameters to automatically generate the class schedule.</p>
                     </div>
-                    <div class="space-y-2">
-                        <label for="lunch_break_after" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Lunch Break After
-                            <span class="text-text-light font-normal" title="Insert lunch break after this period number. E.g., '4' means lunch after 4th period."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                                >
-                            </span>
-                        </label>
-                        <select name="lunch_break_after" id="lunch_break_after" class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all appearance-none">
-                            {% for i in range(1, 9) %} {% set is_selected = false %} {% if settings and settings.lunch_break_after == i %} {% set is_selected = true %} {% elif not settings and i == 4 %} {% set is_selected = true %} {% endif %}
-                            <option value="{{ i }}" {% if is_selected %}selected{% endif %}>Period {{ i }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    <form method="post"
+                          action="{{ url_for("views.timetable") }}"
+                          class="p-8 space-y-8">
+                        <input type="hidden" name="action" value="generate" />
+                        <!-- Time Config -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="start_time"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    College Starts
+                                    <span class="text-text-light font-normal"
+                                          title="First class start time. All periods are calculated from this time.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="time"
+                                       id="start_time"
+                                       name="start_time"
+                                       value="{{ settings.start_time.strftime("%H:%M") if settings else '09:30' }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="end_time"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    College Ends
+                                    <span class="text-text-light font-normal"
+                                          title="Last class end time. Total available time = End - Start - Lunch Duration.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="time"
+                                       id="end_time"
+                                       name="end_time"
+                                       value="{{ settings.end_time.strftime("%H:%M") if settings else '16:30' }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                        </div>
+                        <!-- Working Days -->
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                Working Days
+                                <span class="text-text-light font-normal"
+                                      title="Days when classes are held. Timetable will only generate for selected days.">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         x="0px"
+                                         y="0px"
+                                         width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24">
+                                        <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </label>
+                            <div class="flex flex-wrap gap-2">
+                                {% set active_days = settings.working_days.split(',') if settings and settings.working_days and ',' in settings.working_days else (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] if not settings or settings.working_days == 'MTWTF' else []) %}
+                                {% for day in ['Monday',
+                                    'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                                    <label class="relative cursor-pointer group">
+                                        <input type="checkbox"
+                                               name="days"
+                                               value="{{ day }}"
+                                               {% if day in active_days %}checked{% endif %}
+                                               class="peer sr-only" />
+                                        <span class="inline-block px-4 py-2 rounded-xl bg-gray-50 border border-transparent text-sm font-medium text-text-light peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 peer-checked:font-bold transition-all group-hover:bg-gray-100">
+                                            {{ day[:3] }}
+                                        </span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- Structure Config -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="periods"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Total Periods
+                                    <span class="text-text-light font-normal"
+                                          title="Number of class periods per day. System calculates duration by dividing available time.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    ></span>
+                                </label>
+                                <input type="number"
+                                       id="periods"
+                                       name="periods"
+                                       min="4"
+                                       max="12"
+                                       value="{{ settings.periods_per_day if settings else 8 }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="lunch_break_after"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Lunch Break After
+                                    <span class="text-text-light font-normal"
+                                          title="Insert lunch break after this period number. E.g., '4' means lunch after 4th period.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                        >
+                                    </span>
+                                </label>
+                                <select name="lunch_break_after"
+                                        id="lunch_break_after"
+                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all appearance-none">
+                                    {% for i in range(1, 9) %}
+                                        {% set is_selected = false %}
+                                        {% if settings and settings.lunch_break_after == i %}
+                                            {% set is_selected = true %}
+                                        {% elif not settings and i == 4 %}
+                                            {% set is_selected = true %}
+                                        {% endif %}
+                                        <option value="{{ i }}" {% if is_selected %}selected{% endif %}>Period {{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Durations -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="lunch_duration"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Lunch Duration (mins)
+                                    <span class="text-text-light font-normal"
+                                          title="Break time between morning and afternoon sessions. Inserted after the period specified above.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="number"
+                                       id="lunch_duration"
+                                       name="lunch_duration"
+                                       min="0"
+                                       step="5"
+                                       value="{{ settings.lunch_duration if settings else 60 }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="classes_per_week"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Min Classes/Subject/Week
+                                    <span class="text-text-light font-normal"
+                                          title="Minimum number of times each subject should appear in the weekly timetable. Higher values ensure more frequent classes.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="number"
+                                       id="classes_per_week"
+                                       name="classes_per_week"
+                                       min="1"
+                                       max="10"
+                                       value="{{ settings.min_classes_per_week if settings else 3 }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                        </div>
+                        <!-- Class Duration Constraints -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="min_duration"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Min Class Duration (mins)
+                                    <span class="text-text-light font-normal"
+                                          title="Minimum allowed duration for each class period. System will auto-adjust periods to meet this constraint.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="number"
+                                       id="min_duration"
+                                       name="min_duration"
+                                       min="30"
+                                       max="90"
+                                       step="5"
+                                       value="{{ settings.min_class_duration if settings else 40 }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label for="max_duration"
+                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                    Max Class Duration (mins)
+                                    <span class="text-text-light font-normal"
+                                          title="Maximum allowed duration for each class period. System will auto-adjust periods to meet this constraint.">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             x="0px"
+                                             y="0px"
+                                             width="18"
+                                             height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                                <input type="number"
+                                       id="max_duration"
+                                       name="max_duration"
+                                       min="30"
+                                       max="90"
+                                       step="5"
+                                       value="{{ settings.max_class_duration if settings else 50 }}"
+                                       required
+                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                            </div>
+                        </div>
+                        <div class="pt-4">
+                            <button type="submit"
+                                    class="w-full bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary-dark font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex justify-center items-center gap-2">
+                                <i data-feather="cpu" class="w-5 h-5"></i> Generate Timetable
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Durations -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label for="lunch_duration" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Lunch Duration (mins)
-                            <span class="text-text-light font-normal" title="Break time between morning and afternoon sessions. Inserted after the period specified above."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="number"
-                            id="lunch_duration"
-                            name="lunch_duration"
-                            min="0"
-                            step="5"
-                            value="{{ settings.lunch_duration if settings else 60 }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                    <div class="space-y-2">
-                        <label for="classes_per_week" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Min Classes/Subject/Week
-                            <span class="text-text-light font-normal" title="Minimum number of times each subject should appear in the weekly timetable. Higher values ensure more frequent classes."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="number"
-                            id="classes_per_week"
-                            name="classes_per_week"
-                            min="1"
-                            max="10"
-                            value="{{ settings.min_classes_per_week if settings else 3 }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                </div>
-
-                <!-- Class Duration Constraints -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label for="min_duration" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Min Class Duration (mins)
-                            <span class="text-text-light font-normal" title="Minimum allowed duration for each class period. System will auto-adjust periods to meet this constraint."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="number"
-                            id="min_duration"
-                            name="min_duration"
-                            min="30"
-                            max="90"
-                            step="5"
-                            value="{{ settings.min_class_duration if settings else 40 }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                    <div class="space-y-2">
-                        <label for="max_duration" class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                            Max Class Duration (mins)
-                            <span class="text-text-light font-normal" title="Maximum allowed duration for each class period. System will auto-adjust periods to meet this constraint."
-                                ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24">
-                                    <path
-                                        d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"
-                                    ></path>
-                                </svg>
-                            </span>
-                        </label>
-                        <input
-                            type="number"
-                            id="max_duration"
-                            name="max_duration"
-                            min="30"
-                            max="90"
-                            step="5"
-                            value="{{ settings.max_class_duration if settings else 50 }}"
-                            required
-                            class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                        />
-                    </div>
-                </div>
-
-                <div class="pt-4">
-                    <button type="submit" class="w-full bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary-dark font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex justify-center items-center gap-2">
-                        <i data-feather="cpu" class="w-5 h-5"></i> Generate Timetable
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
-
-<style>
+    <style>
     .writing-vertical {
         writing-mode: vertical-rl;
     }
-</style>
+    </style>
 {% endblock %}

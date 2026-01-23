@@ -1,153 +1,153 @@
-{% extends "base.html" %} {% block title %}Teacher Dashboard — CampusManager{% endblock %} {% block content %}
-<section class="max-w-7xl mx-auto space-y-8">
-    <!-- Header -->
-    <div class="flex items-end justify-between">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Dashboard</h1>
-            <p class="text-text-light mt-1">Welcome back, {{ current_user.name }}</p>
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard — CampusManager{% endblock %}
+{% block content %}
+    <section class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-text-dark">Dashboard</h1>
+                <p class="text-text-light mt-1">Welcome back, {{ current_user.name }}</p>
+            </div>
         </div>
-    </div>
-
-    <!-- Active Class Section -->
-    {% if active_class_info %}
-    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
-
-        <div class="p-6 relative z-10 flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 animate-pulse">
-                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
-                        Live Class
-                    </span>
-                    <span class="text-xs font-bold text-text-light bg-gray-50 px-2 py-1 rounded-lg border border-gray-100"> {{ active_class_info.entry.day }} • {{ active_class_info.entry.start_time.strftime('%I:%M %p') }} - {{ active_class_info.entry.end_time.strftime('%I:%M %p') }} </span>
-                </div>
-
-                <div>
-                    <h2 class="text-2xl font-bold text-text-dark leading-tight">
-                        {{ active_class_info.class.subject.name }} {% if active_class_info.class.subject.is_lab %}
-                        <span class="text-lg text-purple-600 bg-purple-50 px-2 py-0.5 rounded-lg align-middle ml-2 border border-purple-100">Lab</span>
-                        {% endif %}
-                    </h2>
-                    <div class="flex flex-col gap-2 mt-4 text-sm text-text-light font-medium">
-                        <span class="flex items-center gap-1.5"> <i data-feather="map-pin" class="w-4 h-4"></i> {{ active_class_info.class.location or 'Classroom' }} </span>
-                        <span class="flex items-center gap-1.5"> <i data-feather="book" class="w-4 h-4"></i> {{ active_class_info.class.subject.code }} </span>
-                        <span class="flex items-center gap-1.5"> <i data-feather="users" class="w-4 h-4"></i> {{ active_class_info.class.subject.branch }} - Sem {{ active_class_info.class.subject.semester }} ({{ active_class_info.class.section or 'All' }}) </span>
+        <!-- Active Class Section -->
+        {% if active_class_info %}
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
+                <div class="p-6 relative z-10 flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 animate-pulse">
+                                <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
+                                Live Class
+                            </span>
+                            <span class="text-xs font-bold text-text-light bg-gray-50 px-2 py-1 rounded-lg border border-gray-100"> {{ active_class_info.entry.day }} • {{ active_class_info.entry.start_time.strftime("%I:%M %p") }} - {{ active_class_info.entry.end_time.strftime("%I:%M %p") }} </span>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-text-dark leading-tight">
+                                {{ active_class_info.class.subject.name }}
+                                {% if active_class_info.class.subject.is_lab %}
+                                    <span class="text-lg text-purple-600 bg-purple-50 px-2 py-0.5 rounded-lg align-middle ml-2 border border-purple-100">Lab</span>
+                                {% endif %}
+                            </h2>
+                            <div class="flex flex-col gap-2 mt-4 text-sm text-text-light font-medium">
+                                <span class="flex items-center gap-1.5"> <i data-feather="map-pin" class="w-4 h-4"></i> {{ active_class_info.class.location or 'Classroom' }} </span>
+                                <span class="flex items-center gap-1.5"> <i data-feather="book" class="w-4 h-4"></i> {{ active_class_info.class.subject.code }} </span>
+                                <span class="flex items-center gap-1.5"> <i data-feather="users" class="w-4 h-4"></i> {{ active_class_info.class.subject.branch }} - Sem {{ active_class_info.class.subject.semester }} ({{ active_class_info.class.section or 'All' }}) </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3 w-full lg:w-auto">
+                        <a href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
+                           class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all hover:scale-105 shadow-lg shadow-primary/20">
+                            <i data-feather="check-square" class="w-5 h-5"></i>
+                            Mark Attendance
+                        </a>
+                        <a href="{{ url_for('views.teacher_class_details', class_id=active_class_info.class.id) }}"
+                           class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border border-gray-200 text-text-dark font-bold hover:bg-gray-50 transition-colors">
+                            <i data-feather="eye" class="w-4 h-4 text-text-light"></i>
+                            Details
+                        </a>
                     </div>
                 </div>
             </div>
-
-            <div class="flex flex-col gap-3 w-full lg:w-auto">
-                <a
-                    href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
-                    class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all hover:scale-105 shadow-lg shadow-primary/20"
-                >
-                    <i data-feather="check-square" class="w-5 h-5"></i>
-                    Mark Attendance
-                </a>
-                <a href="{{ url_for('views.teacher_class_details', class_id=active_class_info.class.id) }}" class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border border-gray-200 text-text-dark font-bold hover:bg-gray-50 transition-colors">
-                    <i data-feather="eye" class="w-4 h-4 text-text-light"></i>
-                    Details
-                </a>
+        {% else %}
+            <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-text-dark">No Active Class</h3>
+                    <p class="text-sm text-text-light mt-1">You don't have any classes scheduled right now.</p>
+                </div>
+                <a href="{{ url_for("views.teacher_schedule") }}"
+                   class="text-primary hover:text-primary-dark text-sm font-bold flex items-center gap-1"> View Schedule <i data-feather="arrow-right" class="w-4 h-4"></i> </a>
             </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm flex items-center justify-between">
-        <div>
-            <h3 class="text-lg font-bold text-text-dark">No Active Class</h3>
-            <p class="text-sm text-text-light mt-1">You don't have any classes scheduled right now.</p>
-        </div>
-        <a href="{{ url_for('views.teacher_schedule') }}" class="text-primary hover:text-primary-dark text-sm font-bold flex items-center gap-1"> View Schedule <i data-feather="arrow-right" class="w-4 h-4"></i> </a>
-    </div>
-    {% endif %}
-
-    <script>
+        {% endif %}
+        <script>
         document.addEventListener("DOMContentLoaded", function () {
             if (typeof feather !== "undefined") {
                 feather.replace();
             }
         });
-    </script>
-    {% endblock %} {% block sidebar_content %}
-    <!-- Stats Widget -->
-    <div class="w-full">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Overview</h3>
-        <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <i data-feather="book-open" class="w-4 h-4"></i>
+        </script>
+    {% endblock %}
+    {% block sidebar_content %}
+        <!-- Stats Widget -->
+        <div class="w-full">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Overview</h3>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <i data-feather="book-open" class="w-4 h-4"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-600">Total Classes</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-600">Total Classes</span>
+                    <span class="text-lg font-bold text-text-dark">{{ stats.total_classes }}</span>
                 </div>
-                <span class="text-lg font-bold text-text-dark">{{ stats.total_classes }}</span>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                        <i data-feather="users" class="w-4 h-4"></i>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                            <i data-feather="users" class="w-4 h-4"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-600">Students</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-600">Students</span>
+                    <span class="text-lg font-bold text-text-dark">{{ stats.total_students }}</span>
                 </div>
-                <span class="text-lg font-bold text-text-dark">{{ stats.total_students }}</span>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                        <i data-feather="clock" class="w-4 h-4"></i>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
+                            <i data-feather="clock" class="w-4 h-4"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-600">Pending Req.</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-600">Pending Req.</span>
+                    <span class="text-lg font-bold text-text-dark">{{ stats.pending_requests }}</span>
                 </div>
-                <span class="text-lg font-bold text-text-dark">{{ stats.pending_requests }}</span>
             </div>
         </div>
-    </div>
-
-    <!-- Quick Actions Widget -->
-    <div class="w-full">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Quick Actions</h3>
-        <div class="flex flex-col gap-3">
-            <a href="{{ url_for('views.teacher_schedule') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <i data-feather="calendar" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1">
-                    <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Schedule</h4>
-                    <p class="text-xs text-text-light mt-0.5">View weekly timetable</p>
-                </div>
-                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-            </a>
-
-            <a href="{{ url_for('views.teacher_classes') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <i data-feather="briefcase" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1">
-                    <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Classes</h4>
-                    <p class="text-xs text-text-light mt-0.5">Manage class details</p>
-                </div>
-                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-            </a>
-
-            <a href="{{ url_for('views.teacher_enrollments') }}" class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
-                <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <i data-feather="user-check" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">Enrollments</h4>
-                        {% if stats.pending_requests > 0 %}
-                        <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ stats.pending_requests }}</span>
-                        {% endif %}
+        <!-- Quick Actions Widget -->
+        <div class="w-full">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Quick Actions</h3>
+            <div class="flex flex-col gap-3">
+                <a href="{{ url_for("views.teacher_schedule") }}"
+                   class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-feather="calendar" class="w-5 h-5"></i>
                     </div>
-                    <p class="text-xs text-text-light mt-0.5">Approve requests</p>
-                </div>
-                <i data-feather="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-            </a>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Schedule</h4>
+                        <p class="text-xs text-text-light mt-0.5">View weekly timetable</p>
+                    </div>
+                    <i data-feather="chevron-right"
+                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+                </a>
+                <a href="{{ url_for("views.teacher_classes") }}"
+                   class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-feather="briefcase" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">My Classes</h4>
+                        <p class="text-xs text-text-light mt-0.5">Manage class details</p>
+                    </div>
+                    <i data-feather="chevron-right"
+                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+                </a>
+                <a href="{{ url_for("views.teacher_enrollments") }}"
+                   class="group flex items-center gap-4 bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-feather="user-check" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-text-dark text-sm group-hover:text-primary transition-colors">Enrollments</h4>
+                            {% if stats.pending_requests > 0 %}
+                                <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ stats.pending_requests }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-xs text-text-light mt-0.5">Approve requests</p>
+                    </div>
+                    <i data-feather="chevron-right"
+                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+                </a>
+            </div>
         </div>
-    </div>
     {% endblock %}
 </section>

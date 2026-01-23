@@ -1,274 +1,307 @@
-{% extends "base.html" %} {% block title %}Attendance — CampusManager{% endblock %} {% block content %}
-<section class="max-w-7xl mx-auto space-y-8">
-    <!-- Header -->
-    <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Attendance</h1>
-            <p class="text-text-light mt-1">Track your presence and meet requirements</p>
-        </div>
-        <div class="hidden lg:block">
-            <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> <i data-feather="calendar" class="w-4 h-4 mr-2"></i> Week {{ attendance_stats.current_week if attendance_stats.current_week else '1' }} </span>
-        </div>
-    </div>
-
-    <!-- Attendance Stats Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        <!-- This Week -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full">
-            <div class="flex items-start justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
-                    <i data-feather="clock" class="w-6 h-6"></i>
-                </div>
-            </div>
+{% extends "base.html" %}
+{% block title %}Attendance — CampusManager{% endblock %}
+{% block content %}
+    <section class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
             <div>
-                <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.this_week_classes }}</h3>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures This Week</p>
+                <h1 class="text-2xl font-bold text-text-dark">Attendance</h1>
+                <p class="text-text-light mt-1">Track your presence and meet requirements</p>
+            </div>
+            <div class="hidden lg:block">
+                <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> <i data-feather="calendar" class="w-4 h-4 mr-2"></i> Week {{ attendance_stats.current_week if attendance_stats.current_week else '1' }} </span>
             </div>
         </div>
-
-        <!-- Total Attendance -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full">
-            <div class="flex items-start justify-between mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
-                    <i data-feather="check-circle" class="w-6 h-6"></i>
-                </div>
-                <div class="text-xs font-bold bg-gray-50 px-2 py-1 rounded-lg text-text-light border border-gray-100">Total</div>
-            </div>
-            <div>
-                <div class="flex items-baseline gap-1">
-                    <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.attended_classes }}</h3>
-                    <span class="text-lg font-bold text-text-lighter">/ {{ attendance_stats.total_classes }}</span>
-                </div>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures Attended</p>
-            </div>
-        </div>
-
-        <!-- Current Percentage -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full relative overflow-hidden">
-            {% if attendance_stats.total_classes > 0 %} {% if attendance_stats.attendance_percentage >= 75 %} {% set status_color = 'text-green-600' %} {% set bg_color = 'bg-green-50' %} {% set icon = 'thumbs-up' %} {% elif attendance_stats.attendance_percentage >= 60 %} {% set status_color =
-            'text-amber-500' %} {% set bg_color = 'bg-amber-50' %} {% set icon = 'alert-circle' %} {% else %} {% set status_color = 'text-red-600' %} {% set bg_color = 'bg-red-50' %} {% set icon = 'alert-triangle' %} {% endif %} {% else %} {% set status_color = 'text-gray-400' %} {% set bg_color =
-            'bg-gray-50' %} {% set icon = 'slash' %} {% endif %}
-
-            <div class="absolute top-0 right-0 w-24 h-24 {{ bg_color }} rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
-
-            <div class="flex items-start justify-between mb-4 relative z-10">
-                <div class="w-12 h-12 rounded-2xl {{ bg_color }} flex items-center justify-center {{ status_color }}">
-                    <i data-feather="{{ icon }}" class="w-6 h-6"></i>
-                </div>
-            </div>
-            <div class="relative z-10">
-                <h3 class="text-3xl font-bold {{ status_color }} mb-1">{% if attendance_stats.total_classes == 0 %}N/A{% else %}{{ attendance_stats.attendance_percentage }}%{% endif %}</h3>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Overall Status</p>
-            </div>
-        </div>
-
-        <!-- Needed for 75% -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full relative overflow-hidden">
-            {% if attendance_stats.needed_for_75 > 0 %}
-            <div class="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
-            <div class="flex items-start justify-between mb-4 relative z-10">
-                <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
-                    <i data-feather="target" class="w-6 h-6"></i>
-                </div>
-            </div>
-            <div class="relative z-10">
-                <h3 class="text-3xl font-bold text-text-dark mb-1">{{ attendance_stats.needed_for_75 }}</h3>
-                <p class="text-xs font-bold text-amber-600 uppercase tracking-wider">To Reach 75%</p>
-            </div>
-            {% else %}
-            <div class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
-            <div class="flex items-start justify-between mb-4 relative z-10">
-                <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600">
-                    <i data-feather="check" class="w-6 h-6"></i>
-                </div>
-            </div>
-            <div class="relative z-10">
-                <h3 class="text-xl font-bold text-green-600 mb-1">On Track</h3>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Keep it up!</p>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Alert / Backlogs -->
-    {% if show_missed_alert %}
-    <div class="bg-red-50/50 rounded-3xl border border-red-100 p-6 flex flex-col lg:flex-row items-center gap-6">
-        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0">
-            <i data-feather="alert-octagon" class="w-6 h-6"></i>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-lg font-bold text-red-700 mb-1">Attendance Alert</h3>
-            <p class="text-red-600/80 text-sm">You have low attendance in the following subjects:</p>
-            <div class="mt-3 flex flex-wrap gap-2">
-                {% for backlog in missed_classes %} {% if backlog.missed_count > 0 %}
-                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-white border border-red-200 text-red-700 text-xs font-bold shadow-sm"> {{ backlog.subject }}: {{ backlog.missed_count }} missed </span>
-                {% endif %} {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Analytics Grid (Full Width) -->
-    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="text-xl font-bold text-text-dark">Analytics Overview</h2>
-                <p class="text-sm text-text-light">Comprehensive view of your attendance trends across all subjects.</p>
-            </div>
-            <div class="flex gap-4 text-xs font-bold text-text-light">
-                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-md bg-primary"></span> Attendance %</div>
-            </div>
-        </div>
-        <div class="w-full h-80">
-            <canvas id="attendanceChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Subject Wise Breakdown (Table) -->
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="p-8 border-b border-gray-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-xl font-bold text-text-dark">Subject-wise Breakdown</h2>
-                <p class="text-sm text-text-light mt-1">Detailed attendance records for each course.</p>
-            </div>
-            <div class="flex gap-3">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 text-green-700 text-xs font-bold border border-green-100"> <span class="w-2 h-2 rounded-full bg-green-500"></span> Good (>75%) </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 text-xs font-bold border border-amber-100"> <span class="w-2 h-2 rounded-full bg-amber-500"></span> Warning (60-75%) </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold border border-red-100"> <span class="w-2 h-2 rounded-full bg-red-500"></span> Critical (<60%) </span>
-            </div>
-        </div>
-
-        <!-- Mobile Cards -->
-        <div class="lg:hidden p-6 space-y-4">
-            {% for subject in subjects %}
-            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                <div class="flex justify-between items-start mb-3">
-                    <div>
-                        <h4 class="font-bold text-text-dark text-base">{{ subject.name }}</h4>
-                        <p class="text-xs text-text-light font-mono">{{ subject.code }}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-lg font-bold text-text-dark">{{ subject.attended_classes }}<span class="text-text-lighter text-sm">/{{ subject.total_classes }}</span></span>
-                        <p class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</p>
+        <!-- Attendance Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            <!-- This Week -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
+                        <i data-feather="clock" class="w-6 h-6"></i>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
-                        {% if subject.status == 'good' %} {% set bar_color = 'bg-gradient-to-r from-green-400 to-green-500' %} {% elif subject.status == 'warning' %} {% set bar_color = 'bg-gradient-to-r from-amber-400 to-amber-500' %} {% else %} {% set bar_color = 'bg-gradient-to-r from-red-400
-                        to-red-500' %} {% endif %}
-                        <div class="{{ bar_color }} h-full rounded-full transition-all duration-1000 ease-out" style="width: {{ subject.attendance_percentage }}%"></div>
-                    </div>
-                    <span class="text-sm font-bold w-12 text-right {{ 'text-green-600' if subject.status == 'good' else 'text-amber-600' if subject.status == 'warning' else 'text-red-600' }}">{{ subject.attendance_percentage }}%</span>
+                <div>
+                    <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.this_week_classes }}</h3>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures This Week</p>
                 </div>
             </div>
-            {% endfor %}
+            <!-- Total Attendance -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
+                        <i data-feather="check-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-xs font-bold bg-gray-50 px-2 py-1 rounded-lg text-text-light border border-gray-100">Total</div>
+                </div>
+                <div>
+                    <div class="flex items-baseline gap-1">
+                        <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.attended_classes }}</h3>
+                        <span class="text-lg font-bold text-text-lighter">/ {{ attendance_stats.total_classes }}</span>
+                    </div>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures Attended</p>
+                </div>
+            </div>
+            <!-- Current Percentage -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full relative overflow-hidden">
+                {% if attendance_stats.total_classes > 0 %}
+                    {% if attendance_stats.attendance_percentage >= 75 %}
+                        {% set status_color = "text-green-600" %} {% set bg_color = "bg-green-50" %} {% set icon = "thumbs-up" %}
+                    {% elif attendance_stats.attendance_percentage >= 60 %}
+                        {% set status_color = "text-amber-500" %} {% set bg_color = "bg-amber-50" %} {% set icon = "alert-circle" %}
+                    {% else %}
+                        {% set status_color = "text-red-600" %} {% set bg_color = "bg-red-50" %} {% set icon = "alert-triangle" %}
+                    {% endif %}
+                {% else %}
+                    {% set status_color = "text-gray-400" %} {% set bg_color = "bg-gray-50" %} {% set icon = "slash" %}
+                {% endif %}
+                <div class="absolute top-0 right-0 w-24 h-24 {{ bg_color }} rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
+                <div class="flex items-start justify-between mb-4 relative z-10">
+                    <div class="w-12 h-12 rounded-2xl {{ bg_color }} flex items-center justify-center {{ status_color }}">
+                        <i data-feather="{{ icon }}" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold {{ status_color }} mb-1">
+                        {% if attendance_stats.total_classes == 0 %}
+                            N/A
+                        {% else %}
+                            {{ attendance_stats.attendance_percentage }}%
+                        {% endif %}
+                    </h3>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Overall Status</p>
+                </div>
+            </div>
+            <!-- Needed for 75% -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between group h-full relative overflow-hidden">
+                {% if attendance_stats.needed_for_75 > 0 %}
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
+                    <div class="flex items-start justify-between mb-4 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
+                            <i data-feather="target" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-3xl font-bold text-text-dark mb-1">{{ attendance_stats.needed_for_75 }}</h3>
+                        <p class="text-xs font-bold text-amber-600 uppercase tracking-wider">To Reach 75%</p>
+                    </div>
+                {% else %}
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
+                    <div class="flex items-start justify-between mb-4 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600">
+                            <i data-feather="check" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-green-600 mb-1">On Track</h3>
+                        <p class="text-xs font-bold text-text-light uppercase tracking-wider">Keep it up!</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-
-        <!-- Desktop Table -->
-        <div class="hidden lg:block overflow-x-auto">
-            <table class="w-full border-collapse">
-                <thead>
-                    <tr class="bg-gray-50/50 border-b border-gray-100">
-                        <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-24">Code</th>
-                        <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider">Subject Name</th>
-                        <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-32">Attendance</th>
-                        <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-1/3">Progress</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    {% for subject in subjects %}
-                    <tr class="group hover:bg-gray-50/80 transition-colors px-4">
-                        <td class="p-1">
-                            <span class="font-mono text-xs font-bold text-text-light p-0 block text-center"> {{ subject.code }} </span>
-                        </td>
-                        <td class="p-1">
-                            <div class="font-bold text-text-dark text-sm">{{ subject.name }}</div>
-                        </td>
-                        <td class="p-1 text-center">
-                            <div class="flex flex-col items-center justify-center">
+        <!-- Alert / Backlogs -->
+        {% if show_missed_alert %}
+            <div class="bg-red-50/50 rounded-3xl border border-red-100 p-6 flex flex-col lg:flex-row items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0">
+                    <i data-feather="alert-octagon" class="w-6 h-6"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-red-700 mb-1">Attendance Alert</h3>
+                    <p class="text-red-600/80 text-sm">You have low attendance in the following subjects:</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        {% for backlog in missed_classes %}
+                            {% if backlog.missed_count > 0 %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-white border border-red-200 text-red-700 text-xs font-bold shadow-sm"> {{ backlog.subject }}: {{ backlog.missed_count }} missed </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <!-- Analytics Grid (Full Width) -->
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-text-dark">Analytics Overview</h2>
+                    <p class="text-sm text-text-light">Comprehensive view of your attendance trends across all subjects.</p>
+                </div>
+                <div class="flex gap-4 text-xs font-bold text-text-light">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-md bg-primary"></span> Attendance %
+                    </div>
+                </div>
+            </div>
+            <div class="w-full h-80">
+                <canvas id="attendanceChart"></canvas>
+            </div>
+        </div>
+        <!-- Subject Wise Breakdown (Table) -->
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-text-dark">Subject-wise Breakdown</h2>
+                    <p class="text-sm text-text-light mt-1">Detailed attendance records for each course.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 text-green-700 text-xs font-bold border border-green-100"> <span class="w-2 h-2 rounded-full bg-green-500"></span> Good (>75%) </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 text-xs font-bold border border-amber-100"> <span class="w-2 h-2 rounded-full bg-amber-500"></span> Warning (60-75%) </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold border border-red-100"> <span class="w-2 h-2 rounded-full bg-red-500"></span> Critical (<60 %) </span>
+                </div>
+            </div>
+            <!-- Mobile Cards -->
+            <div class="lg:hidden p-6 space-y-4">
+                {% for subject in subjects %}
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="font-bold text-text-dark text-base">{{ subject.name }}</h4>
+                                <p class="text-xs text-text-light font-mono">{{ subject.code }}</p>
+                            </div>
+                            <div class="text-right">
                                 <span class="text-lg font-bold text-text-dark">{{ subject.attended_classes }}<span class="text-text-lighter text-sm">/{{ subject.total_classes }}</span></span>
-                                <span class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</span>
+                                <p class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</p>
                             </div>
-                        </td>
-                        <td class="p-1">
-                            <div class="flex items-center gap-4">
-                                <div class="w-32 h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                                    {% if subject.status == 'good' %} {% set bar_color = 'bg-gradient-to-r from-green-400 to-green-500' %} {% elif subject.status == 'warning' %} {% set bar_color = 'bg-gradient-to-r from-amber-400 to-amber-500' %} {% else %} {% set bar_color = 'bg-gradient-to-r
-                                    from-red-400 to-red-500' %} {% endif %}
-                                    <div class="{{ bar_color }} h-full rounded-full transition-all duration-1000 ease-out" style="width: {{ subject.attendance_percentage }}%"></div>
-                                </div>
-                                <span class="text-sm font-bold w-12 text-right {{ 'text-green-600' if subject.status == 'good' else 'text-amber-600' if subject.status == 'warning' else 'text-red-600' }}"> {{ subject.attendance_percentage }}% </span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
+                                {% if subject.status == 'good' %}
+                                    {% set bar_color = "bg-gradient-to-r from-green-400 to-green-500" %}
+                                {% elif subject.status == 'warning' %}
+                                    {% set bar_color = "bg-gradient-to-r from-amber-400 to-amber-500" %}
+                                {% else %}
+                                    {% set bar_color = 'bg-gradient-to-r from-red-400
+                                                                        to-red-500' %}
+                                {% endif %}
+                                <div class="{{ bar_color }} h-full rounded-full transition-all duration-1000 ease-out"
+                                     style="--w: {{ subject.attendance_percentage }}%;
+                                            width: var(--w)"></div>
                             </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            <span class="text-sm font-bold w-12 text-right {{ 'text-green-600' if subject.status == 'good' else 'text-amber-600' if subject.status == 'warning' else 'text-red-600' }}">{{ subject.attendance_percentage }}%</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Desktop Table -->
+            <div class="hidden lg:block overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/50 border-b border-gray-100">
+                            <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-24">Code</th>
+                            <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider">Subject Name</th>
+                            <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-32">Attendance</th>
+                            <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-1/3">Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for subject in subjects %}
+                            <tr class="group hover:bg-gray-50/80 transition-colors px-4">
+                                <td class="p-1">
+                                    <span class="font-mono text-xs font-bold text-text-light p-0 block text-center">{{ subject.code }}</span>
+                                </td>
+                                <td class="p-1">
+                                    <div class="font-bold text-text-dark text-sm">{{ subject.name }}</div>
+                                </td>
+                                <td class="p-1 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <span class="text-lg font-bold text-text-dark">{{ subject.attended_classes }}<span class="text-text-lighter text-sm">/{{ subject.total_classes }}</span></span>
+                                        <span class="text-xs uppercase font-bold text-text-light tracking-wide">Classes</span>
+                                    </div>
+                                </td>
+                                <td class="p-1">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-32 h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                            {% if subject.status == 'good' %}
+                                                {% set bar_color = "bg-gradient-to-r from-green-400 to-green-500" %}
+                                            {% elif subject.status == 'warning' %}
+                                                {% set bar_color = "bg-gradient-to-r from-amber-400 to-amber-500" %}
+                                            {% else %}
+                                                {% set bar_color = 'bg-gradient-to-r
+                                                                                                from-red-400 to-red-500' %}
+                                            {% endif %}
+                                            <div class="{{ bar_color }} h-full rounded-full transition-all duration-1000 ease-out"
+                                                 style="--w: {{ subject.attendance_percentage }}%;
+                                                        width: var(--w)"></div>
+                                        </div>
+                                        <span class="text-sm font-bold w-12 text-right {{ 'text-green-600' if subject.status == 'good' else 'text-amber-600' if subject.status == 'warning' else 'text-red-600' }}"> {{ subject.attendance_percentage }}% </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
-    <!-- Policy Note -->
-    <div class="bg-primary/5 p-6 rounded-3xl border border-primary/10">
-        <h3 class="font-bold text-primary mb-2 flex items-center gap-2"><i data-feather="info" class="w-4 h-4"></i> Policy Note</h3>
-        <p class="text-sm text-text-light leading-relaxed max-w-4xl">
-            A minimum of <strong>75% attendance</strong> is mandatory to appear for end-semester examinations as per university regulations. Students falling below 65% may be detained from appearing in exams. Medical leave requests should be submitted within 3 days of return with valid
-            documentation.
-        </p>
-    </div>
-</section>
-{% endblock %} {% block sidebar_content %}
-<!-- Quick Stats Widget -->
-<div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full" aria-label="Attendance Summary">
-    <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">Attendance Summary</h3>
-    <div class="flex items-center justify-center p-0 relative">
-        <div class="relative w-36 h-36">
-            <!-- SVG ring -->
-            <svg viewBox="0 0 120 120" class="w-36 h-36">
-                <!-- Background circle -->
-                <circle cx="60" cy="60" r="52" stroke-width="12" stroke="#f3f4f6" fill="none"></circle>
-                <!-- Foreground ring (animated) -->
-                <circle id="attendance-ring" cx="60" cy="60" r="52" stroke-width="12" stroke="#3b82f6" stroke-linecap="round" fill="none" transform="rotate(-90 60 60)" style="stroke-dasharray: 326.7256; stroke-dashoffset: 326.7256; transition: stroke-dashoffset 900ms ease"></circle>
-            </svg>
-
-            <!-- Center label -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span id="sidebar-agg-percent" data-percent="{{ attendance_stats.attendance_percentage }}" class="block text-2xl font-bold text-text-dark">{{ attendance_stats.attendance_percentage }}%</span>
-                <span class="text-xs text-text-light uppercase font-bold">Aggregate</span>
+        <!-- Policy Note -->
+        <div class="bg-primary/5 p-6 rounded-3xl border border-primary/10">
+            <h3 class="font-bold text-primary mb-2 flex items-center gap-2">
+                <i data-feather="info" class="w-4 h-4"></i> Policy Note
+            </h3>
+            <p class="text-sm text-text-light leading-relaxed max-w-4xl">
+                A minimum of <strong>75% attendance</strong> is mandatory to appear for end-semester examinations as per university regulations. Students falling below 65% may be detained from appearing in exams. Medical leave requests should be submitted within 3 days of return with valid
+                documentation.
+            </p>
+        </div>
+    </section>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Quick Stats Widget -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full"
+         aria-label="Attendance Summary">
+        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">Attendance Summary</h3>
+        <div class="flex items-center justify-center p-0 relative">
+            <div class="relative w-36 h-36">
+                <style>
+                .attendance-ring {
+                    transition: stroke-dashoffset 900ms ease;
+                }
+                </style>
+                <!-- SVG ring -->
+                <svg viewBox="0 0 120 120" class="w-36 h-36">
+                    <!-- Background circle -->
+                    <circle cx="60" cy="60" r="52" stroke-width="12" stroke="#f3f4f6" fill="none"></circle>
+                    <!-- Foreground ring (animated) -->
+                    <circle id="attendance-ring" class="attendance-ring" cx="60" cy="60" r="52" stroke-width="12" stroke="#3b82f6" stroke-linecap="round" fill="none" transform="rotate(-90 60 60)"></circle>
+                </svg>
+                <!-- Center label -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span id="sidebar-agg-percent"
+                          data-percent="{{ attendance_stats.attendance_percentage }}"
+                          class="block text-2xl font-bold text-text-dark">{{ attendance_stats.attendance_percentage }}%</span>
+                    <span class="text-xs text-text-light uppercase font-bold">Aggregate</span>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Calendar Snippet -->
-<div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
-    <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider">Calendar</h3>
-        <span id="sideMonthYear" class="text-xs font-bold text-primary"></span>
+    <!-- Calendar Snippet -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider">Calendar</h3>
+            <span id="sideMonthYear" class="text-xs font-bold text-primary"></span>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-text-light mb-2">
+            <div>S</div>
+            <div>M</div>
+            <div>T</div>
+            <div>W</div>
+            <div>T</div>
+            <div>F</div>
+            <div>S</div>
+        </div>
+        <div id="sideCalendar" class="grid grid-cols-7 gap-1">
+            <!-- JS Injected -->
+        </div>
     </div>
-
-    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-text-light mb-2">
-        <div>S</div>
-        <div>M</div>
-        <div>T</div>
-        <div>W</div>
-        <div>T</div>
-        <div>F</div>
-        <div>S</div>
-    </div>
-    <div id="sideCalendar" class="grid grid-cols-7 gap-1">
-        <!-- JS Injected -->
-    </div>
-</div>
-{% endblock %} {% block scripts %}
-<script id="template-data" type="application/json">
+{% endblock %}
+{% block scripts %}
+    <script id="template-data" type="application/json">
     {
         "attendanceChartData": {{ attendance_chart_data | tojson | safe }},
         "calendarEvents": {{ calendar_events | tojson | safe }},
         "subjects": {{ subjects | tojson | safe }}
     }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
     function getTemplateData() {
         try {
             const dataScript = document.getElementById("template-data");
@@ -394,8 +427,8 @@
             }
         }
     });
-</script>
-<script>
+    </script>
+    <script>
     // Animate sidebar circular progress (separate to avoid touching main chart code)
     document.addEventListener("DOMContentLoaded", function () {
         const pctEl = document.getElementById("sidebar-agg-percent");
@@ -415,5 +448,5 @@
             }, 60);
         }
     });
-</script>
+    </script>
 {% endblock %}

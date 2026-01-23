@@ -1,157 +1,157 @@
-{% extends "base.html" %} {% block title %}Mark Attendance — CampusManager{% endblock %} {% block content %}
-<div class="max-w-7xl mx-auto space-y-8">
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Mark Attendance</h1>
-            <p class="text-text-light mt-1 flex items-center gap-2">
-                <span class="font-bold">{{ assigned_class.subject.name }}</span>
-                <span class="bg-gray-100 rounded px-1.5 py-0.5 text-xs font-medium">{{ assigned_class.subject.code }}</span>
-            </p>
+{% extends "base.html" %}
+{% block title %}Mark Attendance — CampusManager{% endblock %}
+{% block content %}
+    <div class="max-w-7xl mx-auto space-y-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-text-dark">Mark Attendance</h1>
+                <p class="text-text-light mt-1 flex items-center gap-2">
+                    <span class="font-bold">{{ assigned_class.subject.name }}</span>
+                    <span class="bg-gray-100 rounded px-1.5 py-0.5 text-xs font-medium">{{ assigned_class.subject.code }}</span>
+                </p>
+            </div>
+            <a href="{{ url_for('views.teacher_class_details', class_id=assigned_class.id) }}"
+               class="flex items-center gap-2 text-text-light hover:text-primary font-bold transition-colors"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Details </a>
         </div>
-        <a href="{{ url_for('views.teacher_class_details', class_id=assigned_class.id) }}" class="flex items-center gap-2 text-text-light hover:text-primary font-bold transition-colors"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Details </a>
-    </div>
-
-    <form method="POST" action="">
-        <!-- Student List Table -->
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8">
-            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                <h3 class="font-bold text-text-dark flex items-center gap-2">
-                    <i data-feather="users" class="w-4 h-4 text-primary"></i>
-                    Student List <span class="text-text-light text-sm font-normal">({{ enrollments|length }})</span>
-                </h3>
-                <span class="text-xs font-bold bg-gray-200 text-gray-600 px-3 py-1 rounded-full">Default: Absent</span>
-            </div>
-
-            {% if enrollments %}
-            <!-- Desktop Table View -->
-            <div class="hidden lg:block overflow-x-auto">
-                <table class="w-full text-center">
-                    <thead class="bg-white border-b border-gray-100">
-                        <tr>
-                            <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Roll No</th>
-                            <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Student Name</th>
-                            <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        {% for enrollment in enrollments %}
-                        <tr class="group hover:bg-gray-50/50 transition-colors">
-                            <td class="px-4 py-4">
-                                <span class="font-mono text-base text-text-dark">{{ enrollment.student.enrollment_number or 'N/A' }}</span>
-                            </td>
-                            <td class="px-4 py-4 text-text-dark">{{ enrollment.student.name }}</td>
-                            <td class="px-4 py-4">
-                                <label class="relative inline-flex items-center cursor-pointer select-none">
-                                    <input type="checkbox" name="attendance_{{ enrollment.student.id }}" class="sr-only peer" />
-                                    <!-- Track -->
-                                    <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:bg-green-500 transition-colors duration-200 shadow-inner"></div>
-
-                                    <!-- Knob -->
-                                    <div
-                                        class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full shadow-sm peer-checked:translate-x-6 transition-transform duration-200 flex items-center justify-center [&_.check]:opacity-0 peer-checked:[&_.check]:opacity-100 [&_.x]:opacity-100 peer-checked:[&_.x]:opacity-0"
-                                    >
-                                        <!-- Icon inside knob -->
-                                        <i data-feather="check" class="check w-3 h-3 text-green-500 absolute transition-opacity duration-200"></i>
-                                        <i data-feather="x" class="x w-3 h-3 text-gray-400 absolute transition-opacity duration-200"></i>
-                                    </div>
-
-                                    <!-- Label Text -->
-                                    <span class="ml-3 text-sm font-bold min-w-[60px] text-left [&_.present]:hidden peer-checked:[&_.present]:inline [&_.absent]:inline peer-checked:[&_.absent]:hidden">
-                                        <span class="present text-green-600">Present</span>
-                                        <span class="absent text-gray-400">Absent</span>
-                                    </span>
-                                </label>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Mobile Card View -->
-            <div class="lg:hidden p-4 space-y-4">
-                {% for enrollment in enrollments %}
-                <div class="bg-gray-50 rounded-2xl border border-gray-100 p-4 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold text-text-dark text-sm">{{ enrollment.student.name }}</h3>
-                        <p class="text-xs font-mono text-text-light mt-0.5">{{ enrollment.student.enrollment_number or 'N/A' }}</p>
+        <form method="post" action="">
+            <!-- Student List Table -->
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+                <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                    <h3 class="font-bold text-text-dark flex items-center gap-2">
+                        <i data-feather="users" class="w-4 h-4 text-primary"></i>
+                        Student List <span class="text-text-light text-sm font-normal">({{ enrollments|length }})</span>
+                    </h3>
+                    <span class="text-xs font-bold bg-gray-200 text-gray-600 px-3 py-1 rounded-full">Default: Absent</span>
+                </div>
+                {% if enrollments %}
+                    <!-- Desktop Table View -->
+                    <div class="hidden lg:block overflow-x-auto">
+                        <table class="w-full text-center">
+                            <thead class="bg-white border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Roll No</th>
+                                    <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Student Name</th>
+                                    <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50">
+                                {% for enrollment in enrollments %}
+                                    <tr class="group hover:bg-gray-50/50 transition-colors">
+                                        <td class="px-4 py-4">
+                                            <span class="font-mono text-base text-text-dark">{{ enrollment.student.enrollment_number or 'N/A' }}</span>
+                                        </td>
+                                        <td class="px-4 py-4 text-text-dark">{{ enrollment.student.name }}</td>
+                                        <td class="px-4 py-4">
+                                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                                <input type="checkbox"
+                                                       name="attendance_{{ enrollment.student.id }}"
+                                                       class="sr-only peer" />
+                                                <!-- Track -->
+                                                <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:bg-green-500 transition-colors duration-200 shadow-inner">
+                                                </div>
+                                                <!-- Knob -->
+                                                <div class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full shadow-sm peer-checked:translate-x-6 transition-transform duration-200 flex items-center justify-center [&_.check]:opacity-0 peer-checked:[&_.check]:opacity-100 [&_.x]:opacity-100 peer-checked:[&_.x]:opacity-0">
+                                                    <!-- Icon inside knob -->
+                                                    <i data-feather="check"
+                                                       class="check w-3 h-3 text-green-500 absolute transition-opacity duration-200"></i>
+                                                    <i data-feather="x"
+                                                       class="x w-3 h-3 text-gray-400 absolute transition-opacity duration-200"></i>
+                                                </div>
+                                                <!-- Label Text -->
+                                                <span class="ml-3 text-sm font-bold min-w-[60px] text-left [&_.present]:hidden peer-checked:[&_.present]:inline [&_.absent]:inline peer-checked:[&_.absent]:hidden">
+                                                    <span class="present text-green-600">Present</span>
+                                                    <span class="absent text-gray-400">Absent</span>
+                                                </span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-
-                    <label class="relative inline-flex items-center cursor-pointer select-none">
-                        <input type="checkbox" name="attendance_{{ enrollment.student.id }}" class="sr-only peer" />
-                        <!-- Track with labels inside for mobile compactness -->
-                        <div class="w-16 h-8 bg-gray-200 rounded-full peer peer-checked:bg-green-500 transition-colors duration-200 relative">
-                            <span class="absolute left-2 top-2 text-[10px] font-bold text-gray-500 opacity-100 peer-checked:opacity-0 transition-opacity">ABS</span>
-                            <span class="absolute right-2 top-2 text-[10px] font-bold text-white opacity-0 peer-checked:opacity-100 transition-opacity">PRE</span>
+                    <!-- Mobile Card View -->
+                    <div class="lg:hidden p-4 space-y-4">
+                        {% for enrollment in enrollments %}
+                            <div class="bg-gray-50 rounded-2xl border border-gray-100 p-4 flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-text-dark text-sm">{{ enrollment.student.name }}</h3>
+                                    <p class="text-xs font-mono text-text-light mt-0.5">{{ enrollment.student.enrollment_number or 'N/A' }}</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer select-none">
+                                    <input type="checkbox"
+                                           name="attendance_{{ enrollment.student.id }}"
+                                           class="sr-only peer" />
+                                    <!-- Track with labels inside for mobile compactness -->
+                                    <div class="w-16 h-8 bg-gray-200 rounded-full peer peer-checked:bg-green-500 transition-colors duration-200 relative">
+                                        <span class="absolute left-2 top-2 text-[10px] font-bold text-gray-500 opacity-100 peer-checked:opacity-0 transition-opacity">ABS</span>
+                                        <span class="absolute right-2 top-2 text-[10px] font-bold text-white opacity-0 peer-checked:opacity-100 transition-opacity">PRE</span>
+                                    </div>
+                                    <!-- Knob -->
+                                    <div class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full shadow-sm peer-checked:translate-x-8 transition-transform duration-200">
+                                    </div>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="p-12 text-center">
+                        <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-gray-400">
+                            <i data-feather="user-x" class="w-8 h-8"></i>
                         </div>
-
-                        <!-- Knob -->
-                        <div class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full shadow-sm peer-checked:translate-x-8 transition-transform duration-200"></div>
-                    </label>
+                        <h3 class="text-lg font-bold text-text-dark">No Students Enrolled</h3>
+                        <p class="text-text-light mt-1">Students must be enrolled before attendance can be marked.</p>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Changed from fixed position to normal flow to avoid overlapping with sidebar -->
+            <div class="flex justify-end mt-8 pb-8">
+                <button type="submit"
+                        class="flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-primary/30 hover:bg-primary-dark hover:scale-105 transition-all">
+                    <i data-feather="save" class="w-5 h-5"></i>
+                    Save Attendance
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>feather.replace();</script>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Class Info Widget -->
+    <div class="w-full">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Class Info</h3>
+        <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+            <!-- Branch/Sem -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <i data-feather="git-branch" class="w-5 h-5"></i>
                 </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="p-12 text-center">
-                <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-gray-400">
-                    <i data-feather="user-x" class="w-8 h-8"></i>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Branch</p>
+                    <p class="font-bold text-text-dark text-sm leading-tight">
+                        {{ assigned_class.subject.branch }} (Sem {{ assigned_class.subject.semester }})
+                    </p>
                 </div>
-                <h3 class="text-lg font-bold text-text-dark">No Students Enrolled</h3>
-                <p class="text-text-light mt-1">Students must be enrolled before attendance can be marked.</p>
             </div>
-            {% endif %}
-        </div>
-
-        <!-- Changed from fixed position to normal flow to avoid overlapping with sidebar -->
-        <div class="flex justify-end mt-8 pb-8">
-            <button type="submit" class="flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-primary/30 hover:bg-primary-dark hover:scale-105 transition-all">
-                <i data-feather="save" class="w-5 h-5"></i>
-                Save Attendance
-            </button>
-        </div>
-    </form>
-</div>
-
-<script>
-    feather.replace();
-</script>
-{% endblock %} {% block sidebar_content %}
-<!-- Class Info Widget -->
-<div class="w-full">
-    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Class Info</h3>
-    <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
-        <!-- Branch/Sem -->
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                <i data-feather="git-branch" class="w-5 h-5"></i>
+            <!-- Section -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Section</p>
+                    <p class="font-bold text-text-dark text-sm leading-tight">{{ assigned_class.section or 'All Sections' }}</p>
+                </div>
             </div>
-            <div>
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Branch</p>
-                <p class="font-bold text-text-dark text-sm leading-tight">{{ assigned_class.subject.branch }} (Sem {{ assigned_class.subject.semester }})</p>
-            </div>
-        </div>
-
-        <!-- Section -->
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                <i data-feather="layers" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Section</p>
-                <p class="font-bold text-text-dark text-sm leading-tight">{{ assigned_class.section or 'All Sections' }}</p>
-            </div>
-        </div>
-
-        <!-- Enrollment -->
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
-                <i data-feather="users" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Students</p>
-                <p class="font-bold text-text-dark text-sm leading-tight">{{ enrollments|length }} Enrolled</p>
+            <!-- Enrollment -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                    <i data-feather="users" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Students</p>
+                    <p class="font-bold text-text-dark text-sm leading-tight">{{ enrollments|length }} Enrolled</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

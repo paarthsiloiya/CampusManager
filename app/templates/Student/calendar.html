@@ -1,100 +1,104 @@
-{% extends "base.html" %} {% block title %}Calendar — CampusManager{% endblock %} {% block content %}
-<section class="max-w-7xl mx-auto space-y-8">
-    <!-- Header -->
-    <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Academic Calendar</h1>
-            <p class="text-text-light mt-1">Schedule, events, and important deadlines</p>
-        </div>
-        <div class="flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end">
-            <button id="prevMonth" class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-text-light">
-                <i data-feather="chevron-left" class="w-5 h-5"></i>
-            </button>
-            <div id="monthYear" class="h-10 px-6 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-text-dark min-w-[160px] shadow-sm flex-1 lg:flex-none">
-                <!-- JS Injected -->
+{% extends "base.html" %}
+{% block title %}Calendar — CampusManager{% endblock %}
+{% block content %}
+    <section class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-text-dark">Academic Calendar</h1>
+                <p class="text-text-light mt-1">Schedule, events, and important deadlines</p>
             </div>
-            <button id="nextMonth" class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-text-light">
-                <i data-feather="chevron-right" class="w-5 h-5"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Calendar Card (Full Width) -->
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-4 lg:p-8 overflow-hidden">
-        <!-- Legend (Full Width Grid) -->
-        <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-8 pb-6 border-b border-gray-100">
-            <span class="text-xs font-bold text-text-lighter uppercase tracking-wider w-full lg:w-auto">Legend:</span>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
-                <span class="text-sm text-text-light font-medium">Academic</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                <span class="text-sm text-text-light font-medium">Holiday</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                <span class="text-sm text-text-light font-medium">Exam</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                <span class="text-sm text-text-light font-medium">Deadline</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-primary border border-white shadow-sm"></span>
-                <span class="text-sm text-text-light font-medium">Today</span>
-            </div>
-        </div>
-
-        <div class="overflow-x-auto -mx-4 px-4 lg:mx-0 lg:px-0">
-            <div class="min-w-[700px] lg:min-w-0">
-                <!-- Days Header -->
-                <div class="grid grid-cols-7 gap-2 mb-4">
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Sun</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Mon</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Tue</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Wed</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Thu</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Fri</div>
-                    <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Sat</div>
-                </div>
-
-                <!-- Calendar Grid -->
-                <div id="calendarDays" class="grid grid-cols-7 gap-2 min-h-[500px]">
+            <div class="flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end">
+                <button id="prevMonth"
+                        class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-text-light">
+                    <i data-feather="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div id="monthYear"
+                     class="h-10 px-6 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-text-dark min-w-[160px] shadow-sm flex-1 lg:flex-none">
                     <!-- JS Injected -->
                 </div>
+                <button id="nextMonth"
+                        class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center hover:bg-gray-50 hover:shadow-md transition-all text-text-light">
+                    <i data-feather="chevron-right" class="w-5 h-5"></i>
+                </button>
             </div>
         </div>
+        <!-- Main Calendar Card (Full Width) -->
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-4 lg:p-8 overflow-hidden">
+            <!-- Legend (Full Width Grid) -->
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mb-8 pb-6 border-b border-gray-100">
+                <span class="text-xs font-bold text-text-lighter uppercase tracking-wider w-full lg:w-auto">Legend:</span>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                    <span class="text-sm text-text-light font-medium">Academic</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    <span class="text-sm text-text-light font-medium">Holiday</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span class="text-sm text-text-light font-medium">Exam</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="text-sm text-text-light font-medium">Deadline</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-primary border border-white shadow-sm"></span>
+                    <span class="text-sm text-text-light font-medium">Today</span>
+                </div>
+            </div>
+            <div class="overflow-x-auto -mx-4 px-4 lg:mx-0 lg:px-0">
+                <div class="min-w-[700px] lg:min-w-0">
+                    <!-- Days Header -->
+                    <div class="grid grid-cols-7 gap-2 mb-4">
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Sun</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Mon</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Tue</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Wed</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Thu</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Fri</div>
+                        <div class="text-center text-xs font-bold text-text-lighter uppercase tracking-wider py-2">Sat</div>
+                    </div>
+                    <!-- Calendar Grid -->
+                    <div id="calendarDays" class="grid grid-cols-7 gap-2 min-h-[500px]">
+                        <!-- JS Injected -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Today's Focus -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
+        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">On Agenda Today</h3>
+        <div id="todayEvents" class="space-y-2">
+            <!-- JS Injected -->
+        </div>
     </div>
-</section>
-{% endblock %} {% block sidebar_content %}
-<!-- Today's Focus -->
-<div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
-    <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">On Agenda Today</h3>
-    <div id="todayEvents" class="space-y-2">
-        <!-- JS Injected -->
+    <!-- Upcoming Events (Tabular) -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm overflow-hidden w-full">
+        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4 flex items-center gap-2">
+            <i data-feather="calendar" class="w-3 h-3"></i> Upcoming
+        </h3>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <tbody id="eventList" class="text-sm">
+                    <!-- JS Injected -->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
-<!-- Upcoming Events (Tabular) -->
-<div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm overflow-hidden w-full">
-    <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4 flex items-center gap-2"><i data-feather="calendar" class="w-3 h-3"></i> Upcoming</h3>
-    <div class="overflow-x-auto">
-        <table class="w-full">
-            <tbody id="eventList" class="text-sm">
-                <!-- JS Injected -->
-            </tbody>
-        </table>
-    </div>
-</div>
-{% endblock %} {% block scripts %}
-<script id="template-data" type="application/json">
+{% endblock %}
+{% block scripts %}
+    <script id="template-data" type="application/json">
     {
         "calendarEvents": {{ calendar_events | tojson | safe }}
     }
-</script>
-
-<script>
+    </script>
+    <script>
     function getTemplateData() {
         try {
             const dataScript = document.getElementById("template-data");
@@ -269,5 +273,5 @@
             renderCalendar(currentMonth, currentYear);
         });
     });
-</script>
+    </script>
 {% endblock %}

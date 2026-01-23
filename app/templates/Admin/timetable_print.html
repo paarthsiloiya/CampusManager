@@ -1,8 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description"
+              content="{{ meta_description | default('Timetable for ' ~ current_branch ~ ' — CampusManager') }}" />
+        <meta name="keywords"
+              content="{{ meta_keywords | default('timetable, campus, ' ~ current_branch) }}" />
         <title>Timetable — {{ current_branch }} — CampusManager</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
@@ -23,67 +27,77 @@
                     page-break-before: always;
                 }
             }
+            .vertical-rl {
+                writing-mode: vertical-rl;
+                transform: rotate(180deg);
+            }
         </style>
     </head>
     <body class="bg-white p-8">
         <div class="space-y-12">
             {% for branch_name, branch_data in all_timetables.items() %}
-            <div class="branch-container {% if not loop.first %}page-break{% endif %}">
-                {% if all_timetables|length > 1 %}
-                <div class="mb-4 border-b-2 border-gray-800 pb-2">
-                    <h2 class="text-2xl font-black text-gray-800 uppercase tracking-wide">{{ branch_name }}</h2>
-                </div>
-                {% endif %}
-
-                <div class="space-y-10">
-                    {% for sem, data in branch_data.items() %}
-                    <div class="border border-gray-300 rounded-lg overflow-hidden break-inside-avoid shadow-sm mb-8">
-                        <div class="bg-gray-800 text-white p-4 text-center">
-                            <h4 class="text-xl font-bold">Semester {{ sem }}</h4>
+                <div class="branch-container {% if not loop.first %}page-break{% endif %}">
+                    {% if all_timetables|length > 1 %}
+                        <div class="mb-4 border-b-2 border-gray-800 pb-2">
+                            <h2 class="text-2xl font-black text-gray-800 uppercase tracking-wide">{{ branch_name }}</h2>
                         </div>
-
-                        <table class="w-full border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border border-gray-300 p-1 w-24">Day</th>
-                                    {% for p in data.periods %} {% if loop.index == lunch_break_after + 1 %}
-                                    <th class="border border-gray-300 p-1 bg-gray-200 w-10">Break</th>
-                                    {% endif %}
-                                    <th class="border border-gray-300 p-1">
-                                        <div class="font-bold">Period {{ p }}</div>
-                                        <span class="text-xs font-normal text-gray-600 block">{{ data.period_headers[p] }}</span>
-                                    </th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for day in data.days %} {% set is_first_day = loop.first %}
-                                <tr>
-                                    <th class="border border-gray-300 p-1 bg-gray-50 text-center font-bold">{{ day }}</th>
-
-                                    {% for p in data.periods %} {% if loop.index == lunch_break_after + 1 %} {% if is_first_day %}
-                                    <td rowspan="{{ data.days|length }}" class="border border-gray-300 bg-gray-100 text-center align-middle font-bold text-gray-500" style="writing-mode: vertical-rl; transform: rotate(180deg)">LUNCH</td>
-                                    {% endif %} {% endif %} {% set entry = data.grid[day].get(p) %}
-                                    <td class="border border-gray-300 p-1 text-center h-16 align-middle">
-                                        {% if entry %}
-                                        <div class="font-bold text-gray-900 leading-tight">{{ entry.assigned_class.subject.name }}</div>
-                                        {% if entry.assigned_class.subject.code %}
-                                        <div class="text-[10px] text-gray-500 font-medium">({{ entry.assigned_class.subject.code }})</div>
-                                        {% endif %}
-                                        <div class="text-xs text-gray-600 mt-0.5">{{ entry.assigned_class.teacher.name }}</div>
-                                        {% else %}
-                                        <span class="text-gray-300 text-xl">-</span>
-                                        {% endif %}
-                                    </td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    {% endif %}
+                    <div class="space-y-10">
+                        {% for sem, data in branch_data.items() %}
+                            <div class="border border-gray-300 rounded-lg overflow-hidden break-inside-avoid shadow-sm mb-8">
+                                <div class="bg-gray-800 text-white p-4 text-center">
+                                    <h4 class="text-xl font-bold">Semester {{ sem }}</h4>
+                                </div>
+                                <table class="w-full border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-gray-100">
+                                            <th class="border border-gray-300 p-1 w-24">Day</th>
+                                            {% for p in data.periods %}
+                                                {% if loop.index == lunch_break_after + 1 %}
+                                                    <th class="border border-gray-300 p-1 bg-gray-200 w-10">Break</th>
+                                                {% endif %}
+                                                <th class="border border-gray-300 p-1">
+                                                    <div class="font-bold">Period {{ p }}</div>
+                                                    <span class="text-xs font-normal text-gray-600 block">{{ data.period_headers[p] }}</span>
+                                                </th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for day in data.days %}
+                                            {% set is_first_day = loop.first %}
+                                            <tr>
+                                                <th class="border border-gray-300 p-1 bg-gray-50 text-center font-bold">{{ day }}</th>
+                                                {% for p in data.periods %}
+                                                    {% if loop.index == lunch_break_after + 1 %}
+                                                        {% if is_first_day %}
+                                                            <td rowspan="{{ data.days|length }}"
+                                                                class="border border-gray-300 bg-gray-100 text-center align-middle font-bold text-gray-500 vertical-rl">
+                                                                LUNCH
+                                                            </td>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% set entry = data.grid[day].get(p) %}
+                                                    <td class="border border-gray-300 p-1 text-center h-16 align-middle">
+                                                        {% if entry %}
+                                                            <div class="font-bold text-gray-900 leading-tight">{{ entry.assigned_class.subject.name }}</div>
+                                                            {% if entry.assigned_class.subject.code %}
+                                                                <div class="text-[10px] text-gray-500 font-medium">({{ entry.assigned_class.subject.code }})</div>
+                                                            {% endif %}
+                                                            <div class="text-xs text-gray-600 mt-0.5">{{ entry.assigned_class.teacher.name }}</div>
+                                                        {% else %}
+                                                            <span class="text-gray-300 text-xl">-</span>
+                                                        {% endif %}
+                                                    </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
             {% endfor %}
         </div>
     </body>

@@ -1,189 +1,208 @@
-{% extends "base.html" %} {% block title %}Curriculum — CampusManager{% endblock %} {% block content %}
-<section class="max-w-7xl mx-auto space-y-8">
-    <!-- Header -->
-    <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">Curriculum</h1>
-            <p class="text-text-light mt-1">Explore your academic subjects and course details</p>
-        </div>
-        <div class="hidden lg:block">
-            <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> Semester {{ student.semester }} </span>
-        </div>
-    </div>
-
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Total Subjects -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-primary/10 transition-colors"></div>
-            <div class="w-14 h-14 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                <i data-feather="book" class="w-7 h-7"></i>
-            </div>
+{% extends "base.html" %}
+{% block title %}Curriculum — CampusManager{% endblock %}
+{% block content %}
+    <section class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
             <div>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Total Subjects</p>
-                <h3 class="text-3xl font-bold text-text-dark mt-1">{{ subjects|length }}</h3>
+                <h1 class="text-2xl font-bold text-text-dark">Curriculum</h1>
+                <p class="text-text-light mt-1">Explore your academic subjects and course details</p>
+            </div>
+            <div class="hidden lg:block">
+                <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> Semester {{ student.semester }} </span>
             </div>
         </div>
-
-        <!-- Total Credits -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-status-success/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-status-success/10 transition-colors"></div>
-            <div class="w-14 h-14 rounded-2xl bg-status-success/5 border border-status-success/10 flex items-center justify-center text-status-success flex-shrink-0">
-                <i data-feather="award" class="w-7 h-7"></i>
-            </div>
-            <div>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Total Credits</p>
-                <h3 class="text-3xl font-bold text-text-dark mt-1">{{ subjects|length * 3 }}</h3>
-            </div>
-        </div>
-
-        <!-- Academic Year -->
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-status-warning/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-status-warning/10 transition-colors"></div>
-            <div class="w-14 h-14 rounded-2xl bg-status-warning/5 border border-status-warning/10 flex items-center justify-center text-status-warning flex-shrink-0">
-                <i data-feather="calendar" class="w-7 h-7"></i>
-            </div>
-            <div>
-                <p class="text-xs font-bold text-text-light uppercase tracking-wider">Academic Year</p>
-                <h3 class="text-3xl font-bold text-text-dark mt-1">2024-25</h3>
-            </div>
-        </div>
-    </div>
-
-    <!-- Subject Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {% for subject in subjects %}
-        <div class="bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-300 group flex flex-col h-full relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mt-16 group-hover:bg-primary/5 transition-colors"></div>
-
-            <!-- Header -->
-            <div class="flex items-start justify-between mb-4 relative z-10">
-                <div class="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 transition-transform duration-300 relative">
-                    {% if subject.icon %}
-                    <img src="{{ subject.icon }}" alt="{{ subject.name }}" class="w-8 h-8 object-contain" />
-                    {% else %}
-                    <span class="text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
-                    {% endif %}
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Total Subjects -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-primary/10 transition-colors">
                 </div>
-                <span class="text-xs font-mono font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">{{ subject.code }}</span>
-            </div>
-
-            <!-- Content -->
-            <div class="flex-1">
-                <h3 class="text-lg font-bold text-text-dark mb-1 line-clamp-2 leading-tight group-hover:text-primary transition-colors">{{ subject.name }}</h3>
-                <p class="text-sm text-text-light flex items-center gap-1.5 mt-2"><i data-feather="user" class="w-3.5 h-3.5"></i> {{ subject.faculty }}</p>
-
-                <!-- Expanded Metadata -->
-                <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-gray-50">
-                    <div class="bg-gray-50/50 rounded-lg p-2">
-                        <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Credits</span>
-                        <span class="text-sm font-bold text-text-dark">{{ subject.credits }}</span>
-                    </div>
-                    <div class="bg-gray-50/50 rounded-lg p-2">
-                        <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Type</span>
-                        <span class="text-sm font-bold text-text-dark">{{ subject.type }}</span>
-                    </div>
+                <div class="w-14 h-14 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                    <i data-feather="book" class="w-7 h-7"></i>
                 </div>
-            </div>
-
-            <!-- Action -->
-            <div class="mt-2 pt-2 border-t border-gray-100 flex gap-2">
-                <button class="flex-1 flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-text-dark text-xs font-bold py-2.5 rounded-xl transition-colors border border-gray-200" onclick="alert('Syllabus coming soon!')">
-                    <i data-feather="book-open" class="w-3.5 h-3.5 text-text-light"></i> Syllabus
-                </button>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- Curriculum Information -->
-    <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
-        <div class="bg-primary/5 p-8 border-b border-primary/10">
-            <h2 class="text-2xl font-bold text-text-dark flex items-center gap-3">
-                <span class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
-                    <i data-feather="info" class="w-5 h-5"></i>
-                </span>
-                Program Information
-            </h2>
-            <p class="text-text-light mt-2 ml-14">Complete overview of your academic program structure.</p>
-        </div>
-
-        <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div class="space-y-6">
                 <div>
-                    <h3 class="text-sm font-bold text-text-lighter uppercase tracking-wider mb-4">Program Details</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <span class="text-sm font-medium text-text-light">Branch</span>
-                            <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">{{ student.branch }}</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <span class="text-sm font-medium text-text-light">Degree</span>
-                            <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">B.Tech</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <span class="text-sm font-medium text-text-light">Duration</span>
-                            <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">4 Years (8 Semesters)</span>
-                        </div>
-                    </div>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Total Subjects</p>
+                    <h3 class="text-3xl font-bold text-text-dark mt-1">{{ subjects|length }}</h3>
                 </div>
             </div>
-
-            <div class="space-y-6">
+            <!-- Total Credits -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-status-success/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-status-success/10 transition-colors">
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-status-success/5 border border-status-success/10 flex items-center justify-center text-status-success flex-shrink-0">
+                    <i data-feather="award" class="w-7 h-7"></i>
+                </div>
                 <div>
-                    <h3 class="text-sm font-bold text-text-lighter uppercase tracking-wider mb-4">Academic Context</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <span class="text-sm font-medium text-text-light">Department</span>
-                            <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm truncate max-w-[200px]">{{ student.department or student.branch }}</span>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Total Credits</p>
+                    <h3 class="text-3xl font-bold text-text-dark mt-1">{{ subjects|length * 3 }}</h3>
+                </div>
+            </div>
+            <!-- Academic Year -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-5 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-status-warning/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-status-warning/10 transition-colors">
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-status-warning/5 border border-status-warning/10 flex items-center justify-center text-status-warning flex-shrink-0">
+                    <i data-feather="calendar" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Academic Year</p>
+                    <h3 class="text-3xl font-bold text-text-dark mt-1">2024-25</h3>
+                </div>
+            </div>
+        </div>
+        <!-- Subject Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for subject in subjects %}
+                <div class="bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-300 group flex flex-col h-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mt-16 group-hover:bg-primary/5 transition-colors">
+                    </div>
+                    <!-- Header -->
+                    <div class="flex items-start justify-between mb-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 transition-transform duration-300 relative">
+                            {% if subject.icon %}
+                                <img src="{{ subject.icon }}"
+                                     alt="{{ subject.name }}"
+                                     width="32"
+                                     height="32"
+                                     class="w-8 h-8 object-contain" />
+                            {% else %}
+                                <span class="text-2xl font-bold text-primary">{{ subject.name[:2] }}</span>
+                            {% endif %}
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <span class="text-sm font-medium text-text-light">Institution</span>
-                            <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm truncate max-w-[200px]">{{ student.institution or 'DTC' }}</span>
+                        <span class="text-xs font-mono font-bold text-text-light bg-gray-50 border border-gray-100 px-2 py-1 rounded-lg">{{ subject.code }}</span>
+                    </div>
+                    <!-- Content -->
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-text-dark mb-1 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                            {{ subject.name }}
+                        </h3>
+                        <p class="text-sm text-text-light flex items-center gap-1.5 mt-2">
+                            <i data-feather="user" class="w-3.5 h-3.5"></i> {{ subject.faculty }}
+                        </p>
+                        <!-- Expanded Metadata -->
+                        <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-gray-50">
+                            <div class="bg-gray-50/50 rounded-lg p-2">
+                                <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Credits</span>
+                                <span class="text-sm font-bold text-text-dark">{{ subject.credits }}</span>
+                            </div>
+                            <div class="bg-gray-50/50 rounded-lg p-2">
+                                <span class="block text-xs uppercase font-bold text-text-lighter tracking-wider">Type</span>
+                                <span class="text-sm font-bold text-text-dark">{{ subject.type }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Action -->
+                    <div class="mt-2 pt-2 border-t border-gray-100 flex gap-2">
+                        <button class="flex-1 flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-text-dark text-xs font-bold py-2.5 rounded-xl transition-colors border border-gray-200"
+                                onclick="alert('Syllabus coming soon!')">
+                            <i data-feather="book-open" class="w-3.5 h-3.5 text-text-light"></i> Syllabus
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Curriculum Information -->
+        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
+            <div class="bg-primary/5 p-8 border-b border-primary/10">
+                <h2 class="text-2xl font-bold text-text-dark flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                        <i data-feather="info" class="w-5 h-5"></i>
+                    </span>
+                    Program Information
+                </h2>
+                <p class="text-text-light mt-2 ml-14">Complete overview of your academic program structure.</p>
+            </div>
+            <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-sm font-bold text-text-lighter uppercase tracking-wider mb-4">Program Details</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="text-sm font-medium text-text-light">Branch</span>
+                                <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">{{ student.branch }}</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="text-sm font-medium text-text-light">Degree</span>
+                                <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">B.Tech</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="text-sm font-medium text-text-light">Duration</span>
+                                <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">4 Years (8 Semesters)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-sm font-bold text-text-lighter uppercase tracking-wider mb-4">Academic Context</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="text-sm font-medium text-text-light">Department</span>
+                                <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm truncate max-w-[200px]">{{ student.department or student.branch }}</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                <span class="text-sm font-medium text-text-light">Institution</span>
+                                <span class="text-sm font-bold text-text-dark bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm truncate max-w-[200px]">{{ student.institution or 'DTC' }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endblock %} {% block sidebar_content %}
-<!-- Progress Widget -->
-<div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
-    <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">Degree Progress</h3>
-
-    <div class="relative pt-2">
-        <div class="flex mb-2 items-center justify-between">
-            <div>
-                <span class="text-xs font-bold inline-block py-1 px-2.5 rounded-lg text-primary bg-primary/10"> Semester {{ student.semester }} </span>
+    </section>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Progress Widget -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm w-full">
+        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-4">Degree Progress</h3>
+        <div class="relative pt-2">
+            <div class="flex mb-2 items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold inline-block py-1 px-2.5 rounded-lg text-primary bg-primary/10"> Semester {{ student.semester }} </span>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-bold text-primary">{{ (student.semester / 8 * 100)|round|int }}%</span>
+                </div>
             </div>
-            <div class="text-right">
-                <span class="text-xs font-bold text-primary">{{ (student.semester / 8 * 100)|round|int }}%</span>
+            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-100">
+                <div style="--progress: {{ (student.semester / 8 * 100) | round | int }}%;
+                            width: var(--progress)"
+                     class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-1000">
+                </div>
+            </div>
+            <p class="text-xs text-text-light text-center">
+                You are currently in your {{ student.semester }}
+                {% if student.semester == 1 %}
+                    st
+                {% elif student.semester == 2 %}
+                    nd
+                {% elif student.semester == 3 %}
+                    rd
+                {% else %}
+                    th
+                {% endif %}
+                semester of 8.
+            </p>
+        </div>
+    </div>
+    <!-- Quick Stats -->
+    <div class="w-full">
+        <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-3">Quick Overview</h3>
+        <div class="grid grid-row-2 lg:grid-cols-2 gap-3">
+            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                <div class="text-xl font-bold text-text-dark">{{ subjects|length }}</div>
+                <div class="text-xs text-text-light font-medium">Subjects</div>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                <div class="text-xl font-bold text-status-success">{{ subjects|length * 3 }}</div>
+                <div class="text-xs text-text-light font-medium">Credits</div>
             </div>
         </div>
-        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-100">
-            <div style="width:{{ (student.semester / 8 * 100)|round|int }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-1000"></div>
-        </div>
-        <p class="text-xs text-text-light text-center">You are currently in your {{ student.semester }}{% if student.semester == 1 %}st{% elif student.semester == 2 %}nd{% elif student.semester == 3 %}rd{% else %}th{% endif %} semester of 8.</p>
     </div>
-</div>
-
-<!-- Quick Stats -->
-<div class="w-full">
-    <h3 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-3">Quick Overview</h3>
-    <div class="grid grid-row-2 lg:grid-cols-2 gap-3">
-        <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
-            <div class="text-xl font-bold text-text-dark">{{ subjects|length }}</div>
-            <div class="text-xs text-text-light font-medium">Subjects</div>
-        </div>
-        <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
-            <div class="text-xl font-bold text-status-success">{{ subjects|length * 3 }}</div>
-            <div class="text-xs text-text-light font-medium">Credits</div>
-        </div>
-    </div>
-</div>
-{% endblock %} {% block scripts %}
-<script>
+{% endblock %}
+{% block scripts %}
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
         if (typeof feather !== "undefined") {
             feather.replace();
@@ -227,5 +246,5 @@
             }, 300);
         }, 3000);
     }
-</script>
+    </script>
 {% endblock %}

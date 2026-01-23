@@ -1,136 +1,134 @@
-{% extends "base.html" %} {% block title %}My Classes — CampusManager{% endblock %} {% block content %}
-<div class="max-w-7xl mx-auto space-y-8">
-    <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-text-dark">My Assigned Classes</h1>
-        <span class="px-4 py-2 bg-primary/10 text-primary rounded-xl font-bold text-sm"> {{ assigned_classes|length }} Classes </span>
-    </div>
-
-    {% if assigned_classes %}
-    <!-- Desktop Table View -->
-    <div class="hidden lg:block bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50 border-b border-gray-100">
-                    <tr>
-                        <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Subject Details</th>
-                        <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Class Info</th>
-                        <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Students</th>
-                        <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    {% for assignment in assigned_classes %}
-                    <tr class="group hover:bg-gray-50/50 transition-colors">
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-4">
-                                <div>
-                                    <h2 class="text-base font-bold text-text-dark">{{ assignment.subject.name }}</h2>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span class="text-xs font-bold text-text-light">{{ assignment.subject.code }}</span>
-                                        {% if assignment.subject.is_lab %}
+{% extends "base.html" %}
+{% block title %}My Classes — CampusManager{% endblock %}
+{% block content %}
+    <div class="max-w-7xl mx-auto space-y-8">
+        <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-text-dark">My Assigned Classes</h1>
+            <span class="px-4 py-2 bg-primary/10 text-primary rounded-xl font-bold text-sm"> {{ assigned_classes|length }} Classes </span>
+        </div>
+        {% if assigned_classes %}
+            <!-- Desktop Table View -->
+            <div class="hidden lg:block bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Subject Details</th>
+                                <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Class Info</th>
+                                <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Students</th>
+                                <th class="px-4 py-4 text-xs font-bold text-text-light uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            {% for assignment in assigned_classes %}
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <div>
+                                                <h2 class="text-base font-bold text-text-dark">{{ assignment.subject.name }}</h2>
+                                                <div class="flex items-center gap-2 mt-1">
+                                                    <span class="text-xs font-bold text-text-light">{{ assignment.subject.code }}</span>
+                                                    {% if assignment.subject.is_lab %}
+                                                        <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-100">Lab</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2 text-sm font-medium text-text-dark">
+                                                <i data-feather="git-branch" class="w-4 h-4 text-text-light"></i>
+                                                {{ assignment.subject.branch }}
+                                            </div>
+                                            <div class="flex items-center gap-2 text-xs text-text-light">
+                                                <span class="bg-gray-100 px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
+                                                {% if assignment.section %}
+                                                    <span class="bg-gray-100 px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xl font-bold text-text-dark">{{ assignment.enrollments|selectattr("is_approved") |list|length }}</span>
+                                            <span class="text-xs font-medium text-text-light">enrolled</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 text-right">
+                                        <a href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}"
+                                           class="inline-flex items-center gap-2 px-2 py-2 rounded-xl bg-white border border-gray-200 text-text-dark font-bold hover:bg-primary hover:text-white hover:border-primary transition-all text-sm">
+                                            View Details
+                                            <i data-feather="chevron-right" class="w-4 h-4"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Mobile Card View -->
+            <div class="lg:hidden space-y-4">
+                {% for assignment in assigned_classes %}
+                    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-text-dark">{{ assignment.subject.name }}</h2>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-xs font-bold text-text-light">{{ assignment.subject.code }}</span>
+                                    {% if assignment.subject.is_lab %}
                                         <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-100">Lab</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}"
+                               class="p-2 bg-gray-50 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/5 transition-colors">
+                                <i data-feather="chevron-right" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="space-y-1">
+                                <p class="text-xs font-bold text-text-light uppercase">Class Info</p>
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2 text-sm font-medium text-text-dark">
+                                        <i data-feather="git-branch" class="w-4 h-4 text-text-light"></i>
+                                        {{ assignment.subject.branch }}
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-text-light">
+                                        <span class="bg-gray-100 px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
+                                        {% if assignment.section %}
+                                            <span class="bg-gray-100 px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                        <td class="px-4 py-4">
                             <div class="space-y-1">
-                                <div class="flex items-center gap-2 text-sm font-medium text-text-dark">
-                                    <i data-feather="git-branch" class="w-4 h-4 text-text-light"></i>
-                                    {{ assignment.subject.branch }}
-                                </div>
-                                <div class="flex items-center gap-2 text-xs text-text-light">
-                                    <span class="bg-gray-100 px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
-                                    {% if assignment.section %}
-                                    <span class="bg-gray-100 px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
-                                    {% endif %}
+                                <p class="text-xs font-bold text-text-light uppercase">Students</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl font-bold text-text-dark">{{ assignment.enrollments|selectattr("is_approved") |list|length }}</span>
+                                    <span class="text-xs font-medium text-text-light">enrolled</span>
                                 </div>
                             </div>
-                        </td>
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xl font-bold text-text-dark">{{ assignment.enrollments|selectattr('is_approved')|list|length }}</span>
-                                <span class="text-xs font-medium text-text-light">enrolled</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-right">
-                            <a
-                                href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}"
-                                class="inline-flex items-center gap-2 px-2 py-2 rounded-xl bg-white border border-gray-200 text-text-dark font-bold hover:bg-primary hover:text-white hover:border-primary transition-all text-sm"
-                            >
-                                View Details
-                                <i data-feather="chevron-right" class="w-4 h-4"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Mobile Card View -->
-    <div class="lg:hidden space-y-4">
-        {% for assignment in assigned_classes %}
-        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h2 class="text-lg font-bold text-text-dark">{{ assignment.subject.name }}</h2>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="text-xs font-bold text-text-light">{{ assignment.subject.code }}</span>
-                        {% if assignment.subject.is_lab %}
-                        <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider border border-purple-100">Lab</span>
-                        {% endif %}
-                    </div>
-                </div>
-                <a href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}" class="p-2 bg-gray-50 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/5 transition-colors">
-                    <i data-feather="chevron-right" class="w-5 h-5"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="space-y-1">
-                    <p class="text-xs font-bold text-text-light uppercase">Class Info</p>
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2 text-sm font-medium text-text-dark">
-                            <i data-feather="git-branch" class="w-4 h-4 text-text-light"></i>
-                            {{ assignment.subject.branch }}
                         </div>
-                        <div class="flex items-center gap-2 text-xs text-text-light">
-                            <span class="bg-gray-100 px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
-                            {% if assignment.section %}
-                            <span class="bg-gray-100 px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
-                            {% endif %}
-                        </div>
+                        <a href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}"
+                           class="flex items-center justify-center w-full py-2.5 rounded-xl bg-gray-50 text-text-dark font-bold hover:bg-gray-100 transition-colors text-sm">View Details</a>
                     </div>
-                </div>
-                <div class="space-y-1">
-                    <p class="text-xs font-bold text-text-light uppercase">Students</p>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl font-bold text-text-dark">{{ assignment.enrollments|selectattr('is_approved')|list|length }}</span>
-                        <span class="text-xs font-medium text-text-light">enrolled</span>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-            <a href="{{ url_for('views.teacher_class_details', class_id=assignment.id) }}" class="flex items-center justify-center w-full py-2.5 rounded-xl bg-gray-50 text-text-dark font-bold hover:bg-gray-100 transition-colors text-sm">View Details</a>
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
-        <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-gray-400">
-            <i data-feather="book-open" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-lg font-bold text-text-dark">No Classes Assigned</h3>
-        <p class="text-text-light mt-1">You haven't been assigned any classes yet.</p>
-    </div>
-    {% endif %}
-
-    <script>
+        {% else %}
+            <div class="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
+                <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-gray-400">
+                    <i data-feather="book-open" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-bold text-text-dark">No Classes Assigned</h3>
+                <p class="text-text-light mt-1">You haven't been assigned any classes yet.</p>
+            </div>
+        {% endif %}
+        <script>
         if (typeof feather !== "undefined") {
             feather.replace();
         }
-    </script>
-</div>
+        </script>
+    </div>
 {% endblock %}

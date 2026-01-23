@@ -1,11 +1,20 @@
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}CampusManager — Smart Curriculum & Attendance{% endblock %}</title>
-        <link rel="icon" href="{{ url_for('static', filename='icons/CampusManagerLogoSimplified.svg') }}" type="image/svg+xml">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
-
+        <meta name="description"
+              content="CampusManager — Smart Curriculum & Attendance: manage curriculum, timetables, and attendance for institutions." />
+        <meta name="keywords"
+              content="CampusManager, curriculum, attendance, timetable, education, school management" />
+        <title>
+            {% block title %}CampusManager — Smart Curriculum & Attendance{% endblock %}
+        </title>
+        <link rel="icon"
+              href="{{ url_for('static', filename='icons/CampusManagerLogoSimplified.svg') }}"
+              type="image/svg+xml">
+        <link rel="shortcut icon"
+              href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
         <!-- Tailwind -->
         <script src="https://cdn.tailwindcss.com"></script>
         <!-- Feather Icons -->
@@ -13,8 +22,8 @@
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Google Fonts: Inter -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+              rel="stylesheet" />
         <script>
             tailwind.config = {
                 darkMode: 'class',
@@ -70,7 +79,6 @@
                 },
             };
         </script>
-
         <!-- Pre-apply collapsed layout (no animation) when stored collapsed.
              This runs before the sidebar element is parsed so the page renders
              already-collapsed without transition/flicker. -->
@@ -87,7 +95,6 @@
                 }
             })();
         </script>
-
         <style>
             .hidden {
                 display: none;
@@ -102,7 +109,7 @@
                 transition: none !important;
             }
             html.sidebar-collapsed-no-anim #main-content {
-                margin-left: 7rem !important; /* approx Tailwind ml-28 */
+                left: 7rem !important; /* approx Tailwind left-28 */
                 transition: none !important;
             }
             html.sidebar-collapsed-no-anim .sidebar-text,
@@ -142,221 +149,256 @@
                 }
             }
         </style>
-
         {% block extra_head %}{% endblock %}
     </head>
     <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
-        <aside id="sidebar" class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
-            <h1 id="sidebar-toggle" class="text-2xl font-bold tracking-tight m-0 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
+        <aside id="sidebar"
+               class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
+            <h1 id="sidebar-toggle"
+                class="text-2xl font-bold tracking-tight m-0 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
                 <div class="p-0 bg-transparent rounded-xl flex-shrink-0 scale-75 lg:scale-100">
-                    <img src="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}" alt="CampusManager logo" class="w-12 h-12 rounded-lg object-cover" onerror="this.style.display='none'">
-                    <i data-feather="book" class="w-6 h-6 text-white hidden" aria-hidden="true"></i>
+                    <img src="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}"
+                         alt="CampusManager logo"
+                         width="48"
+                         height="48"
+                         class="w-12 h-12 rounded-lg object-cover"
+                         onerror="this.style.display='none'">
+                    <i data-feather="book"
+                       class="w-6 h-6 text-white hidden"
+                       aria-hidden="true"></i>
                 </div>
-                <span id="sidebar-title-text" class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-wrap overflow-wrap transition-all duration-300 select-none leading-none py-1">Campus Manager</span>
+                <span id="sidebar-title-text"
+                      class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-wrap overflow-wrap transition-all duration-300 select-none leading-none py-1">Campus Manager</span>
             </h1>
             <nav class="flex-1 lg:mx-0 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
                 <ul class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
-                    <li>
-                        {% if current_user.role.name == 'ADMIN' %}
-                        <a href="{{ url_for('views.admin_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.add_user') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="user-plus" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Add New User</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.assign_class') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Assign Classes</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.timetable') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.admin_queries') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="help-circle" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a
-                        >
-                    </li>
-                        {% elif current_user.role.name == 'TEACHER' %}
-                        <a href="{{ url_for('views.teacher_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.teacher_classes') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Classes</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.teacher_enrollments') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="user-check" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Requests</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.teacher_schedule') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Schedule</span></a
-                        >
-                    </li>
-                        {% else %}
-                        <a href="{{ url_for('views.student_dashboard') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="home" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a
-                        >
-                        {% endif %}
-                    </li>
-
+                    {% if current_user.role.name == 'ADMIN' %}
+                        <li>
+                            <a href="{{ url_for("views.admin_dashboard") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.add_user") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="user-plus"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Add New User</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.assign_class") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Assign Classes</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.timetable") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.admin_queries") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="help-circle"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a>
+                        </li>
+                    {% elif current_user.role.name == 'TEACHER' %}
+                        <li>
+                            <a href="{{ url_for("views.teacher_dashboard") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.teacher_classes") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book-open"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Classes</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.teacher_enrollments") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="user-check"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Requests</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.teacher_schedule") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Schedule</span></a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ url_for("views.student_dashboard") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                        </li>
+                    {% endif %}
                     {% if current_user.role.name == 'STUDENT' %}
-                    <li>
-                        <a href="{{ url_for('views.curriculum') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="book-open" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Curriculum</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.student_timetable') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="clock" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.attendance') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="bar-chart" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Attendance</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.calendar') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a
-                        >
-                    </li>
-                    {% endif %} {% if current_user.role.name == 'TEACHER' %}
-                    <li>
-                        <a href="{{ url_for('views.calendar') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="calendar" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a
-                        >
-                    </li>
+                        <li>
+                            <a href="{{ url_for("views.curriculum") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book-open"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Curriculum</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.student_timetable") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="clock"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.attendance") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="bar-chart"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Attendance</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for("views.calendar") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
+                        </li>
                     {% endif %}
-
-                    <li>
-                        <a href="{{ url_for('views.settings') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"
-                            ><i data-feather="settings" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Settings</span></a
-                        >
-                    </li>
-                    <li>
-                        <a href="{{ url_for('views.about') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info" class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
-                    </li>
-                    {% if current_user.role.name != 'ADMIN' %}
+                    {% if current_user.role.name == 'TEACHER' %}
+                        <li>
+                            <a href="{{ url_for("views.calendar") }}"
+                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
+                        </li>
                     {% endif %}
+                    <li>
+                        <a href="{{ url_for("views.settings") }}"
+                           class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="settings"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Settings</span></a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for("views.about") }}"
+                           class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info"
+   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
+                    </li>
+                    {% if current_user.role.name != 'ADMIN' %}{% endif %}
                 </ul>
             </nav>
             <div class="lg:border-t lg:border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
-                <a href="{{ url_for('auth.logout') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300" onclick="return confirm('Are you sure you want to logout?')">
+                <a href="{{ url_for("auth.logout") }}"
+                   class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300"
+                   onclick="return confirm('Are you sure you want to logout?')">
                     <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Logout</span>
                 </a>
             </div>
         </aside>
-
         <!-- Main Content -->
-        <div id="content-wrapper" class="flex flex-col-reverse lg:contents w-full relative">
-        <main id="main-content" class="w-full lg:w-auto lg:flex-1 p-4 lg:p-8 mx-0 lg:mx-6 my-0 lg:my-4 ml-0 lg:ml-72 {% if not hide_right_sidebar %}mr-0 lg:mr-[21rem] rounded-none lg:rounded-l-3xl{% else %}mr-0 lg:mr-6 rounded-none lg:rounded-3xl{% endif %} overflow-visible lg:overflow-y-auto bg-white shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 transition-all duration-300 ease-in-out pb-20 lg:pb-8">
-            <!-- Flash Messages -->
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-            <div class="mb-6">
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-50 border border-red-200 text-red-600{% else %}bg-green-50 border border-green-200 text-green-600{% endif %}">
-                    <div class="flex items-center">
-                        <span class="text-sm font-medium">{{ message }}</span>
-                        <button type="button" class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-gray-900" onclick="this.parentElement.parentElement.style.display='none'">
-                            <span class="sr-only">Close</span>
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
-                    </div>
+        <div id="content-wrapper"
+             class="flex flex-col-reverse lg:contents w-full relative">
+            <main id="main-content"
+                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-white shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
+                <!-- Scrollable content wrapper -->
+                <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="mb-6">
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-50 border border-red-200 text-red-600{% else %}bg-green-50 border border-green-200 text-green-600{% endif %}">
+                                        <div class="flex items-center">
+                                            <span class="text-sm font-medium">{{ message }}</span>
+                                            <button type="button"
+                                                    class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex h-8 w-8 text-gray-500 hover:text-gray-900"
+                                                    onclick="this.parentElement.parentElement.style.display='none'">
+                                                <span class="sr-only">Close</span>
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    {% block content %}{% endblock %}
                 </div>
-                {% endfor %}
-            </div>
-            {% endif %} {% endwith %} {% block content %}{% endblock %}
-        </main>
-
-        <!-- Right Sidebar -->
-        {% if not hide_right_sidebar %}
-        <aside class="w-full lg:w-80 bg-white shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 z-10 lg:h-auto h-auto">
-            <!-- Profile -->
-            <div class="flex-shrink-0 mb-6">
-                <a href="{{ url_for('views.settings') }}" class="cursor-pointer flex items-center justify-between group">
-                    <!-- Name and Role on the left -->
-                    <div class="flex-1">
-                        <h2 class="text-xl font-bold group-hover:text-primary transition-colors">{{ current_user.name }}</h2>
-                        <p class="text-sm text-gray-400">{{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}</p>
+            </main>
+            <!-- Right Sidebar -->
+            {% if not hide_right_sidebar %}
+                <aside class="w-full lg:w-80 bg-white shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 z-10 lg:h-auto h-auto">
+                    <!-- Profile -->
+                    <div class="flex-shrink-0 mb-6">
+                        <a href="{{ url_for("views.settings") }}"
+                           class="cursor-pointer flex items-center justify-between group">
+                            <!-- Name and Role on the left -->
+                            <div class="flex-1">
+                                <h2 class="text-xl font-bold group-hover:text-primary transition-colors">{{ current_user.name }}</h2>
+                                <p class="text-sm text-gray-400">
+                                    {{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}
+                                </p>
+                            </div>
+                            <!-- Profile icon on the right -->
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl ml-4 shadow-lg transform group-hover:scale-105 transition-all">
+                                <i data-feather="user" class="w-8 h-8 text-white"></i>
+                            </div>
+                        </a>
                     </div>
-                    <!-- Profile icon on the right -->
-                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl ml-4 shadow-lg transform group-hover:scale-105 transition-all"><i data-feather="user" class="w-8 h-8 text-white"></i></div>
-                </a>
-            </div>
-
-            <!-- Notifications Section -->
-            {% if notifications %}
-            <div class="flex-shrink-0 mb-4 pb-4 border-b border-gray-100">
-                <h3 class="font-bold mb-3 flex items-center gap-2 text-primary-dark">
-                    <i data-feather="bell" class="w-4 h-4"></i> Notifications
-                </h3>
-                <div class="space-y-3 max-h-32 overflow-y-auto pr-1">
-                    {% for notif in notifications %}
-                    <div class="bg-primary/5 border border-primary/10 p-3 rounded-lg text-sm relative group">
-                        <p class="text-gray-800">{{ notif.message }}</p>
-                        <span class="text-xs text-gray-500 mt-1 block">{{ notif.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
-                        <form action="{{ url_for('views.mark_notification_read', notification_id=notif.id) }}" method="POST" class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button type="submit" class="text-gray-400 hover:text-primary">
-                                <i data-feather="x" class="w-3 h-3"></i>
+                    <!-- Notifications Section -->
+                    {% if notifications %}
+                        <div class="flex-shrink-0 mb-4 pb-4 border-b border-gray-100">
+                            <h3 class="font-bold mb-3 flex items-center gap-2 text-primary-dark">
+                                <i data-feather="bell" class="w-4 h-4"></i> Notifications
+                            </h3>
+                            <div class="space-y-3 max-h-32 overflow-y-auto pr-1">
+                                {% for notif in notifications %}
+                                    <div class="bg-primary/5 border border-primary/10 p-3 rounded-lg text-sm relative group">
+                                        <p class="text-gray-800">{{ notif.message }}</p>
+                                        <span class="text-xs text-gray-500 mt-1 block">{{ notif.created_at.strftime("%Y-%m-%d %H:%M") }}</span>
+                                        <form action="{{ url_for('views.mark_notification_read', notification_id=notif.id) }}"
+                                              method="post"
+                                              class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button type="submit" class="text-gray-400 hover:text-primary">
+                                                <i data-feather="x" class="w-3 h-3"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- Calendar will be inserted here from child templates -->
+                    <div class="w-full lg:flex-1 overflow-x-auto lg:overflow-y-auto lg:-mr-4 lg:pr-4 custom-scrollbar no-scrollbar-mobile pb-2 lg:pb-0">
+                        <div class="flex flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-6 items-stretch [&>*]:w-72 [&>*]:shrink-0 lg:[&>*]:w-auto lg:[&>*]:shrink">
+                            {% block sidebar_content %}{% endblock %}
+                        </div>
+                    </div>
+                    {% if current_user.role.name != 'ADMIN' %}
+                        <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100">
+                            <button onclick="document.getElementById('queryModal').classList.remove('hidden')"
+                                    class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary font-medium transition-colors">
+                                <i data-feather="help-circle" class="w-4 h-4"></i> Need Help?
                             </button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+                        </div>
+                    {% endif %}
+                </aside>
             {% endif %}
-
-            <!-- Calendar will be inserted here from child templates -->
-            <div class="w-full lg:flex-1 overflow-x-auto lg:overflow-y-auto lg:-mr-4 lg:pr-4 custom-scrollbar no-scrollbar-mobile pb-2 lg:pb-0">
-                <div class="flex flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-6 items-stretch [&>*]:w-72 [&>*]:shrink-0 lg:[&>*]:w-auto lg:[&>*]:shrink">
-                    {% block sidebar_content %}{% endblock %}
-                </div>
-            </div>
-            
-            {% if current_user.role.name != 'ADMIN' %}
-            <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100">
-                <button onclick="document.getElementById('queryModal').classList.remove('hidden')" class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary font-medium transition-colors">
-                    <i data-feather="help-circle" class="w-4 h-4"></i> Need Help?
-                </button>
-            </div>
-            {% endif %}
-        </aside>
-        {% endif %}
         </div>
-
         <!-- Query Modal -->
-        <div id="queryModal" class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div id="queryModal"
+             class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
             <div class="relative mx-auto p-8 border w-[32rem] shadow-2xl rounded-2xl bg-white animate-fadeIn">
                 <div class="mt-2">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl leading-6 font-bold text-gray-900">Raise a Query</h3>
-                        <button onclick="document.getElementById('queryModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <button onclick="document.getElementById('queryModal').classList.add('hidden')"
+                                class="text-gray-400 hover:text-gray-600 transition-colors">
                             <i data-feather="x" class="w-6 h-6"></i>
                         </button>
                     </div>
-                    
-                    <form action="{{ url_for('views.submit_query') }}" method="POST">
+                    <form action="{{ url_for("views.submit_query") }}" method="post">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
-                            <input class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50" id="title" name="title" type="text" placeholder="Brief summary of your issue" required>
+                            <input class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50"
+                                   id="title"
+                                   name="title"
+                                   type="text"
+                                   placeholder="Brief summary of your issue"
+                                   required>
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="tag">Category</label>
                             <div class="relative">
-                                <select class="w-full px-4 py-3 border border-gray-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50" id="tag" name="tag" required>
+                                <select class="w-full px-4 py-3 border border-gray-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50"
+                                        id="tag"
+                                        name="tag"
+                                        required>
                                     <option value="BUG">Bug Report</option>
                                     <option value="FEATURE">Feature Request</option>
                                     <option value="ACCOUNT">Account Issue</option>
@@ -370,11 +412,20 @@
                         </div>
                         <div class="mb-6">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description</label>
-                            <textarea class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50" id="description" name="description" placeholder="Please describe your issue in detail..." required></textarea>
+                            <textarea class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50"
+                                      id="description"
+                                      name="description"
+                                      placeholder="Please describe your issue in detail..."
+                                      required></textarea>
                         </div>
                         <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                            <button type="button" onclick="document.getElementById('queryModal').classList.add('hidden')" class="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-100 rounded-xl transition-colors">Cancel</button>
-                            <button type="submit" class="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white font-medium rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
+                            <button type="button"
+                                    onclick="document.getElementById('queryModal').classList.add('hidden')"
+                                    class="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-100 rounded-xl transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                    class="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white font-medium rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
                                 <i data-feather="send" class="w-4 h-4"></i> Submit Query
                             </button>
                         </div>
@@ -382,7 +433,6 @@
                 </div>
             </div>
         </div>
-
         <script>
             // Base functionality for all pages
             // Initialize page
@@ -440,8 +490,8 @@
                     sidebarToggle.classList.remove('justify-start');
                     sidebarToggle.classList.add('justify-center');
 
-                    mainContent.classList.remove('lg:ml-72');
-                    mainContent.classList.add('lg:ml-28');
+                    mainContent.classList.remove('lg:left-72');
+                    mainContent.classList.add('lg:left-28');
 
                     sidebarTitleText.classList.remove('lg:block');
 
@@ -474,8 +524,8 @@
                     sidebarToggle.classList.add('justify-start');
                     sidebarToggle.classList.remove('justify-center');
 
-                    mainContent.classList.add('lg:ml-72');
-                    mainContent.classList.remove('lg:ml-28');
+                    mainContent.classList.add('lg:left-72');
+                    mainContent.classList.remove('lg:left-28');
 
                     sidebarTitleText.classList.add('lg:block');
                     sidebarTexts.forEach(text => text.classList.add('lg:inline'));
@@ -495,7 +545,7 @@
                 }
             });
         </script>
-
-        {% block scripts %}{% endblock %}
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>

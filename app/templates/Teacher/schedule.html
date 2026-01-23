@@ -1,141 +1,166 @@
-{% extends "base.html" %} {% block title %}My Schedule — CampusManager{% endblock %} {% block content %}
-<div class="mx-0 pb-10">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-        <div>
-            <h1 class="text-2xl font-bold text-text-dark">My Class Schedule</h1>
-            <p class="text-text-light text-sm mt-1">View your teaching schedule and class timings.</p>
+{% extends "base.html" %}
+{% block title %}My Schedule — CampusManager{% endblock %}
+{% block content %}
+    <div class="mx-0 pb-10">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-text-dark">My Class Schedule</h1>
+                <p class="text-text-light text-sm mt-1">View your teaching schedule and class timings.</p>
+            </div>
+            <a href="{{ url_for("views.teacher_dashboard") }}"
+               class="inline-flex w-full sm:w-auto justify-center sm:justify-center items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors">
+                <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i>
+                Back to Dashboard
+            </a>
         </div>
-        <a href="{{ url_for('views.teacher_dashboard') }}" class="inline-flex w-full sm:w-auto justify-center sm:justify-center items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors">
-            <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i>
-            Back to Dashboard
-        </a>
-    </div>
-
-    <!-- Flashed Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
-    <div class="mb-6 space-y-2">
-        {% for category, message in messages %}
-        <div class="p-4 rounded-xl text-sm font-medium border flex items-center gap-3 {% if category == 'error' %}bg-red-50 text-red-700 border-red-100{% else %}bg-green-50 text-green-700 border-green-100{% endif %}">
-            <i data-feather="info" class="w-4 h-4 text-current opacity-70"></i>
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %} {% endwith %} {% if has_entries and periods %}
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left border-collapse min-w-[1000px]">
-                <thead>
-                    <tr class="bg-gray-50/80 border-b border-gray-200">
-                        <th class="p-3 text-xs font-bold text-text-light uppercase tracking-wide w-24 border-r border-gray-100 text-center sticky left-0 bg-gray-50 z-10">Day</th>
-                        {% for p in periods %} {% if loop.index == lunch_break_after + 1 %}
-                        <th class="p-3 text-[10px] font-bold text-text-light uppercase tracking-wide w-12 bg-gray-100/50 text-center border-r border-gray-100">Break</th>
-                        {% endif %}
-
-                        <th class="p-3 border-r border-gray-100 min-w-[160px] text-center">
-                            <div class="flex flex-col items-center justify-center">
-                                <span class="text-sm font-bold text-text-dark">Period {{ p }}</span>
-                                <div class="flex items-center gap-1.5 mt-1">
-                                    <span class="text-[10px] font-medium text-text-light bg-white border border-gray-200 px-1.5 py-0.5 rounded shadow-sm"> {{ period_headers[p] if period_headers else '--:--' }} </span>
-                                    {% if period_duration_mins %}
-                                    <span class="text-[10px] font-medium text-text-light bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded"> {{ period_duration_mins }}m </span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    {% for day in days %} {% set is_first_day = loop.first %}
-                    <tr class="group hover:bg-gray-50/30 transition-colors">
-                        <th class="p-3 text-xs font-bold text-text-dark border-r border-gray-100 bg-white sticky left-0 group-hover:bg-gray-50 text-center z-10">{{ day[:3] | upper }}</th>
-
-                        {% for p in periods %} {% if loop.index == lunch_break_after + 1 %} {% if is_first_day %}
-                        <td rowspan="{{ days|length }}" class="p-2 border-r border-gray-100 bg-gray-50/50 text-center align-middle">
-                            <span class="text-lg font-bold text-text-light uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
-                        </td>
-                        {% endif %} {% endif %} {% set entry = grid[day].get(p) %}
-                        <td class="p-2 border-r border-gray-100 align-middle hover:bg-white transition-shadow hover:shadow-inner text-center">
-                            {% if entry %}
-                            <div class="flex flex-col items-center justify-center gap-1.5 h-full w-full">
-                                <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">{{ entry.assigned_class.subject.name }}</div>
-
-                                <div class="flex flex-wrap gap-1 justify-center mt-0.5">
-                                    <div class="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10 uppercase">{{ entry.branch }}</div>
-                                    <div class="text-[10px] font-bold text-text-light bg-gray-100 px-2 py-0.5 rounded border border-gray-200">Sem {{ entry.semester }}</div>
-                                </div>
-
-                                {% if entry.assigned_class.subject.code %}
-                                <div class="text-[10px] text-text-light bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm mt-0.5">{{ entry.assigned_class.subject.code }}</div>
-                                {% endif %}
-                            </div>
-                            {% else %}
-                            <div class="h-16 w-full flex items-center justify-center">
-                                <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
-                            </div>
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                    </tr>
+        <!-- Flashed Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6 space-y-2">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-xl text-sm font-medium border flex items-center gap-3 {% if category == 'error' %}bg-red-50 text-red-700 border-red-100{% else %}bg-green-50 text-green-700 border-green-100{% endif %}">
+                            <i data-feather="info" class="w-4 h-4 text-current opacity-70"></i>
+                            {{ message }}
+                        </div>
                     {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% else %}
-    <div class="max-w-md mx-auto mt-20 text-center">
-        <div class="w-16 h-16 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-yellow-100">
-            <i data-feather="calendar" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-xl font-bold text-text-dark">No Schedule Found</h3>
-        <p class="text-text-light text-sm mt-2">{% if not has_entries %}No timetable has been generated yet for {{ current_group }} semesters. The administrator needs to generate the timetable first.{% else %}No classes found for the selected semester group ({{ current_group }}).{% endif %}</p>
-        {% if has_entries %}
-        <a href="{{ url_for('views.teacher_schedule', group='even' if current_group == 'odd' else 'odd') }}" class="inline-block mt-4 text-primary font-bold text-sm hover:underline"> Check {{ 'Even' if current_group == 'odd' else 'Odd' }} Semesters &rarr; </a>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% if has_entries and periods %}
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse min-w-[1000px]">
+                        <thead>
+                            <tr class="bg-gray-50/80 border-b border-gray-200">
+                                <th class="p-3 text-xs font-bold text-text-light uppercase tracking-wide w-24 border-r border-gray-100 text-center sticky left-0 bg-gray-50 z-10">
+                                    Day
+                                </th>
+                                {% for p in periods %}
+                                    {% if loop.index == lunch_break_after + 1 %}
+                                        <th class="p-3 text-[10px] font-bold text-text-light uppercase tracking-wide w-12 bg-gray-100/50 text-center border-r border-gray-100">
+                                            Break
+                                        </th>
+                                    {% endif %}
+                                    <th class="p-3 border-r border-gray-100 min-w-[160px] text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <span class="text-sm font-bold text-text-dark">Period {{ p }}</span>
+                                            <div class="flex items-center gap-1.5 mt-1">
+                                                <span class="text-[10px] font-medium text-text-light bg-white border border-gray-200 px-1.5 py-0.5 rounded shadow-sm"> {{ period_headers[p] if period_headers else '--:--' }} </span>
+                                                {% if period_duration_mins %}
+                                                    <span class="text-[10px] font-medium text-text-light bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded"> {{ period_duration_mins }}m </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for day in days %}
+                                {% set is_first_day = loop.first %}
+                                <tr class="group hover:bg-gray-50/30 transition-colors">
+                                    <th class="p-3 text-xs font-bold text-text-dark border-r border-gray-100 bg-white sticky left-0 group-hover:bg-gray-50 text-center z-10">
+                                        {{ day[:3] | upper }}
+                                    </th>
+                                    {% for p in periods %}
+                                        {% if loop.index == lunch_break_after + 1 %}
+                                            {% if is_first_day %}
+                                                <td rowspan="{{ days|length }}"
+                                                    class="p-2 border-r border-gray-100 bg-gray-50/50 text-center align-middle">
+                                                    <span class="text-lg font-bold text-text-light uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
+                                                </td>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% set entry = grid[day].get(p) %}
+                                        <td class="p-2 border-r border-gray-100 align-middle hover:bg-white transition-shadow hover:shadow-inner text-center">
+                                            {% if entry %}
+                                                <div class="flex flex-col items-center justify-center gap-1.5 h-full w-full">
+                                                    <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
+                                                        {{ entry.assigned_class.subject.name }}
+                                                    </div>
+                                                    <div class="flex flex-wrap gap-1 justify-center mt-0.5">
+                                                        <div class="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10 uppercase">
+                                                            {{ entry.branch }}
+                                                        </div>
+                                                        <div class="text-[10px] font-bold text-text-light bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
+                                                            Sem {{ entry.semester }}
+                                                        </div>
+                                                    </div>
+                                                    {% if entry.assigned_class.subject.code %}
+                                                        <div class="text-[10px] text-text-light bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm mt-0.5">
+                                                            {{ entry.assigned_class.subject.code }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% else %}
+                                                <div class="h-16 w-full flex items-center justify-center">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         {% else %}
-        <div class="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <p class="text-xs text-blue-700"><strong>Note:</strong> Once the admin generates the timetable, your schedule will appear here automatically.</p>
-        </div>
+            <div class="max-w-md mx-auto mt-20 text-center">
+                <div class="w-16 h-16 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-yellow-100">
+                    <i data-feather="calendar" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold text-text-dark">No Schedule Found</h3>
+                <p class="text-text-light text-sm mt-2">
+                    {% if not has_entries %}
+                        No timetable has been generated yet for {{ current_group }} semesters. The administrator needs to generate the timetable first.
+                    {% else %}
+                        No classes found for the selected semester group ({{ current_group }}).
+                    {% endif %}
+                </p>
+                {% if has_entries %}
+                    <a href="{{ url_for('views.teacher_schedule', group='even' if current_group == 'odd' else 'odd') }}"
+                       class="inline-block mt-4 text-primary font-bold text-sm hover:underline"> Check {{ 'Even' if current_group == 'odd' else 'Odd' }} Semesters → </a>
+                {% else %}
+                    <div class="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <p class="text-xs text-blue-700">
+                            <strong>Note:</strong> Once the admin generates the timetable, your schedule will appear here automatically.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
-    {% endif %}
-</div>
-
-<style>
+    <style>
     .writing-vertical {
         writing-mode: vertical-rl;
     }
-</style>
-{% endblock %} {% block sidebar_content %}
-<!-- Settings Widget -->
-<div class="w-full">
-    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">View Settings</h3>
-    <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
-        <div>
-            <div class="flex items-center gap-2 mb-3">
-                <i data-feather="filter" class="w-4 h-4 text-primary"></i>
-                <span class="text-sm font-bold text-text-dark">Semester Group</span>
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <a
-                    href="{{ url_for('views.teacher_schedule', group='odd') }}"
-                    class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'odd' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}"
-                >
-                    <span>Odd Semesters</span>
-                    {% if current_group == 'odd' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
-                </a>
-
-                <a
-                    href="{{ url_for('views.teacher_schedule', group='even') }}"
-                    class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'even' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}"
-                >
-                    <span>Even Semesters</span>
-                    {% if current_group == 'even' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
-                </a>
+    </style>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Settings Widget -->
+    <div class="w-full">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">View Settings</h3>
+        <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm space-y-4">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <i data-feather="filter" class="w-4 h-4 text-primary"></i>
+                    <span class="text-sm font-bold text-text-dark">Semester Group</span>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <a href="{{ url_for('views.teacher_schedule', group='odd') }}"
+                       class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'odd' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}">
+                        <span>Odd Semesters</span>
+                        {% if current_group == 'odd' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
+                    </a>
+                    <a href="{{ url_for('views.teacher_schedule', group='even') }}"
+                       class="flex items-center justify-between p-3 rounded-xl transition-all {% if current_group == 'even' %}bg-primary text-white font-bold shadow-md shadow-primary/20{% else %}bg-gray-50 text-text-light hover:bg-gray-100 font-medium{% endif %}">
+                        <span>Even Semesters</span>
+                        {% if current_group == 'even' %}<i data-feather="check" class="w-4 h-4"></i>{% endif %}
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
