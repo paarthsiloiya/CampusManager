@@ -5,7 +5,7 @@ import os
 app = create_app()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run the Flask app')
+    parser = argparse.ArgumentParser(description='Run the CampusManager Flask app')
     parser.add_argument('--port', type=int, default=5000, help='Port to run the app on')
     parser.add_argument('--name', type=str, default='Instance', help='Name of the instance (e.g., Admin, Teacher)')
     args = parser.parse_args()
@@ -14,12 +14,12 @@ if __name__ == '__main__':
     if os.name == 'nt':
         try:
             import ctypes
-            ctypes.windll.kernel32.SetConsoleTitleW(f"{args.name} - Port {args.port}")
+            ctypes.windll.kernel32.SetConsoleTitleW(f"CampusManager - {args.name} - Port {args.port}")
         except Exception:
             pass
             
     print(f"\n{'='*40}")
-    print(f"🚀 Starting Instance: {args.name}")
+    print(f"🚀 CampusManager — Starting Instance: {args.name}")
     print(f"🔌 Port: {args.port}")
     print(f"{'='*40}\n")
     

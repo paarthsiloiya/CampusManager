@@ -1,7 +1,7 @@
 services:
   admin-server:
     build: .
-    container_name: sih-admin-server
+    container_name: campusmanager-admin-server
     command: python main.py --name "Admin Panel" --port 5000
     ports:
       - "5000:5000"
@@ -14,7 +14,7 @@ services:
 
   teacher-server:
     build: .
-    container_name: sih-teacher-server
+    container_name: campusmanager-teacher-server
     command: python main.py --name "Teacher Dashboard" --port 5001
     ports:
       - "5001:5001"
@@ -27,7 +27,7 @@ services:
 
   student-server:
     build: .
-    container_name: sih-student-server
+    container_name: campusmanager-student-server
     command: python main.py --name "Student Dashboard" --port 5002
     ports:
       - "5002:5002"

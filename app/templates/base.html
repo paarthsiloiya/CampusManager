@@ -2,7 +2,9 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}Smart Curriculum & Attendance{% endblock %}</title>
+        <title>{% block title %}CampusManager — Smart Curriculum & Attendance{% endblock %}</title>
+        <link rel="icon" href="{{ url_for('static', filename='icons/CampusManagerLogoSimplified.svg') }}" type="image/svg+xml">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
 
         <!-- Tailwind -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -146,11 +148,12 @@
     <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
         <aside id="sidebar" class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
-            <h1 id="sidebar-toggle" class="text-2xl font-bold tracking-tight mb-0 lg:mb-2 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
-                <div class="p-2 bg-gradient-to-br from-accent to-primary rounded-xl shadow-lg flex-shrink-0 scale-75 lg:scale-100">
-                    <i data-feather="book" class="w-6 h-6 text-white"></i>
+            <h1 id="sidebar-toggle" class="text-2xl font-bold tracking-tight m-0 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
+                <div class="p-0 bg-transparent rounded-xl flex-shrink-0 scale-75 lg:scale-100">
+                    <img src="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}" alt="CampusManager logo" class="w-12 h-12 rounded-lg object-cover" onerror="this.style.display='none'">
+                    <i data-feather="book" class="w-6 h-6 text-white hidden" aria-hidden="true"></i>
                 </div>
-                <span id="sidebar-title-text" class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-nowrap overflow-hidden transition-all duration-300 select-none">Smart App</span>
+                <span id="sidebar-title-text" class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-wrap overflow-wrap transition-all duration-300 select-none leading-none py-1">Campus Manager</span>
             </h1>
             <nav class="flex-1 lg:mx-0 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
                 <ul class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
@@ -248,7 +251,7 @@
                     {% endif %}
                 </ul>
             </nav>
-            <div class="border-t lg:border-t border-l lg:border-l-0 border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
+            <div class="lg:border-t lg:border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
                 <a href="{{ url_for('auth.logout') }}" class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300" onclick="return confirm('Are you sure you want to logout?')">
                     <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Logout</span>
                 </a>

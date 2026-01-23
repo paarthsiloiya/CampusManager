@@ -8,6 +8,8 @@ def create_app():
     load_dotenv()
     
     app = Flask(__name__)
+    # Application metadata
+    app.config['APP_NAME'] = 'CampusManager'
     
     # Load secret key from environment with fallback
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback_secret_key_for_development')
