@@ -261,8 +261,12 @@ class TimetableGenerator:
                         assigned_class_id=selected_cls.id
                     )
                     self.generated_entries.append(entry)
-                    self.db.session.add(entry)
+                    # Don't add to session immediately to avoid autoflush issues
         
+        # Add all entries to session using bulk operations to avoid autoflush issues
+        if self.generated_entries:
+            self.db.session.bulk_save_objects(self.generated_entries)
+            
         try:
             self.db.session.commit()
             return True

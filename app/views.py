@@ -851,7 +851,7 @@ def delete_account():
         logout_user()
         
         # Delete the user account
-        user_to_delete = User.query.get(user_id)
+        user_to_delete = db.session.get(User, user_id)
         if user_to_delete:
             db.session.delete(user_to_delete)
             db.session.commit()
@@ -908,7 +908,7 @@ def edit_user(user_id):
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
         
-    user_to_edit = User.query.get_or_404(user_id)
+    user_to_edit = db.get_or_404(User, user_id)
     
     if request.method == 'POST':
         try:
@@ -971,7 +971,7 @@ def reset_user_password(user_id):
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
 
-    user_to_reset = User.query.get_or_404(user_id)
+    user_to_reset = db.get_or_404(User, user_id)
     new_password = request.form.get('new_password')
     
     if not new_password or not new_password.strip():
@@ -995,7 +995,7 @@ def delete_user(user_id):
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    user_to_delete = User.query.get_or_404(user_id)
+    user_to_delete = db.get_or_404(User, user_id)
     
     if user_to_delete.id == current_user.id:
         flash('You cannot delete your own account.', 'error')
@@ -1216,7 +1216,7 @@ def teacher_class_details(class_id):
     if current_user.role != UserRole.TEACHER:
         return redirect(url_for('auth.login'))
         
-    assigned_class = AssignedClass.query.get_or_404(class_id)
+    assigned_class = db.get_or_404(AssignedClass, class_id)
     if assigned_class.teacher_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('views.teacher_dashboard'))
@@ -1244,7 +1244,7 @@ def teacher_mark_attendance(class_id):
     if current_user.role != UserRole.TEACHER:
         return redirect(url_for('auth.login'))
         
-    assigned_class = AssignedClass.query.get_or_404(class_id)
+    assigned_class = db.get_or_404(AssignedClass, class_id)
     if assigned_class.teacher_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('views.teacher_dashboard'))
@@ -1327,7 +1327,7 @@ def teacher_edit_class(class_id):
     if current_user.role != UserRole.TEACHER:
         return redirect(url_for('auth.login'))
         
-    assigned_class = AssignedClass.query.get_or_404(class_id)
+    assigned_class = db.get_or_404(AssignedClass, class_id)
     if assigned_class.teacher_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('views.teacher_dashboard'))
@@ -1353,7 +1353,7 @@ def teacher_download_report(class_id):
     if current_user.role != UserRole.TEACHER:
         return redirect(url_for('auth.login'))
         
-    assigned_class = AssignedClass.query.get_or_404(class_id)
+    assigned_class = db.get_or_404(AssignedClass, class_id)
     if assigned_class.teacher_id != current_user.id:
         flash('Unauthorized access', 'error')
         return redirect(url_for('views.teacher_dashboard'))
@@ -1413,7 +1413,7 @@ def handle_enrollment(id):
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    enrollment = Enrollment.query.get_or_404(id)
+    enrollment = db.get_or_404(Enrollment, id)
     
     # Verify this enrollment belongs to a class taught by current user
     if enrollment.assigned_class.teacher_id != current_user.id:
@@ -1440,7 +1440,7 @@ def join_class(class_id):
     if current_user.role != UserRole.STUDENT:
         return redirect(url_for('views.student_dashboard'))
         
-    assigned_class = AssignedClass.query.get_or_404(class_id)
+    assigned_class = db.get_or_404(AssignedClass, class_id)
     
     # Check if already enrolled
     existing = Enrollment.query.filter_by(student_id=current_user.id, class_id=class_id).first()
@@ -1528,7 +1528,7 @@ def delete_assignment(id):
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
     
-    assignment = AssignedClass.query.get_or_404(id)
+    assignment = db.get_or_404(AssignedClass, id)
     db.session.delete(assignment)
     db.session.commit()
     flash('Class assignment removed.', 'info')
@@ -1937,7 +1937,7 @@ def submit_query():
 @views.route('/notification/<int:notification_id>/read', methods=['POST'])
 @login_required
 def mark_notification_read(notification_id):
-    notif = Notification.query.get_or_404(notification_id)
+    notif = db.get_or_404(Notification, notification_id)
     if notif.user_id != current_user.id:
         return "Unauthorized", 403
         
@@ -1986,7 +1986,7 @@ def resolve_query(query_id):
     if current_user.role != UserRole.ADMIN:
         return redirect(url_for('auth.login'))
         
-    query = Query.query.get_or_404(query_id)
+    query = db.get_or_404(Query, query_id)
     action = request.form.get('action') # 'resolve' or 'dismiss'
     admin_response = request.form.get('response') # Optional response text
     

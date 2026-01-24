@@ -173,7 +173,7 @@
             </h1>
             <nav class="flex-1 lg:mx-0 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
                 <ul class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
-                    {% if current_user.role.name == 'ADMIN' %}
+                    {% if current_user.is_authenticated and current_user.role.name == 'ADMIN' %}
                         <li>
                             <a href="{{ url_for("views.admin_dashboard") }}"
                                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
@@ -199,7 +199,7 @@
                                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="help-circle"
    class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a>
                         </li>
-                    {% elif current_user.role.name == 'TEACHER' %}
+                    {% elif current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
                         <li>
                             <a href="{{ url_for("views.teacher_dashboard") }}"
                                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
@@ -227,7 +227,7 @@
    class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
                         </li>
                     {% endif %}
-                    {% if current_user.role.name == 'STUDENT' %}
+                    {% if current_user.is_authenticated and current_user.role.name == 'STUDENT' %}
                         <li>
                             <a href="{{ url_for("views.curriculum") }}"
                                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book-open"
@@ -249,7 +249,7 @@
    class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
                         </li>
                     {% endif %}
-                    {% if current_user.role.name == 'TEACHER' %}
+                    {% if current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
                         <li>
                             <a href="{{ url_for("views.calendar") }}"
                                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
@@ -266,7 +266,6 @@
                            class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info"
    class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
                     </li>
-                    {% if current_user.role.name != 'ADMIN' %}{% endif %}
                 </ul>
             </nav>
             <div class="lg:border-t lg:border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
@@ -321,7 +320,7 @@
                             <div class="flex-1">
                                 <h2 class="text-xl font-bold group-hover:text-primary transition-colors">{{ current_user.name }}</h2>
                                 <p class="text-sm text-gray-400">
-                                    {{ current_user.role.name|title }}, {{ current_user.institution if current_user.institution else "Delhi" }}
+                                    {{ current_user.role.name|title if current_user.is_authenticated else "Guest" }}, {{ current_user.institution if current_user.is_authenticated and current_user.institution else "Delhi" }}
                                 </p>
                             </div>
                             <!-- Profile icon on the right -->
@@ -359,7 +358,7 @@
                             {% block sidebar_content %}{% endblock %}
                         </div>
                     </div>
-                    {% if current_user.role.name != 'ADMIN' %}
+                    {% if current_user.is_authenticated and current_user.role.name != 'ADMIN' %}
                         <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100">
                             <button onclick="document.getElementById('queryModal').classList.remove('hidden')"
                                     class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary font-medium transition-colors">

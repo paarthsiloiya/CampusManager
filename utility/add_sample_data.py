@@ -25,7 +25,7 @@ from app.models import db, User, Subject, Attendance, Marks
 
 def add_sample_attendance(user_id, days_back=30):
     """Add sample attendance data for a user"""
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         print(f"❌ User with ID {user_id} not found")
         return False
@@ -94,7 +94,7 @@ def add_sample_attendance(user_id, days_back=30):
 
 def add_sample_marks(user_id):
     """Add sample marks data for a user"""
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         print(f"❌ User with ID {user_id} not found")
         return False
@@ -216,7 +216,7 @@ def main():
         
         if args.user_id:
             # Add data for specific user
-            user = User.query.get(args.user_id)
+            user = db.session.get(User, args.user_id)
             if not user:
                 print(f"❌ User with ID {args.user_id} not found")
                 list_users()
