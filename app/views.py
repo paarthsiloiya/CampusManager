@@ -1,8 +1,10 @@
-from flask import Blueprint, request, redirect, make_response, url_for, flash, send_file
+from flask import Blueprint, request, redirect, make_response, url_for, flash, send_file, jsonify
 from flask import render_template
 from flask_login import login_required, current_user, logout_user
 from sqlalchemy import or_, and_
 from .models import db, User, Branch, UserRole, Subject, AssignedClass, Enrollment, EnrollmentStatus, TimetableSettings, TimetableEntry, Attendance, Query, QueryTag, Notification
+from .notifications import NotificationService, NotificationType
+from .notification_dispatcher import CrossInstanceNotificationDispatcher
 from .timetable_generator import TimetableGenerator
 import json
 import os
@@ -97,12 +99,7 @@ def load_calendar_events():
         # Fallback to empty dict if JSON file not found
         return {}
 
-@views.context_processor
-def inject_notifications():
-    if current_user.is_authenticated:
-        notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
-        return dict(notifications=notifications)
-    return dict(notifications=[])
+# Context processor removed - notifications now handled via real-time SocketIO
 
 @views.app_errorhandler(403)
 def forbidden_error(error):
@@ -1279,6 +1276,8 @@ def teacher_mark_attendance(class_id):
         from .models import Attendance
         
         count = 0
+        present_students = []  # Track students marked present for notifications
+        
         for enrollment in enrollments:
             student = enrollment.student
             # Check form data: 'attendance_<student_id>' -> 'on' (present) or missing (absent)
@@ -1307,9 +1306,27 @@ def teacher_mark_attendance(class_id):
                     class_type=class_type
                 )
                 db.session.add(new_record)
+                
+                # Add to notification list if present
+                if is_present:
+                    present_students.append(student)
             count += 1
             
         db.session.commit()
+        
+        # Send real-time notifications to students for both present and absent
+        for enrollment in enrollments:
+            student = enrollment.student
+            is_present = request.form.get(f'attendance_{student.id}') == 'on'
+            status = 'present' if is_present else 'absent'
+            
+            NotificationService.notify_attendance_marked(
+                student_user_id=student.id,
+                subject_name=assigned_class.subject.name,
+                teacher_name=current_user.name,
+                date_str=date_str,
+                status=status
+            )
         flash(f'Attendance marked for {count} students on {date_str}', 'success')
         return redirect(url_for('views.teacher_class_details', class_id=class_id))
         
@@ -1425,10 +1442,27 @@ def handle_enrollment(id):
         enrollment.status = EnrollmentStatus.APPROVED
         enrollment.response_date = datetime.now(timezone.utc)
         flash('Student enrollment approved.', 'success')
+        
+        # Notify student of approval
+        CrossInstanceNotificationDispatcher.notify_enrollment_response(
+            student_user_id=enrollment.student.id,
+            subject_name=enrollment.assigned_class.subject.name,
+            teacher_name=current_user.name,
+            approved=True
+        )
+        
     elif action == 'reject':
         enrollment.status = EnrollmentStatus.REJECTED
         enrollment.response_date = datetime.now(timezone.utc)
         flash('Student enrollment rejected.', 'info')
+        
+        # Notify student of rejection
+        CrossInstanceNotificationDispatcher.notify_enrollment_response(
+            student_user_id=enrollment.student.id,
+            subject_name=enrollment.assigned_class.subject.name,
+            teacher_name=current_user.name,
+            approved=False
+        )
         
     db.session.commit()
     return redirect(url_for('views.teacher_enrollments'))
@@ -1454,6 +1488,14 @@ def join_class(class_id):
         db.session.commit()
         flash('Enrollment request sent successfully!', 'success')
         
+        # Notify teacher about new enrollment request
+        NotificationService.notify_enrollment_request(
+            teacher_user_id=assigned_class.teacher.id,
+            student_name=current_user.name,
+            subject_name=assigned_class.subject.name,
+            enrollment_id=new_req.id
+        )
+        
     return redirect(url_for('views.student_dashboard'))
 
 
@@ -1474,6 +1516,8 @@ def assign_class():
             return redirect(url_for('views.assign_class'))
 
         count = 0
+        assigned_subjects = []  # Track for notifications
+        
         for sub_id in subject_ids:
             # Check if already assigned
             exists = AssignedClass.query.filter_by(teacher_id=teacher_id, subject_id=sub_id).first()
@@ -1484,9 +1528,34 @@ def assign_class():
                     section=section
                 )
                 db.session.add(new_assign)
+                # Store for notification
+                subject = db.session.get(Subject, sub_id)
+                if subject:
+                    assigned_subjects.append((new_assign, subject))
                 count += 1
         
         db.session.commit()
+        
+        # Send notifications to teacher about new assignments
+        teacher = db.session.get(User, teacher_id)
+        if teacher:
+            for assignment, subject in assigned_subjects:
+                # Get branch name if available (branch may be a string or Enum)
+                if subject.branch:
+                    if hasattr(subject.branch, 'name'):
+                        branch_name = subject.branch.name
+                    else:
+                        branch_name = subject.branch
+                else:
+                    branch_name = "Unknown Branch"
+
+                CrossInstanceNotificationDispatcher.notify_class_assignment(
+                    teacher_user_id=teacher.id,
+                    class_name=f"{branch_name} Semester {subject.semester}",
+                    subject_name=subject.name,
+                    admin_name=current_user.name
+                )
+        
         flash(f'Successfully assigned {count} classes.', 'success')
         return redirect(url_for('views.assign_class'))
 
@@ -1931,6 +2000,22 @@ def submit_query():
     db.session.add(new_query)
     db.session.commit()
     
+    # Send cross-instance notification to all admins
+    print(f"🔔 Query submitted: '{title}' by {current_user.name} (ID: {current_user.id})")
+    print(f"📤 Calling CrossInstanceNotificationDispatcher.notify_new_query...")
+    
+    try:
+        CrossInstanceNotificationDispatcher.notify_new_query(
+            query_title=title,
+            student_name=current_user.name,
+            tag=tag.name
+        )
+        print(f"✅ Cross-instance notification dispatch completed")
+    except Exception as e:
+        print(f"❌ Error in cross-instance notification: {e}")
+        import traceback
+        traceback.print_exc()
+    
     flash('Query submitted successfully. Administrators will review it.', 'success')
     return redirect(request.referrer or url_for('views.home'))
 
@@ -1944,7 +2029,76 @@ def mark_notification_read(notification_id):
     db.session.delete(notif)
     db.session.commit()
     return redirect(request.referrer or url_for('views.home'))
+
+# Real-time Notification API Endpoints
+@views.route('/api/notifications', methods=['GET'])
+@login_required
+def get_notifications():
+    """Get all notifications for the current user"""
+    notifications = Notification.query.filter_by(user_id=current_user.id)\
+                                     .order_by(Notification.created_at.desc()).all()
     
+    return jsonify({
+        'notifications': [{
+            'id': notif.id,
+            'message': notif.message,
+            'type': notif.notification_type,
+            'action_type': notif.action_type,
+            'action_data': json.loads(notif.action_data) if notif.action_data else None,
+            'auto_dismiss': notif.auto_dismiss,
+            'created_at': notif.created_at.isoformat()
+        } for notif in notifications]
+    })
+
+@views.route('/api/notifications/<int:notification_id>', methods=['DELETE'])
+@login_required
+def delete_notification(notification_id):
+    """Delete a specific notification"""
+    success = NotificationService.mark_notification_read(notification_id, current_user.id)
+    return jsonify({'success': success})
+
+@views.route('/api/notifications/test', methods=['POST'])
+@login_required
+def test_notification():
+    """Test endpoint for creating notifications (development only)"""
+    data = request.get_json()
+    
+    NotificationService.create_notification(
+        user_id=current_user.id,
+        message=data.get('message', 'Test notification'),
+        notification_type=data.get('type', NotificationType.INFO),
+        action_type=data.get('action_type'),
+        action_data=data.get('action_data'),
+        auto_dismiss=data.get('auto_dismiss', True)
+    )
+    
+    return jsonify({'success': True})
+
+@views.route('/api/notifications/cross-instance', methods=['POST'])
+def cross_instance_notification():
+    """Receive notifications from other instances"""
+    try:
+        data = request.get_json()
+        print(f"📨 Received cross-instance notification: {data}")
+        
+        # Create notification for the specified user if they're connected to this instance
+        notification = NotificationService.create_notification(
+            user_id=data['user_id'],
+            message=data['message'],
+            notification_type=data.get('type', NotificationType.INFO),
+            action_type=data.get('action_type'),
+            action_data=data.get('action_data'),
+            auto_dismiss=data.get('auto_dismiss', True)
+        )
+        
+        print(f"✅ Cross-instance notification created with ID: {notification.id}")
+        return jsonify({'success': True, 'notification_id': notification.id})
+    except Exception as e:
+        print(f"❌ Cross-instance notification error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)}), 400
+
 @views.route('/admin/queries')
 @login_required
 def admin_queries():
@@ -1990,19 +2144,13 @@ def resolve_query(query_id):
     action = request.form.get('action') # 'resolve' or 'dismiss'
     admin_response = request.form.get('response') # Optional response text
     
-    # Notify User
-    if action == 'resolve':
-        msg = f"Your query '{query.title}' has been resolved by the admin."
-        if admin_response:
-             msg += f" Response: {admin_response}"
-
-    else:
-        msg = f"Your query '{query.title}' has been dismissed/closed."
-        if admin_response:
-             msg += f" Note: {admin_response}"
-             
-    notif = Notification(user_id=query.user_id, message=msg)
-    db.session.add(notif)
+    # Notify User with cross-instance notification service (include admin response text)
+    CrossInstanceNotificationDispatcher.notify_query_resolution(
+        student_user_id=query.user_id,
+        query_title=query.title,
+        admin_name=current_user.name,
+        admin_response=admin_response
+    )
     
     # Delete Query
     db.session.delete(query)

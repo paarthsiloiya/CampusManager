@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
+from flask_socketio import SocketIO
 from dotenv import load_dotenv
 
 def create_app():
@@ -22,6 +23,9 @@ def create_app():
     from .models import db, User
     db.init_app(app)
     
+    # Initialize Flask-SocketIO with debugging enabled
+    socketio = SocketIO(app, cors_allowed_origins="*", logger=True, engineio_logger=True)
+    
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -40,11 +44,18 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/auth')
     
+    # Register SocketIO events
+    from .notifications import register_socketio_events
+    register_socketio_events(socketio)
+    
     # Create database tables
     with app.app_context():
         db.create_all()
         # Seed subjects if they don't exist
         from .models import seed_subjects
         seed_subjects()
+    
+    # Store socketio instance on app for access in other modules
+    app.socketio = socketio
     
     return app
