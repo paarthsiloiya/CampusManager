@@ -1,6 +1,7 @@
 services:
   admin-server:
     build: .
+    image: campusmanager-admin-server:latest
     container_name: campusmanager-admin-server
     command: python main.py --name "Admin Panel" --port 5000
     ports:
@@ -14,6 +15,7 @@ services:
 
   teacher-server:
     build: .
+    image: campusmanager-teacher-server:latest
     container_name: campusmanager-teacher-server
     command: python main.py --name "Teacher Dashboard" --port 5001
     ports:
@@ -27,6 +29,7 @@ services:
 
   student-server:
     build: .
+    image: campusmanager-student-server:latest
     container_name: campusmanager-student-server
     command: python main.py --name "Student Dashboard" --port 5002
     ports:

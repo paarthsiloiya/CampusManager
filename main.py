@@ -21,6 +21,7 @@ if __name__ == '__main__':
     print(f"\n{'='*40}")
     print(f"🚀 CampusManager — Starting Instance: {args.name}")
     print(f"🔌 Port: {args.port}")
+    print(f"🔔 Real-time notifications enabled")
     print(f"{'='*40}\n")
     
     # Set unique session cookie name based on port to allow multiple instances
@@ -28,4 +29,6 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_NAME'] = f'session_{args.port}'
     app.config['REMEMBER_COOKIE_NAME'] = f'remember_token_{args.port}'
     
-    app.run(debug=True, port=args.port, host='0.0.0.0')
+    # Use SocketIO to run the app instead of app.run()
+    # Allow Werkzeug here for this development/Docker setup.
+    app.socketio.run(app, debug=True, port=args.port, host='0.0.0.0', allow_unsafe_werkzeug=True)

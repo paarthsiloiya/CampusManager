@@ -71,7 +71,18 @@ CampusManager is a web-based Smart Curriculum Activity & Attendance App. This re
 	**Docker Run (Alternative):**
 	Run the entire ecosystem with a single command using Docker Compose:
 	```powershell
-	docker-compose up --build
+	# Build and start all three servers (detached)
+	docker compose up --build -d
+
+	# Or set an explicit project name so Compose uses 'campusmanager' as the project prefix:
+	docker compose -p campusmanager up --build -d
+
+	# If you previously created images/containers with the old project name and want to remove them,
+	# list and remove them manually (examples for PowerShell):
+	# List containers: docker ps -a
+	# Remove a container: docker rm -f <container_id>
+	# List images: docker image ls
+	# Remove an image: docker image rm <image_id>
 	```
 
 8. Visit: 

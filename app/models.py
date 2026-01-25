@@ -417,6 +417,10 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     message = db.Column(db.String(500), nullable=False)
+    notification_type = db.Column(db.String(50), default='info')  # success, warning, error, info, attendance, etc.
+    action_type = db.Column(db.String(100), nullable=True)  # Quick action type (view_attendance, accept_enrollment, etc.)
+    action_data = db.Column(db.Text, nullable=True)  # JSON data for quick actions
+    auto_dismiss = db.Column(db.Boolean, default=True)  # Whether notification auto-dismisses
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
