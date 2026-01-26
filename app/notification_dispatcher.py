@@ -5,7 +5,7 @@ Handles notifications across different Flask instances running on different port
 import requests
 import threading
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from .models import db, Notification, User
 from flask import current_app
 import json
@@ -16,13 +16,8 @@ class CrossInstanceNotificationDispatcher:
     Uses HTTP API calls to deliver notifications to all running instances
     """
     
-    # Map of known instances - Includes both localhost (for local dev) and Docker service names
+    # Map of known instances - Only Docker service names to prevent self-referencing loops
     KNOWN_INSTANCES = {
-        # Localhost access
-        'admin_local': 'http://127.0.0.1:5000',
-        'teacher_local': 'http://127.0.0.1:5001', 
-        'student_local': 'http://127.0.0.1:5002',
-        
         # Docker internal network access (Service names from docker-compose.yml)
         'admin_docker': 'http://admin-server:5000',
         'teacher_docker': 'http://teacher-server:5001',
@@ -30,18 +25,52 @@ class CrossInstanceNotificationDispatcher:
     }
     
     @classmethod
+    def _persist_locally(cls, user_id, message, notification_type, action_type=None, action_data=None, auto_dismiss=True):
+        """Helper to persist notification to DB locally (on the initiating instance)"""
+        try:
+            # Duplicate prevention check:
+            # Check if a similar notification was created in the last 5 seconds
+            five_seconds_ago = datetime.now(timezone.utc) - timedelta(seconds=5)
+            existing = Notification.query.filter(
+                Notification.user_id == user_id,
+                Notification.message == message,
+                Notification.notification_type == notification_type,
+                Notification.created_at >= five_seconds_ago
+            ).first()
+
+            if existing:
+                print(f"⚠️ Skipping duplicate local persistence for User {user_id}: {message[:30]}...")
+                return existing
+
+            notif = Notification(
+                user_id=user_id,
+                message=message,
+                notification_type=notification_type,
+                action_type=action_type,
+                action_data=json.dumps(action_data) if action_data else None,
+                auto_dismiss=auto_dismiss
+            )
+            db.session.add(notif)
+            db.session.commit()
+            print(f"💾 Notification persisted locally for User {user_id}")
+            return notif
+        except Exception as e:
+            # Log but don't stop the flow. IMPORTANT: do not rollback here because
+            # this helper may be called inside a request transaction where the
+            # caller expects to commit later; rolling back would undo caller changes.
+            print(f"❌ Failed to persist local notification: {e}")
+            try:
+                current_app.logger.exception(f"Failed to create local notification: {e}")
+            except:
+                pass
+            return None
+
+    @classmethod
     def send_cross_instance_notification(cls, user_id, message, notification_type='info', 
                                        action_type=None, action_data=None, auto_dismiss=True):
         """
-        Send notification across all instances where the user might be connected
-        
-        Args:
-            user_id: Target user ID
-            message: Notification message
-            notification_type: Type of notification
-            action_type: Optional action type
-            action_data: Optional action data
-            auto_dismiss: Whether notification auto-dismisses
+        Send notification across all instances where the user might be connected.
+        Does NOT persist to DB (caller must handle persistence).
         """
         
         # Create notification data
@@ -89,15 +118,13 @@ class CrossInstanceNotificationDispatcher:
     
     @classmethod
     def notify_query_resolution(cls, student_user_id, query_title, admin_name, admin_response=None):
-        """Send notification when admin resolves a query
-
-        Includes optional admin_response text in the message and persisted notification.
-        """
+        """Send notification when admin resolves a query"""
         message = f"Your query '{query_title}' has been resolved by {admin_name}"
         if admin_response:
             message = f"{message}: {admin_response}"
 
-        cls.send_cross_instance_notification(
+        # 1. Persist locally (Authoritative source)
+        cls._persist_locally(
             user_id=student_user_id,
             message=message,
             notification_type='success',
@@ -106,24 +133,15 @@ class CrossInstanceNotificationDispatcher:
             auto_dismiss=True
         )
 
-        # Also create a local Notification record so single-instance setups see it
-        try:
-            notif = Notification(
-                user_id=student_user_id,
-                message=message,
-                notification_type='success',
-                action_type='view_queries',
-                action_data=json.dumps({'query_title': query_title, 'admin_name': admin_name, 'admin_response': admin_response}),
-                auto_dismiss=True
-            )
-            db.session.add(notif)
-            db.session.commit()
-        except Exception as e:
-            # Log but don't raise; notification dispatch should not block primary flow
-            try:
-                current_app.logger.exception(f"Failed to create local notification: {e}")
-            except Exception:
-                print(f"Failed to create local notification: {e}")
+        # 2. Broadcast to all instances for real-time delivery
+        cls.send_cross_instance_notification(
+            user_id=student_user_id,
+            message=message,
+            notification_type='success',
+            action_type='view_queries',
+            action_data={'query_title': query_title, 'admin_name': admin_name, 'admin_response': admin_response},
+            auto_dismiss=True
+        )
         
     @classmethod  
     def notify_enrollment_response(cls, student_user_id, subject_name, teacher_name, approved):
@@ -134,13 +152,26 @@ class CrossInstanceNotificationDispatcher:
         else:
             message = f"Your enrollment request for {subject_name} has been declined by {teacher_name}" 
             notification_type = 'warning'
-            
+        
+        action_data = {'subject_name': subject_name, 'teacher_name': teacher_name, 'approved': approved}
+        
+        # 1. Persist locally
+        cls._persist_locally(
+            user_id=student_user_id,
+            message=message,
+            notification_type=notification_type,
+            action_type='view_enrollments',
+            action_data=action_data,
+            auto_dismiss=True
+        )
+
+        # 2. Broadcast
         cls.send_cross_instance_notification(
             user_id=student_user_id,
             message=message,
             notification_type=notification_type,
             action_type='view_enrollments',
-            action_data={'subject_name': subject_name, 'teacher_name': teacher_name, 'approved': approved},
+            action_data=action_data,
             auto_dismiss=True
         )
         
@@ -157,12 +188,26 @@ class CrossInstanceNotificationDispatcher:
         print(f"📋 Found {len(admin_users)} admin users to notify")
         for admin in admin_users:
             print(f"   - Admin: {admin.name} (ID: {admin.id})")
+            
+            action_data = {'query_title': query_title, 'student_name': student_name, 'tag': tag}
+            
+            # 1. Persist locally
+            cls._persist_locally(
+                user_id=admin.id,
+                message=message,
+                notification_type='query',
+                action_type='view_queries',
+                action_data=action_data,
+                auto_dismiss=False
+            )
+            
+            # 2. Broadcast
             cls.send_cross_instance_notification(
                 user_id=admin.id,
                 message=message,
                 notification_type='query',
                 action_type='view_queries',
-                action_data={'query_title': query_title, 'student_name': student_name, 'tag': tag},
+                action_data=action_data,
                 auto_dismiss=False  # Admin should manually dismiss
             )
 
@@ -170,27 +215,25 @@ class CrossInstanceNotificationDispatcher:
     def notify_class_assignment(cls, teacher_user_id, class_name, subject_name, admin_name):
         """Notify a teacher about a new class assignment."""
         message = f"You have been assigned {subject_name} for {class_name} by {admin_name}"
+        
+        action_data = {'class_name': class_name, 'subject_name': subject_name, 'admin_name': admin_name}
+        
+        # 1. Persist locally
+        cls._persist_locally(
+            user_id=teacher_user_id,
+            message=message,
+            notification_type='info',
+            action_type='view_class',
+            action_data=action_data,
+            auto_dismiss=False
+        )
+
+        # 2. Broadcast
         cls.send_cross_instance_notification(
             user_id=teacher_user_id,
             message=message,
             notification_type='info',
             action_type='view_class',
-            action_data={'class_name': class_name, 'subject_name': subject_name, 'admin_name': admin_name},
+            action_data=action_data,
             auto_dismiss=False
         )
-        try:
-            notif = Notification(
-                user_id=teacher_user_id,
-                message=message,
-                notification_type='info',
-                action_type='view_class',
-                action_data=json.dumps({'class_name': class_name, 'subject_name': subject_name, 'admin_name': admin_name}),
-                auto_dismiss=False
-            )
-            db.session.add(notif)
-            db.session.commit()
-        except Exception as e:
-            try:
-                current_app.logger.exception(f"Failed to create local class-assignment notification: {e}")
-            except Exception:
-                print(f"Failed to create local class-assignment notification: {e}")

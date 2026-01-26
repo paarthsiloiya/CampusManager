@@ -72,6 +72,32 @@ class NotificationService:
         return notification
     
     @staticmethod
+    def emit_realtime_only(user_id, message, notification_type=NotificationType.INFO, 
+                         action_type=None, action_data=None, auto_dismiss=True):
+        """
+        Emit a notification in real-time WITHOUT creating a database record.
+        Used by the cross-instance dispatcher to avoid duplicate DB entries.
+        """
+        if socketio:
+            notification_data = {
+                # Generate a temporary ID if one isn't provided (though one should be)
+                # Ideally the dispatcher sends the real ID, but for now we generate a timestamped one
+                'id': f'realtime-{datetime.now().timestamp()}', 
+                'message': message,
+                'type': notification_type,
+                'action_type': action_type,
+                'action_data': action_data,  # Expecting dict, not string
+                'auto_dismiss': auto_dismiss,
+                'created_at': datetime.now(timezone.utc).isoformat()
+            }
+            
+            room = f'user_{user_id}'
+            print(f'⚡ Emitting real-time-only notification to room {room}: {message[:50]}...')
+            socketio.emit('new_notification', notification_data, room=room)
+            return True
+        return False
+
+    @staticmethod
     def mark_notification_read(notification_id, user_id):
         """Mark notification as read and remove from database"""
         notification = Notification.query.filter_by(id=notification_id, user_id=user_id).first()
@@ -129,7 +155,7 @@ class NotificationService:
             notification_type=NotificationType.ENROLLMENT,
             action_type='review_enrollment',
             action_data=action_data,
-            auto_dismiss=False
+            auto_dismiss=True
         )
     
     @staticmethod
@@ -174,7 +200,7 @@ class NotificationService:
             notification_type=NotificationType.ASSIGNMENT,
             action_type='view_assignment',
             action_data=action_data,
-            auto_dismiss=False
+            auto_dismiss=True
         )
     
     @staticmethod
@@ -194,7 +220,7 @@ class NotificationService:
             notification_type=NotificationType.QUERY,
             action_type='review_query',
             action_data=action_data,
-            auto_dismiss=False
+            auto_dismiss=True
         )
     
     @staticmethod

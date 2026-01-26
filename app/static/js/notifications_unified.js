@@ -151,9 +151,12 @@ class UnifiedNotificationManager {
             notification.classList.add('show');
         }
         
-        // Auto-dismiss if enabled
-        if (data.auto_dismiss !== false && autoFadeIn) {
-            this.scheduleAutoDismiss(data.id, 6000); // 6 seconds
+        // Auto-dismiss if enabled (schedule regardless of entrance animation)
+        if (data.auto_dismiss !== false) {
+            // Small timeout to ensure DOM is rendered and timer bar measured
+            setTimeout(() => {
+                this.scheduleAutoDismiss(data.id, 6000); // 6 seconds
+            }, 50);
         }
     }
     

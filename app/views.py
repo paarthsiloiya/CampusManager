@@ -2081,8 +2081,9 @@ def cross_instance_notification():
         data = request.get_json()
         print(f"📨 Received cross-instance notification: {data}")
         
-        # Create notification for the specified user if they're connected to this instance
-        notification = NotificationService.create_notification(
+        # Emit notification strictly via SocketIO - DO NOT write to DB
+        # The initiator instance is responsible for the DB persist
+        NotificationService.emit_realtime_only(
             user_id=data['user_id'],
             message=data['message'],
             notification_type=data.get('type', NotificationType.INFO),
@@ -2091,8 +2092,7 @@ def cross_instance_notification():
             auto_dismiss=data.get('auto_dismiss', True)
         )
         
-        print(f"✅ Cross-instance notification created with ID: {notification.id}")
-        return jsonify({'success': True, 'notification_id': notification.id})
+        return jsonify({'success': True})
     except Exception as e:
         print(f"❌ Cross-instance notification error: {e}")
         import traceback
