@@ -1,4 +1,21 @@
 services:
+  db:
+    image: postgres:15
+    container_name: campusmanager-db
+    # Load sensitive values from an external .env (not committed)
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      # pg_isready without -d attempts to connect to a database named after the user
+      test: ["CMD-SHELL", "pg_isready -U campus_user -d campus_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
   admin-server:
     build: .
     image: campusmanager-admin-server:latest
@@ -11,6 +28,10 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+    env_file:
+      - .env
+    depends_on:
+      - db
     restart: unless-stopped
 
   teacher-server:
@@ -25,6 +46,10 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+    env_file:
+      - .env
+    depends_on:
+      - db
     restart: unless-stopped
 
   student-server:
@@ -39,4 +64,12 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+    env_file:
+      - .env
     restart: unless-stopped
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+    driver: local

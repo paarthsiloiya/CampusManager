@@ -232,13 +232,18 @@ TEACHERS_DATA = [
 # ==========================================
 
 def setup_data():
-    # Force use of the instance database to ensure we modify the correct data
-    db_path = os.path.join(os.getcwd(), 'instance', 'student_management.db')
-    os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
+    # Determine which DATABASE_URL we'll use. If not set, default to the instance sqlite DB.
+    if os.environ.get('DATABASE_URL'):
+        used_db = os.environ['DATABASE_URL']
+        db_path = None
+    else:
+        db_path = os.path.join(os.getcwd(), 'instance', 'student_management.db')
+        used_db = f'sqlite:///{db_path}'
+        os.environ['DATABASE_URL'] = used_db
     
     app = create_app()
     with app.app_context():
-        print(f"🚀 Starting Setup Script (DB: {db_path})...")
+        print(f"🚀 Starting Setup Script (DB: {used_db})...")
         
         # --- PHASE 1: PRE-VALIDATION ---
         print("\n🔍 Validating all subjects first...")

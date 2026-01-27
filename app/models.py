@@ -38,8 +38,8 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(15), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
     semester = db.Column(db.Integer, nullable=True)
-    branch = db.Column(db.Enum(Branch), nullable=True)
-    role = db.Column(db.Enum(UserRole), nullable=False, default=UserRole.STUDENT)
+    branch = db.Column(db.Enum(Branch, native_enum=False), nullable=True)
+    role = db.Column(db.Enum(UserRole, native_enum=False), nullable=False, default=UserRole.STUDENT)
     is_password_changed = db.Column(db.Boolean, default=False)
     
     # Authentication
@@ -241,7 +241,7 @@ class Enrollment(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     class_id = db.Column(db.Integer, db.ForeignKey('assigned_classes.id'), nullable=False)
     
-    status = db.Column(db.Enum(EnrollmentStatus), default=EnrollmentStatus.PENDING, nullable=False)
+    status = db.Column(db.Enum(EnrollmentStatus, native_enum=False), default=EnrollmentStatus.PENDING, nullable=False)
     request_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     response_date = db.Column(db.DateTime, nullable=True)
     
@@ -407,7 +407,7 @@ class Query(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    tag = db.Column(db.Enum(QueryTag), nullable=False, default=QueryTag.OTHER)
+    tag = db.Column(db.Enum(QueryTag, native_enum=False), nullable=False, default=QueryTag.OTHER)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     user = db.relationship('User', backref='queries')
