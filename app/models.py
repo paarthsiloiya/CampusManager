@@ -370,7 +370,7 @@ class TimetableSettings(db.Model):
     min_class_duration = db.Column(db.Integer, nullable=False, default=40) # in minutes
     max_class_duration = db.Column(db.Integer, nullable=False, default=50) # in minutes
     periods = db.Column(db.Integer, nullable=False, default=8)
-    working_days = db.Column(db.String(20), nullable=False, default="MTWTF")
+    working_days = db.Column(db.String(255), nullable=False, default="MTWTF")
     active_semester_type = db.Column(db.String(10), nullable=False, default='odd') # 'odd' or 'even'
     
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))

@@ -8,7 +8,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       # pg_isready without -d attempts to connect to a database named after the user
       test: ["CMD-SHELL", "pg_isready -U campus_user -d campus_db"]

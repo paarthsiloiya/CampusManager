@@ -69,6 +69,27 @@ def run_migrations():
                 print("💾 Changes committed to database.")
             else:
                 print("✨ Database schema columns are up to date.")
+
+            # Migration 3: Ensure timetable_settings.working_days has sufficient length
+            try:
+                cols = [c['name'] for c in inspect(connection).get_columns('timetable_settings')]
+                if 'working_days' in cols:
+                    print("  🔁 Ensuring 'working_days' column type/length is VARCHAR(255)...")
+                    try:
+                        # PostgreSQL syntax
+                        connection.execute(text("ALTER TABLE timetable_settings ALTER COLUMN working_days TYPE VARCHAR(255)"))
+                        print("     ✅ Altered 'working_days' to VARCHAR(255).")
+                    except Exception as e:
+                        # Some DBs (e.g., SQLite) won't support ALTER TYPE; attempt a generic ALTER
+                        try:
+                            connection.execute(text("ALTER TABLE timetable_settings ALTER COLUMN working_days TYPE TEXT"))
+                            print("     ✅ Altered 'working_days' to TEXT as fallback.")
+                        except Exception as e2:
+                            print(f"     ⚠️ Could not alter column type (DB may not support ALTER COLUMN): {e2}")
+                else:
+                    print("  ℹ️ 'working_days' column not present; skipping type check.")
+            except Exception as e:
+                print(f"  ⚠️ Failed to inspect 'timetable_settings' columns: {e}")
         
         # Ensure new tables are created
         print("🔧 Checking for new tables...")
