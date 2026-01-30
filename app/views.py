@@ -12,6 +12,7 @@ import string
 import csv
 import io
 from datetime import datetime, timezone, time, timedelta
+import math
 from .excel_export import generate_timetable_excel
 
 views = Blueprint('views', __name__)
@@ -475,7 +476,7 @@ def student_timetable():
     
     # Calculate Schedule Metadata (Same as Teacher View)
     periods = list(range(1, settings.periods + 1))
-    lunch_break_after = settings.periods // 2
+    lunch_break_after = math.ceil(settings.periods / 2)
     period_duration_mins = 0
     period_headers = {}
     
@@ -1120,7 +1121,7 @@ def teacher_schedule():
     
     if settings:
         periods = list(range(1, settings.periods + 1))
-        lunch_break_after = settings.periods // 2
+        lunch_break_after = math.ceil(settings.periods / 2)
         
         # Parse days
         if ',' in settings.working_days:
@@ -1745,8 +1746,8 @@ def timetable():
             min_class_duration = int(request.form.get('min_duration', 40))
             max_class_duration = int(request.form.get('max_duration', 50))
             periods = int(request.form.get('periods', 8))
-            lunch_break_after = int(request.form.get('lunch_break_after', periods // 2))
-            min_classes_per_week = int(request.form.get('classes_per_week', 3))
+            # Lunch break placement is computed automatically as ceil(periods/2)
+            lunch_break_after = math.ceil(periods / 2)
             
             # Handle working days as list from checkboxes
             working_days_list = request.form.getlist('days')
@@ -1765,8 +1766,8 @@ def timetable():
             settings.min_class_duration = min_class_duration
             settings.max_class_duration = max_class_duration
             settings.periods = periods
-            settings.lunch_break_after = lunch_break_after
-            settings.min_classes_per_week = min_classes_per_week
+            # Lunch break placement is computed dynamically; do not persist a manual value
+            # Removed min_classes_per_week setting: distribution is credit-based now
             settings.working_days = working_days
             
             db.session.commit()
@@ -1863,7 +1864,7 @@ def timetable():
     period_duration_mins = 0
     
     if settings and settings.periods:
-        lunch_break_after = settings.periods // 2
+        lunch_break_after = math.ceil(settings.periods / 2)
         
         # Calculate Period Duration in minutes for display
         start_min = settings.start_time.hour * 60 + settings.start_time.minute
@@ -1927,7 +1928,7 @@ def download_timetable():
         settings = TimetableSettings.query.first()
         lunch_break_after = 4
         if settings and settings.periods:
-            lunch_break_after = settings.periods // 2
+            lunch_break_after = math.ceil(settings.periods / 2)
             
         # Structure: { branch_name: { semester: { ... } } }
         all_timetables = {}

@@ -314,37 +314,7 @@
                                        required
                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                             </div>
-                            <div class="space-y-2">
-                                <label for="lunch_break_after"
-                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                                    Lunch Break After
-                                    <span class="text-text-light font-normal"
-                                          title="Insert lunch break after this period number. E.g., '4' means lunch after 4th period.">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             x="0px"
-                                             y="0px"
-                                             width="18"
-                                             height="18"
-                                             viewBox="0 0 24 24">
-                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </label>
-                                <select name="lunch_break_after"
-                                        id="lunch_break_after"
-                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all appearance-none">
-                                    {% for i in range(1, 9) %}
-                                        {% set is_selected = false %}
-                                        {% if settings and settings.lunch_break_after == i %}
-                                            {% set is_selected = true %}
-                                        {% elif not settings and i == 4 %}
-                                            {% set is_selected = true %}
-                                        {% endif %}
-                                        <option value="{{ i }}" {% if is_selected %}selected{% endif %}>Period {{ i }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <!-- Lunch break placement removed from UI; computed automatically as ceil(periods/2) -->
                         </div>
                         <!-- Durations -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -374,32 +344,7 @@
                                        required
                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                             </div>
-                            <div class="space-y-2">
-                                <label for="classes_per_week"
-                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
-                                    Min Classes/Subject/Week
-                                    <span class="text-text-light font-normal"
-                                          title="Minimum number of times each subject should appear in the weekly timetable. Higher values ensure more frequent classes.">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             x="0px"
-                                             y="0px"
-                                             width="18"
-                                             height="18"
-                                             viewBox="0 0 24 24">
-                                            <path d="M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </label>
-                                <input type="number"
-                                       id="classes_per_week"
-                                       name="classes_per_week"
-                                       min="1"
-                                       max="10"
-                                       value="{{ settings.min_classes_per_week if settings else 3 }}"
-                                       required
-                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
-                            </div>
+                            <!-- Min Classes/Subject/Week removed: distribution handled by credits -->
                         </div>
                         <!-- Class Duration Constraints -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
