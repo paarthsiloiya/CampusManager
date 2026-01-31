@@ -1,134 +1,81 @@
-# 🛠️ Utility Scripts Guide
+# Utility Scripts Guide
 
-This guide explains the purpose and usage of the helper scripts located in the `utility/` folder. These scripts are designed to help with development, testing, and database management.
+This directory contains helper scripts for managing the Student Management System.
 
-## 📋 Table of Contents
+**Important:** These scripts should generally be run using the `docker compose exec` command to ensure they have access to the correct database environment.
 
-1. [Overview](#overview)
-2. [Database Management](#database-management)
-3. [User & Data Setup](#user--data-setup)
-4. [Data Synchronization](#data-synchronization)
+## Quick Reference
 
----
-
-## 🎯 Overview
-
-The `utility/` folder contains the following core scripts:
-
-| Script | Purpose |
-|--------|---------|
-| `setup_data.py` | **Primary Setup Tool**: Configures teachers, subjects, and class assignments. |
-| `reset_db.py` | Completely resets the database (drops tables, reseeds subjects). |
-| `update_db_schema.py` | **Safe Schema Updater**: Adds missing columns/tables without losing data. |
-| `sync_subjects.py` | Forces synchronization between `branch_subjects.json` and the database. |
-| `create_admin.py` | Creates a default admin user. |
-| `create_test_accounts.py` | Creates test student accounts for all semesters. |
-| `add_sample_data.py` | Populates the database with realistic attendance and marks data. |
+| Task | Command | Description |
+|------|---------|-------------|
+| **Setup Project** | `python utility/setup_data.py` | Creates teachers and assigns classes from `data/branch_subjects.json`. |
+| **Reset Database** | `python utility/reset_db.py` | **DANGER**: Drops all tables and recreates them. Wipes data. |
+| **Create Admin** | `python utility/create_admin.py` | Create a new superuser manualy. |
+| **Add Sample Data** | `python utility/add_sample_data.py` | Populates DB with fake students/attendance for testing. |
 
 ---
 
-## 🗃️ Database Management
+## How to Run Scripts
 
-### `reset_db.py`
+Since the project uses Docker, the database is inside a container and not directly accessible via `localhost` unless mapped, and even then, Python needs the correct drivers and credentials.
 
-**Purpose:**  
-This is the "nuclear option" for the database. It drops all tables and recreates them from scratch. It also reseeds the initial subject data from `data/branch_subjects.json`.
+### The Recommended Way (Docker)
 
-**Usage:**
-```bash
-# Full reset (requires confirmation)
-python utility/reset_db.py
+Run scripts *inside* the running application container. This guarantees the environment is identical to production.
 
-# Clear user data only (keeps subjects and structure)
-python utility/reset_db.py --clear-only
+1. **Ensure app is running**:
+   ```bash
+   docker compose up -d
+   ```
 
-# View database statistics
-python utility/reset_db.py --stats
-```
+2. **Execute the script**:
+   ```bash
+   # Syntax: docker compose exec <service_name> python <script_path>
+   
+   # Example: Reset Database
+   docker compose exec admin-server python utility/reset_db.py
+   
+   # Example: Setup Initial Data
+   docker compose exec admin-server python utility/setup_data.py
+   ```
 
-**When to use:**
-- When you want to start fresh.
-- After updating `branch_subjects.json` significantly.
+### The Local Way (Development Only)
 
-### `update_db_schema.py`
+If you have a local Python environment set up with `venv`, you can run scripts locally, but you must ensure the `DATABASE_URL` matches your local setup.
 
-**Purpose:**
-Safe way to apply database schema changes (like new columns) to an existing database containing data. It checks for missing elements and adds them if necessary.
+**Note:** If using the Docker database from your host machine, the host is usually `localhost` (mapped port), not `db`.
 
-**Usage:**
-```bash
-python utility/update_db_schema.py
-```
+1. **Set Environment Variable (PowerShell)**:
+   ```powershell
+   # Point to the mapped port (usually 5433 or 5432)
+   $env:DATABASE_URL="postgresql+psycopg2://campus_user:welcome_to_campus@localhost:5433/campus_db"
+   ```
+
+2. **Run Script**:
+   ```powershell
+   python utility/check_working_days.py
+   ```
 
 ---
 
-## 👥 User & Data Setup
+## Script Details
 
 ### `setup_data.py`
+This is your **primary initialization script**. 
+- It reads data from `data/branch_subjects.json`.
+- It creates or updates `Subject` entries in the database.
+- It creates Teacher accounts defined in the script.
+- It links Teachers to Subjects (`AssignedClass`).
 
-**Purpose:**  
-The main configuration script for the application. You should edit this file to define your real-world faculty members and their subject assignments.
+### `reset_db.py`
+**Use with caution.** 
+- Connects to the database.
+- Drops all tables defined in SQLAlchemy models.
+- Re-creates empty tables.
+- Useful when you change `models.py` significantly and migrations are too complex.
 
-**Features:**
-- Validates that all subjects exist in the database before running.
-- Creates Teacher accounts if they don't exist.
-- Assigns subjects to teachers (creating `AssignedClass` records).
-- Prevents duplicate assignments.
+### `db_check.py`
+Diagnoses connection issues. It attempts to connect to the DB and print current user/session info.
 
-**Usage:**
-1. Open `utility/setup_data.py`.
-2. Edit the `TEACHERS_DATA` list with your faculty details.
-3. Run:
-```bash
-python utility/setup_data.py
-```
-
-### `create_admin.py`
-
-**Purpose:**  
-Creates a default administrator account if one doesn't already exist.
-
-**Usage:**
-```bash
-python utility/create_admin.py
-```
-**Credentials:** `admin@example.com` / `admin123`
-
-### `create_test_accounts.py`
-
-**Purpose:**  
-Generates a set of student accounts, one for each semester (1-8), rotating through different branches.
-
-**Usage:**
-```bash
-python utility/create_test_accounts.py
-```
-**Credentials:** `semXtest@gmail.com` / `12345678`
-
-### `add_sample_data.py`
-
-**Purpose:**  
-Fills the database with realistic-looking attendance and marks data for demonstration.
-
-**Usage:**
-```bash
-python utility/add_sample_data.py
-```
-
----
-
-## 🔄 Data Synchronization
-
-### `sync_subjects.py`
-
-**Purpose:**  
-Refreshes the database subject list from the source file `data/branch_subjects.json`.
-
-**When to use:**
-- If you have manually edited `data/branch_subjects.json` (e.g., added new subjects, fixed codes, or changed credits).
-- Run this **before** running `setup_data.py` if you have added new subjects ensuring they are available for assignment.
-
-**Usage:**
-```bash
-python utility/sync_subjects.py
-```
+### `create_test_accounts.py` / `add_sample_data.py`
+Helpers for generating dummy data for students, attendance, and marks to visualize the dashboard.

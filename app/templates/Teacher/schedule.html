@@ -72,33 +72,37 @@
                                                 </td>
                                             {% endif %}
                                         {% endif %}
-                                        {% set entry = grid[day].get(p) %}
-                                        <td class="p-2 border-r border-gray-100 align-middle hover:bg-white transition-shadow hover:shadow-inner text-center">
-                                            {% if entry %}
-                                                <div class="flex flex-col items-center justify-center gap-1.5 h-full w-full">
-                                                    <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
-                                                        {{ entry.assigned_class.subject.name }}
+                                        {% set cell = grid[day].get(p) %}
+                                        {% if cell and not cell.is_skipped %}
+                                            <td colspan="{{ cell.colspan }}"
+                                                class="p-2 border-r border-gray-100 align-middle hover:bg-white transition-shadow hover:shadow-inner text-center">
+                                                {% if cell.entry %}
+                                                    {% set entry = cell.entry %}
+                                                    <div class="flex flex-col items-center justify-center gap-1.5 h-full w-full">
+                                                        <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
+                                                            {{ entry.assigned_class.subject.name }}
+                                                        </div>
+                                                        <div class="flex flex-wrap gap-1 justify-center mt-0.5">
+                                                            <div class="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10 uppercase">
+                                                                {{ entry.branch }}
+                                                            </div>
+                                                            <div class="text-[10px] font-bold text-text-light bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
+                                                                Sem {{ entry.semester }}
+                                                            </div>
+                                                        </div>
+                                                        {% if entry.assigned_class.subject.code %}
+                                                            <div class="text-[10px] text-text-light bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm mt-0.5">
+                                                                {{ entry.assigned_class.subject.display_code }}
+                                                            </div>
+                                                        {% endif %}
                                                     </div>
-                                                    <div class="flex flex-wrap gap-1 justify-center mt-0.5">
-                                                        <div class="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10 uppercase">
-                                                            {{ entry.branch }}
-                                                        </div>
-                                                        <div class="text-[10px] font-bold text-text-light bg-gray-100 px-2 py-0.5 rounded border border-gray-200">
-                                                            Sem {{ entry.semester }}
-                                                        </div>
+                                                {% else %}
+                                                    <div class="h-16 w-full flex items-center justify-center">
+                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
                                                     </div>
-                                                    {% if entry.assigned_class.subject.code %}
-                                                        <div class="text-[10px] text-text-light bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm mt-0.5">
-                                                            {{ entry.assigned_class.subject.code }}
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            {% else %}
-                                                <div class="h-16 w-full flex items-center justify-center">
-                                                    <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
-                                                </div>
-                                            {% endif %}
-                                        </td>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
                                     {% endfor %}
                                 </tr>
                             {% endfor %}

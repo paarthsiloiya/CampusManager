@@ -98,6 +98,7 @@ class TestGeneralCoverage:
         # Edit
         resp = client.post(f'/teacher/class/{self.assigned_class.id}/edit', data={'section': 'B'}, follow_redirects=True)
         assert resp.status_code == 200
+
         db.session.refresh(self.assigned_class)
         assert self.assigned_class.section == 'B'
         
@@ -109,6 +110,12 @@ class TestGeneralCoverage:
         resp = client.get(f'/teacher/class/{self.assigned_class.id}/download')
         assert resp.status_code == 200
         assert resp.headers['Content-Type'] == 'text/csv'
+
+    def test_404_not_found(self, client):
+        """Test custom 404 error page"""
+        response = client.get('/non/existent/page/123987')
+        assert response.status_code == 404
+        assert b"404" in response.data or b"Not Found" in response.data
 
     # --- Admin Views (Coverage) ---
     def test_admin_timetable_view_get(self, client, db):

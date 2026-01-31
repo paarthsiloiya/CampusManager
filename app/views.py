@@ -28,6 +28,64 @@ def no_cache(response):
 def generate_acronym(name):
     """Generate acronym for subject name, excluding common words and punctuation"""
     # Remove punctuation
+    translator = str.maketrans('', '', string.punctuation)
+    clean_name = name.translate(translator)
+    
+    words = clean_name.split()
+    stop_words = {'and', 'or', 'of', 'the', 'in', 'on', 'at', 'to', 'for', 'with', 'by', 'lab', 'laboratory'}
+    
+    # Filter and take first letter
+    acronym = "".join([w[0].upper() for w in words if w.lower() not in stop_words])
+    
+    # Fallback if empty (e.g. only stop words)
+    if not acronym:
+        acronym = name[:3].upper() if name else "SUB"
+        
+    return acronym
+
+def preprocess_grid(grid, periods, days):
+    """
+    Transforms grid[day][period] -> Entry to 
+    new_grid[day][period] -> { 'entry': Entry, 'colspan': int, 'is_skipped': bool }
+    """
+    new_grid = {}
+    
+    # Default to standard days if not provided
+    if not days:
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+            
+    for d in days:
+        new_grid[d] = {}
+        # Ensure 'grid' has the day if not present
+        day_entries = grid.get(d, {})
+        
+        sorted_periods = sorted(periods)
+        skip_next = False
+        
+        for i, p in enumerate(sorted_periods):
+            if skip_next:
+                skip_next = False
+                continue
+            
+            entry = day_entries.get(p)
+            cell = {'entry': entry, 'colspan': 1, 'is_skipped': False}
+            
+            if entry is not None:
+                # Check next period
+                if i + 1 < len(sorted_periods):
+                    next_p = sorted_periods[i+1]
+                    next_entry = day_entries.get(next_p)
+                    
+                    # Merge if same class
+                    if next_entry and next_entry.assigned_class_id == entry.assigned_class_id:
+                        cell['colspan'] = 2
+                        skip_next = True
+                        # Add next as skipped
+                        new_grid[d][next_p] = {'entry': next_entry, 'colspan': 1, 'is_skipped': True}
+            
+            new_grid[d][p] = cell
+            
+    return new_grid
     name_clean = name.translate(str.maketrans('', '', string.punctuation))
     words = name_clean.split()
     
@@ -480,13 +538,8 @@ def student_timetable():
     period_duration_mins = 0
     period_headers = {}
     
-    # Parse days
-    if ',' in settings.working_days:
-        days = [d.strip() for d in settings.working_days.split(',') if d.strip()]
-    elif settings.working_days == "MTWTF":
-         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    else:
-         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    # Parse days using model method
+    days = settings.get_days_list()
 
     # Calculate headers
     start_min = settings.start_time.hour * 60 + settings.start_time.minute
@@ -531,9 +584,12 @@ def student_timetable():
         if e.day in days:
             grid[e.day][e.period_number] = e
 
+    # Process grid for double periods (colspan)
+    processed_grid = preprocess_grid(grid, periods, days)
+
     return render_template(
         'Student/timetable.html',
-        grid=grid,
+        grid=processed_grid,
         days=days,
         periods=periods,
         lunch_break_after=lunch_break_after,
@@ -1175,9 +1231,12 @@ def teacher_schedule():
             grid[e.day][e.period_number] = e
             
     has_entries = len(entries) > 0
-             
+    
+    # Process grid for double periods (colspan)
+    processed_grid = preprocess_grid(grid, periods, days)
+
     return render_template('Teacher/schedule.html',
-        grid=grid,
+        grid=processed_grid,
         periods=periods,
         days=days,
         period_headers=period_headers,
@@ -1752,6 +1811,12 @@ def timetable():
             # Handle working days as list from checkboxes
             working_days_list = request.form.getlist('days')
             if working_days_list:
+                # Sort days to ensure consistent storage order
+                day_order = {
+                    'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3,
+                    'Friday': 4, 'Saturday': 5, 'Sunday': 6
+                }
+                working_days_list.sort(key=lambda d: day_order.get(d, 99))
                 working_days = ",".join(working_days_list)
             else:
                 working_days = request.form.get('working_days', 'MTWTF')
@@ -1845,6 +1910,9 @@ def timetable():
             
             sorted_days = sorted(grid.keys(), key=lambda d: week_days_order.index(d) if d in week_days_order else 99)
             
+            # Process grid for double periods (colspan)
+            processed_grid = preprocess_grid(grid, periods_set, sorted_days)
+
             # Headers
             period_headers = {}
             for p in periods_set:
@@ -1855,7 +1923,7 @@ def timetable():
             timetables[sem] = {
                 'days': sorted_days,
                 'periods': periods_set,
-                'grid': grid,
+                'grid': processed_grid,
                 'period_headers': period_headers
             }
 
@@ -1950,6 +2018,9 @@ def download_timetable():
                 
                 sorted_days = sorted(grid.keys(), key=lambda d: week_days_order.index(d) if d in week_days_order else 99)
                 
+                # Process grid for double periods (colspan)
+                processed_grid = preprocess_grid(grid, periods_set, sorted_days)
+                
                 period_headers = {}
                 for p in periods_set:
                      sample = next((x for x in sem_entries if x.period_number == p), None)
@@ -1959,7 +2030,7 @@ def download_timetable():
                 branch_data[sem] = {
                     'days': sorted_days,
                     'periods': periods_set,
-                    'grid': grid,
+                    'grid': processed_grid,
                     'period_headers': period_headers
                 }
             all_timetables[branch_name] = branch_data

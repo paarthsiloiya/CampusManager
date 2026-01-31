@@ -77,18 +77,22 @@
                                                             </td>
                                                         {% endif %}
                                                     {% endif %}
-                                                    {% set entry = data.grid[day].get(p) %}
-                                                    <td class="border border-gray-300 p-1 text-center h-16 align-middle">
-                                                        {% if entry %}
-                                                            <div class="font-bold text-gray-900 leading-tight">{{ entry.assigned_class.subject.name }}</div>
-                                                            {% if entry.assigned_class.subject.code %}
-                                                                <div class="text-[10px] text-gray-500 font-medium">({{ entry.assigned_class.subject.code }})</div>
+                                                    {% set cell = data.grid[day].get(p) %}
+                                                    {% if cell and not cell.is_skipped %}
+                                                        <td colspan="{{ cell.colspan }}"
+                                                            class="border border-gray-300 p-1 text-center h-16 align-middle">
+                                                            {% if cell.entry %}
+                                                                {% set entry = cell.entry %}
+                                                                <div class="font-bold text-gray-900 leading-tight">{{ entry.assigned_class.subject.name }}</div>
+                                                                {% if entry.assigned_class.subject.code %}
+                                                                    <div class="text-[10px] text-gray-500 font-medium">({{ entry.assigned_class.subject.display_code }})</div>
+                                                                {% endif %}
+                                                                <div class="text-xs text-gray-600 mt-0.5">{{ entry.assigned_class.teacher.name }}</div>
+                                                            {% else %}
+                                                                <span class="text-gray-300 text-xl">-</span>
                                                             {% endif %}
-                                                            <div class="text-xs text-gray-600 mt-0.5">{{ entry.assigned_class.teacher.name }}</div>
-                                                        {% else %}
-                                                            <span class="text-gray-300 text-xl">-</span>
-                                                        {% endif %}
-                                                    </td>
+                                                        </td>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </tr>
                                         {% endfor %}

@@ -255,16 +255,12 @@ def setup_data():
                 raw_code = subj_info['code']
                 branch = subj_info.get('branch', 'COMMON')
                 
-                # Check exact code
-                subject = Subject.query.filter_by(code=raw_code).first()
-                
-                # Check prefixed code
-                if not subject and branch != 'COMMON':
-                    prefixed_code = f"{branch}-{raw_code}"
-                    subject = Subject.query.filter_by(code=prefixed_code).first()
+                # Check subject uniqueness by Code AND Branch
+                # NOTE: We no longer use prefixed codes (e.g. AIML-101). We use 101 with branch='AIML'.
+                subject = Subject.query.filter_by(code=raw_code, branch=branch).first()
                 
                 if not subject:
-                    error_msg = f"Teacher: {teacher_data['name']} -> Subject: '{raw_code}' (Prefix attempt: '{branch}-{raw_code}') NOT FOUND"
+                    error_msg = f"Teacher: {teacher_data['name']} -> Subject: '{raw_code}' (Branch: {branch}) NOT FOUND"
                     missing_subjects.append(error_msg)
                     all_valid = False
 
@@ -314,16 +310,10 @@ def setup_data():
                 branch = subj_info.get('branch', 'COMMON')
                 
                 # Validation: Subject MUST exist
-                # Strategy 1: Check exact code (e.g. "AIML-ES-101")
-                subject = Subject.query.filter_by(code=raw_code).first()
-                
-                # Strategy 2: Check prefixed code (e.g. "AIML" + "-" + "ES-101")
-                if not subject and branch != 'COMMON':
-                    prefixed_code = f"{branch}-{raw_code}"
-                    subject = Subject.query.filter_by(code=prefixed_code).first()
+                subject = Subject.query.filter_by(code=raw_code, branch=branch).first()
                 
                 if not subject:
-                    print(f"   ❌ ERROR: Subject '{raw_code}' (or '{branch}-{raw_code}') not found! Skipping assignment.")
+                    print(f"   ❌ ERROR: Subject '{raw_code}' (Branch: {branch}) not found! Skipping assignment.")
                     continue
                 
                 # Optional: Verify branch matches if strictness is desired

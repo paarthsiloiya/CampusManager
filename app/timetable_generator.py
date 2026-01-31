@@ -15,7 +15,9 @@ class TimetableGenerator:
         # Ensure end_time exists
         self.end_time = getattr(settings, 'end_time', None) or dt_time(16, 30)
         
-        self.days = self._parse_days(settings.working_days)
+        # Use the centralized parsing method from model
+        self.days = settings.get_days_list()
+        
         self.periods = settings.periods if settings.periods is not None else 8
         self.lunch_duration = settings.lunch_duration or 30
         
@@ -34,62 +36,14 @@ class TimetableGenerator:
         # Place lunch after the middle period (ceil) to balance sessions
         self.lunch_after_period = math.ceil(self.periods / 2)
         
-    def _parse_days(self, days_str):
-        if not days_str:
-            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-
-        if days_str == "MTWTF":
-            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-            
-        # Normalize and map
-        full_names = {
-            'm': 'Monday', 'mo': 'Monday', 'mon': 'Monday', 'monday': 'Monday',
-            't': 'Tuesday', 'tu': 'Tuesday', 'tue': 'Tuesday', 'tuesday': 'Tuesday',
-            'w': 'Wednesday', 'we': 'Wednesday', 'wed': 'Wednesday', 'wednesday': 'Wednesday',
-            'th': 'Thursday', 'thu': 'Thursday', 'thur': 'Thursday', 'thursday': 'Thursday',
-            'f': 'Friday', 'fr': 'Friday', 'fri': 'Friday', 'friday': 'Friday',
-            's': 'Saturday', 'sa': 'Saturday', 'sat': 'Saturday', 'saturday': 'Saturday',
-            'su': 'Sunday', 'sun': 'Sunday', 'sunday': 'Sunday'
-        }
-        
-        # Split by comma if present
-        if ',' in days_str:
-            parts = [d.strip().lower() for d in days_str.split(',') if d.strip()]
-        # Fallback for "MTWTF" style strings which are just consecutive chars
-        elif " " not in days_str and len(days_str) <= 7 and all(c.isalpha() for c in days_str):
-             # Assume single char codes
-             parts = [c.lower() for c in days_str]
-        else:
-             # Try splitting by space
-             parts = [d.strip().lower() for d in days_str.split() if d.strip()]
-
-        valid_days = []
-        seen = set()
-        for p in parts:
-            name = full_names.get(p)
-            if not name:
-                # Try simple single char fallback if the token is just 'm' (already handled by dict)
-                # But maybe it's something weird.
-                continue
-            
-            if name not in seen:
-                valid_days.append(name)
-                seen.add(name)
-        
-        # Default fallback
-        if not valid_days:
-            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-            
-        return valid_days
-
     def validate(self):
         # Basic validation
         if self.period_duration <= 0:
             self.errors.append("Calculated period duration is non-positive. Check time settings.")
             return False
 
-        min_d = getattr(self.settings, 'min_class_duration', 0)
-        max_d = getattr(self.settings, 'max_class_duration', 999) # Arbitrary large default
+        min_d = getattr(self.settings, 'min_class_duration', 0) or 0
+        max_d = getattr(self.settings, 'max_class_duration', 999) or 999 # Arbitrary large default
         
         if self.period_duration < min_d:
             self.errors.append(f"Period duration ({self.period_duration}m) is less than minimum ({min_d}m).")
@@ -148,6 +102,62 @@ class TimetableGenerator:
                     for p in p_indices:
                         assignments[(ac.id, d, p)] = model.NewBoolVar(f'c_{ac.id}_d{d}_p{p}')
 
+            # Identify Labs (Double periods)
+            lab_assignments = [ac for ac in active_assignments if 'lab' in ac.subject.name.lower()]
+            standard_assignments = [ac for ac in active_assignments if 'lab' not in ac.subject.name.lower()]
+            
+            # Constraint: Labs must form blocks of 2 consecutive periods
+            # And they should not span across the lunch break if avoided (optional, but good practice)
+            # We enforce: If Lab is assigned at P, it must be part of a [P, P+1] block starting at P or P-1.
+            # Simplified: Labs consist of independent chunks of size 2.
+            
+            for ac in lab_assignments:
+                # Valid start periods: 0 to periods-2
+                # Also exclude p where p and p+1 straddle lunch? 
+                # Lunch is after `lunch_after_period` (1-based). 
+                # So if lunch is after period 4, it's between index 3 and 4.
+                # A block cannot start at index 3 (covering 3 and 4) if 4 is post-lunch? 
+                # Wait, "lunch after period 4" means 1,2,3,4 exist, then lunch, then 5,6.
+                # Index 3 is Period 4. Index 4 is Period 5.
+                # So block indices (0,1), (1,2), (2,3) are valid pre-lunch.
+                # Block (3,4) spans Period 4 and Period 5 -> spans Lunch.
+                # We should prevent spanning lunch.
+                
+                lunch_idx = self.lunch_after_period - 1 # 0-based index of last period before lunch
+                
+                valid_block_starts = []
+                for p in range(self.periods - 1):
+                    # Check if this block (p, p+1) crosses lunch
+                    # It crosses if p == lunch_idx
+                    if p != lunch_idx:
+                        valid_block_starts.append(p)
+                
+                for d in day_indices:
+                    block_vars = []
+                    for p in valid_block_starts:
+                        # Create a variable: "Lab starts at p on day d"
+                        start_var = model.NewBoolVar(f'lab_start_{ac.id}_d{d}_p{p}')
+                        block_vars.append(start_var)
+                        
+                        # Link start_var to actual assignments
+                        # start_var => assignments[p] AND assignments[p+1]
+                        model.Add(assignments[(ac.id, d, p)] == 1).OnlyEnforceIf(start_var)
+                        model.Add(assignments[(ac.id, d, p+1)] == 1).OnlyEnforceIf(start_var)
+                        
+                        # Mutual exclusion of starts to prevent overlapping blocks for the SAME lab
+                        # e.g. can't start at p and p+1 (would mean period p+1 is used twice by same lab)
+                        # Actually handled by "Teacher conflict" and "Cohort conflict" constraints mostly,
+                        # but clean definition: sum(assignments) = 2 * sum(starts)
+                        
+                    # Constraint: A lab session is exactly one block of 2 periods (if assigned on that day)
+                    # or maybe multiple blocks? Usually 1 block per day max.
+                    model.Add(sum(block_vars) <= 1) 
+                    
+                    # Ensure no "loose" periods for this lab
+                    total_assigned = sum(assignments[(ac.id, d, p)] for p in p_indices)
+                    total_starts = sum(block_vars)
+                    model.Add(total_assigned == 2 * total_starts)
+
             # Constraint 1: Teacher Conflict
             teachers = set(ac.teacher_id for ac in active_assignments)
             for t_id in teachers:
@@ -162,81 +172,166 @@ class TimetableGenerator:
             # Group classes by (Branch, Semester) effectively
             cohorts = set((ac.subject.branch, ac.subject.semester) for ac in active_assignments)
             
-            # --- PRE-CALCULATE TARGET COUNTS (Proportional Filling) ---
-            # Group assignments by Cohort to calculate total credits
-            cohort_data = {} # (branch, sem) -> { 'assignments': [], 'total_credits': 0 }
+            # --- MAXIMIZATION & TARGETS ---
+            # Strategy:
+            # 1. Labs: Fixed duration. Standard: 1 Credit = 2 Hours/Periods. (Strict)
+            # 2. Theory: Distribute remaining slots PROPORTIONALLY among theory subjects based on credits.
+            #    We use "Largest Remainder Method" to ensure total assignments exactly match available slots.
             
-            for ac in active_assignments:
-                key = (ac.subject.branch, ac.subject.semester)
-                if key not in cohort_data:
-                    cohort_data[key] = {'assignments': [], 'total_credits': 0}
-                cohort_data[key]['assignments'].append(ac)
-                c = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 3
-                cohort_data[key]['total_credits'] += c
-
-            total_slots = len(self.days) * self.periods
+            total_slots_per_week = len(self.days) * self.periods
             min_counts = {} # ac.id -> int
             max_counts = {} # ac.id -> int
 
+            # Pre-calculate totals per cohort
+            cohort_keys = list(cohorts)
+            cohort_data = {k: {'lab_slots': 0, 'theory_credits': 0, 'theory_subjects': []} for k in cohort_keys}
+            
+            for ac in active_assignments:
+                key = (ac.subject.branch, ac.subject.semester)
+                # Should always be in cohort_data derived from set(cohorts)
+                
+                c = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 3
+                is_lab = 'lab' in ac.subject.name.lower()
+                
+                if is_lab:
+                    # Labs are fixed blocks
+                    target = c * 2
+                    # Ensure we don't exceed weekly limits if strictly enforced? 
+                    # Usually Lab credits are small (1 or 2 credits -> 2 or 4 periods).
+                    cohort_data[key]['lab_slots'] += target
+                    min_counts[ac.id] = target
+                    max_counts[ac.id] = target
+                else:
+                    cohort_data[key]['theory_credits'] += c
+                    cohort_data[key]['theory_subjects'].append(ac)
+            
+            # Calculate Theory Targets per Cohort using Largest Remainder Method
             for key, data in cohort_data.items():
-                t_creds = data['total_credits']
-                for ac in data['assignments']:
-                    c = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 3
-                    min_counts[ac.id] = c # Hard minimum (Original Credits)
+                available_for_theory = total_slots_per_week - data['lab_slots']
+                
+                if available_for_theory < 0:
+                     # This implies Labs alone exceed the week. 
+                     # Should have been caught by validation or handled gracefully.
+                     available_for_theory = 0 
 
-                    if t_creds > 0:
-                        # Proportional share of the week
-                        # Example: 3 credits / 15 total * 40 slots = 8 slots
-                        prop = (c / t_creds) * total_slots
-                        # Use ceiling of proportional share and allow a small buffer of +1
-                        cap = min(total_slots, math.ceil(prop) + 1)
-                        # Ensure cap is at least the minimum
-                        max_counts[ac.id] = max(min_counts[ac.id], cap)
+                subjects = data['theory_subjects']
+                total_t_credits = data['theory_credits']
+                
+                if not subjects:
+                    continue
+
+                if total_t_credits > 0:
+                    # Calculate raw shares
+                    shares = {}
+                    for ac in subjects:
+                        c = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 3
+                        # Raw precise share
+                        raw = (c / total_t_credits) * available_for_theory
+                        shares[ac.id] = raw
+                    
+                    # Distribute integer parts
+                    allocated = {}
+                    current_sum = 0
+                    for ac in subjects:
+                        base = math.floor(shares[ac.id])
+                        allocated[ac.id] = base
+                        current_sum += base
+                    
+                    # Distribute remainder
+                    remainder = available_for_theory - current_sum
+                    if remainder > 0:
+                        # Sort by fractional part descending
+                        sorted_subjects = sorted(
+                            subjects, 
+                            key=lambda s: shares[s.id] - math.floor(shares[s.id]), 
+                            reverse=True
+                        )
+                        
+                        for i in range(int(remainder)):
+                            # Safe cycle if remainder > len(subjects) (unlikely given math, but safe)
+                            sub = sorted_subjects[i % len(subjects)]
+                            allocated[sub.id] += 1
+                    
+                    # Set constraints
+                    for ac in subjects:
+                        final_count = allocated[ac.id]
+                        # Relaxation for robustness:
+                        # Min: Respect credits (absolute minimum requirement)
+                        # Max: Target share + Slack (to precise fit independent cohorts even if teachers overlap)
+                        
+                        min_counts[ac.id] = c # Original credits
+                        
+                        # Allow some flexibility (+2) to help solver fit blocks around constraints
+                        # But not too much to maintain proportionality
+                        max_counts[ac.id] = final_count + 2
+                        
+                else:
+                    # No credits defined? Split evenly.
+                    count = len(subjects)
+                    if count > 0:
+                        base = available_for_theory // count
+                        rem = available_for_theory % count
+                        for idx, ac in enumerate(subjects):
+                            extra = 1 if idx < rem else 0
+                            target = base + extra
+                            min_counts[ac.id] = 1
+                            max_counts[ac.id] = target + 2
                     else:
-                        max_counts[ac.id] = total_slots
+                        pass # Should not happen
 
-            # Apply Cohort Conflict Constraints
+            # Apply Cohort Conflict Constraints (One class per cohort at a time)
             for (branch, sem) in cohorts:
                 cohort_classes = [
                     ac.id for ac in active_assignments 
                     if ac.subject.branch == branch and ac.subject.semester == sem
                 ]
+                
                 for d in day_indices:
                     for p in p_indices:
                         course_vars = [assignments[(cid, d, p)] for cid in cohort_classes]
+                        # Revert to <= 1 to avoid Infeasibility if resources are insufficient
                         model.Add(sum(course_vars) <= 1)
 
-            # Constraint 3: Credits (Sessions per week)
-            # Use Range: Min (Credits) to Max (Proportional)
+            # Constraint 3: Credits bounds
             for ac in active_assignments:
-                class_vars = []
-                for d in day_indices:
-                    for p in p_indices:
-                        class_vars.append(assignments[(ac.id, d, p)])
-                
-                # Min constraint
+                class_vars = [assignments[(ac.id, d, p)] for d in day_indices for p in p_indices]
                 model.Add(sum(class_vars) >= min_counts[ac.id])
-                
-                # Max constraint (Soft cap to maintain balance)
-                # If we don't cap, solver might give 30 slots to Subject A and 3 to Subject B.
-                
-                # Only apply max constraint if it doesn't conflict with Min (handled by clamp above)
-                # And check if max_counts is reasonably small compared to total_slots
-                if max_counts[ac.id] < total_slots:
-                    model.Add(sum(class_vars) <= max_counts[ac.id])
+                model.Add(sum(class_vars) <= max_counts[ac.id])
 
-            # Objective: Maximize weighted utilization based on subject credits
-            # Higher-credit subjects get higher weight so solver prefers them when filling extra slots
+            # Constraint 4: Distribution & Consecutive Classes
+            for ac in active_assignments:
+                is_lab = 'lab' in ac.subject.name.lower()
+                total_target = max_counts[ac.id]
+                
+                if not is_lab:
+                    # A. Avoid consecutive periods for Theory
+                    for d in day_indices:
+                        for p in range(self.periods - 1):
+                            model.Add(assignments[(ac.id, d, p)] + assignments[(ac.id, d, p+1)] <= 1)
+                    
+                    # B. Distribute evenly across days
+                    # Max classes per day = ceil(total / days)
+                    # If we have 5 days and 6 classes, max per day is 2.
+                    # If we have 5 days and 4 classes, max per day is 1.
+                    max_per_day = math.ceil(total_target / len(self.days))
+                    for d in day_indices:
+                        day_vars = [assignments[(ac.id, d, p)] for p in p_indices]
+                        model.Add(sum(day_vars) <= max_per_day)
+
+            # Objective: Maximize weighted utilization to fill gaps
+            # Weight = Credit Score.
             weighted_terms = []
             for ac in active_assignments:
-                credits = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 3
-                # Primary weight: credits, secondary tie-breaker: small constant to prefer filling
-                coef = credits * 1000 + 1
+                # Basic weight from credits
+                credits = ac.subject.credits if ac.subject.credits and ac.subject.credits > 0 else 1
+                weight = credits * 10
+                
                 for d in day_indices:
                     for p in p_indices:
-                        weighted_terms.append(assignments[(ac.id, d, p)] * coef)
+                        weighted_terms.append(assignments[(ac.id, d, p)] * weight)
 
-            model.Maximize(sum(weighted_terms))
+            model.Maximize(sum(weighted_terms)) 
+
 
             # Solve
             solver = cp_model.CpSolver()

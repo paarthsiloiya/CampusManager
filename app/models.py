@@ -194,12 +194,17 @@ class Subject(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    code = db.Column(db.String(50), unique=True, nullable=False)  # Increased length for branch prefix
+    code = db.Column(db.String(50), nullable=False)  # Increased length for branch prefix, Removed unique=True
     semester = db.Column(db.Integer, nullable=False)
     credits = db.Column(db.Integer, default=3)
     branch = db.Column(db.String(10), nullable=False, default='COMMON')  # Branch-specific or COMMON
     is_lab = db.Column(db.Boolean, default=False)
     
+    @property
+    def display_code(self):
+        """Returns the stored code (which is now properly formatted/shortened in the DB)"""
+        return self.code
+
     # Relationships
     attendance_records = db.relationship('Attendance', backref='subject', lazy=True)
     marks = db.relationship('Marks', backref='subject', lazy=True)
@@ -375,6 +380,54 @@ class TimetableSettings(db.Model):
     
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
+    def get_days_list(self):
+        """Parse and return valid sorted working days"""
+        days_str = self.working_days
+        
+        # Standard Order Reference
+        day_order = {
+            'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3,
+            'Friday': 4, 'Saturday': 5, 'Sunday': 6
+        }
+        
+        # Mapping for lenient parsing
+        full_names = {
+            'm': 'Monday', 'mo': 'Monday', 'mon': 'Monday', 'monday': 'Monday',
+            't': 'Tuesday', 'tu': 'Tuesday', 'tue': 'Tuesday', 'tuesday': 'Tuesday',
+            'w': 'Wednesday', 'we': 'Wednesday', 'wed': 'Wednesday', 'wednesday': 'Wednesday',
+            'th': 'Thursday', 'thu': 'Thursday', 'thur': 'Thursday', 'thursday': 'Thursday',
+            'f': 'Friday', 'fr': 'Friday', 'fri': 'Friday', 'friday': 'Friday',
+            's': 'Saturday', 'sa': 'Saturday', 'sat': 'Saturday', 'saturday': 'Saturday',
+            'su': 'Sunday', 'sun': 'Sunday', 'sunday': 'Sunday'
+        }
+
+        if not days_str:
+            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+            
+        if days_str == "MTWTF":
+            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+        # Parse logic
+        if ',' in days_str:
+            parts = [d.strip().lower() for d in days_str.split(',') if d.strip()]
+        elif " " not in days_str and len(days_str) <= 7 and all(c.isalpha() for c in days_str):
+             # "mtwtf" or "m"
+             parts = [c.lower() for c in days_str]
+        else:
+             parts = [d.strip().lower() for d in days_str.split() if d.strip()]
+
+        valid_days = set()
+        for p in parts:
+            name = full_names.get(p)
+            if name:
+                valid_days.add(name)
+        
+        if not valid_days:
+            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+            
+        # Return Sorted List
+        return sorted(list(valid_days), key=lambda d: day_order.get(d, 99))
+
 class TimetableEntry(db.Model):
     """Model for storing generated timetable entries"""
     __tablename__ = 'timetable_entries'
@@ -489,15 +542,15 @@ def seed_subjects():
                 if subject_data['code'] in ['Test', '1', '']:
                     continue
                 
-                # Desired new state
-                tgt_code = f"{branch_code}-{subject_data['code']}"
+                # Desired new state - Use short code as is
+                tgt_code = subject_data['code']
                 tgt_name = subject_data['name']
                 tgt_credits = subject_data.get('credits', -1)
                 tgt_is_lab = subject_data.get('is_lab', False)
                 
                 # Strategy:
-                # 1. Try to find by EXACT Code (Preferred)
-                existing = Subject.query.filter_by(code=tgt_code).first()
+                # 1. Try to find by Code AND Branch (Since code is no longer unique globally)
+                existing = Subject.query.filter_by(code=tgt_code, branch=branch_code).first()
                 
                 # 2. If not found, try to find by Name + Branch + Semester (Rename/Recode Case)
                 if not existing:

@@ -152,30 +152,34 @@
                                                                 </td>
                                                             {% endif %}
                                                         {% endif %}
-                                                        {% set entry = data.grid[day].get(p) %}
-                                                        <td class="p-2 border-r border-gray-100 justify-between hover:bg-white transition-shadow hover:shadow-inner text-center">
-                                                            {% if entry %}
-                                                                <div class="flex flex-col items-center justify-between gap-1.5 h-full w-full">
-                                                                    <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
-                                                                        {{ entry.assigned_class.subject.name }}
-                                                                    </div>
-                                                                    <div class="flex flex-col items-center gap-2 justify-center mt-1">
-                                                                        {% if entry.assigned_class.subject.code %}
-                                                                            <div class="text-[10px] uppercase font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
-                                                                                {{ entry.assigned_class.subject.code }}
+                                                        {% set cell = data.grid[day].get(p) %}
+                                                        {% if cell and not cell.is_skipped %}
+                                                            <td colspan="{{ cell.colspan }}"
+                                                                class="p-2 border-r border-gray-100 justify-between hover:bg-white transition-shadow hover:shadow-inner text-center">
+                                                                {% if cell.entry %}
+                                                                    {% set entry = cell.entry %}
+                                                                    <div class="flex flex-col items-center justify-between gap-1.5 h-full w-full">
+                                                                        <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
+                                                                            {{ entry.assigned_class.subject.name }}
+                                                                        </div>
+                                                                        <div class="flex flex-col items-center gap-2 justify-center mt-1">
+                                                                            {% if entry.assigned_class.subject.code %}
+                                                                                <div class="text-[10px] uppercase font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
+                                                                                    {{ entry.assigned_class.subject.display_code }}
+                                                                                </div>
+                                                                            {% endif %}
+                                                                            <div class="text-[10px] font-medium text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100 flex items-center gap-1">
+                                                                                <i data-feather="user" class="w-3 h-3"></i> {{ entry.assigned_class.teacher.name }}
                                                                             </div>
-                                                                        {% endif %}
-                                                                        <div class="text-[10px] font-medium text-text-light bg-gray-50 px-2 py-0.5 rounded border border-gray-100 flex items-center gap-1">
-                                                                            <i data-feather="user" class="w-3 h-3"></i> {{ entry.assigned_class.teacher.name }}
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            {% else %}
-                                                                <div class="h-16 w-full flex items-center justify-center">
-                                                                    <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
-                                                                </div>
-                                                            {% endif %}
-                                                        </td>
+                                                                {% else %}
+                                                                    <div class="h-16 w-full flex items-center justify-center">
+                                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </td>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </tr>
                                             {% endfor %}
@@ -287,6 +291,7 @@
                             </div>
                         </div>
                         <!-- Structure Config -->
+                        <!-- Time Config -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="periods"
@@ -314,10 +319,6 @@
                                        required
                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                             </div>
-                            <!-- Lunch break placement removed from UI; computed automatically as ceil(periods/2) -->
-                        </div>
-                        <!-- Durations -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="lunch_duration"
                                        class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
@@ -344,7 +345,6 @@
                                        required
                                        class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                             </div>
-                            <!-- Min Classes/Subject/Week removed: distribution handled by credits -->
                         </div>
                         <!-- Class Duration Constraints -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
