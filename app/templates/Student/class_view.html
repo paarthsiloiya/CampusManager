@@ -5,8 +5,8 @@
         <!-- Header -->
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
-                <h2 class="text-xl lg:text-2xl font-bold text-text-dark">{{ subject.name }}</h2>
-                <p class="text-sm text-text-light font-mono mt-0.5">{{ subject.code }}</p>
+                <h2 class="text-xl lg:text-2xl font-bold text-text-dark dark:text-text-base">{{ subject.name }}</h2>
+                <p class="text-sm text-text-light dark:text-text-light font-mono mt-0.5">{{ subject.code }}</p>
             </div>
             <a href="{{ url_for("views.student_dashboard") }}"
                class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 text-sm font-medium text-text-light dark:text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm w-full lg:w-auto justify-center lg:justify-start">
@@ -29,8 +29,8 @@
                             <i data-feather="user" class="w-12 h-12"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-text-dark">{{ assigned_class.teacher.name }}</h3>
-                            <p class="text-sm text-text-light">Faculty Instructor</p>
+                            <h3 class="text-lg font-bold text-text-dark dark:text-text-base">{{ assigned_class.teacher.name }}</h3>
+                            <p class="text-sm text-text-light dark:text-text-light">Faculty Instructor</p>
                             <div class="flex flex-wrap gap-2 mt-3">
                                 {% if assigned_class.google_classroom_link %}
                                     <a href="{{ assigned_class.google_classroom_link }}"
@@ -46,7 +46,9 @@
                     </div>
                     <!-- Resources (Placeholder) -->
                     <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
-                        <h4 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-3">Course Materials</h4>
+                        <h4 class="text-xs font-bold text-text-lighter dark:text-text-light uppercase tracking-wider mb-3">
+                            Course Materials
+                        </h4>
                         <div class="flex gap-3">
                             <button disabled
                                     class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-background-base text-gray-400 dark:text-text-lighter border border-gray-100 dark:border-gray-800 text-sm font-medium cursor-not-allowed hover:bg-gray-100 dark:hover:bg-background-base transition-colors">

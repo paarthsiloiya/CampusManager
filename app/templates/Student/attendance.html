@@ -5,8 +5,8 @@
         <!-- Header -->
         <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-text-dark">Attendance</h1>
-                <p class="text-text-light mt-1">Track your presence and meet requirements</p>
+                <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Attendance</h1>
+                <p class="text-text-light dark:text-text-light mt-1">Track your presence and meet requirements</p>
             </div>
             <div class="hidden lg:block">
                 <span class="inline-flex items-center px-4 py-2 rounded-xl bg-primary/5 text-primary text-sm font-bold border border-primary/10"> <i data-feather="calendar" class="w-4 h-4 mr-2"></i> Week {{ attendance_stats.current_week if attendance_stats.current_week else '1' }} </span>
@@ -22,8 +22,8 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.this_week_classes }}</h3>
-                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures This Week</p>
+                    <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ attendance_stats.this_week_classes }}</h3>
+                    <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Lectures This Week</p>
                 </div>
             </div>
             <!-- Total Attendance -->
@@ -32,14 +32,16 @@
                     <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
                         <i data-feather="check-circle" class="w-6 h-6"></i>
                     </div>
-                    <div class="text-xs font-bold bg-gray-50 px-2 py-1 rounded-lg text-text-light border border-gray-100">Total</div>
+                    <div class="text-xs font-bold bg-gray-50 dark:bg-background-base px-2 py-1 rounded-lg text-text-light dark:text-text-light border border-gray-100 dark:border-gray-800">
+                        Total
+                    </div>
                 </div>
                 <div>
                     <div class="flex items-baseline gap-1">
-                        <h3 class="text-2xl font-bold text-text-dark mb-1">{{ attendance_stats.attended_classes }}</h3>
-                        <span class="text-lg font-bold text-text-lighter">/ {{ attendance_stats.total_classes }}</span>
+                        <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ attendance_stats.attended_classes }}</h3>
+                        <span class="text-lg font-bold text-text-lighter dark:text-text-light">/ {{ attendance_stats.total_classes }}</span>
                     </div>
-                    <p class="text-xs font-bold text-text-light uppercase tracking-wider">Lectures Attended</p>
+                    <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Lectures Attended</p>
                 </div>
             </div>
             <!-- Current Percentage -->

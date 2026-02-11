@@ -6,16 +6,16 @@
         <!-- Header Section -->
         <div class="mb-4 lg:mb-8">
             <h2 id="greeting"
-                class="text-2xl lg:text-3xl font-bold text-text-darker tracking-tight mb-1">
+                class="text-2xl lg:text-3xl font-bold text-text-darker dark:text-text-base tracking-tight mb-1">
                 Welcome, {{ student.name or "Student" }}!
             </h2>
-            <p class="text-sm lg:text-base text-text-light font-medium">
+            <p class="text-sm lg:text-base text-text-light dark:text-text-light font-medium">
                 {{ semester_info or "Semester Info Unavailable" }} • {{ student.branch or "General Branch" }}
             </p>
         </div>
         <!-- Subjects Section -->
         <div class="mb-6">
-            <h3 class="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+            <h3 class="text-lg font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
                 <span class="p-1.5 bg-primary/10 rounded-lg text-primary">
                     <i data-feather="book-open" class="w-4 h-4"></i>
                 </span>
@@ -42,16 +42,16 @@
                             <div class="flex-1 min-w-0 flex flex-col gap-2 lg:grid lg:grid-cols-12 lg:gap-4">
                                 <!-- Mobile Header -->
                                 <div class="lg:hidden">
-                                    <h4 class="font-bold text-text-dark text-base line-clamp-1">{{ subject.name }}</h4>
-                                    <p class="text-xs text-text-light font-mono">{{ subject.code }}</p>
+                                    <h4 class="font-bold text-text-dark dark:text-text-base text-base line-clamp-1">{{ subject.name }}</h4>
+                                    <p class="text-xs text-text-light dark:text-text-light font-mono">{{ subject.code }}</p>
                                 </div>
                                 <!-- Desktop Info -->
                                 <div class="lg:col-span-5 hidden lg:block">
-                                    <h4 class="text-base font-bold text-text-dark truncate leading-tight group-hover:text-primary transition-colors"
+                                    <h4 class="text-base font-bold text-text-dark dark:text-text-base truncate leading-tight group-hover:text-primary transition-colors"
                                         title="{{ subject.name }}">{{ subject.name }}</h4>
                                     <div class="flex items-center gap-2 mt-1">
                                         <span class="p-1.5 bg-primary/10 rounded-lg text-primary dark:bg-primary-dark">
-                                            <span class="text-xs text-text-light truncate flex items-center gap-1"><i data-feather="user" class="w-3 h-3"></i> {{ subject.faculty }}</span>
+                                            <span class="text-xs text-text-light dark:text-text-light truncate flex items-center gap-1"><i data-feather="user" class="w-3 h-3"></i> {{ subject.faculty }}</span>
                                         </div>
                                     </div>
                                     <!-- Status and Action Row -->
@@ -64,7 +64,7 @@
                                                     {% set att_status = 'success' if subject.status == 'good' else 'warning' if subject.status == 'warning' else 'error' %}
                                                     <div class="flex items-center gap-3 w-full max-w-[200px] lg:max-w-[180px] justify-end lg:justify-center">
                                                         {% set att_bg = 'bg-emerald-500' if att_status == 'success' else 'bg-amber-400' if att_status == 'warning' else 'bg-rose-500' %} {% set att_text = 'text-emerald-600' if att_status == 'success' else 'text-amber-500' if att_status == 'warning' else 'text-rose-500' %}
-                                                        <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden w-24 lg:w-auto">
+                                                        <div class="flex-1 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden w-24 lg:w-auto">
                                                             <div class="h-full {{ att_bg }}"
                                                                  style="--w: {{ subject.attendance_percentage }}%;
                                                                         width: var(--w)"></div>
@@ -72,7 +72,7 @@
                                                         <span class="text-sm font-bold {{ att_text }} w-10 text-right">{{ subject.attendance_percentage }}%</span>
                                                     </div>
                                                 {% else %}
-                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">New</span>
+                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">New</span>
                                                 {% endif %}
                                             {% elif subject.enrollment_status == 'PENDING' %}
                                                 <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Pending</span>
@@ -80,9 +80,9 @@
                                                 <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-status-error/10 text-status-error">Rejected</span>
                                             {% else %}
                                                 {% if not has_action %}
-                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-400">Unavailable</span>
+                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500">Unavailable</span>
                                                 {% else %}
-                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Not Enrolled</span>
+                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">Not Enrolled</span>
                                                 {% endif %}
                                             {% endif %}
                                         </div>
