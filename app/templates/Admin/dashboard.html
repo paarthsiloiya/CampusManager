@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Admin Dashboard — CampusManager{% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full">
-        <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
+    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm w-full">
+        <h3 class="font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
             <i data-feather="zap" class="w-4 h-4 text-primary"></i> Quick Actions
         </h3>
         <a href="{{ url_for("views.add_user") }}"
@@ -16,12 +16,12 @@
     <div class="max-w-7xl mx-auto space-y-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-text-dark">User Management</h1>
-                <p class="text-text-light mt-1">View, search, and manage all users in the system.</p>
+                <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">User Management</h1>
+                <p class="text-text-light dark:text-text-light mt-1">View, search, and manage all users in the system.</p>
             </div>
         </div>
         <!-- Search Toolbar (moved from sidebar) -->
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4">
+        <div class="bg-white dark:bg-background-dark p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 mb-4">
             <form method="get"
                   action="{{ url_for("views.admin_dashboard") }}"
                   class="flex flex-col md:flex-row gap-3">
@@ -32,16 +32,16 @@
                            name="search"
                            value="{{ search_query }}"
                            placeholder="Search by name, email, or role..."
-                           class="w-full pl-12 pr-4 py-2.5 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark text-sm" />
+                           class="w-full pl-12 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border-transparent focus:bg-white dark:focus:bg-gray-700 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-white text-sm" />
                 </div>
                 <div class="flex gap-2">
                     <button type="submit"
-                            class="px-6 py-2.5 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors text-sm">
+                            class="px-6 py-2.5 rounded-xl bg-text-dark dark:bg-gray-700 text-white font-bold hover:bg-black dark:hover:bg-gray-600 transition-colors text-sm">
                         Search
                     </button>
                     {% if search_query %}
                         <a href="{{ url_for("views.admin_dashboard") }}"
-                           class="px-4 py-2.5 rounded-xl bg-gray-100 text-text-dark font-bold hover:bg-gray-200 transition-colors flex items-center justify-center text-sm">Clear</a>
+                           class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-background-darker text-text-dark dark:text-text-base font-bold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center text-sm">Clear</a>
                     {% endif %}
                 </div>
             </form>
@@ -49,23 +49,23 @@
         <!-- Users List -->
         <div class="space-y-4">
             <!-- Desktop Table -->
-            <div class="hidden md:block bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="hidden md:block bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-gray-100 bg-gray-50/50">
+                            <tr class="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-background-darker/50">
                                 <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">User Info</th>
                                 <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">Role</th>
                                 <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide">Contact</th>
                                 <th class="p-5 text-xs font-bold text-text-light uppercase tracking-wide text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                             {% for user in users %}
-                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <tr class="group hover:bg-gray-50/50 dark:hover:bg-background-darker/50 transition-colors">
                                     <td class="p-5">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-text-lighter font-bold text-lg">
+                                            <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-background-darker flex items-center justify-center text-text-lighter font-bold text-lg">
                                                 {{ user.name[0] | upper }}
                                             </div>
                                             <div>
@@ -75,7 +75,7 @@
                                         </div>
                                     </td>
                                     <td class="p-5">
-                                        <span class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider {% if user.role.name == 'ADMIN' %}bg-purple-50 text-purple-600 {% elif user.role.name == 'TEACHER' %}bg-blue-50 text-blue-600 {% else %}bg-green-50 text-green-600{% endif %}">
+                                        <span class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider {% if user.role.name == 'ADMIN' %}bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400{% elif user.role.name == 'TEACHER' %}bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400{% else %}bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400{% endif %}">
                                             {{ user.role.name }}
                                         </span>
                                     </td>
@@ -92,7 +92,7 @@
                                     </td>
                                     <td class="p-5 text-right">
                                         <a href="{{ url_for('views.edit_user', user_id=user.id) }}"
-                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-text-light hover:bg-primary/10 hover:text-primary transition-colors"
+                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 text-text-light dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary transition-colors"
                                            title="Edit User">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </a>
@@ -101,11 +101,11 @@
                             {% else %}
                                 <tr>
                                     <td colspan="4" class="p-12 text-center">
-                                        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+                                        <div class="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300 dark:text-gray-600">
                                             <i data-feather="users" class="w-8 h-8"></i>
                                         </div>
-                                        <h3 class="text-lg font-bold text-text-dark">No users found</h3>
-                                        <p class="text-text-light">Try adjusting your search criteria.</p>
+                                        <h3 class="text-lg font-bold text-text-dark dark:text-white">No users found</h3>
+                                        <p class="text-text-light dark:text-gray-400">Try adjusting your search criteria.</p>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -116,7 +116,7 @@
             <!-- Mobile Cards -->
             <div class="md:hidden space-y-3">
                 {% for user in users %}
-                    <div class="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="bg-white dark:bg-background-dark p-3 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-lighter font-bold text-base">
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="space-y-1 mb-3 text-sm text-text-light">
+                        <div class="space-y-1 mb-3 text-sm text-text-light dark:text-text-light">
                             <div class="flex items-center gap-2 text-xs">
                                 <i data-feather="mail" class="w-3.5 h-3.5"></i> {{ user.email }}
                             </div>
@@ -138,18 +138,18 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="pt-3 border-t border-gray-100 flex justify-end">
+                        <div class="pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-end">
                             <a href="{{ url_for('views.edit_user', user_id=user.id) }}"
-                               class="flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-gray-50 text-text-dark font-bold text-xs hover:bg-gray-100 transition-colors w-full"> <i data-feather="edit-2" class="w-4 h-4"></i> Edit Profile </a>
+                               class="flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-text-dark dark:text-text-base font-bold text-xs hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors w-full"> <i data-feather="edit-2" class="w-4 h-4"></i> Edit Profile </a>
                         </div>
                     </div>
                 {% else %}
-                    <div class="text-center py-12 bg-white rounded-2xl border border-gray-100 border-dashed">
-                        <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300">
+                    <div class="text-center py-12 bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 border-dashed">
+                        <div class="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-gray-600">
                             <i data-feather="users" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-text-dark">No users found</h3>
-                        <p class="text-text-light">Try adjusting your search criteria.</p>
+                        <h3 class="text-lg font-bold text-text-dark dark:text-text-base">No users found</h3>
+                        <p class="text-text-light dark:text-text-light">Try adjusting your search criteria.</p>
                     </div>
                 {% endfor %}
             </div>

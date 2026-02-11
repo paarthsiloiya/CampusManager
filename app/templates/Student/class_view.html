@@ -9,14 +9,14 @@
                 <p class="text-sm text-text-light font-mono mt-0.5">{{ subject.code }}</p>
             </div>
             <a href="{{ url_for("views.student_dashboard") }}"
-               class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-medium text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm w-full lg:w-auto justify-center lg:justify-start">
+               class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 text-sm font-medium text-text-light dark:text-text-light hover:text-primary hover:border-primary/30 transition-all shadow-sm w-full lg:w-auto justify-center lg:justify-start">
                 <i data-feather="arrow-left"
                    class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                 Back
             </a>
         </div>
         <!-- Class Info Card -->
-        <div class="bg-white rounded-2xl lg:rounded-3xl border border-gray-100 p-4 lg:p-8 relative overflow-hidden shadow-sm">
+        <div class="bg-white dark:bg-background-dark rounded-2xl lg:rounded-3xl border border-gray-100 dark:border-gray-800 p-4 lg:p-8 relative overflow-hidden shadow-sm">
             <!-- Abstract Decoration -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none">
             </div>
@@ -25,7 +25,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Teacher Info -->
                     <div class="flex items-start gap-4">
-                        <div class="w-24 h-24 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-primary">
+                        <div class="w-24 h-24 rounded-xl bg-gray-50 dark:bg-background-base border border-gray-100 dark:border-gray-800 flex items-center justify-center text-primary">
                             <i data-feather="user" class="w-12 h-12"></i>
                         </div>
                         <div>
@@ -35,21 +35,21 @@
                                 {% if assigned_class.google_classroom_link %}
                                     <a href="{{ assigned_class.google_classroom_link }}"
                                        target="_blank"
-                                       class="inline-flex items-center gap-2 bg-green-50 text-green-700 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-lg transition-colors text-xs font-bold">
+                                       class="inline-flex items-center gap-2 bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-800 border border-green-200 dark:border-green-800 px-3 py-1.5 rounded-lg transition-colors text-xs font-bold">
                                         <i data-feather="external-link" class="w-3.5 h-3.5"></i> Google Classroom
                                     </a>
                                 {% else %}
-                                    <span class="inline-flex items-center gap-2 bg-gray-50 text-gray-400 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-medium cursor-not-allowed"> <i data-feather="slash" class="w-3.5 h-3.5"></i> Classroom Not Linked </span>
+                                    <span class="inline-flex items-center gap-2 bg-gray-50 dark:bg-background-base text-gray-400 dark:text-text-lighter border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-lg text-xs font-medium cursor-not-allowed"> <i data-feather="slash" class="w-3.5 h-3.5"></i> Classroom Not Linked </span>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                     <!-- Resources (Placeholder) -->
-                    <div class="pt-4 border-t border-gray-100">
+                    <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
                         <h4 class="text-xs font-bold text-text-lighter uppercase tracking-wider mb-3">Course Materials</h4>
                         <div class="flex gap-3">
                             <button disabled
-                                    class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 text-gray-400 border border-gray-100 text-sm font-medium cursor-not-allowed hover:bg-gray-100 transition-colors">
+                                    class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-background-base text-gray-400 dark:text-text-lighter border border-gray-100 dark:border-gray-800 text-sm font-medium cursor-not-allowed hover:bg-gray-100 dark:hover:bg-background-base transition-colors">
                                 <i data-feather="book-open" class="w-4 h-4"></i> Syllabus
                             </button>
                             <button disabled
@@ -61,7 +61,7 @@
                 </div>
                 <!-- Right: Stats -->
                 <div class="lg:col-span-1">
-                    <div class="bg-gray-50/80 rounded-2xl p-6 border border-gray-100 h-full flex flex-col justify-center items-center text-center relative">
+                    <div class="bg-gray-50/80 dark:bg-background-base rounded-2xl p-6 border border-gray-100 dark:border-gray-800 h-full flex flex-col justify-center items-center text-center relative">
                         {% set att_color = 'text-status-success' if stats.percentage >= 75 else 'text-status-warning' if stats.percentage >= 60 else 'text-status-error' %} {% set att_bg = 'bg-status-success' if stats.percentage >= 75 else 'bg-status-warning' if stats.percentage >= 60 else
                          'bg-status-error' %}
                         <div class="relative mb-4">
@@ -74,13 +74,13 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4 w-full mt-2">
-                            <div class="p-1 rounded-lg bg-white shadow-sm border border-gray-100">
-                                <div class="text-xl font-bold text-text-dark">{{ stats.attended }}</div>
-                                <div class="text-[10px] uppercase font-bold text-text-lighter tracking-wider">Present</div>
+                            <div class="p-1 rounded-lg bg-white dark:bg-background-dark shadow-sm border border-gray-100 dark:border-gray-800">
+                                <div class="text-xl font-bold text-text-dark dark:text-text-base">{{ stats.attended }}</div>
+                                <div class="text-[10px] uppercase font-bold text-text-lighter dark:text-text-light tracking-wider">Present</div>
                             </div>
-                            <div class="p-1 rounded-lg bg-white shadow-sm border border-gray-100">
-                                <div class="text-xl font-bold text-text-light">{{ stats.total }}</div>
-                                <div class="text-[10px] uppercase font-bold text-text-lighter tracking-wider">Total</div>
+                            <div class="p-1 rounded-lg bg-white dark:bg-background-dark shadow-sm border border-gray-100 dark:border-gray-800">
+                                <div class="text-xl font-bold text-text-light dark:text-text-base">{{ stats.total }}</div>
+                                <div class="text-[10px] uppercase font-bold text-text-lighter dark:text-text-light tracking-wider">Total</div>
                             </div>
                         </div>
                     </div>
@@ -90,44 +90,46 @@
         <!-- Attendance History -->
         <div>
             <div class="flex items-center gap-3 mb-4">
-                <h3 class="text-lg font-bold text-text-dark">Attendance History</h3>
-                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-text-light">{{ attendance_records|length }} Classes</span>
+                <h3 class="text-lg font-bold text-text-dark dark:text-text-base">Attendance History</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 dark:bg-background-base text-text-light dark:text-text-light border border-transparent">{{ attendance_records|length }} Classes</span>
             </div>
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 {% if attendance_records %}
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-gray-50/50 border-b border-gray-100 text-xs uppercase tracking-wider text-text-light font-bold">
+                                <tr class="bg-gray-50/50 dark:bg-background-base border-b border-gray-100 dark:border-gray-800 text-xs uppercase tracking-wider text-text-light dark:text-text-light font-bold">
                                     <th class="p-4 pl-6">Date</th>
                                     <th class="p-4">Type</th>
                                     <th class="p-4">Status</th>
                                     <th class="p-4 pr-6">Remarks</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-50">
+                            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                                 {% for record in attendance_records %}
-                                    <tr class="group hover:bg-gray-50 transition-colors">
-                                        <td class="p-4 pl-6 text-sm font-medium text-text-dark">{{ record.date.strftime("%b %d, %Y") }}</td>
+                                    <tr class="group hover:bg-gray-50 dark:hover:bg-background-base transition-colors">
+                                        <td class="p-4 pl-6 text-sm font-medium text-text-dark dark:text-text-base">
+                                            {{ record.date.strftime("%b %d, %Y") }}
+                                        </td>
                                         <td class="p-4">
-                                            <span class="px-2 py-1 bg-white border border-gray-100 rounded text-[10px] font-bold text-text-light uppercase tracking-wide">{{ record.class_type }}</span>
+                                            <span class="px-2 py-1 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded text-[10px] font-bold text-text-light dark:text-text-light uppercase tracking-wide">{{ record.class_type }}</span>
                                         </td>
                                         <td class="p-4">
                                             {% if record.status == 'present' %}
-                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-success/10 text-status-success border border-status-success/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Present </span>
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-success/10 text-status-success border border-status-success/10 dark:bg-status-success/20 dark:border-status-success/20"> <span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Present </span>
                                             {% elif record.status == 'late' %}
-                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-warning/10 text-status-warning border border-status-warning/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-warning"></span> Late </span>
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-warning/10 text-status-warning border border-status-warning/10 dark:bg-status-warning/20 dark:border-status-warning/20"> <span class="w-1.5 h-1.5 rounded-full bg-status-warning"></span> Late </span>
                                             {% else %}
-                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-error/10 text-status-error border border-status-error/10"> <span class="w-1.5 h-1.5 rounded-full bg-status-error"></span> Absent </span>
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-status-error/10 text-status-error border border-status-error/10 dark:bg-status-error/20 dark:border-status-error/20"> <span class="w-1.5 h-1.5 rounded-full bg-status-error"></span> Absent </span>
                                             {% endif %}
                                         </td>
-                                        <td class="p-4 pr-6 text-sm text-text-light group-hover:text-text-dark transition-colors">
+                                        <td class="p-4 pr-6 text-sm text-text-light dark:text-text-light group-hover:text-text-dark dark:group-hover:text-text-base transition-colors">
                                             {% if record.remarks %}
                                                 <div class="flex items-center gap-2">
                                                     <i data-feather="message-square" class="w-3 h-3 text-primary/50"></i> {{ record.remarks }}
                                                 </div>
                                             {% else %}
-                                                <span class="text-gray-300">-</span>
+                                                <span class="text-gray-300 dark:text-gray-500">-</span>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -137,11 +139,14 @@
                     </div>
                 {% else %}
                     <div class="py-12 flex flex-col items-center justify-center text-center">
-                        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                            <i data-feather="calendar" class="w-8 h-8 text-gray-300"></i>
+                        <div class="w-16 h-16 bg-gray-50 dark:bg-background-base rounded-full flex items-center justify-center mb-4">
+                            <i data-feather="calendar"
+                               class="w-8 h-8 text-gray-300 dark:text-gray-500"></i>
                         </div>
-                        <h4 class="text-base font-bold text-text-dark">No records found</h4>
-                        <p class="text-sm text-text-light mt-1">Attendance records will appear here once classes start.</p>
+                        <h4 class="text-base font-bold text-text-dark dark:text-text-base">No records found</h4>
+                        <p class="text-sm text-text-light dark:text-text-light mt-1">
+                            Attendance records will appear here once classes start.
+                        </p>
                     </div>
                 {% endif %}
             </div>

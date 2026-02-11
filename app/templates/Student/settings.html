@@ -21,7 +21,7 @@
               action="{{ url_for("views.settings") }}"
               class="space-y-8">
             <!-- Personal Information -->
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div class="p-8 border-b border-gray-100">
                     <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
                         <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
@@ -72,34 +72,34 @@
                         </div>
                         <div class="space-y-2">
                             <label for="phone"
-                                   class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                                   class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                                 Phone Number
                             </label>
                             <input id="phone"
                                    name="phone"
                                    value="{{ student.phone or '' }}"
                                    placeholder="+91 ..."
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
                         </div>
                         <div class="space-y-2">
                             <label for="dob"
-                                   class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                                   class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                                 Date of Birth
                             </label>
                             <input id="dob"
                                    name="date_of_birth"
                                    type="date"
                                    value="{{ student.date_of_birth or '' }}"
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Academic Information -->
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <div class="p-8 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
+            <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+                <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                    <h2 class="text-xl font-bold text-text-dark dark:text-white flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 dark:text-indigo-400 flex items-center justify-center">
                             <i data-feather="book-open" class="w-5 h-5"></i>
                         </span>
                         Academic Details
@@ -107,19 +107,19 @@
                 </div>
                 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Enrollment Number</label>
+                        <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Enrollment Number</label>
                         <div class="relative">
                             <input value="{{ student.enrollment_number or '' }}"
-                                   class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                   class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none"
                                    readonly />
                             <i data-feather="lock"
                                class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-light uppercase tracking-wide">Branch</label>
+                        <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Branch</label>
                         <div class="relative">
-                            <select class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none appearance-none"
+                            <select class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none appearance-none"
                                     disabled>
                                 <option>{{ student.branch or 'Not Set' }}</option>
                             </select>
@@ -129,13 +129,13 @@
                     </div>
                     <div class="space-y-2">
                         <label for="semester"
-                               class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                               class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                             Current Semester
                         </label>
                         <div class="relative">
                             <select id="semester"
                                     name="semester"
-                                    class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
                                 {% for i in range(1, 9) %}
                                     <option value="{{ i }}" {{ 'selected' if student.semester == i else '' }}>Semester {{ i }}
                                     </option>
@@ -147,14 +147,16 @@
                     </div>
                     <div class="space-y-2">
                         <label for="grad"
-                               class="text-xs font-bold text-text-dark uppercase tracking-wide">Graduation Year</label>
+                               class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
+                            Graduation Year
+                        </label>
                         <input id="grad"
                                name="graduation_year"
                                type="number"
                                value="{{ student.graduation_year or '' }}"
                                min="2024"
                                max="2030"
-                               class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                               class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
                     </div>
                 </div>
             </div>
@@ -173,10 +175,10 @@
         </form>
         <!-- Security Section (Separate Form) -->
         <div id="securitySection"
-             class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mt-8">
-            <div class="p-8 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+             class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                <h2 class="text-xl font-bold text-text-dark dark:text-white flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                         <i data-feather="shield" class="w-5 h-5"></i>
                     </span>
                     Security
@@ -188,34 +190,34 @@
                       class="space-y-6">
                     <!-- Hidden inputs to identify update type if backend needs it, although field names might be enough -->
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Password</label>
+                        <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Current Password</label>
                         <input type="password"
                                name="current_password"
                                required
-                               class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                               class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                placeholder="Enter current password" />
                     </div>
                     <div class="grid lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">New Password</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">New Password</label>
                             <input type="password"
                                    name="new_password"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="Min. 6 characters" />
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Confirm Password</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Confirm Password</label>
                             <input type="password"
                                    name="confirm_password"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="Re-enter new password" />
                         </div>
                     </div>
                     <div class="flex justify-end pt-2">
                         <button type="submit"
-                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">
+                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200 dark:shadow-none">
                             Update Password
                         </button>
                     </div>
@@ -224,10 +226,10 @@
         </div>
         <!-- Danger Zone -->
         {% if can_delete %}
-            <div class="bg-red-50/30 rounded-3xl border border-red-100 overflow-hidden mt-12">
-                <div class="p-8 border-b border-red-100">
-                    <h2 class="text-xl font-bold text-red-700 flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+            <div class="bg-red-50/30 dark:bg-red-900/10 rounded-3xl border border-red-100 dark:border-red-900/30 overflow-hidden mt-12">
+                <div class="p-8 border-b border-red-100 dark:border-red-900/30">
+                    <h2 class="text-xl font-bold text-red-700 dark:text-red-400 flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
                             <i data-feather="alert-triangle" class="w-5 h-5"></i>
                         </span>
                         Danger Zone
@@ -236,14 +238,14 @@
                 <div class="p-8">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="font-bold text-text-dark">Delete Account</h3>
-                            <p class="text-sm text-text-light max-w-md mt-1">
+                            <h3 class="font-bold text-text-dark dark:text-white">Delete Account</h3>
+                            <p class="text-sm text-text-light dark:text-gray-400 max-w-md mt-1">
                                 Permanently delete your account and all of your content. This action is not reversible, so please continue with caution.
                             </p>
                         </div>
                         <button type="button"
                                 onclick="showDeleteConfirmation()"
-                                class="px-6 py-3 rounded-xl bg-white border-2 border-red-100 text-red-600 font-bold hover:bg-red-50 hover:border-red-200 transition-colors">
+                                class="px-6 py-3 rounded-xl bg-white dark:bg-background-darker border-2 border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 font-bold hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-200 dark:hover:border-red-900/50 transition-colors">
                             Delete Account
                         </button>
                     </div>
@@ -253,7 +255,7 @@
             {% if can_delete %}
                 <div id="deleteModal"
                      class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-                    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
+                    <div class="bg-white dark:bg-background-dark rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
                         <div class="p-8 text-center">
                             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-red-600">
                                 <i data-feather="alert-octagon" class="w-8 h-8"></i>
@@ -286,10 +288,88 @@
                 </div>
             {% endif %}
         {% endif %}
+        <!-- Appearance Settings -->
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8 appearance-section">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <i data-feather="moon" class="w-5 h-5"></i>
+                    </span>
+                    Appearance
+                </h2>
+            </div>
+            <div class="p-8 space-y-6">
+                <!-- Theme Toggle -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Light -->
+                    <button type="button"
+                            onclick="window.setTheme('light')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="light">
+                        <div class="w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner">
+                            <div class="absolute inset-2 bg-white rounded shadow-sm">
+                                <div class="h-2 w-full bg-gray-50 border-b border-gray-100"></div>
+                                <div class="p-2 space-y-1">
+                                    <div class="h-1 w-1/2 bg-gray-200 rounded-full"></div>
+                                    <div class="h-1 w-3/4 bg-gray-100 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="font-bold text-text-dark">Light</span>
+                    </button>
+                    <!-- Dark -->
+                    <button type="button"
+                            onclick="window.setTheme('dark')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="dark">
+                        <div class="w-full h-32 bg-gray-900 rounded-lg overflow-hidden border border-gray-700 relative shadow-inner">
+                            <div class="absolute inset-2 bg-gray-800 rounded shadow-sm border border-gray-700">
+                                <div class="h-2 w-full bg-gray-900 border-b border-gray-700"></div>
+                                <div class="p-2 space-y-1">
+                                    <div class="h-1 w-1/2 bg-gray-700 rounded-full"></div>
+                                    <div class="h-1 lg:w-3/4 bg-gray-700 rounded-full opacity-50"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="font-bold text-text-dark">Dark</span>
+                    </button>
+                    <!-- System -->
+                    <button type="button"
+                            onclick="window.setTheme('system')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="system">
+                        <div class="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-900 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner flex items-center justify-center">
+                            <i data-feather="monitor"
+                               class="w-8 h-8 text-gray-500 bg-white/50 p-1.5 rounded-lg backdrop-blur-sm"></i>
+                        </div>
+                        <span class="font-bold text-text-dark">System</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            function updateThemeUI() {
+                const currentTheme = localStorage.getItem('theme') || 'system';
+                document.querySelectorAll('.appearance-btn').forEach(btn => {
+                    const theme = btn.dataset.theme;
+                    if (theme === currentTheme) {
+                        btn.classList.add('border-primary', 'bg-primary/5');
+                        btn.classList.remove('border-transparent');
+                    } else {
+                        btn.classList.remove('border-primary', 'bg-primary/5');
+                        btn.classList.add('border-transparent');
+                    }
+                });
+                if (window.feather) feather.replace();
+            }
+            // Init immediately and on change
+            updateThemeUI();
+            window.addEventListener('themeChanged', updateThemeUI);
+        </script>
     </section>
 {% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm text-center w-full">
+    <div class="bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 p-5 shadow-sm text-center w-full">
         <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-text-light">
             <i data-feather="user" class="w-8 h-8"></i>
         </div>

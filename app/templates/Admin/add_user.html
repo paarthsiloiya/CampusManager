@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Add New User — CampusManager{% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full">
+    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm w-full">
         <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
             <i data-feather="info" class="w-4 h-4 text-primary"></i> Role Guide
         </h3>
@@ -34,8 +34,8 @@
                 Back to Dashboard
             </a>
         </div>
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-8 border-b border-gray-100">
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
                 <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="user-plus" class="w-5 h-5"></i>
@@ -50,7 +50,7 @@
                     <!-- Role Selection -->
                     <div class="space-y-2">
                         <label for="roleSelect"
-                               class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                               class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                             Select Role <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
@@ -58,7 +58,7 @@
                                     id="roleSelect"
                                     required
                                     onchange="toggleFields()"
-                                    class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
                                 <option value="TEACHER">Teacher</option>
                                 <option value="STUDENT">Student</option>
                                 <option value="ADMIN">Admin</option>
@@ -70,30 +70,30 @@
                     <!-- Common Fields -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                                 Full Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text"
                                    name="name"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="John Doe" />
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
                                 Work Email <span class="text-red-500">*</span>
                             </label>
                             <input type="email"
                                    name="email"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="email@college.edu" />
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Phone Number</label>
                             <input type="text"
                                    name="phone"
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="+91..." />
                         </div>
                         <div class="space-y-2">

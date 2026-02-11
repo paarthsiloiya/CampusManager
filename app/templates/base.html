@@ -34,6 +34,107 @@
         <!-- Google Fonts: Inter -->
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
               rel="stylesheet" />
+        <style>
+            :root {
+                /* Color Palette - Light Mode Defaults */
+                --color-bg-base: 98% 0.005 250;
+                --color-bg-dark: 95% 0.01 250;
+                --color-bg-darker: 90% 0.02 250;
+                --color-bg-light: 99% 0.002 250;
+                --color-bg-lighter: 100% 0 0;
+
+                --color-text-base: 20% 0.04 250;
+                --color-text-dark: 15% 0.04 250;
+                --color-text-darker: 10% 0.04 250;
+                --color-text-light: 40% 0.04 250;
+                --color-text-lighter: 60% 0.02 250;
+
+                /* Primary Colors (Indigo) */
+                --color-primary-base: 50% 0.22 255;
+                --color-primary-dark: 42% 0.22 255;
+                --color-primary-darker: 35% 0.22 255;
+                --color-primary-light: 65% 0.15 255;
+                --color-primary-lighter: 85% 0.08 255;
+
+                /* Secondary, Accent, Status remain visible on both usually, 
+                   but we might want to tweak them for dark mode contract */
+                --color-secondary-base: 70% 0.1 255;
+                --color-secondary-dark: 60% 0.12 255;
+                --color-secondary-darker: 50% 0.15 255;
+                --color-secondary-light: 85% 0.05 255;
+                --color-secondary-lighter: 95% 0.02 255;
+
+                --color-accent-base: 60% 0.25 240;
+                --color-accent-dark: 50% 0.25 240;
+                --color-accent-darker: 40% 0.25 240;
+                --color-accent-light: 75% 0.15 240;
+                --color-accent-lighter: 90% 0.05 240;
+                
+                --color-status-success: 60% 0.18 145;
+                --color-status-warning: 75% 0.15 85;
+                --color-status-error: 60% 0.2 25;
+                --color-status-info: 65% 0.15 240;
+            }
+
+            .dark {
+                /* Color Palette - Dark Mode Overrides */
+                /* Backgrounds become dark */
+                --color-bg-base: 20% 0.02 250;      /* Slate 900ish */
+                --color-bg-dark: 15% 0.02 250;      /* Darker */
+                --color-bg-darker: 10% 0.02 250;    /* Even Darker */
+                --color-bg-light: 25% 0.02 250;     /* Lighter than base (for cards?) */
+                --color-bg-lighter: 30% 0.02 250;   /* Lightest background (for elevated cards) */
+
+                /* Text becomes light */
+                --color-text-base: 90% 0.01 250;    /* Light Grey */
+                --color-text-dark: 95% 0.01 250;    /* White-ish (Emphasis) */
+                --color-text-darker: 100% 0 0;      /* Pure White */
+                --color-text-light: 70% 0.02 250;   /* Muted */
+                --color-text-lighter: 50% 0.02 250; /* More Muted */
+                
+                /* Tweak Primary for dark mode contrast if needed - keeping same for now or slight adjustment */
+                --color-primary-base: 60% 0.22 255; /* Slightly lighter for dark bg */
+            }
+
+            /* Global Dark Theme Helpers */
+            html.dark body {
+                background-color: oklch(var(--color-bg-base));
+                color: oklch(var(--color-text-base));
+            }
+            
+            /* Invert icons8 images in dark mode to make them white */
+            html.dark img[src*="icons8.com"] {
+                filter: invert(1) hue-rotate(180deg);
+            }
+            
+            /* Input & Form Elements in Dark Mode */
+            html.dark input:not([type="checkbox"]):not([type="radio"]), 
+            html.dark select, 
+            html.dark textarea,
+            html.dark .bg-gray-50 {
+                background-color: oklch(var(--color-bg-darker)) !important;
+                border: 1px solid #374151 !important; /* Force border */
+                color: oklch(var(--color-text-base)) !important;
+            }
+            /* Explicitly handle white inputs too */
+            html.dark input.bg-white, html.dark select.bg-white, html.dark textarea.bg-white {
+                 background-color: oklch(var(--color-bg-darker)) !important;
+                 border-color: #374151 !important;
+                 color: oklch(var(--color-text-base)) !important;
+            }
+
+            html.dark input:focus, html.dark select:focus, html.dark textarea:focus {
+                 border-color: oklch(var(--color-primary-base)) !important;
+                 ring-color: oklch(var(--color-primary-base)) !important;
+            }
+            html.dark ::placeholder {
+                color: oklch(var(--color-text-lighter)) !important;
+            }
+            html.dark .bg-white.bg-gray-50 {
+                 /* sometimes utility classes conflict */
+                 background-color: oklch(var(--color-bg-darker)) !important;
+            }
+        </style>
         <script>
             tailwind.config = {
                 darkMode: 'class',
@@ -44,49 +145,84 @@
                         },
                         colors: {
                             background: {
-                                DEFAULT: 'oklch(98% 0.005 250)', // Base
-                                dark: 'oklch(95% 0.01 250)', // Shade 1
-                                darker: 'oklch(90% 0.02 250)', // Shade 2
-                                light: 'oklch(99% 0.002 250)', // Tint 1
-                                lighter: 'oklch(100% 0 0)', // Tint 2 (White)
+                                DEFAULT: 'oklch(var(--color-bg-base))', 
+                                dark: 'oklch(var(--color-bg-dark))', 
+                                darker: 'oklch(var(--color-bg-darker))', 
+                                light: 'oklch(var(--color-bg-light))', 
+                                lighter: 'oklch(var(--color-bg-lighter))', 
                             },
                             text: {
-                                DEFAULT: 'oklch(20% 0.04 250)', // Base
-                                dark: 'oklch(15% 0.04 250)',
-                                darker: 'oklch(10% 0.04 250)',
-                                light: 'oklch(40% 0.04 250)',
-                                lighter: 'oklch(60% 0.02 250)',
+                                DEFAULT: 'oklch(var(--color-text-base))', 
+                                dark: 'oklch(var(--color-text-dark))',
+                                darker: 'oklch(var(--color-text-darker))',
+                                light: 'oklch(var(--color-text-light))',
+                                lighter: 'oklch(var(--color-text-lighter))',
                             },
                             primary: {
-                                DEFAULT: 'oklch(50% 0.22 255)', // Base (Vibrant Indigo)
-                                dark: 'oklch(42% 0.22 255)', // Hover
-                                darker: 'oklch(35% 0.22 255)', // Active/Sidebar
-                                light: 'oklch(65% 0.15 255)',
-                                lighter: 'oklch(85% 0.08 255)',
+                                DEFAULT: 'oklch(var(--color-primary-base))', 
+                                dark: 'oklch(var(--color-primary-dark))', 
+                                darker: 'oklch(var(--color-primary-darker))', 
+                                light: 'oklch(var(--color-primary-light))',
+                                lighter: 'oklch(var(--color-primary-lighter))',
                             },
                             secondary: {
-                                DEFAULT: 'oklch(70% 0.1 255)', // Base (Muted Indigo)
-                                dark: 'oklch(60% 0.12 255)',
-                                darker: 'oklch(50% 0.15 255)',
-                                light: 'oklch(85% 0.05 255)',
-                                lighter: 'oklch(95% 0.02 255)',
+                                DEFAULT: 'oklch(var(--color-secondary-base))', 
+                                dark: 'oklch(var(--color-secondary-dark))',
+                                darker: 'oklch(var(--color-secondary-darker))',
+                                light: 'oklch(var(--color-secondary-light))',
+                                lighter: 'oklch(var(--color-secondary-lighter))',
                             },
                             accent: {
-                                DEFAULT: 'oklch(60% 0.25 240)', // Base (Highlight)
-                                dark: 'oklch(50% 0.25 240)',
-                                darker: 'oklch(40% 0.25 240)',
-                                light: 'oklch(75% 0.15 240)',
-                                lighter: 'oklch(90% 0.05 240)',
+                                DEFAULT: 'oklch(var(--color-accent-base))', 
+                                dark: 'oklch(var(--color-accent-dark))',
+                                darker: 'oklch(var(--color-accent-darker))',
+                                light: 'oklch(var(--color-accent-light))',
+                                lighter: 'oklch(var(--color-accent-lighter))',
                             },
                             status: {
-                                success: 'oklch(60% 0.18 145)',
-                                warning: 'oklch(75% 0.15 85)',
-                                error: 'oklch(60% 0.2 25)',
-                                info: 'oklch(65% 0.15 240)',
+                                success: 'oklch(var(--color-status-success))',
+                                warning: 'oklch(var(--color-status-warning))',
+                                error: 'oklch(var(--color-status-error))',
+                                info: 'oklch(var(--color-status-info))',
                             }
                         },
                     },
                 },
+            };
+        </script>
+        <!-- Theme Initialization -->
+        <script>
+            (function () {
+                try {
+                    const theme = localStorage.getItem('theme');
+                    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (theme === 'dark' || (!theme && systemDark)) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                } catch (e) {}
+            })();
+            
+            // Global Theme Manager
+            window.setTheme = function(theme) {
+                if (theme === 'system') {
+                    localStorage.removeItem('theme');
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                } else {
+                    localStorage.setItem('theme', theme);
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                }
+                // Dispatch event for UI updates
+                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: theme || 'system' } }));
             };
         </script>
         <!-- Pre-apply collapsed layout (no animation) when stored collapsed.
@@ -161,7 +297,7 @@
         </style>
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background font-sans antialiased selection:bg-accent selection:text-white">
+    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-base font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
         <aside id="sidebar"
                class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
@@ -290,7 +426,7 @@
         <div id="content-wrapper"
              class="flex flex-col-reverse lg:contents w-full relative">
             <main id="main-content"
-                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-white shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
+                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-white dark:bg-background-base shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
                 <!-- Scrollable content wrapper -->
                 <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
                     {% block content %}{% endblock %}
@@ -298,15 +434,17 @@
             </main>
             <!-- Right Sidebar -->
             {% if not hide_right_sidebar %}
-                <aside class="w-full lg:w-80 bg-white shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 z-10 lg:h-auto h-auto">
+                <aside class="w-full lg:w-80 bg-white dark:bg-background-dark shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
                     <!-- Profile -->
                     <div class="flex-shrink-0 mb-6">
                         <a href="{{ url_for("views.settings") }}"
                            class="cursor-pointer flex items-center justify-between group">
                             <!-- Name and Role on the left -->
                             <div class="flex-1">
-                                <h2 class="text-xl font-bold group-hover:text-primary transition-colors">{{ current_user.name }}</h2>
-                                <p class="text-sm text-gray-400">
+                                <h2 class="text-xl font-bold text-text-dark dark:text-text-base group-hover:text-primary transition-colors">
+                                    {{ current_user.name }}
+                                </h2>
+                                <p class="text-sm text-gray-400 dark:text-gray-500">
                                     {{ current_user.role.name|title if current_user.is_authenticated else "Guest" }}, {{ current_user.institution if current_user.is_authenticated and current_user.institution else "Delhi" }}
                                 </p>
                             </div>
@@ -323,9 +461,9 @@
                         </div>
                     </div>
                     {% if current_user.is_authenticated and current_user.role.name != 'ADMIN' %}
-                        <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100">
+                        <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
                             <button onclick="document.getElementById('queryModal').classList.remove('hidden')"
-                                    class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary font-medium transition-colors">
+                                    class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-background-base hover:text-primary dark:hover:text-primary font-medium transition-colors">
                                 <i data-feather="help-circle" class="w-4 h-4"></i> Need Help?
                             </button>
                         </div>
@@ -336,19 +474,20 @@
         <!-- Query Modal -->
         <div id="queryModal"
              class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-            <div class="relative mx-auto p-8 border w-[32rem] shadow-2xl rounded-2xl bg-white animate-fadeIn">
+            <div class="relative mx-auto p-8 border border-gray-100 dark:border-gray-800 w-[32rem] shadow-2xl rounded-2xl bg-white dark:bg-background-dark animate-fadeIn">
                 <div class="mt-2">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl leading-6 font-bold text-gray-900">Raise a Query</h3>
+                        <h3 class="text-2xl leading-6 font-bold text-gray-900 dark:text-text-base">Raise a Query</h3>
                         <button onclick="document.getElementById('queryModal').classList.add('hidden')"
-                                class="text-gray-400 hover:text-gray-600 transition-colors">
+                                class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                             <i data-feather="x" class="w-6 h-6"></i>
                         </button>
                     </div>
                     <form action="{{ url_for("views.submit_query") }}" method="post">
                         <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
-                            <input class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50"
+                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                                   for="title">Title</label>
+                            <input class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
                                    id="title"
                                    name="title"
                                    type="text"
@@ -356,9 +495,10 @@
                                    required>
                         </div>
                         <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="tag">Category</label>
+                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                                   for="tag">Category</label>
                             <div class="relative">
-                                <select class="w-full px-4 py-3 border border-gray-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50"
+                                <select class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base"
                                         id="tag"
                                         name="tag"
                                         required>
@@ -368,23 +508,24 @@
                                     <option value="SYLLABUS">Syllabus Error</option>
                                     <option value="OTHER">Other</option>
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-400">
                                     <i data-feather="chevron-down" class="w-4 h-4"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description</label>
-                            <textarea class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50"
+                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                                   for="description">Description</label>
+                            <textarea class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
                                       id="description"
                                       name="description"
                                       placeholder="Please describe your issue in detail..."
                                       required></textarea>
                         </div>
-                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
                             <button type="button"
                                     onclick="document.getElementById('queryModal').classList.add('hidden')"
-                                    class="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-100 rounded-xl transition-colors">
+                                    class="px-5 py-2.5 text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-100 dark:hover:bg-background-base rounded-xl transition-colors">
                                 Cancel
                             </button>
                             <button type="submit"

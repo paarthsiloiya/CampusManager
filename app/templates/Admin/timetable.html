@@ -4,37 +4,37 @@
     {% if has_timetable %}
         <!-- Export Section -->
         <div class="mb-6">
-            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Export Data</h4>
+            <h4 class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-3">Export Data</h4>
             <div class="space-y-2">
                 <a href="{{ url_for('views.download_timetable', format='pdf', branch='all') }}"
                    target="_blank"
-                   class="w-full flex items-center justify-center px-4 py-2.5 bg-red-50 text-red-600 rounded-xl border border-red-100 hover:bg-red-100 transition-colors text-sm font-bold">
+                   class="w-full flex items-center justify-center px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl border border-red-100 dark:border-red-800/50 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-sm font-bold">
                     <i data-feather="file-text" class="w-4 h-4 mr-2"></i> PDF Export
                 </a>
                 <a href="{{ url_for('views.download_timetable', format='excel', branch='all') }}"
-                   class="w-full flex items-center justify-center px-4 py-2.5 bg-green-50 text-green-600 rounded-xl border border-green-100 hover:bg-green-100 transition-colors text-sm font-bold">
+                   class="w-full flex items-center justify-center px-4 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl border border-green-100 dark:border-green-800/50 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors text-sm font-bold">
                     <i data-feather="grid" class="w-4 h-4 mr-2"></i> Excel Export
                 </a>
             </div>
         </div>
         <!-- Semester Toggle Section -->
         <div class="mb-6">
-            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Active Session</h4>
+            <h4 class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-3">Active Session</h4>
             <form method="post"
                   action="{{ url_for("views.timetable") }}"
                   onsubmit="return confirm('Are you sure you want to switch the active semester type? This will change which classes are visible to teachers.');">
                 <input type="hidden" name="action" value="toggle_semester" />
-                <div class="grid grid-cols-2 gap-2 p-1 bg-gray-50 rounded-xl border border-gray-200">
+                <div class="grid grid-cols-2 gap-2 p-1 bg-gray-50 dark:bg-background-darker rounded-xl border border-gray-200 dark:border-gray-700">
                     <button type="submit"
                             name="semester_type"
                             value="odd"
-                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'odd' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
+                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'odd' %}bg-white dark:bg-background-dark text-primary shadow-sm border border-gray-100 dark:border-gray-700{% else %}text-text-light dark:text-text-light hover:text-text-dark dark:hover:text-text-base{% endif %}">
                         Odd Semesters
                     </button>
                     <button type="submit"
                             name="semester_type"
                             value="even"
-                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'even' %}bg-white text-primary shadow-sm border border-gray-100{% else %}text-text-light hover:text-text-dark{% endif %}">
+                            class="px-3 py-2 rounded-lg text-xs font-bold transition-all {% if settings.active_semester_type == 'even' %}bg-white dark:bg-background-dark text-primary shadow-sm border border-gray-100 dark:border-gray-700{% else %}text-text-light dark:text-text-light hover:text-text-dark dark:hover:text-text-base{% endif %}">
                         Even Semesters
                     </button>
                 </div>
@@ -43,13 +43,13 @@
         </div>
         <!-- Management Section -->
         <div class="mb-6">
-            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Danger Zone</h4>
+            <h4 class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-3">Danger Zone</h4>
             <form method="post"
                   action="{{ url_for("views.timetable") }}"
                   onsubmit="return confirm('WARNING: This will completely delete the existing timetable for ALL branches. Continue?');">
                 <input type="hidden" name="action" value="reset" />
                 <button type="submit"
-                        class="w-full flex items-center justify-center px-4 py-2.5 bg-gray-50 text-text-dark rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors text-sm font-bold group">
+                        class="w-full flex items-center justify-center px-4 py-2.5 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800/50 transition-colors text-sm font-bold group">
                     <i data-feather="refresh-cw"
                        class="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-500"></i> Reset Timetable
                 </button>
@@ -57,15 +57,15 @@
         </div>
         <!-- Stats Section -->
         <div>
-            <h4 class="text-xs font-bold text-text-light uppercase tracking-wider mb-3">Quick Stats</h4>
-            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+            <h4 class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-3">Quick Stats</h4>
+            <div class="bg-gray-50 dark:bg-background-base rounded-xl p-4 border border-gray-100 dark:border-gray-800 space-y-3">
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-text-light">Valid Entries</span>
+                    <span class="text-text-light dark:text-text-light">Valid Entries</span>
                     <span class="font-bold text-primary">{{ timetables|length * 30 }} approx</span>
                 </div>
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-text-light">Active Branch</span>
-                    <span class="font-bold text-text-dark">{{ current_branch }}</span>
+                    <span class="text-text-light dark:text-text-light">Active Branch</span>
+                    <span class="font-bold text-text-dark dark:text-text-base">{{ current_branch }}</span>
                 </div>
             </div>
         </div>
@@ -83,11 +83,11 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-text-dark">Timetable Management</h1>
-                <p class="text-text-light text-sm mt-1">View and manage schedules for all branches.</p>
+                <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Timetable Management</h1>
+                <p class="text-text-light dark:text-text-light text-sm mt-1">View and manage schedules for all branches.</p>
             </div>
             <a href="{{ url_for("views.admin_dashboard") }}"
-               class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 transition-colors"> <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back to Dashboard </a>
+               class="inline-flex items-center px-4 py-2 bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-text-dark hover:bg-gray-50 dark:hover:bg-background-darker transition-colors"> <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Back to Dashboard </a>
         </div>
         {% if has_timetable %}
             <!-- Branch Selector -->
@@ -96,7 +96,7 @@
                     <div class="flex items-center gap-2 min-w-max">
                         {% for branch in branches %}
                             <a href="{{ url_for('views.timetable', branch=branch) }}"
-                               class="px-5 py-2.5 rounded-xl border text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-2 {% if branch == current_branch %} bg-primary text-white border-primary shadow-lg shadow-primary/20 {% else %} bg-white text-text-light border-gray-200 hover:border-primary hover:text-primary hover:bg-primary/5 {% endif %}">
+                               class="px-5 py-2.5 rounded-xl border text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-2 {% if branch == current_branch %} bg-primary text-white border-primary shadow-lg shadow-primary/20 {% else %} bg-white dark:bg-background-dark text-text-light border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary hover:bg-primary/5 {% endif %}">
                                 {{ branch }}
                             </a>
                         {% endfor %}
@@ -110,37 +110,37 @@
                             <!-- Table Header -->
                             <div class="flex items-center gap-3 px-1">
                                 <span class="px-3 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider border border-primary/20">Semester {{ sem }}</span>
-                                <h3 class="font-bold text-text-dark">{{ current_branch }} Department</h3>
+                                <h3 class="font-bold text-text-dark dark:text-text-base">{{ current_branch }} Department</h3>
                             </div>
                             <!-- Table Container -->
-                            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div class="bg-white dark:bg-background-dark rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                                 <div class="overflow-x-auto custom-scrollbar">
                                     <table class="w-full text-left border-collapse min-w-[1000px]">
                                         <thead>
-                                            <tr class="bg-gray-50/80 border-b border-gray-200">
-                                                <th class="p-3 text-xs font-bold text-text-light uppercase tracking-wide w-24 border-r border-gray-100 text-center sticky left-0 bg-gray-50 z-10">
+                                            <tr class="bg-gray-50/80 dark:bg-background-darker border-b border-gray-200 dark:border-gray-800">
+                                                <th class="p-3 text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide w-24 border-r border-gray-100 dark:border-gray-800 text-center sticky left-0 bg-gray-50 dark:bg-background-darker z-10">
                                                     Day
                                                 </th>
                                                 {% for p in data.periods %}
                                                     {% if loop.index == lunch_break_after + 1 %}
-                                                        <th class="p-3 text-[10px] font-bold text-text-light uppercase tracking-wide w-12 bg-gray-100/50 text-center border-r border-gray-100">
+                                                        <th class="p-3 text-[10px] font-bold text-text-light dark:text-text-light uppercase tracking-wide w-12 bg-gray-100/50 dark:bg-background-base text-center border-r border-gray-100 dark:border-gray-800">
                                                             Break
                                                         </th>
                                                     {% endif %}
-                                                    <th class="p-3 border-r border-gray-100 min-w-[160px] text-center">
+                                                    <th class="p-3 border-r border-gray-100 dark:border-gray-800 min-w-[160px] text-center">
                                                         <div class="flex flex-col items-center justify-center">
-                                                            <span class="text-sm font-bold text-text-dark">Period {{ p }}</span>
-                                                            <span class="text-[10px] font-medium text-text-light bg-white border border-gray-200 px-1.5 py-0.5 rounded mt-1 shadow-sm">{{ data.period_headers[p] }}</span>
+                                                            <span class="text-sm font-bold text-text-dark dark:text-text-base">Period {{ p }}</span>
+                                                            <span class="text-[10px] font-medium text-text-light dark:text-text-light bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 px-1.5 py-0.5 rounded mt-1 shadow-sm">{{ data.period_headers[p] }}</span>
                                                         </div>
                                                     </th>
                                                 {% endfor %}
                                             </tr>
                                         </thead>
-                                        <tbody class="divide-y divide-gray-100">
+                                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                                             {% for day in data.days %}
                                                 {% set is_first_day = loop.first %}
-                                                <tr class="group hover:bg-gray-50/30 transition-colors">
-                                                    <th class="p-3 text-xs font-bold text-text-dark border-r border-gray-100 bg-white sticky left-0 group-hover:bg-gray-50 text-center z-10">
+                                                <tr class="group hover:bg-gray-50/30 dark:hover:bg-background-darker/50 transition-colors">
+                                                    <th class="p-3 text-xs font-bold text-text-dark dark:text-text-base border-r border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark sticky left-0 group-hover:bg-gray-50 dark:group-hover:bg-background-darker text-center z-10">
                                                         {{ day[:3] | upper }}
                                                     </th>
                                                     {% for p in data.periods %}
@@ -155,11 +155,11 @@
                                                         {% set cell = data.grid[day].get(p) %}
                                                         {% if cell and not cell.is_skipped %}
                                                             <td colspan="{{ cell.colspan }}"
-                                                                class="p-2 border-r border-gray-100 justify-between hover:bg-white transition-shadow hover:shadow-inner text-center">
+                                                                class="p-2 border-r border-gray-100 dark:border-gray-800 justify-between hover:bg-white dark:hover:bg-background-dark transition-shadow hover:shadow-inner text-center">
                                                                 {% if cell.entry %}
                                                                     {% set entry = cell.entry %}
                                                                     <div class="flex flex-col items-center justify-between gap-1.5 h-full w-full">
-                                                                        <div class="text-sm font-bold text-text-dark leading-tight max-w-[180px] break-words">
+                                                                        <div class="text-sm font-bold text-text-dark dark:text-text-base leading-tight max-w-[180px] break-words">
                                                                             {{ entry.assigned_class.subject.name }}
                                                                         </div>
                                                                         <div class="flex flex-col items-center gap-2 justify-center mt-1">
@@ -175,7 +175,7 @@
                                                                     </div>
                                                                 {% else %}
                                                                     <div class="h-16 w-full flex items-center justify-center">
-                                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100"></div>
+                                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700"></div>
                                                                     </div>
                                                                 {% endif %}
                                                             </td>
@@ -193,13 +193,15 @@
             </div>
         {% else %}
             <div class="max-w-2xl mx-auto">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
-                    <div class="p-8 pb-6 border-b border-gray-100 bg-gray-50/50">
+                <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl overflow-hidden">
+                    <div class="p-8 pb-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-background-base/50">
                         <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary">
                             <i data-feather="calendar" class="w-6 h-6"></i>
                         </div>
-                        <h2 class="text-xl font-bold text-text-dark">Initialize Timetable</h2>
-                        <p class="text-text-light text-sm mt-1">Configure parameters to automatically generate the class schedule.</p>
+                        <h2 class="text-xl font-bold text-text-dark dark:text-text-base">Initialize Timetable</h2>
+                        <p class="text-text-light dark:text-text-light text-sm mt-1">
+                            Configure parameters to automatically generate the class schedule.
+                        </p>
                     </div>
                     <form method="post"
                           action="{{ url_for("views.timetable") }}"
@@ -209,7 +211,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="start_time"
-                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                       class="text-xs font-bold text-text-dark dark:text-text-base uppercase tracking-wide flex items-center gap-2">
                                     College Starts
                                     <span class="text-text-light font-normal"
                                           title="First class start time. All periods are calculated from this time.">
@@ -229,11 +231,11 @@
                                        name="start_time"
                                        value="{{ settings.start_time.strftime("%H:%M") if settings else '09:30' }}"
                                        required
-                                       class="w-full bg-gray-50 border border-transparent rounded-xl px-4 py-3 text-text-dark font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                                       class="w-full bg-gray-50 dark:bg-background-base border border-transparent dark:border-gray-800 rounded-xl px-4 py-3 text-text-dark dark:text-text-base font-medium focus:bg-white dark:focus:bg-background-dark focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
                             </div>
                             <div class="space-y-2">
                                 <label for="end_time"
-                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                       class="text-xs font-bold text-text-dark dark:text-text-base uppercase tracking-wide flex items-center gap-2">
                                     College Ends
                                     <span class="text-text-light font-normal"
                                           title="Last class end time. Total available time = End - Start - Lunch Duration.">
@@ -283,7 +285,7 @@
                                                value="{{ day }}"
                                                {% if day in active_days %}checked{% endif %}
                                                class="peer sr-only" />
-                                        <span class="inline-block px-4 py-2 rounded-xl bg-gray-50 border border-transparent text-sm font-medium text-text-light peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 peer-checked:font-bold transition-all group-hover:bg-gray-100">
+                                        <span class="inline-block px-4 py-2 rounded-xl bg-gray-50 dark:bg-background-base border border-transparent dark:border-gray-800 text-sm font-medium text-text-light dark:text-text-light peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 peer-checked:font-bold transition-all group-hover:bg-gray-100 dark:group-hover:bg-background-darker">
                                             {{ day[:3] }}
                                         </span>
                                     </label>
@@ -295,7 +297,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="periods"
-                                       class="text-xs font-bold text-text-dark uppercase tracking-wide flex items-center gap-2">
+                                       class="text-xs font-bold text-text-dark dark:text-text-base uppercase tracking-wide flex items-center gap-2">
                                     Total Periods
                                     <span class="text-text-light font-normal"
                                           title="Number of class periods per day. System calculates duration by dividing available time.">

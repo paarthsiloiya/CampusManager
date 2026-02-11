@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Settings — CampusManager{% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full h-full lg:h-auto">
+    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 shadow-sm w-full h-full lg:h-auto">
         <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
             <i data-feather="shield" class="w-4 h-4 text-primary"></i> Security Status
         </h3>
         <div class="space-y-4">
-            <div class="p-3 bg-green-50 rounded-xl border border-green-100">
+            <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-100 dark:border-green-800">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-800 flex items-center justify-center text-green-600 dark:text-green-300">
                         <i data-feather="lock" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-green-700 uppercase">Password</p>
-                        <p class="text-sm font-medium text-green-900">Strong</p>
+                        <p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase">Password</p>
+                        <p class="text-sm font-medium text-green-900 dark:text-green-200">Strong</p>
                     </div>
                 </div>
             </div>
-            <div class="p-3 bg-blue-50 rounded-xl border border-blue-100">
+            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-300">
                         <i data-feather="shield-check" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-blue-700 uppercase">Role</p>
-                        <p class="text-sm font-medium text-blue-900">Administrator</p>
+                        <p class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase">Role</p>
+                        <p class="text-sm font-medium text-blue-900 dark:text-blue-200">Administrator</p>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             </div>
         </div>
         <!-- Profile Settings -->
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
             <div class="p-8 border-b border-gray-100">
                 <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
@@ -92,12 +92,12 @@
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Phone Number</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Phone Number</label>
                             <input type="text"
                                    name="phone"
                                    value="{{ current_user.phone or '' }}"
                                    placeholder="+91..."
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
                         </div>
                     </div>
                     <div class="flex justify-end pt-2">
@@ -110,10 +110,10 @@
             </div>
         </div>
         <!-- Password Settings -->
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mt-8">
-            <div class="p-8 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                <h2 class="text-xl font-bold text-text-dark dark:text-white flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                         <i data-feather="shield" class="w-5 h-5"></i>
                     </span>
                     Security
@@ -124,40 +124,118 @@
                       method="post"
                       class="max-w-xl space-y-6">
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Current Password</label>
+                        <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Current Password</label>
                         <input type="password"
                                name="current_password"
                                required
-                               class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                               class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                placeholder="Enter current password" />
                     </div>
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">New Password</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">New Password</label>
                             <input type="password"
                                    name="new_password"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="Min. 6 characters" />
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-dark uppercase tracking-wide">Confirm Password</label>
+                            <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Confirm Password</label>
                             <input type="password"
                                    name="confirm_password"
                                    required
-                                   class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-text-dark font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                   class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                    placeholder="Re-enter new password" />
                         </div>
                     </div>
                     <div class="flex justify-end pt-2">
                         <button type="submit"
-                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200">
+                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200 dark:shadow-none">
                             Update Password
                         </button>
                     </div>
                 </form>
             </div>
         </div>
+        <!-- Appearance Settings -->
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8 appearance-section">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <i data-feather="moon" class="w-5 h-5"></i>
+                    </span>
+                    Appearance
+                </h2>
+            </div>
+            <div class="p-8 space-y-6">
+                <!-- Theme Toggle -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Light -->
+                    <button type="button"
+                            onclick="window.setTheme('light')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="light">
+                        <div class="w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner">
+                            <div class="absolute inset-2 bg-white rounded shadow-sm">
+                                <div class="h-2 w-full bg-gray-50 border-b border-gray-100"></div>
+                                <div class="p-2 space-y-1">
+                                    <div class="h-1 w-1/2 bg-gray-200 rounded-full"></div>
+                                    <div class="h-1 w-3/4 bg-gray-100 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="font-bold text-text-dark">Light</span>
+                    </button>
+                    <!-- Dark -->
+                    <button type="button"
+                            onclick="window.setTheme('dark')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="dark">
+                        <div class="w-full h-32 bg-gray-900 rounded-lg overflow-hidden border border-gray-700 relative shadow-inner">
+                            <div class="absolute inset-2 bg-gray-800 rounded shadow-sm border border-gray-700">
+                                <div class="h-2 w-full bg-gray-900 border-b border-gray-700"></div>
+                                <div class="p-2 space-y-1">
+                                    <div class="h-1 w-1/2 bg-gray-700 rounded-full"></div>
+                                    <div class="h-1 lg:w-3/4 bg-gray-700 rounded-full opacity-50"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="font-bold text-text-dark">Dark</span>
+                    </button>
+                    <!-- System -->
+                    <button type="button"
+                            onclick="window.setTheme('system')"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            data-theme="system">
+                        <div class="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-900 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner flex items-center justify-center">
+                            <i data-feather="monitor"
+                               class="w-8 h-8 text-gray-500 bg-white/50 p-1.5 rounded-lg backdrop-blur-sm"></i>
+                        </div>
+                        <span class="font-bold text-text-dark">System</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            function updateThemeUI() {
+                const currentTheme = localStorage.getItem('theme') || 'system';
+                document.querySelectorAll('.appearance-btn').forEach(btn => {
+                    const theme = btn.dataset.theme;
+                    if (theme === currentTheme) {
+                        btn.classList.add('border-primary', 'bg-primary/5');
+                        btn.classList.remove('border-transparent');
+                    } else {
+                        btn.classList.remove('border-primary', 'bg-primary/5');
+                        btn.classList.add('border-transparent');
+                    }
+                });
+                if (window.feather) feather.replace();
+            }
+            // Init immediately and on change
+            updateThemeUI();
+            window.addEventListener('themeChanged', updateThemeUI);
+        </script>
     </section>
     <script>
     document.addEventListener("DOMContentLoaded", function () {

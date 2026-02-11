@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Edit User — CampusManager{% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm w-full">
+    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm w-full">
         <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
             <i data-feather="info" class="w-4 h-4 text-primary"></i> Role Guide
         </h3>
@@ -32,8 +32,8 @@
                class="flex items-center gap-2 text-text-light hover:text-primary transition-colors font-medium"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
         </div>
         <!-- Edit Form -->
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-8 border-b border-gray-100">
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
                 <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="edit-3" class="w-5 h-5"></i>
@@ -46,8 +46,8 @@
                       method="post"
                       class="space-y-6">
                     <!-- User Meta / Read Only -->
-                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary font-bold shadow-sm">
+                    <div class="p-4 bg-gray-50 dark:bg-background-darker rounded-2xl border border-gray-100 dark:border-gray-800 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-white dark:bg-background-dark flex items-center justify-center text-primary font-bold shadow-sm">
                             {{ user.name[0] | upper }}
                         </div>
                         <div>
