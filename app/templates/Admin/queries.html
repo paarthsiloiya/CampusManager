@@ -8,11 +8,11 @@
         <form method="get" class="space-y-4">
             <!-- Category -->
             <div class="space-y-2">
-                <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Category</label>
+                <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Category</label>
                 <div class="relative">
                     <select name="tag"
                             onchange="this.form.submit()"
-                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-background-base border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-background-dark focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-text-base appearance-none cursor-pointer text-sm">
+                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border-transparent dark:border-gray-700 focus:bg-white dark:focus:bg-gray-700 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-white appearance-none cursor-pointer text-sm">
                         <option value="">All Categories</option>
                         {% for tag in QueryTag %}
                             <option value="{{ tag.name }}"
@@ -22,16 +22,16 @@
                         {% endfor %}
                     </select>
                     <i data-feather="chevron-down"
-                       class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                       class="w-4 h-4 text-text-light dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
                 </div>
             </div>
             <!-- Role -->
             <div class="space-y-2">
-                <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">User Role</label>
+                <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">User Role</label>
                 <div class="relative">
                     <select name="role"
                             onchange="this.form.submit()"
-                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-background-base border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-background-dark focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-text-base appearance-none cursor-pointer text-sm">
+                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border-transparent dark:border-gray-700 focus:bg-white dark:focus:bg-gray-700 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-white appearance-none cursor-pointer text-sm">
                         <option value="">All Users</option>
                         <option value="STUDENT"
                                 {% if request.args.get('role') == 'STUDENT' %}selected{% endif %}>Students</option>
@@ -39,23 +39,23 @@
                                 {% if request.args.get('role') == 'TEACHER' %}selected{% endif %}>Teachers</option>
                     </select>
                     <i data-feather="chevron-down"
-                       class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                       class="w-4 h-4 text-text-light dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
                 </div>
             </div>
             <!-- Sort -->
             <div class="space-y-2">
-                <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Sort Order</label>
+                <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Sort Order</label>
                 <div class="relative">
                     <select name="sort"
                             onchange="this.form.submit()"
-                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-background-base border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-background-dark focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-text-base appearance-none cursor-pointer text-sm">
+                            class="w-full pl-4 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 border-transparent dark:border-gray-700 focus:bg-white dark:focus:bg-gray-700 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-white appearance-none cursor-pointer text-sm">
                         <option value="desc"
                                 {% if request.args.get('sort') != 'asc' %}selected{% endif %}>Newest First</option>
                         <option value="asc"
                                 {% if request.args.get('sort') == 'asc' %}selected{% endif %}>Oldest First</option>
                     </select>
                     <i data-feather="chevron-down"
-                       class="w-4 h-4 text-text-light absolute right-4 top-3.5 pointer-events-none"></i>
+                       class="w-4 h-4 text-text-light dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
                 </div>
             </div>
             {% if request.args.get('tag') or request.args.get('role') or request.args.get('sort') == 'asc' %}
@@ -74,7 +74,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">User Queries</h1>
-                <p class="text-text-light dark:text-text-light mt-1">
+                <p class="text-text-light dark:text-gray-400 mt-1">
                     Manage and respond to support tickets from students and teachers.
                 </p>
             </div>
@@ -84,54 +84,54 @@
             {% for query in queries %}
                 <div class="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                     <!-- Summary Header (Clickable) -->
-                    <div class="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50/50 dark:hover:bg-background-darker/50 transition-colors"
+                    <div class="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors"
                          onclick="toggleQuery('{{ query.id }}')">
                         <div class="flex items-center gap-3 overflow-hidden">
                             <!-- Category Badge -->
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-background-darker text-text-light whitespace-nowrap">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-gray-800 text-text-light dark:text-gray-400 whitespace-nowrap">
                                 {{ query.tag.value }}
                             </span>
                             <!-- Title -->
-                            <span class="font-bold text-sm text-text-dark dark:text-text-base truncate">{{ query.title }}</span>
+                            <span class="font-bold text-sm text-text-dark dark:text-white truncate">{{ query.title }}</span>
                             <!-- Sender -->
-                            <span class="text-xs text-text-light dark:text-text-light truncate hidden sm:inline-block border-l border-gray-200 dark:border-gray-700 pl-3">
-                                <span class="font-medium text-text-dark dark:text-text-base">{{ query.user.name }}</span> ({{ query.user.role.name|title }})
+                            <span class="text-xs text-text-light dark:text-gray-400 truncate hidden sm:inline-block border-l border-gray-200 dark:border-gray-700 pl-3">
+                                <span class="font-medium text-text-dark dark:text-gray-200">{{ query.user.name }}</span> ({{ query.user.role.name|title }})
                             </span>
                         </div>
                         <div class="flex items-center gap-3 shrink-0">
-                            <span class="text-xs text-text-light dark:text-text-light font-medium">{{ query.created_at.strftime("%b %d") }}</span>
-                            <div class="w-6 h-6 rounded-full bg-gray-50 dark:bg-background-base flex items-center justify-center transition-transform duration-200"
+                            <span class="text-xs text-text-light dark:text-gray-400 font-medium">{{ query.created_at.strftime("%b %d") }}</span>
+                            <div class="w-6 h-6 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center transition-transform duration-200"
                                  id="chevron-{{ query.id }}">
                                 <i data-feather="chevron-down"
-                                   class="w-3 h-3 text-text-light dark:text-text-light"></i>
+                                   class="w-3 h-3 text-text-light dark:text-gray-400"></i>
                             </div>
                         </div>
                     </div>
                     <!-- Expanded Details -->
                     <div id="content-{{ query.id }}"
-                         class="hidden border-t border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-background-darker/30">
+                         class="hidden border-t border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/20">
                         <div class="p-4 space-y-4">
                             <!-- Description -->
-                            <div class="text-sm text-text-dark dark:text-text-base leading-relaxed bg-white dark:bg-background-dark p-3 rounded-lg border border-gray-100 dark:border-gray-800">
+                            <div class="text-sm text-text-dark dark:text-gray-200 leading-relaxed bg-white dark:bg-background-dark p-3 rounded-lg border border-gray-100 dark:border-gray-800">
                                 {{ query.description }}
                             </div>
                             <!-- Metadata Grid -->
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                                 <div>
-                                    <span class="block font-bold text-text-light dark:text-text-light uppercase tracking-wide text-[10px] mb-0.5">From</span>
-                                    <span class="font-medium text-text-dark dark:text-text-base">{{ query.user.name }}</span>
+                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">From</span>
+                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.name }}</span>
                                 </div>
                                 <div>
-                                    <span class="block font-bold text-text-light dark:text-text-light uppercase tracking-wide text-[10px] mb-0.5">Email</span>
-                                    <span class="font-medium text-text-dark dark:text-text-base">{{ query.user.email }}</span>
+                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Email</span>
+                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.email }}</span>
                                 </div>
                                 <div>
-                                    <span class="block font-bold text-text-light dark:text-text-light uppercase tracking-wide text-[10px] mb-0.5">Role</span>
-                                    <span class="font-medium text-text-dark dark:text-text-base">{{ query.user.role.name }}</span>
+                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Role</span>
+                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.role.name }}</span>
                                 </div>
                                 <div>
-                                    <span class="block font-bold text-text-light dark:text-text-light uppercase tracking-wide text-[10px] mb-0.5">Dep/Branch</span>
-                                    <span class="font-medium text-text-dark dark:text-text-base">{{ query.user.department or query.user.branch.name or 'N/A' }}</span>
+                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Dep/Branch</span>
+                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.department or query.user.branch.name or 'N/A' }}</span>
                                 </div>
                             </div>
                             <!-- Action Form -->
@@ -141,14 +141,14 @@
                                 <div class="flex-1">
                                     <textarea name="response"
                                               rows="1"
-                                              class="w-full bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-sm text-text-dark dark:text-text-base focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
+                                              class="w-full bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-sm text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
                                               placeholder="Type a reply (Optional)..."></textarea>
                                 </div>
                                 <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
                                     <button type="submit"
                                             name="action"
                                             value="dismiss"
-                                            class="px-4 py-2 rounded-lg bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 text-text-dark dark:text-text-base text-xs font-bold hover:bg-gray-50 dark:hover:bg-background-darker transition-colors">
+                                            class="px-4 py-2 rounded-lg bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 text-text-dark dark:text-gray-300 text-xs font-bold hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                         Dismiss
                                     </button>
                                     <button type="submit"
@@ -164,11 +164,11 @@
                 </div>
             {% else %}
                 <div class="text-center py-12 bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 border-dashed">
-                    <div class="w-12 h-12 bg-gray-50 dark:bg-background-base rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-gray-600">
+                    <div class="w-12 h-12 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-gray-600">
                         <i data-feather="inbox" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-sm font-bold text-text-dark dark:text-text-base">No queries found</h3>
-                    <p class="text-xs text-text-light dark:text-text-light">Great job! All caught up.</p>
+                    <h3 class="text-sm font-bold text-text-dark dark:text-gray-300">No queries found</h3>
+                    <p class="text-xs text-text-light dark:text-gray-500">Great job! All caught up.</p>
                 </div>
             {% endfor %}
         </div>

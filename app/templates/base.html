@@ -175,6 +175,145 @@
             html.dark .border-gray-200:not([class*="dark:"]) {
                 border-color: #374151 !important;
             }
+            html.dark .border-gray-300:not([class*="dark:"]) {
+                border-color: #4b5563 !important;
+            }
+            
+            /* Fix more text grays that don't have dark: variants */
+            html.dark .text-gray-600:not([class*="dark:"]) {
+                color: oklch(var(--color-text-light)) !important;
+            }
+            html.dark .text-gray-500:not([class*="dark:"]) {
+                color: oklch(var(--color-text-lighter)) !important;
+            }
+            html.dark .text-gray-400:not([class*="dark:"]) {
+                color: #9ca3af !important;
+            }
+            html.dark .text-gray-300:not([class*="dark:"]) {
+                color: #d1d5db !important;
+            }
+            
+            /* Fix bg-gray-200 */
+            html.dark .bg-gray-200:not([class*="dark:"]) {
+                background-color: #374151 !important;
+            }
+            
+            /* Fix hover states */
+            html.dark .hover\:bg-gray-50:hover {
+                background-color: oklch(var(--color-bg-light)) !important;
+            }
+            html.dark .hover\:bg-gray-100:hover {
+                background-color: oklch(var(--color-bg-lighter)) !important;
+            }
+            
+            /* Fix bg-indigo-* for dark (used in signin, calendar) */
+            html.dark .bg-indigo-600:not([class*="dark:"]) {
+                background-color: oklch(var(--color-primary-base)) !important;
+            }
+            html.dark .hover\:bg-indigo-700:hover {
+                background-color: oklch(var(--color-primary-dark)) !important;
+            }
+            html.dark .text-indigo-600:not([class*="dark:"]) {
+                color: oklch(var(--color-primary-light)) !important;
+            }
+            html.dark .text-indigo-500:not([class*="dark:"]) {
+                color: oklch(var(--color-primary-light)) !important;
+            }
+            html.dark .focus\:ring-indigo-500:focus {
+                --tw-ring-color: oklch(var(--color-primary-base)) !important;
+            }
+            html.dark .focus\:border-indigo-500:focus {
+                border-color: oklch(var(--color-primary-base)) !important;
+            }
+            
+            /* Status color dark fixes */
+            html.dark .bg-green-50:not([class*="dark:"]) {
+                background-color: rgba(34, 197, 94, 0.1) !important;
+            }
+            html.dark .bg-red-50:not([class*="dark:"]) {
+                background-color: rgba(239, 68, 68, 0.1) !important;
+            }
+            html.dark .bg-amber-50:not([class*="dark:"]) {
+                background-color: rgba(245, 158, 11, 0.1) !important;
+            }
+            html.dark .bg-yellow-50:not([class*="dark:"]) {
+                background-color: rgba(234, 179, 8, 0.1) !important;
+            }
+            html.dark .bg-blue-50:not([class*="dark:"]) {
+                background-color: rgba(59, 130, 246, 0.1) !important;
+            }
+            html.dark .bg-purple-50:not([class*="dark:"]) {
+                background-color: rgba(168, 85, 247, 0.1) !important;
+            }
+            html.dark .bg-orange-50:not([class*="dark:"]) {
+                background-color: rgba(249, 115, 22, 0.1) !important;
+            }
+            html.dark .bg-indigo-50:not([class*="dark:"]) {
+                background-color: rgba(99, 102, 241, 0.1) !important;
+            }
+            html.dark .bg-emerald-50:not([class*="dark:"]) {
+                background-color: rgba(16, 185, 129, 0.1) !important;
+            }
+            
+            /* Status text dark adjustments (lighten for contrast) */
+            html.dark .text-green-600:not([class*="dark:"]),
+            html.dark .text-green-700:not([class*="dark:"]) {
+                color: #4ade80 !important;
+            }
+            html.dark .text-red-600:not([class*="dark:"]),
+            html.dark .text-red-700:not([class*="dark:"]) {
+                color: #f87171 !important;
+            }
+            html.dark .text-amber-600:not([class*="dark:"]),
+            html.dark .text-amber-700:not([class*="dark:"]) {
+                color: #fbbf24 !important;
+            }
+            html.dark .text-yellow-500:not([class*="dark:"]),
+            html.dark .text-yellow-700:not([class*="dark:"]) {
+                color: #fbbf24 !important;
+            }
+            html.dark .text-blue-600:not([class*="dark:"]),
+            html.dark .text-blue-700:not([class*="dark:"]) {
+                color: #60a5fa !important;
+            }
+            html.dark .text-purple-600:not([class*="dark:"]),
+            html.dark .text-purple-700:not([class*="dark:"]) {
+                color: #c084fc !important;
+            }
+            html.dark .text-orange-600:not([class*="dark:"]),
+            html.dark .text-orange-700:not([class*="dark:"]) {
+                color: #fb923c !important;
+            }
+            html.dark .text-indigo-600:not([class*="dark:"]) {
+                color: #818cf8 !important;
+            }
+            html.dark .text-emerald-600:not([class*="dark:"]) {
+                color: #34d399 !important;
+            }
+            
+            /* Fix status borders in dark */
+            html.dark .border-green-100:not([class*="dark:"]) {
+                border-color: rgba(34, 197, 94, 0.2) !important;
+            }
+            html.dark .border-red-100:not([class*="dark:"]),
+            html.dark .border-red-200:not([class*="dark:"]) {
+                border-color: rgba(239, 68, 68, 0.2) !important;
+            }
+            html.dark .border-amber-100:not([class*="dark:"]) {
+                border-color: rgba(245, 158, 11, 0.2) !important;
+            }
+            html.dark .border-yellow-100:not([class*="dark:"]) {
+                border-color: rgba(234, 179, 8, 0.2) !important;
+            }
+            html.dark .border-blue-100:not([class*="dark:"]) {
+                border-color: rgba(59, 130, 246, 0.2) !important;
+            }
+            html.dark .border-purple-100:not([class*="dark:"]) {
+                border-color: rgba(168, 85, 247, 0.2) !important;
+            }
+            html.dark .border-orange-200:not([class*="dark:"]) {
+                border-color: rgba(249, 115, 22, 0.2) !important;
+            }
             
             /* Fix card and container backgrounds */
             html.dark .shadow-sm:not([class*="dark:"]),
@@ -185,16 +324,12 @@
             
             /* Force main content background in dark mode */
             html.dark #main-content {
-                background-color: #111827 !important; /* gray-900 */
+                background-color: oklch(var(--color-bg-darker)) !important;
             }
             
             /* Force any remaining white backgrounds to be dark */
-            html.dark *:not([class*="text-"]):not([class*="border-"]) {
-                background-color: transparent;
-            }
-            
-            html.dark .bg-white {
-                background-color: #1f2937 !important; /* gray-800 */
+            html.dark .bg-white:not([class*="dark:"]) {
+                background-color: oklch(var(--color-bg-dark)) !important;
             }
         </style>
         <script>
@@ -488,7 +623,7 @@
         <div id="content-wrapper"
              class="flex flex-col-reverse lg:contents w-full relative">
             <main id="main-content"
-                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-gray-900 shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
+                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-background-base shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
                 <!-- Scrollable content wrapper -->
                 <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
                     {% block content %}{% endblock %}
@@ -496,7 +631,7 @@
             </main>
             <!-- Right Sidebar -->
             {% if not hide_right_sidebar %}
-                <aside class="w-full lg:w-80 bg-white dark:bg-background-dark shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
+                <aside class="w-full lg:w-80 bg-white dark:bg-black shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
                     <!-- Profile -->
                     <div class="flex-shrink-0 mb-6">
                         <a href="{{ url_for("views.settings") }}"

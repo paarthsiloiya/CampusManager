@@ -5,8 +5,8 @@
         <!-- Header -->
         <div class="flex items-end justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-text-dark">Settings</h1>
-                <p class="text-text-light mt-1">Manage your profile and account preferences</p>
+                <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Settings</h1>
+                <p class="text-text-light dark:text-text-light mt-1">Manage your profile and account preferences</p>
             </div>
         </div>
         <!-- Personal & Professional Information Form -->
@@ -16,8 +16,8 @@
               class="space-y-8">
             <!-- Personal Information -->
             <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-                <div class="p-8 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                    <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                         <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                             <i data-feather="user" class="w-5 h-5"></i>
                         </span>
@@ -28,7 +28,7 @@
                     <!-- Avatar -->
                     <div class="flex items-center gap-6">
                         <div class="relative group">
-                            <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-text-light border-4 border-white shadow-lg overflow-hidden">
+                            <div class="w-24 h-24 rounded-full bg-gray-100 dark:bg-background-base flex items-center justify-center text-text-light dark:text-text-light border-4 border-white dark:border-background-dark shadow-lg overflow-hidden">
                                 {% if teacher.profile_pic %}
                                     <img src="{{ teacher.profile_pic }}"
                                          alt="Profile"
@@ -45,31 +45,31 @@
                             </button>
                         </div>
                         <div>
-                            <h3 class="font-bold text-text-dark">Profile Photo</h3>
-                            <p class="text-xs text-text-light mt-1">Update your profile picture.</p>
-                            <p class="text-xs text-text-lighter mt-2">Allowed: JPG, PNG. Max 2MB.</p>
+                            <h3 class="font-bold text-text-dark dark:text-text-base">Profile Photo</h3>
+                            <p class="text-xs text-text-light dark:text-text-light mt-1">Update your profile picture.</p>
+                            <p class="text-xs text-text-lighter dark:text-text-light mt-2">Allowed: JPG, PNG. Max 2MB.</p>
                         </div>
                     </div>
                     <!-- Fields -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Full Name</label>
+                            <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Full Name</label>
                             <div class="relative">
                                 <input value="{{ teacher.name or '' }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
+                            <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Email Address</label>
                             <div class="relative">
                                 <input value="{{ teacher.email or '' }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
@@ -133,7 +133,7 @@
             <div class="flex items-center justify-end gap-4">
                 <button type="button"
                         onclick="window.location.reload()"
-                        class="px-6 py-3 rounded-xl text-text-light font-bold hover:bg-gray-100 transition-colors">
+                        class="px-6 py-3 rounded-xl text-text-light dark:text-text-light font-bold hover:bg-gray-100 dark:hover:bg-background-darker transition-colors">
                     Discard
                 </button>
                 <button type="submit"
@@ -220,7 +220,7 @@
         <!-- Appearance Settings -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8 appearance-section">
             <div class="p-8 border-b border-gray-100 dark:border-gray-800">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </span>
@@ -304,14 +304,16 @@
                 <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-red-600">
                     <i data-feather="alert-octagon" class="w-8 h-8"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-text-dark mb-2">Delete Account?</h3>
-                <p class="text-text-light mb-8">This action cannot be undone. All your data will be permanently removed.</p>
+                <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-2">Delete Account?</h3>
+                <p class="text-text-light dark:text-text-light mb-8">
+                    This action cannot be undone. All your data will be permanently removed.
+                </p>
                 <div class="space-y-4">
                     <div class="relative">
                         <input id="deleteConfirmation"
                                type="text"
                                placeholder='Type "DELETE" to confirm'
-                               class="w-full border border-gray-200 rounded-xl px-4 py-3 text-center font-bold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
+                               class="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-background-darker rounded-xl px-4 py-3 text-center font-bold text-text-dark dark:text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
                     </div>
                     <form action="{{ url_for("views.delete_account") }}" method="post">
                         <button type="submit"

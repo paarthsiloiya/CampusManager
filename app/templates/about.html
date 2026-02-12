@@ -1,102 +1,145 @@
-{% extends "base.html" %} {% block title %}About — CampusManager{% endblock %} {% block content %}
-<section class="max-w-7xl mx-auto space-y-8">
-    <!-- Header -->
-    <div class="flex items-end justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-text-dark">About</h1>
-            <p class="text-text-light mt-1">Smart Curriculum & Attendance — a unified academic management platform</p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="lg:col-span-2 space-y-6">
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-                <h2 class="text-xl font-bold text-text-dark mb-2 flex items-center gap-2"><i data-feather="info" class="w-5 h-5 text-primary"></i> What is Smart Curriculum & Attendance?</h2>
-                <p class="text-sm text-text-light">A comprehensive academic management platform for students and educators — attendance tracking, curriculum management, timetables, analytics and notifications in a single intuitive interface.</p>
-            </div>
-
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 grid md:grid-cols-2 gap-6">
-                <div>
-                    <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="star" class="w-4 h-4 text-primary"></i> Key Features</h3>
-                    <ul class="space-y-2 text-sm text-text-light">
-                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Real-time attendance tracking</li>
-                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Interactive academic calendar</li>
-                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Curriculum & timetable management</li>
-                        <li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-green-500 mt-1"></i> Performance analytics and alerts</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="target" class="w-4 h-4 text-primary"></i> Our Mission</h3>
-                    <p class="text-sm text-text-light">Empower students and educators with tools that simplify academic workflows and surface insights that improve learning outcomes.</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="code" class="w-4 h-4 text-primary"></i> Technology Stack</h3>
-                <div class="grid md:grid-cols-3 gap-4 text-sm text-text-light">
-                    <div class="p-3 bg-gray-50 rounded-lg text-center">
-                        <div class="text-base font-semibold text-text-dark">Backend</div>
-                        <div class="text-xs">Flask · SQLAlchemy · Python</div>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-lg text-center">
-                        <div class="text-base font-semibold text-text-dark">Frontend</div>
-                        <div class="text-xs">Tailwind CSS · Chart.js · Vanilla JS</div>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-lg text-center">
-                        <div class="text-base font-semibold text-text-dark">Database</div>
-                        <div class="text-xs">SQLite / SQLAlchemy</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="feedbackSection" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-text-dark mb-3 flex items-center gap-2"><i data-feather="message-circle" class="w-4 h-4 text-primary"></i> Send Feedback</h3>
-                <p class="text-sm text-text-light mb-4">We appreciate your feedback. Share suggestions or report issues and we'll review them.</p>
-
-                <div class="space-y-3">
-                    <textarea id="aboutFeedback" class="w-full p-3 border border-gray-200 rounded-xl resize-none h-28 text-text-dark" placeholder="Type your feedback here..."></textarea>
-                    <div class="flex justify-end gap-3">
-                        <button id="aboutFeedbackCancel" class="px-4 py-2 rounded-xl bg-gray-100 text-text-light">Cancel</button>
-                        <button id="aboutFeedbackSend" class="px-4 py-2 rounded-xl bg-primary text-white font-bold">Send Feedback</button>
-                    </div>
-                </div>
+{% extends "base.html" %}
+{% block title %}About — CampusManager{% endblock %}
+{% block content %}
+    <section class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">About</h1>
+                <p class="text-text-light dark:text-text-light mt-1">
+                    Smart Curriculum & Attendance — a unified academic management platform
+                </p>
             </div>
         </div>
-    </div>
-</section>
-{% endblock %} {% block sidebar_content %}
-
-<!-- Right column / Sidebar box -->
-<aside class="space-y-6">
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5 text-center">
-        <div class="w-16 h-16 bg-gray-50 rounded-full mx-auto mb-4 flex items-center justify-center text-text-light">
-            <i data-feather="info" class="w-6 h-6"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-text-dark dark:text-text-base mb-2 flex items-center gap-2">
+                        <i data-feather="info" class="w-5 h-5 text-primary"></i> What is Smart Curriculum & Attendance?
+                    </h2>
+                    <p class="text-sm text-text-light dark:text-text-light">
+                        A comprehensive academic management platform for students and educators — attendance tracking, curriculum management, timetables, analytics and notifications in a single intuitive interface.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-text-dark dark:text-text-base mb-3 flex items-center gap-2">
+                            <i data-feather="star" class="w-4 h-4 text-primary"></i> Key Features
+                        </h3>
+                        <ul class="space-y-2 text-sm text-text-light dark:text-text-light">
+                            <li class="flex items-start gap-2">
+                                <i data-feather="check" class="w-4 h-4 text-status-success mt-1"></i> Real-time attendance tracking
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-feather="check" class="w-4 h-4 text-status-success mt-1"></i> Interactive academic calendar
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-feather="check" class="w-4 h-4 text-status-success mt-1"></i> Curriculum & timetable management
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-feather="check" class="w-4 h-4 text-status-success mt-1"></i> Performance analytics and alerts
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-text-dark dark:text-text-base mb-3 flex items-center gap-2">
+                            <i data-feather="target" class="w-4 h-4 text-primary"></i> Our Mission
+                        </h3>
+                        <p class="text-sm text-text-light dark:text-text-light">
+                            Empower students and educators with tools that simplify academic workflows and surface insights that improve learning outcomes.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-text-dark dark:text-text-base mb-3 flex items-center gap-2">
+                        <i data-feather="code" class="w-4 h-4 text-primary"></i> Technology Stack
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm text-text-light dark:text-text-light">
+                        <div class="p-3 bg-gray-50 dark:bg-background-base rounded-lg text-center">
+                            <div class="text-base font-semibold text-text-dark dark:text-text-base">Backend</div>
+                            <div class="text-xs">Flask · SQLAlchemy · Python</div>
+                        </div>
+                        <div class="p-3 bg-gray-50 dark:bg-background-base rounded-lg text-center">
+                            <div class="text-base font-semibold text-text-dark dark:text-text-base">Frontend</div>
+                            <div class="text-xs">Tailwind CSS · Chart.js · Vanilla JS</div>
+                        </div>
+                        <div class="p-3 bg-gray-50 dark:bg-background-base rounded-lg text-center">
+                            <div class="text-base font-semibold text-text-dark dark:text-text-base">Database</div>
+                            <div class="text-xs">SQLite / SQLAlchemy</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="feedbackSection"
+                     class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-text-dark dark:text-text-base mb-3 flex items-center gap-2">
+                        <i data-feather="message-circle" class="w-4 h-4 text-primary"></i> Send Feedback
+                    </h3>
+                    <p class="text-sm text-text-light dark:text-text-light mb-4">
+                        We appreciate your feedback. Share suggestions or report issues and we'll review them.
+                    </p>
+                    <div class="space-y-3">
+                        <textarea id="aboutFeedback"
+                                  class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl resize-none h-28 text-text-dark dark:text-text-base bg-white dark:bg-background-darker"
+                                  placeholder="Type your feedback here..."></textarea>
+                        <div class="flex justify-end gap-3">
+                            <button id="aboutFeedbackCancel"
+                                    class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-background-base text-text-light dark:text-text-light hover:bg-gray-200 dark:hover:bg-background-darker transition-colors">
+                                Cancel
+                            </button>
+                            <button id="aboutFeedbackSend"
+                                    class="px-4 py-2 rounded-xl bg-primary text-white font-bold">Send Feedback</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h4 class="font-bold text-text-dark">Smart App</h4>
-        <p class="text-xs text-text-light mt-1">Version 1.0.0</p>
-    </div>
-
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5">
-        <h4 class="font-semibold text-text-dark mb-3">Support</h4>
-        <div class="text-sm text-text-light space-y-2">
-            <div class="flex items-center gap-2"><i data-feather="mail" class="w-4 h-4"></i> support@smartattendance.edu</div>
-            <div class="flex items-center gap-2"><i data-feather="phone" class="w-4 h-4"></i> +91 11 1234 5678</div>
-            <div class="flex items-center gap-2"><i data-feather="clock" class="w-4 h-4"></i> Mon–Fri, 9:00–18:00</div>
+    </section>
+{% endblock %}
+{% block sidebar_content %}
+    <!-- Right column / Sidebar box -->
+    <aside class="space-y-6">
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 text-center">
+            <div class="w-16 h-16 bg-gray-50 dark:bg-background-base rounded-full mx-auto mb-4 flex items-center justify-center text-text-light dark:text-text-light">
+                <i data-feather="info" class="w-6 h-6"></i>
+            </div>
+            <h4 class="font-bold text-text-dark dark:text-text-base">Smart App</h4>
+            <p class="text-xs text-text-light dark:text-text-light mt-1">Version 1.0.0</p>
         </div>
-    </div>
-
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5">
-        <h4 class="font-semibold text-text-dark mb-3">Quick Actions</h4>
-        <div class="space-y-2 text-sm">
-            <button onclick="document.getElementById('feedbackSection').scrollIntoView({ behavior: 'smooth' })" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">Send Feedback</button>
-            <button onclick="alert('You are running the latest version (1.0.0)')" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">Check Updates</button>
-            <button onclick="showSystemInfo()" class="w-full text-left px-4 py-2 rounded-xl hover:bg-gray-50">System Info</button>
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-5">
+            <h4 class="font-semibold text-text-dark dark:text-text-base mb-3">Support</h4>
+            <div class="text-sm text-text-light dark:text-text-light space-y-2">
+                <div class="flex items-center gap-2">
+                    <i data-feather="mail" class="w-4 h-4"></i> support@smartattendance.edu
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-feather="phone" class="w-4 h-4"></i> +91 11 1234 5678
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-feather="clock" class="w-4 h-4"></i> Mon–Fri, 9:00–18:00
+                </div>
+            </div>
         </div>
-    </div>
-</aside>
-{% endblock %} {% block scripts %}
-<script>
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-5">
+            <h4 class="font-semibold text-text-dark dark:text-text-base mb-3">Quick Actions</h4>
+            <div class="space-y-2 text-sm">
+                <button onclick="document.getElementById('feedbackSection').scrollIntoView({ behavior: 'smooth' })"
+                        class="w-full text-left px-4 py-2 rounded-xl text-text-light dark:text-text-light hover:bg-gray-50 dark:hover:bg-background-darker transition-colors">
+                    Send Feedback
+                </button>
+                <button onclick="alert('You are running the latest version (1.0.0)')"
+                        class="w-full text-left px-4 py-2 rounded-xl text-text-light dark:text-text-light hover:bg-gray-50 dark:hover:bg-background-darker transition-colors">
+                    Check Updates
+                </button>
+                <button onclick="showSystemInfo()"
+                        class="w-full text-left px-4 py-2 rounded-xl text-text-light dark:text-text-light hover:bg-gray-50 dark:hover:bg-background-darker transition-colors">
+                    System Info
+                </button>
+            </div>
+        </div>
+    </aside>
+{% endblock %}
+{% block scripts %}
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
         if (typeof feather !== "undefined") feather.replace();
 
@@ -131,5 +174,5 @@ Database: SQLite
     `;
         alert(info);
     }
-</script>
+    </script>
 {% endblock %}

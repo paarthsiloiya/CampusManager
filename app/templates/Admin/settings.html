@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Settings — CampusManager{% endblock %}
 {% block sidebar_content %}
-    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 shadow-sm w-full h-full lg:h-auto">
-        <h3 class="font-bold text-text-dark mb-4 flex items-center gap-2">
+    <div class="bg-white dark:bg-background-dark rounded-2xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm w-full h-full lg:h-auto">
+        <h3 class="font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
             <i data-feather="shield" class="w-4 h-4 text-primary"></i> Security Status
         </h3>
         <div class="space-y-4">
@@ -35,14 +35,14 @@
     <section class="max-w-4xl mx-auto space-y-8">
         <div class="flex items-end justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-text-dark">Admin Settings</h1>
-                <p class="text-text-light mt-1">Manage your administrator profile and security</p>
+                <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">Admin Settings</h1>
+                <p class="text-text-light dark:text-gray-400 mt-1">Manage your administrator profile and security</p>
             </div>
         </div>
         <!-- Profile Settings -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-            <div class="p-8 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+            <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="user" class="w-5 h-5"></i>
                     </span>
@@ -53,17 +53,17 @@
                 <!-- Avatar -->
                 <div class="flex items-center gap-6">
                     <div class="relative group">
-                        <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-text-light border-4 border-white shadow-lg overflow-hidden">
+                        <div class="w-24 h-24 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-text-light dark:text-gray-400 border-4 border-white dark:border-background-dark shadow-lg overflow-hidden">
                             <span class="text-2xl font-bold text-primary">{{ current_user.name[0] | upper }}</span>
                         </div>
                         <button type="button"
-                                class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border-2 border-white shadow-sm hover:scale-110 transition-transform">
+                                class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border-2 border-white dark:border-background-dark shadow-sm hover:scale-110 transition-transform">
                             <i data-feather="camera" class="w-4 h-4"></i>
                         </button>
                     </div>
                     <div>
-                        <h3 class="font-bold text-text-dark">Profile Photo</h3>
-                        <p class="text-xs text-text-light mt-1">Update your profile picture.</p>
+                        <h3 class="font-bold text-text-dark dark:text-text-base">Profile Photo</h3>
+                        <p class="text-xs text-text-light dark:text-gray-400 mt-1">Update your profile picture.</p>
                     </div>
                 </div>
                 <form action="{{ url_for("views.settings") }}"
@@ -72,23 +72,23 @@
                     <!-- Read Only Info -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Full Name</label>
+                            <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Full Name</label>
                             <div class="relative">
                                 <input value="{{ current_user.name }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-gray-300 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
+                            <label class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Email Address</label>
                             <div class="relative">
                                 <input value="{{ current_user.email }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-light dark:text-gray-300 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
@@ -112,7 +112,7 @@
         <!-- Password Settings -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8">
             <div class="p-8 border-b border-gray-100 dark:border-gray-800">
-                <h2 class="text-xl font-bold text-text-dark dark:text-white flex items-center gap-3">
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                         <i data-feather="shield" class="w-5 h-5"></i>
                     </span>
@@ -151,7 +151,7 @@
                     </div>
                     <div class="flex justify-end pt-2">
                         <button type="submit"
-                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200 dark:shadow-none">
+                                class="px-6 py-3 rounded-xl bg-text-dark dark:bg-gray-700 text-white font-bold hover:bg-black dark:hover:bg-gray-900 transition-colors shadow-lg shadow-gray-200 dark:shadow-none">
                             Update Password
                         </button>
                     </div>
@@ -161,7 +161,7 @@
         <!-- Appearance Settings -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8 appearance-section">
             <div class="p-8 border-b border-gray-100 dark:border-gray-800">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </span>
@@ -174,7 +174,7 @@
                     <!-- Light -->
                     <button type="button"
                             onclick="window.setTheme('light')"
-                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all"
                             data-theme="light">
                         <div class="w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner">
                             <div class="absolute inset-2 bg-white rounded shadow-sm">
@@ -185,12 +185,12 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="font-bold text-text-dark">Light</span>
+                        <span class="font-bold text-text-dark dark:text-gray-300">Light</span>
                     </button>
                     <!-- Dark -->
                     <button type="button"
                             onclick="window.setTheme('dark')"
-                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all"
                             data-theme="dark">
                         <div class="w-full h-32 bg-gray-900 rounded-lg overflow-hidden border border-gray-700 relative shadow-inner">
                             <div class="absolute inset-2 bg-gray-800 rounded shadow-sm border border-gray-700">
@@ -201,18 +201,18 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="font-bold text-text-dark">Dark</span>
+                        <span class="font-bold text-text-dark dark:text-gray-300">Dark</span>
                     </button>
                     <!-- System -->
                     <button type="button"
                             onclick="window.setTheme('system')"
-                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
+                            class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all"
                             data-theme="system">
                         <div class="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-900 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner flex items-center justify-center">
                             <i data-feather="monitor"
                                class="w-8 h-8 text-gray-500 bg-white/50 p-1.5 rounded-lg backdrop-blur-sm"></i>
                         </div>
-                        <span class="font-bold text-text-dark">System</span>
+                        <span class="font-bold text-text-dark dark:text-gray-300">System</span>
                     </button>
                 </div>
             </div>
@@ -223,10 +223,14 @@
                 document.querySelectorAll('.appearance-btn').forEach(btn => {
                     const theme = btn.dataset.theme;
                     if (theme === currentTheme) {
-                        btn.classList.add('border-primary', 'bg-primary/5');
                         btn.classList.remove('border-transparent');
+                        if (document.documentElement.classList.contains('dark')) {
+                             btn.classList.add('border-primary', 'bg-primary/20');
+                        } else {
+                             btn.classList.add('border-primary', 'bg-primary/5');
+                        }
                     } else {
-                        btn.classList.remove('border-primary', 'bg-primary/5');
+                        btn.classList.remove('border-primary', 'bg-primary/5', 'bg-primary/20');
                         btn.classList.add('border-transparent');
                     }
                 });

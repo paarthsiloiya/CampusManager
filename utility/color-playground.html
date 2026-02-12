@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Color Playground — CampusManager</title>
+        <style>
+    :root{--demo-w:140px}
+    body{font-family:Inter,system-ui,Arial,sans-serif;margin:18px;color:#e6eef6;background:#0f1720}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(var(--demo-w),1fr));gap:12px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+    .swatch{height:56px;border-radius:8px;border:1px solid rgba(0,0,0,0.12);box-shadow:inset 0 -8px 16px rgba(0,0,0,0.25)}
+    label{display:block;font-size:12px;margin:8px 0 6px;color:#cbd5e1}
+    input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#e6eef6}
+    .controls{display:flex;gap:8px;margin-top:8px}
+    button{padding:8px 10px;border-radius:8px;border:0;background:#2563eb;color:white;cursor:pointer}
+    pre{background:#071022;padding:12px;border-radius:8px;color:#b6c8e3;font-size:12px;overflow:auto}
+    footer{margin-top:14px;color:#93c5fd;font-size:13px}
+        </style>
+    </head>
+    <body>
+        <h1 style="margin:0 0 8px;color:#e6eef6">CampusManager — Color Playground</h1>
+        <p style="margin:0 0 16px;color:#93c5fd">
+            Edit the raw variable values (the same format used in <code>base.html</code>) and preview them live. Values are strings such as <code>98% 0.005 250</code> used with <code>oklch(var(--name))</code>.
+        </p>
+        <div id="app" class="grid"></div>
+        <div style="margin-top:16px" class="card">
+            <div style="display:flex;
+                        gap:8px;
+                        align-items:center;
+                        justify-content:space-between">
+                <div>
+                    <strong>Export CSS</strong>
+                    <div style="font-size:12px;color:#9fbefb">Copies :root block with current variable values</div>
+                </div>
+                <div style="display:flex;gap:8px">
+                    <button id="copyBtn">Copy :root CSS</button>
+                    <button id="resetBtn" style="background:#374151">Reset to current file values</button>
+                </div>
+            </div>
+            <pre id="export" style="margin-top:12px">:root {
+  /* variables will appear here */
+}
+    </pre>
+        </div>
+        <footer>
+            Tips: Open this file with Live Server (VS Code extension) or open in the browser. To preview OKLCH correctly use a modern Chromium/Firefox.
+        </footer>
+        <script>
+    // Variables to expose from base.html (edit or extend as needed)
+    const variables = [
+      '--color-bg-base','--color-bg-dark','--color-bg-darker','--color-bg-light','--color-bg-lighter',
+      '--color-text-base','--color-text-dark','--color-text-darker','--color-text-light','--color-text-lighter',
+      '--color-primary-base','--color-primary-dark','--color-primary-darker','--color-primary-light','--color-primary-lighter',
+      '--color-accent-base','--color-status-success','--color-status-warning','--color-status-error','--color-status-info'
+    ];
+
+    const app = document.getElementById('app');
+
+    function readVar(name){
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '';
+    }
+
+    function render(){
+      app.innerHTML = '';
+      variables.forEach(v => {
+        const val = readVar(v);
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `<div style=display:flex;gap:12px;align-items:center>
+          <div style="flex:1">
+            <label>${v}</label>
+            <input type=text data-var="${v}" value="${val}" placeholder="raw oklch components (e.g. 98% 0.005 250)">
+            <div class='controls'>
+              <button data-action='apply' data-var='${v}'>Apply</button>
+              <button data-action='reset' data-var='${v}' style='background:#6b7280'>Revert</button>
+            </div>
+          </div>
+          <div style="width:120px">
+            <div class='swatch' data-swatch='${v}'></div>
+            <div style='font-size:12px;color:#9fbefb;margin-top:6px;text-align:center'>preview</div>
+          </div>
+        </div>`;
+        app.appendChild(card);
+      });
+
+      // wire events
+      app.querySelectorAll('button[data-action=apply]').forEach(btn => btn.addEventListener('click', e=>{
+        const name = btn.dataset.var; const input = document.querySelector(`input[data-var="${name}"]`);
+        document.documentElement.style.setProperty(name, input.value);
+        updateSwatches(); updateExport();
+      }));
+      app.querySelectorAll('button[data-action=reset]').forEach(btn => btn.addEventListener('click', e=>{
+        const name = btn.dataset.var; document.querySelector(`input[data-var="${name}"]`).value = readVar(name);
+      }));
+
+      updateSwatches(); updateExport();
+    }
+
+    function updateSwatches(){
+      app.querySelectorAll('[data-swatch]').forEach(el => {
+        const name = el.dataset.swatch; el.style.background = `oklch(var(${name}))`;
+      });
+    }
+
+    function updateExport(){
+      const lines = variables.map(v => `  ${v}: ${readVar(v)};`);
+      document.getElementById('export').textContent = `:root {\n${lines.join('\n')}\n}`;
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', ()=>{
+      navigator.clipboard.writeText(document.getElementById('export').textContent).then(()=>{
+        alert('Copied :root CSS to clipboard');
+      }).catch(()=>alert('Copy failed'));
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{ location.reload(); });
+
+    // initial render
+    render();
+        </script>
+    </body>
+</html>

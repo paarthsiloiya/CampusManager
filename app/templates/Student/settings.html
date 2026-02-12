@@ -53,23 +53,23 @@
                     <!-- Fields -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Full Name</label>
+                            <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Full Name</label>
                             <div class="relative">
                                 <input value="{{ student.name or '' }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-text-light uppercase tracking-wide">Email Address</label>
+                            <label class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide">Email Address</label>
                             <div class="relative">
                                 <input value="{{ student.email or '' }}"
-                                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text-light font-medium cursor-not-allowed focus:outline-none"
+                                       class="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-3 text-text-light dark:text-gray-400 font-medium cursor-not-allowed focus:outline-none"
                                        readonly />
                                 <i data-feather="lock"
-                                   class="w-4 h-4 text-gray-400 absolute right-4 top-3.5"></i>
+                                   class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5"></i>
                             </div>
                         </div>
                         <div class="space-y-2">
@@ -166,7 +166,7 @@
             <div class="flex items-center justify-end gap-4">
                 <button type="button"
                         onclick="window.location.reload()"
-                        class="px-6 py-3 rounded-xl text-text-light font-bold hover:bg-gray-100 transition-colors">
+                        class="px-6 py-3 rounded-xl text-text-light dark:text-text-light font-bold hover:bg-gray-100 dark:hover:bg-background-darker transition-colors">
                     Discard
                 </button>
                 <button type="submit"
@@ -269,7 +269,7 @@
                                     <input id="deleteConfirmation"
                                            type="text"
                                            placeholder='Type "DELETE" to confirm'
-                                           class="w-full border border-gray-200 rounded-xl px-4 py-3 text-center font-bold focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
+                                           class="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-background-darker rounded-xl px-4 py-3 text-center font-bold text-text-dark dark:text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase" />
                                 </div>
                                 <form action="{{ url_for("views.delete_account") }}" method="post">
                                     <button type="submit"
@@ -293,7 +293,7 @@
         <!-- Appearance Settings -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden mt-8 appearance-section">
             <div class="p-8 border-b border-gray-100 dark:border-gray-800">
-                <h2 class="text-xl font-bold text-text-dark flex items-center gap-3">
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
                     <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </span>
@@ -379,7 +379,7 @@
         <p class="text-xs text-text-light mt-1">{{ student.email }}</p>
         <div class="mt-4 flex justify-center gap-2">
             <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-lg uppercase tracking-wider">{{ student.branch }}</span>
-            <span class="px-3 py-1 bg-gray-100 text-text-light text-xs font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
+            <span class="px-3 py-1 bg-gray-100 dark:bg-background-base text-text-light dark:text-text-light text-xs font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
         </div>
     </div>
     <div class="space-y-2 w-full">
@@ -389,7 +389,7 @@
             <i data-feather="chevron-right" class="w-4 h-4"></i>
         </a>
         <a href="#securitySection"
-           class="w-full text-left px-4 py-3 rounded-xl bg-transparent text-text-light font-medium text-sm flex items-center justify-between hover:bg-gray-50 transition-colors">
+           class="w-full text-left px-4 py-3 rounded-xl bg-transparent text-text-light dark:text-text-light font-medium text-sm flex items-center justify-between hover:bg-gray-50 dark:hover:bg-background-darker transition-colors">
             <span>Security</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
         </a>
