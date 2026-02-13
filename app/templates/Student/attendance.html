@@ -187,16 +187,16 @@
             <div class="hidden lg:block overflow-x-auto">
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-gray-50/50 dark:bg-background-base/50 border-b border-gray-100 dark:border-gray-800">
+                        <tr class="bg-gray-50/10 dark:bg-background-base/50 border-b border-gray-100 dark:border-gray-800">
                             <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-24">Code</th>
                             <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider">Subject Name</th>
                             <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-32">Attendance</th>
                             <th class="p-1 text-xs font-bold text-center text-text-light uppercase tracking-wider w-1/3">Progress</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-400">
                         {% for subject in subjects %}
-                            <tr class="group hover:bg-gray-50/80 dark:hover:bg-background-darker/50 transition-colors px-4">
+                            <tr class="group hover:bg-gray-50/10 dark:hover:bg-background-darker/50 transition-colors px-4">
                                 <td class="p-1">
                                     <span class="font-mono text-xs font-bold text-text-light p-0 block text-center">{{ subject.code }}</span>
                                 </td>

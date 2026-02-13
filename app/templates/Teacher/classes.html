@@ -23,7 +23,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                             {% for assignment in assigned_classes %}
-                                <tr class="group hover:bg-gray-50/50 dark:hover:bg-background-base/50 transition-colors">
+                                <tr class="group hover:bg-gray-50/50 dark:hover:bg-background-light transition-colors">
                                     <td class="px-4 py-4">
                                         <div class="flex items-center gap-4">
                                             <div>
@@ -45,9 +45,9 @@
                                                 {{ assignment.subject.branch }}
                                             </div>
                                             <div class="flex items-center gap-2 text-xs text-text-light dark:text-text-light">
-                                                <span class="bg-gray-100 dark:bg-background-base px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
+                                                <span class="bg-gray-100 dark:bg-background-lighter px-2 py-0.5 rounded">Sem {{ assignment.subject.semester }}</span>
                                                 {% if assignment.section %}
-                                                    <span class="bg-gray-100 dark:bg-background-base px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
+                                                    <span class="bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded">Sec {{ assignment.section }}</span>
                                                 {% endif %}
                                             </div>
                                         </div>

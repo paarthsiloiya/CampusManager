@@ -219,7 +219,7 @@
                     </div>
                     <div class="flex justify-end pt-2">
                         <button type="submit"
-                                class="px-6 py-3 rounded-xl bg-text-dark text-white font-bold hover:bg-black transition-colors shadow-lg shadow-gray-200 dark:shadow-none">
+                                class="px-6 py-3 rounded-xl bg-text-dark text-white dark:text-black font-bold hover:scale-105 transition-transform shadow-lg shadow-gray-200 dark:shadow-none">
                             Update Password
                         </button>
                     </div>
@@ -379,7 +379,7 @@
         <p class="text-xs text-text-light mt-1">{{ student.email }}</p>
         <div class="mt-4 flex justify-center gap-2">
             <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-lg uppercase tracking-wider">{{ student.branch }}</span>
-            <span class="px-3 py-1 bg-gray-100 dark:bg-background-base text-text-light dark:text-text-light text-xs font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
+            <span class="px-3 py-1 bg-gray-100 dark:bg-background-darker text-text-light dark:text-text-light text-xs font-bold rounded-lg uppercase tracking-wider">Sem {{ student.semester }}</span>
         </div>
     </div>
     <div class="space-y-2 w-full">

@@ -79,21 +79,21 @@
             .dark {
                 /* Color Palette - Dark Mode Overrides */
                 /* Backgrounds become dark */
-                --color-bg-base: 20% 0.02 250;      /* Slate 900ish */
-                --color-bg-dark: 15% 0.02 250;      /* Darker */
-                --color-bg-darker: 10% 0.02 250;    /* Even Darker */
-                --color-bg-light: 25% 0.02 250;     /* Lighter than base (for cards?) */
-                --color-bg-lighter: 30% 0.02 250;   /* Lightest background (for elevated cards) */
+                --color-bg-base: 15% 0.01 250;      /* Dark Base */
+                --color-bg-dark: 12% 0.01 250;      /* Darker */
+                --color-bg-darker: 8% 0.01 250;     /* Darkest */
+                --color-bg-light: 18% 0.01 250;     /* Lighter than base (for cards?) */
+                --color-bg-lighter: 22% 0.01 250;   /* Lightest background (for elevated cards) */
 
                 /* Text becomes light */
                 --color-text-base: 90% 0.01 250;    /* Light Grey */
-                --color-text-dark: 95% 0.01 250;    /* White-ish (Emphasis) */
+                --color-text-dark: 98% 0 0;         /* White-ish (Emphasis) */
                 --color-text-darker: 100% 0 0;      /* Pure White */
-                --color-text-light: 70% 0.02 250;   /* Muted */
-                --color-text-lighter: 50% 0.02 250; /* More Muted */
+                --color-text-light: 75% 0.01 250;   /* Muted */
+                --color-text-lighter: 60% 0.01 250; /* More Muted */
                 
                 /* Tweak Primary for dark mode contrast if needed - keeping same for now or slight adjustment */
-                --color-primary-base: 60% 0.22 255; /* Slightly lighter for dark bg */
+                --color-primary-base: 65% 0.2 255; /* Slightly lighter for dark bg */
             }
 
             /* Global Dark Theme Helpers */
@@ -170,13 +170,13 @@
             
             /* Fix borders that don't have dark mode variants */
             html.dark .border-gray-100:not([class*="dark:"]) {
-                border-color: #374151 !important;
+                border-color: oklch(var(--color-bg-light)) !important;
             }
             html.dark .border-gray-200:not([class*="dark:"]) {
-                border-color: #374151 !important;
+                border-color: oklch(var(--color-bg-lighter)) !important;
             }
             html.dark .border-gray-300:not([class*="dark:"]) {
-                border-color: #4b5563 !important;
+                border-color: oklch(var(--color-bg-lighter)) !important;
             }
             
             /* Fix more text grays that don't have dark: variants */
