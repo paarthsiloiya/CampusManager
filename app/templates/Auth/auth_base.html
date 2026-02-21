@@ -165,9 +165,13 @@
                 try {
                     const theme = localStorage.getItem('theme');
                     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (theme === 'dark' || (!theme && systemDark)) {
+                    
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else if (theme === 'system' && systemDark) {
                         document.documentElement.classList.add('dark');
                     } else {
+                        // Default to light mode (if theme is light, null, or system & light OS)
                         document.documentElement.classList.remove('dark');
                     }
                 } catch (e) {}

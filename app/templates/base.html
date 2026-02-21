@@ -79,16 +79,16 @@
             .dark {
                 /* Color Palette - Dark Mode Overrides */
                 /* Backgrounds become dark */
-                --color-bg-base: 15% 0.01 250;      /* Dark Base */
-                --color-bg-dark: 12% 0.01 250;      /* Darker */
-                --color-bg-darker: 8% 0.01 250;     /* Darkest */
-                --color-bg-light: 18% 0.01 250;     /* Lighter than base (for cards?) */
-                --color-bg-lighter: 22% 0.01 250;   /* Lightest background (for elevated cards) */
+                --color-bg-base: 15% 0.05 250;      /* Dark Base */
+                --color-bg-dark: 12% 0.05 250;      /* Darker */
+                --color-bg-darker: 8% 0.05 250;     /* Darkest */
+                --color-bg-light: 18% 0.05 250;     /* Lighter than base (for cards?) */
+                --color-bg-lighter: 22% 0.05 250;   /* Lightest background (for elevated cards) */
 
                 /* Text becomes light */
                 --color-text-base: 90% 0.01 250;    /* Light Grey */
-                --color-text-dark: 98% 0 0;         /* White-ish (Emphasis) */
-                --color-text-darker: 100% 0 0;      /* Pure White */
+                --color-text-dark: 98% 0.01 0;         /* White-ish (Emphasis) */
+                --color-text-darker: 100% 0.01 0;      /* Pure White */
                 --color-text-light: 75% 0.01 250;   /* Muted */
                 --color-text-lighter: 60% 0.01 250; /* More Muted */
                 
@@ -113,7 +113,7 @@
                 background-color: oklch(var(--color-bg-dark)) !important;
             }
             
-            /* Handle elements with bg-gray-50 that don't have dark mode variants */
+            /* Handle elements with bg-gray-50 that don't have dark mode variants */ 
             html.dark .bg-gray-50:not([class*="dark:"]) {
                 background-color: oklch(var(--color-bg-darker)) !important;
             }
@@ -127,7 +127,7 @@
             html.dark input:not([type="checkbox"]):not([type="radio"]), 
             html.dark select, 
             html.dark textarea,
-            html.dark .bg-gray-50 {
+            html.dark .bg-gray-50:not([class*="dark:"]) {
                 background-color: oklch(var(--color-bg-darker)) !important;
                 border: 1px solid #374151 !important; /* Force border */
                 color: oklch(var(--color-text-base)) !important;
@@ -393,9 +393,13 @@
                 try {
                     const theme = localStorage.getItem('theme');
                     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (theme === 'dark' || (!theme && systemDark)) {
+                    
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else if (theme === 'system' && systemDark) {
                         document.documentElement.classList.add('dark');
                     } else {
+                        // Default to light mode (if theme is light, null, or system & light OS)
                         document.documentElement.classList.remove('dark');
                     }
                 } catch (e) {}
@@ -404,7 +408,7 @@
             // Global Theme Manager
             window.setTheme = function(theme) {
                 if (theme === 'system') {
-                    localStorage.removeItem('theme');
+                    localStorage.setItem('theme', 'system');
                     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                         document.documentElement.classList.add('dark');
                     } else {
@@ -419,7 +423,7 @@
                     }
                 }
                 // Dispatch event for UI updates
-                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: theme || 'system' } }));
+                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: theme } }));
             };
         </script>
         <!-- Pre-apply collapsed layout (no animation) when stored collapsed.
@@ -494,7 +498,7 @@
         </style>
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-base font-sans antialiased selection:bg-accent selection:text-white">
+    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-darker font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
         <aside id="sidebar"
                class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">

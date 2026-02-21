@@ -235,16 +235,17 @@
                             onclick="window.setTheme('light')"
                             class="appearance-btn flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-transparent hover:bg-gray-50 dark:hover:bg-background-darker transition-all"
                             data-theme="light">
-                        <div class="w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative shadow-inner">
-                            <div class="absolute inset-2 bg-white rounded shadow-sm">
-                                <div class="h-2 w-full bg-gray-50 border-b border-gray-100"></div>
+                        <div class="w-full h-32 bg-gray-100 dark:bg-gray-100 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-200 relative shadow-inner">
+                            <div class="absolute inset-2 bg-white dark:bg-white rounded shadow-sm">
+                                <div class="h-2 w-full bg-gray-50 dark:bg-gray-50 border-b border-gray-100 dark:border-gray-100 !bg-gray-50 !border-gray-100">
+                                </div>
                                 <div class="p-2 space-y-1">
-                                    <div class="h-1 w-1/2 bg-gray-200 rounded-full"></div>
-                                    <div class="h-1 w-3/4 bg-gray-100 rounded-full"></div>
+                                    <div class="h-1 w-1/2 bg-gray-200 dark:bg-gray-200 rounded-full"></div>
+                                    <div class="h-1 w-3/4 bg-gray-100 dark:bg-gray-100 rounded-full"></div>
                                 </div>
                             </div>
                         </div>
-                        <span class="font-bold text-text-dark">Light</span>
+                        <span class="font-bold text-text-dark dark:text-gray-300">Light</span>
                     </button>
                     <!-- Dark -->
                     <button type="button"
@@ -278,7 +279,7 @@
         </div>
         <script>
             function updateThemeUI() {
-                const currentTheme = localStorage.getItem('theme') || 'system';
+                const currentTheme = localStorage.getItem('theme') || 'light';
                 document.querySelectorAll('.appearance-btn').forEach(btn => {
                     const theme = btn.dataset.theme;
                     if (theme === currentTheme) {
