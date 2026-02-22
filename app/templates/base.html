@@ -79,21 +79,45 @@
             .dark {
                 /* Color Palette - Dark Mode Overrides */
                 /* Backgrounds become dark */
-                --color-bg-base: 15% 0.05 250;      /* Dark Base */
-                --color-bg-dark: 12% 0.05 250;      /* Darker */
-                --color-bg-darker: 8% 0.05 250;     /* Darkest */
-                --color-bg-light: 18% 0.05 250;     /* Lighter than base (for cards?) */
-                --color-bg-lighter: 22% 0.05 250;   /* Lightest background (for elevated cards) */
+                /* Backgrounds (Inverted Lightness) */
+                --color-bg-base: 12% 0.015 250;      /* Deep background */
+                --color-bg-dark: 8% 0.02 250;        /* Even deeper for wells/inputs */
+                --color-bg-darker: 5% 0.02 250;      /* Near black */
+                --color-bg-light: 18% 0.015 250;     /* Elevated surfaces (cards) */
+                --color-bg-lighter: 24% 0.015 250;   /* High elevation (hover states) */
 
-                /* Text becomes light */
-                --color-text-base: 90% 0.01 250;    /* Light Grey */
-                --color-text-dark: 98% 0.01 0;         /* White-ish (Emphasis) */
-                --color-text-darker: 100% 0.01 0;      /* Pure White */
-                --color-text-light: 75% 0.01 250;   /* Muted */
-                --color-text-lighter: 60% 0.01 250; /* More Muted */
-                
-                /* Tweak Primary for dark mode contrast if needed - keeping same for now or slight adjustment */
-                --color-primary-base: 65% 0.2 255; /* Slightly lighter for dark bg */
+                /* Text (Inverted Lightness) */
+                --color-text-base: 92% 0.01 250;     /* Primary readable text */
+                --color-text-dark: 80% 0.02 250;     /* Secondary text */
+                --color-text-darker: 65% 0.02 250;   /* Muted/disabled text */
+                --color-text-light: 96% 0.005 250;   /* High emphasis text */
+                --color-text-lighter: 100% 0 0;      /* Pure white highlight */
+
+                /* Primary Colors (Indigo - Adjusted for Dark Mode Contrast) */
+                --color-primary-base: 65% 0.18 255;    /* Brightened base for dark BG */
+                --color-primary-dark: 55% 0.18 255;
+                --color-primary-darker: 45% 0.18 255;
+                --color-primary-light: 75% 0.12 255;
+                --color-primary-lighter: 85% 0.08 255;
+
+                /* Secondary & Accent (Softer Chroma) */
+                --color-secondary-base: 75% 0.08 255;
+                --color-secondary-dark: 65% 0.1 255;
+                --color-secondary-darker: 55% 0.12 255;
+                --color-secondary-light: 85% 0.05 255;
+                --color-secondary-lighter: 92% 0.03 255;
+
+                --color-accent-base: 70% 0.18 240;
+                --color-accent-dark: 60% 0.18 240;
+                --color-accent-darker: 50% 0.18 240;
+                --color-accent-light: 80% 0.12 240;
+                --color-accent-lighter: 90% 0.06 240;
+
+                /* Status Colors (Boosted Lightness for readability) */
+                --color-status-success: 70% 0.14 145;
+                --color-status-warning: 80% 0.12 85;
+                --color-status-error: 65% 0.16 25;
+                --color-status-info: 72% 0.12 240;
             }
 
             /* Global Dark Theme Helpers */
@@ -315,16 +339,21 @@
                 border-color: rgba(249, 115, 22, 0.2) !important;
             }
             
-            /* Fix card and container backgrounds */
-            html.dark .shadow-sm:not([class*="dark:"]),
-            html.dark .shadow-md:not([class*="dark:"]),
-            html.dark .shadow-lg:not([class*="dark:"]) {
-                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+            /* Subtle card and container shadows for Dark Mode */
+            html.dark .shadow-sm:not([class*="dark:"]) {
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12) !important;
             }
-            
-            /* Force main content background in dark mode */
-            html.dark #main-content {
-                background-color: oklch(var(--color-bg-darker)) !important;
+            html.dark .shadow-md:not([class*="dark:"]) {
+                box-shadow: 0 6px 12px -4px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.06) !important;
+            }
+            html.dark .shadow-lg:not([class*="dark:"]) {
+                box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.14), 0 4px 6px -4px rgba(0, 0, 0, 0.06) !important;
+            }
+            html.dark .shadow-xl:not([class*="dark:"]) {
+                box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.16), 0 6px 8px -6px rgba(0, 0, 0, 0.06) !important;
+            }
+            html.dark .shadow-2xl:not([class*="dark:"]) {
+                box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.18) !important;
             }
             
             /* Force any remaining white backgrounds to be dark */
@@ -343,6 +372,7 @@
                         colors: {
                             background: {
                                 DEFAULT: 'oklch(var(--color-bg-base))', 
+                                base: 'oklch(var(--color-bg-base))',
                                 dark: 'oklch(var(--color-bg-dark))', 
                                 darker: 'oklch(var(--color-bg-darker))', 
                                 light: 'oklch(var(--color-bg-light))', 
@@ -350,6 +380,7 @@
                             },
                             text: {
                                 DEFAULT: 'oklch(var(--color-text-base))', 
+                                base: 'oklch(var(--color-text-base))',
                                 dark: 'oklch(var(--color-text-dark))',
                                 darker: 'oklch(var(--color-text-darker))',
                                 light: 'oklch(var(--color-text-light))',
@@ -357,12 +388,14 @@
                             },
                             primary: {
                                 DEFAULT: 'oklch(var(--color-primary-base))', 
+                                base: 'oklch(var(--color-primary-base))',
                                 dark: 'oklch(var(--color-primary-dark))', 
                                 darker: 'oklch(var(--color-primary-darker))', 
                                 light: 'oklch(var(--color-primary-light))',
                                 lighter: 'oklch(var(--color-primary-lighter))',
                             },
                             secondary: {
+                                base: 'oklch(var(--color-secondary-base))',
                                 DEFAULT: 'oklch(var(--color-secondary-base))', 
                                 dark: 'oklch(var(--color-secondary-dark))',
                                 darker: 'oklch(var(--color-secondary-darker))',
@@ -370,6 +403,7 @@
                                 lighter: 'oklch(var(--color-secondary-lighter))',
                             },
                             accent: {
+                                base: 'oklch(var(--color-accent-base))',
                                 DEFAULT: 'oklch(var(--color-accent-base))', 
                                 dark: 'oklch(var(--color-accent-dark))',
                                 darker: 'oklch(var(--color-accent-darker))',
@@ -498,7 +532,7 @@
         </style>
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-darker font-sans antialiased selection:bg-accent selection:text-white">
+    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-lighter font-sans antialiased selection:bg-accent selection:text-white">
         <!-- Sidebar Navbar -->
         <aside id="sidebar"
                class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
@@ -627,7 +661,7 @@
         <div id="content-wrapper"
              class="flex flex-col-reverse lg:contents w-full relative">
             <main id="main-content"
-                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-background-base shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
+                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-background-darker shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
                 <!-- Scrollable content wrapper -->
                 <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
                     {% block content %}{% endblock %}
@@ -635,7 +669,7 @@
             </main>
             <!-- Right Sidebar -->
             {% if not hide_right_sidebar %}
-                <aside class="w-full lg:w-80 bg-white dark:bg-black shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
+                <aside class="w-full lg:w-80 bg-white dark:bg-background-darker shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
                     <!-- Profile -->
                     <div class="flex-shrink-0 mb-6">
                         <a href="{{ url_for("views.settings") }}"

@@ -28,17 +28,17 @@
             {% endif %}
         {% endwith %}
         {% if has_entries and periods %}
-            <div class="bg-white dark:bg-background-lighter rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+            <div class="bg-white dark:bg-background-lighter rounded-2xl border border-gray-200 dark:border-gray-500 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse min-w-[1000px]">
                         <thead>
                             <tr class="bg-gray-50/80 dark:bg-background-light border-b border-gray-200 dark:border-gray-500">
-                                <th class="p-3 text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wide w-24 border-r border-gray-100 dark:border-gray-500 text-center sticky left-0 bg-gray-50 dark:bg-background-lighter z-10">
+                                <th class="p-3 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide w-24 border-r border-gray-100 dark:border-gray-500 text-center sticky left-0 bg-gray-50 dark:bg-background-light z-10">
                                     Day
                                 </th>
                                 {% for p in periods %}
                                     {% if loop.index == lunch_break_after + 1 %}
-                                        <th class="p-3 text-[10px] font-bold text-text-light dark:text-text-light uppercase tracking-wide w-12 bg-gray-100/50 dark:bg-background-darker text-center border-r border-gray-100 dark:border-gray-500">
+                                        <th class="p-3 text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide w-12 bg-gray-100/50 dark:bg-gray-800 text-center border-r border-gray-100 dark:border-gray-500">
                                             Break
                                         </th>
                                     {% endif %}
@@ -46,9 +46,9 @@
                                         <div class="flex flex-col items-center justify-center">
                                             <span class="text-sm font-bold text-text-dark dark:text-text-base">Period {{ p }}</span>
                                             <div class="flex items-center gap-1.5 mt-1">
-                                                <span class="text-[10px] font-medium text-text-light dark:text-text-light bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-500 px-1.5 py-0.5 rounded shadow-sm"> {{ period_headers[p] if period_headers else '--:--' }} </span>
+                                                <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-background-lighter border border-gray-200 dark:border-gray-600 px-1.5 py-0.5 rounded shadow-sm"> {{ period_headers[p] if period_headers else '--:--' }} </span>
                                                 {% if period_duration_mins %}
-                                                    <span class="text-[10px] font-medium text-text-light dark:text-text-light bg-gray-50 dark:bg-background-base border border-gray-100 dark:border-gray-500 px-1.5 py-0.5 rounded"> {{ period_duration_mins }}m </span>
+                                                    <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-background-base border border-gray-100 dark:border-gray-500 px-1.5 py-0.5 rounded"> {{ period_duration_mins }}m </span>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -60,22 +60,22 @@
                             {% for day in days %}
                                 {% set is_first_day = loop.first %}
                                 <tr class="group hover:bg-gray-50/30 dark:hover:bg-background-lighter transition-colors">
-                                    <th class="p-3 text-xs font-bold text-text-dark dark:text-text-base border-r border-gray-100 dark:border-gray-500 bg-white dark:bg-background-light sticky left-0 group-hover:bg-gray-50 dark:group-hover:bg-background-lighter text-center z-10">
+                                    <th class="p-3 text-xs font-bold text-text-dark dark:text-text-base border-r border-gray-100 dark:border-gray-500 bg-white dark:bg-background-lighter sticky left-0 group-hover:bg-gray-50 dark:group-hover:bg-background-lighter text-center z-10">
                                         {{ day[:3] | upper }}
                                     </th>
                                     {% for p in periods %}
                                         {% if loop.index == lunch_break_after + 1 %}
                                             {% if is_first_day %}
                                                 <td rowspan="{{ days|length }}"
-                                                    class="p-2 border-r border-gray-100 dark:border-gray-500 bg-gray-50/50 dark:bg-background-darker text-center align-middle">
-                                                    <span class="text-lg font-bold text-text-light dark:text-text-light uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
+                                                    class="p-2 border-r border-gray-100 dark:border-gray-500 bg-gray-50/30 dark:bg-gray-800/30 text-center align-middle">
+                                                    <span class="text-lg font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest writing-vertical rotate-180">Lunch</span>
                                                 </td>
                                             {% endif %}
                                         {% endif %}
                                         {% set cell = grid[day].get(p) %}
                                         {% if cell and not cell.is_skipped %}
                                             <td colspan="{{ cell.colspan }}"
-                                                class="p-2 border-r border-gray-100 dark:border-gray-500 align-middle hover:bg-white dark:hover:bg-background-lighter transition-shadow hover:shadow-inner text-center">
+                                                class="p-2 border-r border-gray-100 dark:border-gray-500 align-middle hover:bg-white dark:hover:bg-gray-800 transition-shadow hover:shadow-inner text-center">
                                                 {% if cell.entry %}
                                                     {% set entry = cell.entry %}
                                                     <div class="flex flex-col items-center justify-center gap-1.5 h-full w-full">
@@ -86,19 +86,19 @@
                                                             <div class="text-[10px] font-bold text-primary bg-primary/5 dark:bg-primary/20 px-2 py-0.5 rounded border border-primary/10 dark:border-primary/30 uppercase">
                                                                 {{ entry.branch }}
                                                             </div>
-                                                            <div class="text-[10px] font-bold text-text-light dark:text-text-light bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500">
+                                                            <div class="text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded border border-gray-200 dark:border-gray-500">
                                                                 Sem {{ entry.semester }}
                                                             </div>
                                                         </div>
                                                         {% if entry.assigned_class.subject.code %}
-                                                            <div class="text-[10px] text-text-light dark:text-text-light bg-white dark:bg-background-dark px-2 py-0.5 rounded border border-gray-100 dark:border-gray-500 shadow-sm mt-0.5">
+                                                            <div class="text-[10px] text-gray-500 dark:text-gray-400 bg-white dark:bg-background-dark px-2 py-0.5 rounded border border-gray-100 dark:border-gray-500 shadow-sm mt-0.5">
                                                                 {{ entry.assigned_class.subject.display_code }}
                                                             </div>
                                                         {% endif %}
                                                     </div>
                                                 {% else %}
                                                     <div class="h-16 w-full flex items-center justify-center">
-                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100 dark:bg-background-base"></div>
+                                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700"></div>
                                                     </div>
                                                 {% endif %}
                                             </td>
