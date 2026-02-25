@@ -80,97 +80,12 @@
             </div>
         </div>
         <!-- Queries List -->
-        <div class="space-y-2">
-            {% for query in queries %}
-                <div class="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    <!-- Summary Header (Clickable) -->
-                    <div class="p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors"
-                         onclick="toggleQuery('{{ query.id }}')">
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <!-- Category Badge -->
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-gray-800 text-text-light dark:text-gray-400 whitespace-nowrap">
-                                {{ query.tag.value }}
-                            </span>
-                            <!-- Title -->
-                            <span class="font-bold text-sm text-text-dark dark:text-white truncate">{{ query.title }}</span>
-                            <!-- Sender -->
-                            <span class="text-xs text-text-light dark:text-gray-400 truncate hidden sm:inline-block border-l border-gray-200 dark:border-gray-700 pl-3">
-                                <span class="font-medium text-text-dark dark:text-gray-200">{{ query.user.name }}</span> ({{ query.user.role.name|title }})
-                            </span>
-                        </div>
-                        <div class="flex items-center gap-3 shrink-0">
-                            <span class="text-xs text-text-light dark:text-gray-400 font-medium">{{ query.created_at.strftime("%b %d") }}</span>
-                            <div class="w-6 h-6 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center transition-transform duration-200"
-                                 id="chevron-{{ query.id }}">
-                                <i data-feather="chevron-down"
-                                   class="w-3 h-3 text-text-light dark:text-gray-400"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Expanded Details -->
-                    <div id="content-{{ query.id }}"
-                         class="hidden border-t border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/20">
-                        <div class="p-4 space-y-4">
-                            <!-- Description -->
-                            <div class="text-sm text-text-dark dark:text-gray-200 leading-relaxed bg-white dark:bg-background-dark p-3 rounded-lg border border-gray-100 dark:border-gray-800">
-                                {{ query.description }}
-                            </div>
-                            <!-- Metadata Grid -->
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                                <div>
-                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">From</span>
-                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.name }}</span>
-                                </div>
-                                <div>
-                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Email</span>
-                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.email }}</span>
-                                </div>
-                                <div>
-                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Role</span>
-                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.role.name }}</span>
-                                </div>
-                                <div>
-                                    <span class="block font-bold text-text-light dark:text-gray-500 uppercase tracking-wide text-[10px] mb-0.5">Dep/Branch</span>
-                                    <span class="font-medium text-text-dark dark:text-gray-300">{{ query.user.department or query.user.branch.name or 'N/A' }}</span>
-                                </div>
-                            </div>
-                            <!-- Action Form -->
-                            <form action="{{ url_for('views.resolve_query', query_id=query.id) }}"
-                                  method="post"
-                                  class="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100 dark:border-gray-800">
-                                <div class="flex-1">
-                                    <textarea name="response"
-                                              rows="1"
-                                              class="w-full bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-sm text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
-                                              placeholder="Type a reply (Optional)..."></textarea>
-                                </div>
-                                <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-                                    <button type="submit"
-                                            name="action"
-                                            value="dismiss"
-                                            class="px-4 py-2 rounded-lg bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 text-text-dark dark:text-gray-300 text-xs font-bold hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                        Dismiss
-                                    </button>
-                                    <button type="submit"
-                                            name="action"
-                                            value="resolve"
-                                            class="px-4 py-2 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary-dark shadow-sm hover:shadow transition-all flex items-center gap-1.5">
-                                        <i data-feather="check-circle" class="w-3 h-3"></i> Resolve & Reply
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div id="queries-list-container" class="space-y-2">
+            {% if loading %}
+                {% include "Admin/_queries_skeleton.html" %}
             {% else %}
-                <div class="text-center py-12 bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 border-dashed">
-                    <div class="w-12 h-12 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-gray-600">
-                        <i data-feather="inbox" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-sm font-bold text-text-dark dark:text-gray-300">No queries found</h3>
-                    <p class="text-xs text-text-light dark:text-gray-500">Great job! All caught up.</p>
-                </div>
-            {% endfor %}
+                {% include "Admin/_queries_responsive.html" %}
+            {% endif %}
         </div>
     </div>
     <script>
@@ -178,6 +93,29 @@
         if (typeof feather !== "undefined") {
             feather.replace();
         }
+
+        // Async Loading for Queries
+        {% if loading %}
+        const container = document.getElementById('queries-list-container');
+        
+        // Build URL with current query parameters
+        const url = new URL("{{ url_for('views.admin_queries_partial') }}", window.location.origin);
+        const params = new URLSearchParams(window.location.search);
+        params.forEach((value, key) => url.searchParams.append(key, value));
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+                if (typeof feather !== "undefined") {
+                    feather.replace();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading queries:', error);
+                container.innerHTML = '<div class="p-4 text-center text-red-500">Failed to load queries.</div>';
+            });
+        {% endif %}
     });
 
     function toggleQuery(id) {

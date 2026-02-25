@@ -1,0 +1,202 @@
+<div class="max-w-4xl mx-auto space-y-8 animate-fadeIn">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">Edit User</h1>
+            <p class="text-text-light dark:text-gray-400 mt-1">Update profile information for {{ user.name }}.</p>
+        </div>
+        <a href="{{ url_for("views.admin_dashboard") }}"
+           class="flex items-center gap-2 text-text-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
+    </div>
+    <!-- Edit Form -->
+    <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div class="p-8 border-b border-gray-100 dark:border-gray-800">
+            <h2 class="text-xl font-bold text-text-dark dark:text-text-base flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <i data-feather="edit-3" class="w-5 h-5"></i>
+                </span>
+                User Details
+            </h2>
+        </div>
+        <div class="p-8">
+            <form action="{{ url_for('views.edit_user', user_id=user.id) }}"
+                  method="post"
+                  class="space-y-6">
+                <!-- User Meta / Read Only -->
+                <div class="p-4 bg-gray-50 dark:bg-background-darker rounded-2xl border border-gray-100 dark:border-gray-800 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-white dark:bg-background-dark flex items-center justify-center text-primary font-bold shadow-sm">
+                        {{ user.name[0] | upper }}
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide">Account Role</p>
+                        <p class="font-bold text-text-dark dark:text-gray-200">{{ user.role.name }}</p>
+                    </div>
+                    <div class="ml-auto">
+                        <p class="text-xs font-bold text-text-light dark:text-gray-400 uppercase tracking-wide text-right">Email</p>
+                        <p class="font-bold text-text-dark dark:text-gray-200">{{ user.email }}</p>
+                    </div>
+                </div>
+                <!-- Common Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text"
+                               name="name"
+                               value="{{ user.name }}"
+                               required
+                               class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Phone Number</label>
+                        <input type="text"
+                               name="phone"
+                               value="{{ user.phone or '' }}"
+                               class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                    </div>
+                </div>
+                <!-- Student Specific -->
+                {% if user.role.name == 'STUDENT' %}
+                    <div class="space-y-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                        <h3 class="font-bold text-text-dark dark:text-text-base flex items-center gap-2">
+                            <i data-feather="book" class="w-4 h-4 text-primary"></i> Academic Details
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">
+                                    Enrollment Number <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text"
+                                       name="enrollment_number"
+                                       value="{{ user.enrollment_number or '' }}"
+                                       required
+                                       class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Date of Birth</label>
+                                <input type="date"
+                                       name="dob"
+                                       value="{{ user.date_of_birth }}"
+                                       class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Branch</label>
+                                <div class="relative">
+                                    <select name="branch"
+                                            class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                        {% for branch in Branch %}
+                                            <option value="{{ branch.value }}"
+                                                    {% if user.branch == branch or user.branch == branch.value %}selected{% endif %}>
+                                                {{ branch.value }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <i data-feather="chevron-down"
+                                       class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Semester</label>
+                                <div class="relative">
+                                    <select name="semester"
+                                            class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                        {% for i in range(1, 9) %}
+                                            <option value="{{ i }}" {% if user.semester == i %}selected{% endif %}>Semester {{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <i data-feather="chevron-down"
+                                       class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- Teacher Specific -->
+                {% if user.role.name == 'TEACHER' %}
+                    <div class="space-y-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                        <h3 class="font-bold text-text-dark dark:text-text-base flex items-center gap-2">
+                            <i data-feather="briefcase" class="w-4 h-4 text-primary"></i> Professional Details
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Department</label>
+                                <div class="relative">
+                                    <select name="department"
+                                            class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none">
+                                        <option value="">Select Department</option>
+                                        {% for branch in Branch %}
+                                            <option value="{{ branch.value }}"
+                                                    {% if user.department == branch.value %}selected{% endif %}>
+                                                {{ branch.value }}
+                                            </option>
+                                        {% endfor %}
+                                        <option value="Applied Sciences"
+                                                {% if user.department == "Applied Sciences" %}selected{% endif %}>
+                                            Applied Sciences
+                                        </option>
+                                    </select>
+                                    <i data-feather="chevron-down"
+                                       class="w-4 h-4 text-gray-400 dark:text-gray-500 absolute right-4 top-3.5 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-text-dark dark:text-gray-300 uppercase tracking-wide">Institution</label>
+                                <input type="text"
+                                       name="institution"
+                                       value="{{ user.institution or '' }}"
+                                       class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-text-dark dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="flex justify-end pt-4">
+                    <button type="submit"
+                            class="px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                        Update User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Security Zone -->
+    <div class="grid md:grid-cols-2 gap-6">
+        <!-- Reset Password -->
+        <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-8">
+            <h3 class="font-bold text-text-dark dark:text-gray-100 mb-2 flex items-center gap-2">
+                <i data-feather="key" class="w-4 h-4 text-gray-400"></i> Reset Password
+            </h3>
+            <p class="text-xs text-text-light dark:text-gray-400 mb-6">Forcefully reset the user's password.</p>
+            <form action="{{ url_for('views.reset_user_password', user_id=user.id) }}"
+                  method="post"
+                  onsubmit="return confirmPasswordReset();">
+                <div class="flex gap-2">
+                    <input type="password"
+                           id="new_password"
+                           name="new_password"
+                           placeholder="New Password"
+                           required
+                           class="w-full bg-gray-50 dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-xl px-4 py-2 text-sm text-text-dark dark:text-white focus:bg-white dark:focus:bg-gray-800 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all" />
+                    <button type="submit"
+                            class="px-4 py-2 rounded-xl bg-gray-800 dark:bg-gray-700 text-white font-bold text-sm hover:bg-black dark:hover:bg-gray-900 transition-colors whitespace-nowrap">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- Delete Account -->
+        <div class="bg-red-50/50 dark:bg-red-900/10 rounded-3xl border border-red-100 dark:border-red-900/30 p-8">
+            <h3 class="font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
+                <i data-feather="alert-triangle" class="w-4 h-4"></i> Danger Zone
+            </h3>
+            <p class="text-xs text-red-600/70 dark:text-red-400/70 mb-6">Permanently delete this user and all data.</p>
+            <form action="{{ url_for('views.delete_user', user_id=user.id) }}"
+                  method="post"
+                  onsubmit="return confirmDelete();">
+                <button type="submit"
+                        class="w-full py-2.5 rounded-xl bg-white dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 font-bold hover:bg-red-50 dark:hover:bg-red-900/30 text-sm transition-colors">
+                    Delete Account
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

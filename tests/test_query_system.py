@@ -95,11 +95,11 @@ class TestQuerySystem:
         db.session.commit()
         
         # Filter by Bug
-        response = client.get('/admin/queries?tag=BUG')
+        response = client.get('/admin/queries/partial?tag=BUG')
         assert b"Bug1" in response.data
         assert b"Feature1" not in response.data
         
         # Filter by Student Role
-        response = client.get('/admin/queries?role=STUDENT')
+        response = client.get('/admin/queries/partial?role=STUDENT')
         assert b"Bug1" in response.data
         assert b"Feature1" in response.data

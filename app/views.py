@@ -947,13 +947,22 @@ def admin_dashboard():
         return redirect(url_for('auth.login'))
     
     search_query = request.args.get('search', '')
-    
+    return render_template('Admin/dashboard.html', users=[], loading=True, search_query=search_query)
+
+@views.route('/admin/users/partial')
+@login_required
+def admin_users_partial():
+    if current_user.role != UserRole.ADMIN:
+        return "Access Denied", 403
+        
+    search_query = request.args.get('search', '')
     query = User.query
     if search_query:
         query = query.filter(User.name.ilike(f'%{search_query}%') | User.email.ilike(f'%{search_query}%'))
         
     users = query.all()
-    return render_template('Admin/dashboard.html', users=users, search_query=search_query)
+    # Use the responsive partial that writes both the Table and Mobile view
+    return render_template('Admin/_users_responsive.html', users=users)
 
 @views.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -983,7 +992,17 @@ def edit_user(user_id):
             branch_str = request.form.get('branch')
             if branch_str:
                 try:
-                    user_to_edit.branch = Branch(branch_str)
+                    # Handle both enum value string and enum name
+                    # If branch_str matches a value in Branch enum
+                    found = False
+                    for b in Branch:
+                        if b.value == branch_str or b.name == branch_str:
+                            user_to_edit.branch = b
+                            found = True
+                            break
+                    if not found:
+                         # Fallback if no match found (active protection)
+                         pass
                 except ValueError:
                     pass
 
@@ -1016,7 +1035,7 @@ def edit_user(user_id):
             db.session.rollback()
             flash(f'Error updating user: {str(e)}', 'error')
             
-    return render_template('Admin/edit_user.html', user=user_to_edit)
+    return render_template('Admin/edit_user.html', user=user_to_edit, Branch=Branch)
 
 @views.route('/admin/reset_password/<int:user_id>', methods=['POST'])
 @login_required
@@ -1642,12 +1661,22 @@ def assign_class():
             teacher_assignments[assign.teacher_id] = []
         teacher_assignments[assign.teacher_id].append(assign.subject_id)
 
-    return render_template('Admin/assign_class.html', 
-        teachers=teachers, 
-        grouped_subjects=grouped_subjects, 
-        assignments=assignments,
+    return render_template('Admin/assign_class.html',
+        teachers=teachers,
+        grouped_subjects=grouped_subjects,
+        assignments=[],  # Load async
+        loading=True,
         teacher_assignments=teacher_assignments
     )
+
+@views.route('/admin/assign_class/partial')
+@login_required
+def assign_class_partial():
+    if current_user.role != UserRole.ADMIN:
+        return "Access Denied", 403
+        
+    assignments = AssignedClass.query.order_by(AssignedClass.created_at.desc()).all()
+    return render_template('Admin/_assignments_list.html', assignments=assignments)
 
 
 @views.route('/admin/delete_assignment/<int:id>', methods=['POST'])
@@ -1885,23 +1914,77 @@ def timetable():
     if not selected_branch and active_branches:
         selected_branch = active_branches[0] # Default to first branch
         
+    # Calculate lunch break position (Fast)
+    lunch_break_after = 4
+    period_duration_mins = 0
+    
+    if settings and settings.periods:
+        lunch_break_after = math.ceil(settings.periods / 2)
+        # Calculate Period Duration in minutes for display
+        start_min = settings.start_time.hour * 60 + settings.start_time.minute
+        end_min = settings.end_time.hour * 60 + settings.end_time.minute
+        total_minutes = end_min - start_min
+        available_minutes = total_minutes - settings.lunch_duration
+        if settings.periods > 0:
+            period_duration_mins = available_minutes // settings.periods
+
+    # Check if we should load async
+    # If there are branches, we assume there is a timetable to show, so we show skeleton
+    has_timetable = len(active_branches) > 0
+    
+    if has_timetable:
+        return render_template(
+            'Admin/timetable.html',
+            settings=settings,
+            timetables={}, # Empty for skeleton
+            has_timetable=True,
+            loading=True,
+            branches=active_branches,
+            current_branch=selected_branch,
+            lunch_break_after=lunch_break_after,
+            period_duration_mins=period_duration_mins
+        )
+    else:
+        return render_template(
+            'Admin/timetable.html', 
+            settings=settings, 
+            timetables={}, 
+            has_timetable=False,
+            loading=False,
+            branches=[],
+            current_branch=None,
+            lunch_break_after=lunch_break_after,
+            period_duration_mins=period_duration_mins
+        )
+
+@views.route('/admin/timetable/partial')
+@login_required
+def admin_timetable_partial():
+    if current_user.role != UserRole.ADMIN:
+        return "Access Denied", 403
+    
+    settings = TimetableSettings.query.first()
+    selected_branch = request.args.get('branch')
+    
+    if not selected_branch:
+         # Fallback logic if needed, but normally frontend passes it
+         active_branches = [r[0] for r in db.session.query(TimetableEntry.branch).distinct().all()]
+         active_branches.sort()
+         if active_branches:
+             selected_branch = active_branches[0]
+    
     entries = []
     if selected_branch:
         entries = TimetableEntry.query.filter_by(branch=selected_branch).order_by(TimetableEntry.semester, TimetableEntry.day, TimetableEntry.period_number).all()
     
-    has_timetable = len(entries) > 0
-    
     timetables = {}
-    if has_timetable:
+    if entries:
         semesters = sorted(list(set(e.semester for e in entries)))
-        
         week_days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         
         for sem in semesters:
             sem_entries = [e for e in entries if e.semester == sem]
-            
-            # Build grid
-            grid = {} # Day -> {Period -> Entry}
+            grid = {} 
             periods_set = sorted(list(set(e.period_number for e in sem_entries)))
             
             for e in sem_entries:
@@ -1909,11 +1992,8 @@ def timetable():
                 grid[e.day][e.period_number] = e
             
             sorted_days = sorted(grid.keys(), key=lambda d: week_days_order.index(d) if d in week_days_order else 99)
-            
-            # Process grid for double periods (colspan)
-            processed_grid = preprocess_grid(grid, periods_set, sorted_days)
+            processed_grid = preprocess_grid(grid, periods_set, sorted_days) # Ensure preprocess_grid is available
 
-            # Headers
             period_headers = {}
             for p in periods_set:
                  sample = next((x for x in sem_entries if x.period_number == p), None)
@@ -1927,30 +2007,17 @@ def timetable():
                 'period_headers': period_headers
             }
 
-    # Calculate lunch break position
+    # Recalculate lunch break for the partial
     lunch_break_after = 4
-    period_duration_mins = 0
-    
     if settings and settings.periods:
         lunch_break_after = math.ceil(settings.periods / 2)
-        
-        # Calculate Period Duration in minutes for display
-        start_min = settings.start_time.hour * 60 + settings.start_time.minute
-        end_min = settings.end_time.hour * 60 + settings.end_time.minute
-        total_minutes = end_min - start_min
-        available_minutes = total_minutes - settings.lunch_duration
-        if settings.periods > 0:
-            period_duration_mins = available_minutes // settings.periods
 
     return render_template(
-        'Admin/timetable.html', 
-        settings=settings, 
-        timetables=timetables, 
-        has_timetable=has_timetable,
-        branches=active_branches,
+        'Admin/_timetable_grids_responsive.html',
+        timetables=timetables,
+        settings=settings,
         current_branch=selected_branch,
-        lunch_break_after=lunch_break_after,
-        period_duration_mins=period_duration_mins
+        lunch_break_after=lunch_break_after
     )
 
 @views.route('/admin/timetable/download')
@@ -2181,6 +2248,18 @@ def admin_queries():
     filter_role = request.args.get('role')
     sort_order = request.args.get('sort', 'desc')
     
+    return render_template('Admin/queries.html', queries=[], loading=True, QueryTag=QueryTag)
+
+@views.route('/admin/queries/partial')
+@login_required
+def admin_queries_partial():
+    if current_user.role != UserRole.ADMIN:
+        return "Access Denied", 403
+        
+    filter_tag = request.args.get('tag')
+    filter_role = request.args.get('role')
+    sort_order = request.args.get('sort', 'desc')
+    
     query_obj = Query.query
     
     # 1. Filter by Tag
@@ -2204,7 +2283,7 @@ def admin_queries():
              
     queries = query_obj.all()
     
-    return render_template('Admin/queries.html', queries=queries, QueryTag=QueryTag)
+    return render_template('Admin/_queries_responsive.html', queries=queries)
 
 @views.route('/admin/query/<int:query_id>/resolve', methods=['POST'])
 @login_required

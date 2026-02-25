@@ -1,0 +1,22 @@
+{% import 'components/skeletons.html' as skeletons %}
+<div class="space-y-4">
+    <!-- Search Bar Skeleton -->
+    <div class="h-10 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+    <!-- Assignment Card Skeletons -->
+    {% for _ in range(5) %}
+        <div class="border border-gray-100 dark:border-gray-800 rounded-xl p-3 bg-white dark:bg-background-dark animate-pulse">
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-2/3">
+                    <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                    <div class="h-3 bg-gray-100 dark:bg-gray-800 rounded w-1/2"></div>
+                </div>
+                <div class="w-6 h-6 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>
+            </div>
+            <div class="h-3 bg-gray-100 dark:bg-gray-800 rounded w-full mb-3"></div>
+            <div class="flex justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                <div class="h-4 bg-gray-100 dark:bg-gray-800 rounded w-16"></div>
+                <div class="h-4 bg-gray-100 dark:bg-gray-800 rounded w-12"></div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
