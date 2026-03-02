@@ -22,30 +22,6 @@
               href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
         <!-- Tailwind -->
         <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                    extend: {
-                        colors: {
-                            skeleton: {
-                                base: 'oklch(var(--color-skeleton-base) / <alpha-value>)',
-                                highlight: 'oklch(var(--color-skeleton-highlight) / <alpha-value>)',
-                            }
-                        },
-                        animation: {
-                            shimmer: 'shimmer 2s infinite linear',
-                        },
-                        keyframes: {
-                            shimmer: {
-                                '0%': { backgroundPosition: '-200% 0' },
-                                '100%': { backgroundPosition: '200% 0' },
-                            }
-                        }
-                    }
-                }
-            }
-        </script>
         <!-- Feather Icons -->
         <script src="https://unpkg.com/feather-icons"></script>
         <!-- Chart.js -->
@@ -72,10 +48,6 @@
                 --color-text-darker: 10% 0.04 250;
                 --color-text-light: 40% 0.04 250;
                 --color-text-lighter: 60% 0.02 250;
-
-                /* Skeleton Colors */
-                --color-skeleton-base: 95% 0.01 250;
-                --color-skeleton-highlight: 99% 0.005 250;
 
                 /* Primary Colors (Indigo) */
                 --color-primary-base: 50% 0.22 255;
@@ -120,10 +92,6 @@
                 --color-text-darker: 65% 0.02 250;   /* Muted/disabled text */
                 --color-text-light: 96% 0.005 250;   /* High emphasis text */
                 --color-text-lighter: 100% 0 0;      /* Pure white highlight */
-
-                /* Skeleton Colors (Dark Mode) */
-                --color-skeleton-base: 25% 0.02 250;
-                --color-skeleton-highlight: 35% 0.02 250;
 
                 /* Primary Colors (Indigo - Adjusted for Dark Mode Contrast) */
                 --color-primary-base: 65% 0.18 255;    /* Brightened base for dark BG */
