@@ -1136,6 +1136,11 @@ def teacher_dashboard():
     return render_template('Teacher/dashboard.html', stats=stats, active_class_info=active_class_info)
 
 
+def _calc_attendance_rate(present, total):
+    """Calculate attendance rate as a rounded percentage."""
+    return round((present / total) * 100, 1) if total > 0 else 0
+
+
 @views.route('/teacher/kpi')
 @login_required
 def teacher_kpi_dashboard():
@@ -1204,7 +1209,7 @@ def teacher_kpi_dashboard():
     present_count = sum(1 for a in all_attendance if a.status == 'present')
     absent_count = sum(1 for a in all_attendance if a.status == 'absent')
     late_count = sum(1 for a in all_attendance if a.status == 'late')
-    attendance_rate = round((present_count / total_records) * 100, 1) if total_records > 0 else 0
+    attendance_rate = _calc_attendance_rate(present_count, total_records)
 
     # 2. Marks / Performance statistics
     marks_query = Marks.query.filter(
@@ -1240,8 +1245,7 @@ def teacher_kpi_dashboard():
         cls_att = cls_att_query.all()
         cls_total = len(cls_att)
         cls_present = sum(1 for a in cls_att if a.status == 'present')
-        cls_rate = round((cls_present / cls_total) * 100, 1) if cls_total > 0 else 0
-        class_attendance_rates.append(cls_rate)
+        class_attendance_rates.append(_calc_attendance_rate(cls_present, cls_total))
 
     # 4. Students at risk (attendance < 75%)
     at_risk_students = []
@@ -1255,7 +1259,7 @@ def teacher_kpi_dashboard():
         student_att = student_att_query.all()
         s_total = len(student_att)
         s_present = sum(1 for a in student_att if a.status == 'present')
-        s_rate = round((s_present / s_total) * 100, 1) if s_total > 0 else 0
+        s_rate = _calc_attendance_rate(s_present, s_total)
         if s_rate < 75 and s_total > 0:
             student = db.session.get(User, sid)
             if student:
@@ -1284,7 +1288,7 @@ def teacher_kpi_dashboard():
         day_att = [a for a in all_attendance if a.date == d]
         day_total = len(day_att)
         day_present = sum(1 for a in day_att if a.status == 'present')
-        trend_rates.append(round((day_present / day_total) * 100, 1) if day_total > 0 else 0)
+        trend_rates.append(_calc_attendance_rate(day_present, day_total))
 
     kpi_data = {
         'attendance_rate': attendance_rate,
