@@ -105,8 +105,12 @@ class TestTeacherKPIDashboard:
         response = client.get('/teacher/kpi')
         assert response.status_code == 200
         assert b"Enrolled Students" in response.data
-        # We enrolled 2 students
-        assert b">2<" in response.data
+        # Verify the value 2 appears in the Enrolled Students KPI card
+        html = response.data.decode()
+        enrolled_idx = html.find("Enrolled Students")
+        assert enrolled_idx > 0
+        section = html[max(0, enrolled_idx - 200):enrolled_idx]
+        assert 'mb-1">2<' in section
 
     def test_kpi_displays_avg_score(self, client, auth, kpi_setup):
         """Test that the KPI dashboard shows average score."""
@@ -339,7 +343,13 @@ class TestTeacherKPIDashboard:
         response = client.get('/teacher/kpi')
         assert response.status_code == 200
         # Should show 0 enrolled students since none are approved
-        assert b">0<" in response.data
+        html = response.data.decode()
+        # The Enrolled Students KPI card should show 0
+        enrolled_idx = html.find("Enrolled Students")
+        assert enrolled_idx > 0
+        # The heading before "Enrolled Students" should contain 0
+        section = html[max(0, enrolled_idx - 200):enrolled_idx]
+        assert 'mb-1">0<' in section
 
     def test_kpi_all_students_on_track(self, client, auth, db):
         """Test that when all students have good attendance, the 'All on Track' message shows."""
