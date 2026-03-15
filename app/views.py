@@ -1073,51 +1073,32 @@ def teacher_dashboard():
     if current_user.role != UserRole.TEACHER:
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
-    
+
     # Get active semester settings
     settings = TimetableSettings.query.first()
     active_sem_type = settings.active_semester_type if settings else 'odd'
-    
+
     # Filter classes based on active semester type
     # Join with Subject to check semester parity
     query = AssignedClass.query.filter_by(teacher_id=current_user.id).join(Subject)
-    
+
     if active_sem_type == 'even':
         query = query.filter(Subject.semester % 2 == 0)
     else:
         # Odd: 1, 3, 5, 7
         query = query.filter(Subject.semester % 2 != 0)
-        
+
     teacher_classes = query.all()
     class_ids = [c.id for c in teacher_classes]
-    
-    stats = {
-        'total_classes': len(teacher_classes),
-        'total_students': 0,
-        'pending_requests': 0
-    }
-    
-    if class_ids:
-        # Count unique approved students
-        stats['total_students'] = Enrollment.query.filter(
-            Enrollment.class_id.in_(class_ids),
-            Enrollment.status == EnrollmentStatus.APPROVED
-        ).with_entities(Enrollment.student_id).distinct().count()
-        
-        # Count pending enrollments
-        stats['pending_requests'] = Enrollment.query.filter(
-            Enrollment.class_id.in_(class_ids),
-            Enrollment.status == EnrollmentStatus.PENDING
-        ).count()
-    
+
     # --- Find Active Class (Current Time) ---
     # Use IST (UTC + 5:30) for calculations
     current_time_obj = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
     day_name = current_time_obj.strftime('%A')
     time_now = current_time_obj.time()
-    
+
     # Query for a class currently in session for this teacher
-    # Note: We do NOT filter by active_semester_type here. 
+    # Note: We do NOT filter by active_semester_type here.
     # If a class is in the timetable schedule and the time matches, it IS active regardless of the semester setting.
     active_entry = TimetableEntry.query.join(AssignedClass).join(Subject).filter(
         AssignedClass.teacher_id == current_user.id,
@@ -1125,44 +1106,16 @@ def teacher_dashboard():
         TimetableEntry.start_time <= time_now,
         TimetableEntry.end_time > time_now
     ).first()
-    
+
     active_class_info = None
     if active_entry:
         active_class_info = {
             'class': active_entry.assigned_class,
             'entry': active_entry
         }
-    
-    return render_template('Teacher/dashboard.html', stats=stats, active_class_info=active_class_info)
 
-
-def _calc_attendance_rate(present, total):
-    """Calculate attendance rate as a rounded percentage."""
-    return round((present / total) * 100, 1) if total > 0 else 0
-
-
-@views.route('/teacher/kpi')
-@login_required
-def teacher_kpi_dashboard():
-    if current_user.role != UserRole.TEACHER:
-        flash('Access denied.', 'error')
-        return redirect(url_for('auth.login'))
-
-    # Get active semester settings
-    settings = TimetableSettings.query.first()
-    active_sem_type = settings.active_semester_type if settings else 'odd'
-
-    # Filter classes based on active semester type
-    query = AssignedClass.query.filter_by(teacher_id=current_user.id).join(Subject)
-    if active_sem_type == 'even':
-        query = query.filter(Subject.semester % 2 == 0)
-    else:
-        query = query.filter(Subject.semester % 2 != 0)
-
-    teacher_classes = query.all()
-    class_ids = [c.id for c in teacher_classes]
-
-    # Get filter parameters
+    # --- KPI Dashboard Integration ---
+    # Get filter parameters (for future filtering capability)
     selected_class_id = request.args.get('class_id', type=int)
     selected_period = request.args.get('period', default='all')
 
@@ -1183,147 +1136,192 @@ def teacher_kpi_dashboard():
         analysis_class_ids = class_ids
         selected_class_id = None
 
-    # Get subject IDs for the selected classes
-    analysis_classes = [c for c in teacher_classes if c.id in analysis_class_ids]
-    subject_ids = [c.subject_id for c in analysis_classes]
+    # Basic stats (existing functionality)
+    stats = {
+        'total_classes': len(teacher_classes),
+        'total_students': 0,
+        'pending_requests': 0
+    }
 
-    # Get enrolled students for the selected classes
-    enrolled_students = Enrollment.query.filter(
-        Enrollment.class_id.in_(analysis_class_ids),
-        Enrollment.status == EnrollmentStatus.APPROVED
-    ).all()
-    enrolled_student_ids = list(set(e.student_id for e in enrolled_students))
+    if class_ids:
+        # Count unique approved students
+        stats['total_students'] = Enrollment.query.filter(
+            Enrollment.class_id.in_(class_ids),
+            Enrollment.status == EnrollmentStatus.APPROVED
+        ).with_entities(Enrollment.student_id).distinct().count()
 
-    # --- Compute KPI Metrics ---
+        # Count pending enrollments
+        stats['pending_requests'] = Enrollment.query.filter(
+            Enrollment.class_id.in_(class_ids),
+            Enrollment.status == EnrollmentStatus.PENDING
+        ).count()
 
-    # 1. Attendance statistics
-    attendance_query = Attendance.query.filter(
-        Attendance.user_id.in_(enrolled_student_ids),
-        Attendance.subject_id.in_(subject_ids)
-    )
-    if date_filter:
-        attendance_query = attendance_query.filter(Attendance.date >= date_filter)
+    # KPI calculations (only if we have classes)
+    if analysis_class_ids:
+        # Get subject IDs for the selected classes
+        analysis_classes = [c for c in teacher_classes if c.id in analysis_class_ids]
+        subject_ids = [c.subject_id for c in analysis_classes]
 
-    all_attendance = attendance_query.all()
-    total_records = len(all_attendance)
-    present_count = sum(1 for a in all_attendance if a.status == 'present')
-    absent_count = sum(1 for a in all_attendance if a.status == 'absent')
-    late_count = sum(1 for a in all_attendance if a.status == 'late')
-    attendance_rate = _calc_attendance_rate(present_count, total_records)
+        # Get enrolled students for the selected classes
+        enrolled_students = Enrollment.query.filter(
+            Enrollment.class_id.in_(analysis_class_ids),
+            Enrollment.status == EnrollmentStatus.APPROVED
+        ).all()
+        enrolled_student_ids = list(set(e.student_id for e in enrolled_students))
 
-    # 2. Marks / Performance statistics
-    marks_query = Marks.query.filter(
-        Marks.user_id.in_(enrolled_student_ids),
-        Marks.subject_id.in_(subject_ids)
-    )
-    all_marks = marks_query.all()
-    avg_score = round(
-        sum(m.percentage for m in all_marks) / len(all_marks), 1
-    ) if all_marks else 0
+        # --- Compute KPI Metrics ---
 
-    # Grade distribution
-    grade_dist = {}
-    for m in all_marks:
-        g = m.grade
-        grade_dist[g] = grade_dist.get(g, 0) + 1
-
-    # 3. Per-class attendance breakdown for chart
-    class_labels = []
-    class_attendance_rates = []
-    for ac in analysis_classes:
-        class_labels.append(ac.subject.name)
-        class_enrolled = [e.student_id for e in enrolled_students if e.class_id == ac.id]
-        if not class_enrolled:
-            class_attendance_rates.append(0)
-            continue
-        cls_att_query = Attendance.query.filter(
-            Attendance.user_id.in_(class_enrolled),
-            Attendance.subject_id == ac.subject_id
-        )
-        if date_filter:
-            cls_att_query = cls_att_query.filter(Attendance.date >= date_filter)
-        cls_att = cls_att_query.all()
-        cls_total = len(cls_att)
-        cls_present = sum(1 for a in cls_att if a.status == 'present')
-        class_attendance_rates.append(_calc_attendance_rate(cls_present, cls_total))
-
-    # 4. Students at risk (attendance < 75%)
-    at_risk_students = []
-    for sid in enrolled_student_ids:
-        student_att_query = Attendance.query.filter(
-            Attendance.user_id == sid,
+        # 1. Attendance statistics
+        attendance_query = Attendance.query.filter(
+            Attendance.user_id.in_(enrolled_student_ids),
             Attendance.subject_id.in_(subject_ids)
         )
         if date_filter:
-            student_att_query = student_att_query.filter(Attendance.date >= date_filter)
-        student_att = student_att_query.all()
-        s_total = len(student_att)
-        s_present = sum(1 for a in student_att if a.status == 'present')
-        s_rate = _calc_attendance_rate(s_present, s_total)
-        if s_rate < 75 and s_total > 0:
-            student = db.session.get(User, sid)
-            if student:
-                at_risk_students.append({
-                    'name': student.name,
-                    'email': student.email,
-                    'attendance_rate': s_rate,
-                    'total': s_total,
-                    'present': s_present
-                })
-    at_risk_students.sort(key=lambda x: x['attendance_rate'])
+            attendance_query = attendance_query.filter(Attendance.date >= date_filter)
 
-    # 5. Attendance trend (last 7 class dates)
-    trend_query = db.session.query(Attendance.date).filter(
-        Attendance.user_id.in_(enrolled_student_ids),
-        Attendance.subject_id.in_(subject_ids)
-    )
-    if date_filter:
-        trend_query = trend_query.filter(Attendance.date >= date_filter)
-    unique_dates = sorted(set(d[0] for d in trend_query.distinct().all()))
-    trend_dates = unique_dates[-7:] if len(unique_dates) > 7 else unique_dates
+        all_attendance = attendance_query.all()
+        total_records = len(all_attendance)
+        present_count = sum(1 for a in all_attendance if a.status == 'present')
+        absent_count = sum(1 for a in all_attendance if a.status == 'absent')
+        late_count = sum(1 for a in all_attendance if a.status == 'late')
+        attendance_rate = _calc_attendance_rate(present_count, total_records)
 
-    trend_labels = [d.strftime('%b %d') for d in trend_dates]
-    trend_rates = []
-    for d in trend_dates:
-        day_att = [a for a in all_attendance if a.date == d]
-        day_total = len(day_att)
-        day_present = sum(1 for a in day_att if a.status == 'present')
-        trend_rates.append(_calc_attendance_rate(day_present, day_total))
+        # 2. Marks / Performance statistics
+        marks_query = Marks.query.filter(
+            Marks.user_id.in_(enrolled_student_ids),
+            Marks.subject_id.in_(subject_ids)
+        )
+        all_marks = marks_query.all()
+        avg_score = round(
+            sum(m.percentage for m in all_marks) / len(all_marks), 1
+        ) if all_marks else 0
 
-    kpi_data = {
-        'attendance_rate': attendance_rate,
-        'total_records': total_records,
-        'present_count': present_count,
-        'absent_count': absent_count,
-        'late_count': late_count,
-        'avg_score': avg_score,
-        'total_students': len(enrolled_student_ids),
-        'total_classes': len(analysis_classes),
-        'grade_distribution': grade_dist,
-        'at_risk_count': len(at_risk_students),
-    }
+        # Grade distribution
+        grade_dist = {}
+        for m in all_marks:
+            g = m.grade
+            grade_dist[g] = grade_dist.get(g, 0) + 1
 
-    chart_data = {
-        'attendance_pie': {
-            'labels': ['Present', 'Absent', 'Late'],
-            'data': [present_count, absent_count, late_count]
-        },
-        'class_bar': {
-            'labels': class_labels,
-            'data': class_attendance_rates
-        },
-        'trend_line': {
-            'labels': trend_labels,
-            'data': trend_rates
-        },
-        'grade_dist': {
-            'labels': list(grade_dist.keys()),
-            'data': list(grade_dist.values())
+        # 3. Per-class attendance breakdown for chart
+        class_labels = []
+        class_attendance_rates = []
+        for ac in analysis_classes:
+            class_labels.append(ac.subject.name)
+            class_enrolled = [e.student_id for e in enrolled_students if e.class_id == ac.id]
+            if not class_enrolled:
+                class_attendance_rates.append(0)
+                continue
+            cls_att_query = Attendance.query.filter(
+                Attendance.user_id.in_(class_enrolled),
+                Attendance.subject_id == ac.subject_id
+            )
+            if date_filter:
+                cls_att_query = cls_att_query.filter(Attendance.date >= date_filter)
+            cls_att = cls_att_query.all()
+            cls_total = len(cls_att)
+            cls_present = sum(1 for a in cls_att if a.status == 'present')
+            class_attendance_rates.append(_calc_attendance_rate(cls_present, cls_total))
+
+        # 4. Students at risk (attendance < 75%)
+        at_risk_students = []
+        for sid in enrolled_student_ids:
+            student_att_query = Attendance.query.filter(
+                Attendance.user_id == sid,
+                Attendance.subject_id.in_(subject_ids)
+            )
+            if date_filter:
+                student_att_query = student_att_query.filter(Attendance.date >= date_filter)
+            student_att = student_att_query.all()
+            s_total = len(student_att)
+            s_present = sum(1 for a in student_att if a.status == 'present')
+            s_rate = _calc_attendance_rate(s_present, s_total)
+            if s_rate < 75 and s_total > 0:
+                student = db.session.get(User, sid)
+                if student:
+                    at_risk_students.append({
+                        'name': student.name,
+                        'email': student.email,
+                        'attendance_rate': s_rate,
+                        'total': s_total,
+                        'present': s_present
+                    })
+        at_risk_students.sort(key=lambda x: x['attendance_rate'])
+
+        # 5. Attendance trend (last 7 class dates)
+        trend_query = db.session.query(Attendance.date).filter(
+            Attendance.user_id.in_(enrolled_student_ids),
+            Attendance.subject_id.in_(subject_ids)
+        )
+        if date_filter:
+            trend_query = trend_query.filter(Attendance.date >= date_filter)
+        unique_dates = sorted(set(d[0] for d in trend_query.distinct().all()))
+        trend_dates = unique_dates[-7:] if len(unique_dates) > 7 else unique_dates
+
+        trend_labels = [d.strftime('%b %d') for d in trend_dates]
+        trend_rates = []
+        for d in trend_dates:
+            day_att = [a for a in all_attendance if a.date == d]
+            day_total = len(day_att)
+            day_present = sum(1 for a in day_att if a.status == 'present')
+            trend_rates.append(_calc_attendance_rate(day_present, day_total))
+
+        kpi_data = {
+            'attendance_rate': attendance_rate,
+            'total_records': total_records,
+            'present_count': present_count,
+            'absent_count': absent_count,
+            'late_count': late_count,
+            'avg_score': avg_score,
+            'total_students': len(enrolled_student_ids),
+            'total_classes': len(analysis_classes),
+            'grade_distribution': grade_dist,
+            'at_risk_count': len(at_risk_students),
         }
-    }
+
+        chart_data = {
+            'attendance_pie': {
+                'labels': ['Present', 'Absent', 'Late'],
+                'data': [present_count, absent_count, late_count]
+            },
+            'class_bar': {
+                'labels': class_labels,
+                'data': class_attendance_rates
+            },
+            'trend_line': {
+                'labels': trend_labels,
+                'data': trend_rates
+            },
+            'grade_dist': {
+                'labels': list(grade_dist.keys()),
+                'data': list(grade_dist.values())
+            }
+        }
+    else:
+        # No classes - return empty KPI data
+        kpi_data = {
+            'attendance_rate': 0,
+            'total_records': 0,
+            'present_count': 0,
+            'absent_count': 0,
+            'late_count': 0,
+            'avg_score': 0,
+            'total_students': 0,
+            'total_classes': 0,
+            'grade_distribution': {},
+            'at_risk_count': 0,
+        }
+        chart_data = {
+            'attendance_pie': {'labels': [], 'data': []},
+            'class_bar': {'labels': [], 'data': []},
+            'trend_line': {'labels': [], 'data': []},
+            'grade_dist': {'labels': [], 'data': []}
+        }
+        at_risk_students = []
 
     return render_template(
-        'Teacher/kpi_dashboard.html',
+        'Teacher/dashboard.html',
+        stats=stats,
+        active_class_info=active_class_info,
         kpi=kpi_data,
         chart_data=chart_data,
         at_risk_students=at_risk_students,
@@ -1331,6 +1329,12 @@ def teacher_kpi_dashboard():
         selected_class_id=selected_class_id,
         selected_period=selected_period
     )
+
+
+def _calc_attendance_rate(present, total):
+    """Calculate attendance rate as a rounded percentage."""
+    return round((present / total) * 100, 1) if total > 0 else 0
+
 
 
 @views.route('/teacher/schedule')

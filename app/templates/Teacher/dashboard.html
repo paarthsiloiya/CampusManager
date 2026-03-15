@@ -1,161 +1,660 @@
 {% extends "base.html" %}
-{% block title %}Teacher Dashboard — CampusManager{% endblock %}
+{% block title %}Dashboard — CampusManager{% endblock %}
 {% block content %}
-    <section class="max-w-7xl mx-auto space-y-8">
-        <!-- Header -->
-        <div class="flex items-end justify-between">
-            <div>
-                <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Dashboard</h1>
-                <p class="text-text-light dark:text-text-light mt-1">Welcome back, {{ current_user.name }}</p>
-            </div>
+<section class="max-w-7xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Dashboard</h1>
+            <p class="text-text-light dark:text-text-light mt-1">Welcome back, {{ current_user.name }} — Track
+                attendance metrics, student performance, and engagement insights</p>
         </div>
-        <!-- Active Class Section -->
-        {% if active_class_info %}
-            <div class="bg-white dark:bg-background-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden relative group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 dark:bg-primary/10 rounded-full blur-2xl -mr-16 -mt-16">
+    </div>
+
+    <!-- Active Class Section (Class Reminder) -->
+    {% if active_class_info %}
+    <div
+        class="bg-white dark:bg-background-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden relative group">
+        <div
+            class="absolute top-0 right-0 w-32 h-32 bg-primary/5 dark:bg-primary/10 rounded-full blur-2xl -mr-16 -mt-16">
+        </div>
+        <div class="p-6 relative z-10 flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <span
+                        class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 animate-pulse">
+                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
+                        Live Class
+                    </span>
+                    <span
+                        class="text-xs font-bold text-text-light dark:text-text-light bg-gray-50 dark:bg-background-base px-2 py-1 rounded-lg border border-gray-100 dark:border-gray-800">
+                        {{ active_class_info.entry.day }} • {{ active_class_info.entry.start_time.strftime("%I:%M %p")
+                        }} - {{ active_class_info.entry.end_time.strftime("%I:%M %p") }} </span>
                 </div>
-                <div class="p-6 relative z-10 flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 animate-pulse">
-                                <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
-                                Live Class
-                            </span>
-                            <span class="text-xs font-bold text-text-light dark:text-text-light bg-gray-50 dark:bg-background-base px-2 py-1 rounded-lg border border-gray-100 dark:border-gray-800"> {{ active_class_info.entry.day }} • {{ active_class_info.entry.start_time.strftime("%I:%M %p") }} - {{ active_class_info.entry.end_time.strftime("%I:%M %p") }} </span>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-bold text-text-dark dark:text-text-base leading-tight">
-                                {{ active_class_info.class.subject.name }}
-                                {% if active_class_info.class.subject.is_lab %}
-                                    <span class="text-lg text-purple-600 bg-purple-50 dark:bg-purple-900/20 px-2 py-0.5 rounded-lg align-middle ml-2 border border-purple-100 dark:border-purple-900/30">Lab</span>
-                                {% endif %}
-                            </h2>
-                            <div class="flex flex-col gap-2 mt-4 text-sm text-text-light dark:text-text-light font-medium">
-                                <span class="flex items-center gap-1.5"> <i data-feather="map-pin" class="w-4 h-4"></i> {{ active_class_info.class.location or 'Classroom' }} </span>
-                                <span class="flex items-center gap-1.5"> <i data-feather="book" class="w-4 h-4"></i> {{ active_class_info.class.subject.code }} </span>
-                                <span class="flex items-center gap-1.5"> <i data-feather="users" class="w-4 h-4"></i> {{ active_class_info.class.subject.branch }} - Sem {{ active_class_info.class.subject.semester }} ({{ active_class_info.class.section or 'All' }}) </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-3 w-full lg:w-auto">
-                        <a href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
-                           class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all hover:scale-105 shadow-lg shadow-primary/20">
-                            <i data-feather="check-square" class="w-5 h-5"></i>
-                            Mark Attendance
-                        </a>
-                        <a href="{{ url_for('views.teacher_class_details', class_id=active_class_info.class.id) }}"
-                           class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-background-base border border-gray-200 dark:border-gray-700 text-text-dark dark:text-text-base font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                            <i data-feather="eye"
-                               class="w-4 h-4 text-text-light dark:text-text-light"></i>
-                            Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-bold text-text-dark dark:text-text-base">No Active Class</h3>
-                    <p class="text-sm text-text-light dark:text-text-light mt-1">You don't have any classes scheduled right now.</p>
+                    <h2 class="text-2xl font-bold text-text-dark dark:text-text-base leading-tight">
+                        {{ active_class_info.class.subject.name }}
+                        {% if active_class_info.class.subject.is_lab %}
+                        <span
+                            class="text-lg text-purple-600 bg-purple-50 dark:bg-purple-900/20 px-2 py-0.5 rounded-lg align-middle ml-2 border border-purple-100 dark:border-purple-900/30">Lab</span>
+                        {% endif %}
+                    </h2>
+                    <div class="flex flex-col gap-2 mt-4 text-sm text-text-light dark:text-text-light font-medium">
+                        <span class="flex items-center gap-1.5"> <i data-feather="map-pin" class="w-4 h-4"></i> {{
+                            active_class_info.class.location or 'Classroom' }} </span>
+                        <span class="flex items-center gap-1.5"> <i data-feather="book" class="w-4 h-4"></i> {{
+                            active_class_info.class.subject.code }} </span>
+                        <span class="flex items-center gap-1.5"> <i data-feather="users" class="w-4 h-4"></i> {{
+                            active_class_info.class.subject.branch }} - Sem {{ active_class_info.class.subject.semester
+                            }} ({{ active_class_info.class.section or 'All' }}) </span>
+                    </div>
                 </div>
-                <a href="{{ url_for("views.teacher_schedule") }}"
-                   class="text-primary hover:text-primary-dark text-sm font-bold flex items-center gap-1"> View Schedule <i data-feather="arrow-right" class="w-4 h-4"></i> </a>
             </div>
+            <div class="flex flex-col gap-3 w-full lg:w-auto">
+                <a href="{{ url_for('views.teacher_mark_attendance', class_id=active_class_info.class.id) }}"
+                    class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all hover:scale-105 shadow-lg shadow-primary/20">
+                    <i data-feather="check-square" class="w-5 h-5"></i>
+                    Mark Attendance
+                </a>
+                <a href="{{ url_for('views.teacher_class_details', class_id=active_class_info.class.id) }}"
+                    class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-background-base border border-gray-200 dark:border-gray-700 text-text-dark dark:text-text-base font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <i data-feather="eye" class="w-4 h-4 text-text-light dark:text-text-light"></i>
+                    Details
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div
+        class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm flex items-center justify-between">
+        <div>
+            <h3 class="text-lg font-bold text-text-dark dark:text-text-base">No Active Class</h3>
+            <p class="text-sm text-text-light dark:text-text-light mt-1">You don't have any classes scheduled right now.
+            </p>
+        </div>
+        <a href="{{ url_for("views.teacher_schedule") }}"
+            class="text-primary hover:text-primary-dark text-sm font-bold flex items-center gap-1"> View Schedule <i
+                data-feather="arrow-right" class="w-4 h-4"></i> </a>
+    </div>
+    {% endif %}
+
+    <!-- Filters -->
+    <form method="GET" action="{{ url_for('views.teacher_dashboard') }}"
+        class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+        <div class="flex flex-col lg:flex-row gap-4 items-end">
+            <div class="flex-1">
+                <label
+                    class="block text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-2">Class
+                    / Subject</label>
+                <select name="class_id"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option value="">All Classes</option>
+                    {% for tc in teacher_classes %}
+                    <option value="{{ tc.id }}" {% if selected_class_id==tc.id %}selected{% endif %}>
+                        {{ tc.subject.name }} ({{ tc.subject.code }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1">
+                <label
+                    class="block text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-2">Time
+                    Period</label>
+                <select name="period"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option value="all" {% if selected_period=='all' %}selected{% endif %}>All Time</option>
+                    <option value="7days" {% if selected_period=='7days' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="30days" {% if selected_period=='30days' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="90days" {% if selected_period=='90days' %}selected{% endif %}>Last 90 Days</option>
+                </select>
+            </div>
+            <button type="submit"
+                class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+                <i data-feather="filter" class="w-4 h-4"></i>
+                Apply Filters
+            </button>
+        </div>
+    </form>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <!-- Attendance Rate -->
+        <div
+            class="bg-white dark:bg-background-dark p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+            {% if kpi.attendance_rate >= 75 %}
+            {% set att_color = "text-green-600 dark:text-green-400" %}
+            {% set att_bg = "bg-green-50 dark:bg-green-900/20" %}
+            {% elif kpi.attendance_rate >= 60 %}
+            {% set att_color = "text-amber-500 dark:text-amber-400" %}
+            {% set att_bg = "bg-amber-50 dark:bg-amber-900/20" %}
+            {% else %}
+            {% set att_color = "text-red-600 dark:text-red-400" %}
+            {% set att_bg = "bg-red-50 dark:bg-red-900/20" %}
+            {% endif %}
+            <div class="absolute top-0 right-0 w-24 h-24 {{ att_bg }} rounded-full blur-2xl -mr-10 -mt-10 opacity-50">
+            </div>
+            <div class="flex items-start justify-between mb-4 relative z-10">
+                <div class="w-12 h-12 rounded-2xl {{ att_bg }} flex items-center justify-center {{ att_color }}">
+                    <i data-feather="percent" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-3xl font-bold {{ att_color }} mb-1">
+                    {% if kpi.total_records == 0 %}N/A{% else %}{{ kpi.attendance_rate }}%{% endif %}
+                </h3>
+                <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Attendance
+                    Rate</p>
+            </div>
+        </div>
+
+        <!-- Total Students -->
+        <div
+            class="bg-white dark:bg-background-dark p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-4">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                    <i data-feather="users" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_students }}</h3>
+                <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Enrolled
+                    Students</p>
+            </div>
+        </div>
+
+        <!-- Average Score -->
+        <div
+            class="bg-white dark:bg-background-dark p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-4">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                    <i data-feather="award" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-1">
+                    {% if kpi.avg_score > 0 %}{{ kpi.avg_score }}%{% else %}N/A{% endif %}
+                </h3>
+                <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Avg. Score
+                </p>
+            </div>
+        </div>
+
+        <!-- At Risk -->
+        <div
+            class="bg-white dark:bg-background-dark p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+            {% if kpi.at_risk_count > 0 %}
+            <div
+                class="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-red-900/20 rounded-full blur-2xl -mr-10 -mt-10 opacity-50">
+            </div>
+            {% endif %}
+            <div class="flex items-start justify-between mb-4 relative z-10">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+                    <i data-feather="alert-triangle" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.at_risk_count }}</h3>
+                <p class="text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">At Risk
+                    (&lt;75%)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Attendance Distribution (Pie Chart) -->
+        <div
+            class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-text-dark dark:text-text-base">Attendance Distribution</h2>
+                <p class="text-sm text-text-light dark:text-text-light mt-1">Present, absent, and late breakdown</p>
+            </div>
+            <div class="flex gap-4 text-xs font-bold text-text-light dark:text-text-light mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-md bg-green-500"></span> Present
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-md bg-red-500"></span> Absent
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-md bg-amber-500"></span> Late
+                </div>
+            </div>
+            <div class="w-full h-64 flex items-center justify-center">
+                {% if kpi.total_records > 0 %}
+                <canvas id="attendancePieChart"></canvas>
+                {% else %}
+                <p class="text-text-light dark:text-text-light text-sm">No attendance data available</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Attendance by Class (Bar Chart) -->
+        <div
+            class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-text-dark dark:text-text-base">Attendance by Subject</h2>
+                <p class="text-sm text-text-light dark:text-text-light mt-1">Attendance rate per class/subject</p>
+            </div>
+            <div class="w-full h-64 flex items-center justify-center">
+                {% if chart_data.class_bar.labels|length > 0 %}
+                <canvas id="classBarChart"></canvas>
+                {% else %}
+                <p class="text-text-light dark:text-text-light text-sm">No class data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Trend & Grade Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Attendance Trend (Line Chart) -->
+        <div
+            class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-text-dark dark:text-text-base">Attendance Trend</h2>
+                <p class="text-sm text-text-light dark:text-text-light mt-1">Daily attendance rate over recent classes
+                </p>
+            </div>
+            <div class="w-full h-64 flex items-center justify-center">
+                {% if chart_data.trend_line.labels|length > 0 %}
+                <canvas id="trendLineChart"></canvas>
+                {% else %}
+                <p class="text-text-light dark:text-text-light text-sm">No trend data available</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Grade Distribution (Doughnut Chart) -->
+        <div
+            class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-6">
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-text-dark dark:text-text-base">Grade Distribution</h2>
+                <p class="text-sm text-text-light dark:text-text-light mt-1">Student performance breakdown by grade</p>
+            </div>
+            <div class="w-full h-64 flex items-center justify-center">
+                {% if chart_data.grade_dist.labels|length > 0 %}
+                <canvas id="gradeDistChart"></canvas>
+                {% else %}
+                <p class="text-text-light dark:text-text-light text-sm">No marks data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- At Risk Students Table -->
+    <div
+        class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div
+            class="p-6 lg:p-8 border-b border-gray-100 dark:border-gray-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-text-dark dark:text-text-base">Students At Risk</h2>
+                <p class="text-sm text-text-light dark:text-text-light mt-1">Students with attendance below 75% —
+                    consider follow-up</p>
+            </div>
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-xs font-bold border border-red-100 dark:border-red-800/50">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span> {{ at_risk_students|length }} student{{ 's' if
+                at_risk_students|length != 1 else '' }}
+            </span>
+        </div>
+
+        {% if at_risk_students|length > 0 %}
+        <!-- Desktop Table -->
+        <div class="hidden lg:block">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gray-50 dark:bg-background-base">
+                        <th
+                            class="text-left text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider px-8 py-4">
+                            Student</th>
+                        <th
+                            class="text-left text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider px-8 py-4">
+                            Email</th>
+                        <th
+                            class="text-center text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider px-8 py-4">
+                            Attended</th>
+                        <th
+                            class="text-center text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider px-8 py-4">
+                            Total</th>
+                        <th
+                            class="text-center text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider px-8 py-4">
+                            Rate</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    {% for student in at_risk_students %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-background-base transition-colors">
+                        <td class="px-8 py-4 text-sm font-medium text-text-dark dark:text-text-base">{{ student.name }}
+                        </td>
+                        <td class="px-8 py-4 text-sm text-text-light dark:text-text-light">{{ student.email }}</td>
+                        <td class="px-8 py-4 text-sm text-center text-text-dark dark:text-text-base font-medium">{{
+                            student.present }}</td>
+                        <td class="px-8 py-4 text-sm text-center text-text-dark dark:text-text-base font-medium">{{
+                            student.total }}</td>
+                        <td class="px-8 py-4 text-center">
+                            {% if student.attendance_rate < 60 %} <span
+                                class="inline-flex px-2.5 py-1 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-xs font-bold">
+                                {{ student.attendance_rate }}%</span>
+                                {% else %}
+                                <span
+                                    class="inline-flex px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-bold">{{
+                                    student.attendance_rate }}%</span>
+                                {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="lg:hidden p-6 space-y-4">
+            {% for student in at_risk_students %}
+            <div class="bg-gray-50 dark:bg-background-base rounded-xl p-4 border border-gray-100 dark:border-gray-800">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h4 class="font-bold text-text-dark dark:text-text-base text-base">{{ student.name }}</h4>
+                        <p class="text-xs text-text-light dark:text-text-light">{{ student.email }}</p>
+                    </div>
+                    {% if student.attendance_rate < 60 %} <span
+                        class="inline-flex px-2.5 py-1 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-xs font-bold">
+                        {{ student.attendance_rate }}%</span>
+                        {% else %}
+                        <span
+                            class="inline-flex px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-xs font-bold">{{
+                            student.attendance_rate }}%</span>
+                        {% endif %}
+                </div>
+                <div class="flex gap-4 text-xs text-text-light dark:text-text-light">
+                    <span>Attended: <strong class="text-text-dark dark:text-text-base">{{ student.present
+                            }}</strong></span>
+                    <span>Total: <strong class="text-text-dark dark:text-text-base">{{ student.total }}</strong></span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-8 text-center">
+            <div
+                class="w-16 h-16 rounded-2xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400 mx-auto mb-4">
+                <i data-feather="check-circle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-lg font-bold text-text-dark dark:text-text-base mb-1">All Students on Track</h3>
+            <p class="text-sm text-text-light dark:text-text-light">No students are below the 75% attendance threshold
+            </p>
+        </div>
         {% endif %}
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof feather !== "undefined") {
-                feather.replace();
-            }
-        });
-        </script>
-    {% endblock %}
-    {% block sidebar_content %}
-        <!-- Stats Widget -->
-        <div class="w-full">
-            <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Overview</h3>
-            <div class="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-5 shadow-sm space-y-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                            <i data-feather="book-open" class="w-4 h-4"></i>
-                        </div>
-                        <span class="text-sm font-medium text-gray-600 dark:text-text-light">Total Classes</span>
-                    </div>
-                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ stats.total_classes }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                            <i data-feather="users" class="w-4 h-4"></i>
-                        </div>
-                        <span class="text-sm font-medium text-gray-600 dark:text-text-light">Students</span>
-                    </div>
-                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ stats.total_students }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-                            <i data-feather="clock" class="w-4 h-4"></i>
-                        </div>
-                        <span class="text-sm font-medium text-gray-600 dark:text-text-light">Pending Req.</span>
-                    </div>
-                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ stats.pending_requests }}</span>
-                </div>
-            </div>
-        </div>
-        <!-- Quick Actions Widget -->
-        <div class="w-full">
-            <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h3>
-            <div class="flex flex-col gap-3">
-                <a href="{{ url_for("views.teacher_schedule") }}"
-                   class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-feather="calendar" class="w-5 h-5"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
-                            My Schedule
-                        </h4>
-                        <p class="text-xs text-text-light dark:text-text-light mt-0.5">View weekly timetable</p>
-                    </div>
-                    <i data-feather="chevron-right"
-                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-                </a>
-                <a href="{{ url_for("views.teacher_classes") }}"
-                   class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-feather="briefcase" class="w-5 h-5"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
-                            My Classes
-                        </h4>
-                        <p class="text-xs text-text-light dark:text-text-light mt-0.5">Manage class details</p>
-                    </div>
-                    <i data-feather="chevron-right"
-                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-                </a>
-                <a href="{{ url_for("views.teacher_enrollments") }}"
-                   class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
-                    <div class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-feather="user-check" class="w-5 h-5"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
-                                Enrollments
-                            </h4>
-                            {% if stats.pending_requests > 0 %}
-                                <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ stats.pending_requests }}</span>
-                            {% endif %}
-                        </div>
-                        <p class="text-xs text-text-light dark:text-text-light mt-0.5">Approve requests</p>
-                    </div>
-                    <i data-feather="chevron-right"
-                       class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
-                </a>
-            </div>
-        </div>
-    {% endblock %}
+    </div>
 </section>
+
+<!-- Chart.js Initialization -->
+<script id="kpi-chart-data" type="application/json">{{ chart_data | tojson | safe }}</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof feather !== "undefined") {
+            feather.replace();
+        }
+
+        const chartDataEl = document.getElementById("kpi-chart-data");
+        if (!chartDataEl) return;
+        const chartData = JSON.parse(chartDataEl.textContent);
+
+        const isDark = document.documentElement.classList.contains("dark");
+        const gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)";
+        const textColor = isDark ? "#9ca3af" : "#6b7280";
+
+        // Attendance Pie Chart
+        const pieCtx = document.getElementById("attendancePieChart");
+        if (pieCtx) {
+            new Chart(pieCtx, {
+                type: "doughnut",
+                data: {
+                    labels: chartData.attendance_pie.labels,
+                    datasets: [{
+                        data: chartData.attendance_pie.data,
+                        backgroundColor: ["#22c55e", "#ef4444", "#f59e0b"],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Class Bar Chart
+        const barCtx = document.getElementById("classBarChart");
+        if (barCtx) {
+            new Chart(barCtx, {
+                type: "bar",
+                data: {
+                    labels: chartData.class_bar.labels,
+                    datasets: [{
+                        label: "Attendance %",
+                        data: chartData.class_bar.data,
+                        backgroundColor: chartData.class_bar.data.map(function (v) {
+                            return v >= 75 ? "#22c55e" : v >= 60 ? "#f59e0b" : "#ef4444";
+                        }),
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: textColor }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Trend Line Chart
+        const lineCtx = document.getElementById("trendLineChart");
+        if (lineCtx) {
+            new Chart(lineCtx, {
+                type: "line",
+                data: {
+                    labels: chartData.trend_line.labels,
+                    datasets: [{
+                        label: "Attendance %",
+                        data: chartData.trend_line.data,
+                        borderColor: "#6366f1",
+                        backgroundColor: "rgba(99,102,241,0.1)",
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: "#6366f1",
+                        pointBorderWidth: 0,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: textColor }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Grade Distribution Chart
+        const gradeCtx = document.getElementById("gradeDistChart");
+        if (gradeCtx) {
+            const gradeColors = {
+                "A+": "#22c55e", "A": "#4ade80", "B+": "#a3e635",
+                "B": "#facc15", "C": "#f59e0b", "D": "#f97316", "F": "#ef4444"
+            };
+            var bgColors = chartData.grade_dist.labels.map(function (l) {
+                return gradeColors[l] || "#6b7280";
+            });
+            new Chart(gradeCtx, {
+                type: "doughnut",
+                data: {
+                    labels: chartData.grade_dist.labels,
+                    datasets: [{
+                        data: chartData.grade_dist.data,
+                        backgroundColor: bgColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: textColor, padding: 12, usePointStyle: true }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% block sidebar_content %}
+<!-- KPI Summary Widget -->
+<div class="w-full">
+    <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Summary</h3>
+    <div
+        class="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center">
+                    <i data-feather="check-circle" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-600 dark:text-text-light">Present</span>
+            </div>
+            <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.present_count }}</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 flex items-center justify-center">
+                    <i data-feather="x-circle" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-600 dark:text-text-light">Absent</span>
+            </div>
+            <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.absent_count }}</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                    <i data-feather="clock" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-600 dark:text-text-light">Late</span>
+            </div>
+            <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.late_count }}</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                    <i data-feather="user-check" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-600 dark:text-text-light">Pending Req.</span>
+            </div>
+            <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ stats.pending_requests }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Widget -->
+<div class="w-full">
+    <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h3>
+    <div class="flex flex-col gap-3">
+        <a href="{{ url_for("views.teacher_schedule") }}"
+            class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
+            <div
+                class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-feather="calendar" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+                <h4
+                    class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
+                    My Schedule
+                </h4>
+                <p class="text-xs text-text-light dark:text-text-light mt-0.5">View weekly timetable</p>
+            </div>
+            <i data-feather="chevron-right"
+                class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+        </a>
+        <a href="{{ url_for("views.teacher_classes") }}"
+            class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
+            <div
+                class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-feather="briefcase" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+                <h4
+                    class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
+                    My Classes
+                </h4>
+                <p class="text-xs text-text-light dark:text-text-light mt-0.5">Manage class details</p>
+            </div>
+            <i data-feather="chevron-right"
+                class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+        </a>
+        <a href="{{ url_for("views.teacher_enrollments") }}"
+            class="group flex items-center gap-4 bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 p-4 rounded-2xl shadow-sm hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition-all">
+            <div
+                class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-feather="user-check" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center justify-between">
+                    <h4
+                        class="font-bold text-text-dark dark:text-text-base text-sm group-hover:text-primary transition-colors">
+                        Enrollments
+                    </h4>
+                    {% if stats.pending_requests > 0 %}
+                    <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{{
+                        stats.pending_requests }}</span>
+                    {% endif %}
+                </div>
+                <p class="text-xs text-text-light dark:text-text-light mt-0.5">Approve requests</p>
+            </div>
+            <i data-feather="chevron-right"
+                class="w-4 h-4 text-gray-300 group-hover:text-primary group-hover:translate-x-1 transition-all"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,914 +1,1009 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description"
-              content="CampusManager — Smart Curriculum & Attendance: manage curriculum, timetables, and attendance for institutions." />
-        <meta name="keywords"
-              content="CampusManager, curriculum, attendance, timetable, education, school management" />
-        <!-- Prevent caching to fix notification persistence -->
-        <meta http-equiv="Cache-Control"
-              content="no-cache, no-store, must-revalidate" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-        <title>
-            {% block title %}CampusManager — Smart Curriculum & Attendance{% endblock %}
-        </title>
-        <link rel="icon"
-              href="{{ url_for('static', filename='icons/CampusManagerLogoSimplified.svg') }}"
-              type="image/svg+xml">
-        <link rel="shortcut icon"
-              href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
-        <!-- Tailwind -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <!-- Feather Icons -->
-        <script src="https://unpkg.com/feather-icons"></script>
-        <!-- Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Socket.IO Client -->
-        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-        <!-- Real-time Notifications -->
-        <link rel="stylesheet"
-              href="{{ url_for('static', filename='css/notifications.css') }}?v=2.0">
-        <!-- Google Fonts: Inter -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-              rel="stylesheet" />
-        <style>
-            :root {
-                /* Color Palette - Light Mode Defaults */
-                --color-bg-base: 98% 0.005 250;
-                --color-bg-dark: 95% 0.01 250;
-                --color-bg-darker: 90% 0.02 250;
-                --color-bg-light: 99% 0.002 250;
-                --color-bg-lighter: 100% 0 0;
 
-                --color-text-base: 20% 0.04 250;
-                --color-text-dark: 15% 0.04 250;
-                --color-text-darker: 10% 0.04 250;
-                --color-text-light: 40% 0.04 250;
-                --color-text-lighter: 60% 0.02 250;
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="CampusManager — Smart Curriculum & Attendance: manage curriculum, timetables, and attendance for institutions." />
+    <meta name="keywords" content="CampusManager, curriculum, attendance, timetable, education, school management" />
+    <!-- Prevent caching to fix notification persistence -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>
+        {% block title %}CampusManager — Smart Curriculum & Attendance{% endblock %}
+    </title>
+    <link rel="icon" href="{{ url_for('static', filename='icons/CampusManagerLogoSimplified.svg') }}"
+        type="image/svg+xml">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Socket.IO Client -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <!-- Real-time Notifications -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}?v=2.0">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            /* Color Palette - Light Mode Defaults */
+            --color-bg-base: 98% 0.005 250;
+            --color-bg-dark: 95% 0.01 250;
+            --color-bg-darker: 90% 0.02 250;
+            --color-bg-light: 99% 0.002 250;
+            --color-bg-lighter: 100% 0 0;
 
-                /* Primary Colors (Indigo) */
-                --color-primary-base: 50% 0.22 255;
-                --color-primary-dark: 42% 0.22 255;
-                --color-primary-darker: 35% 0.22 255;
-                --color-primary-light: 65% 0.15 255;
-                --color-primary-lighter: 85% 0.08 255;
+            --color-text-base: 20% 0.04 250;
+            --color-text-dark: 15% 0.04 250;
+            --color-text-darker: 10% 0.04 250;
+            --color-text-light: 40% 0.04 250;
+            --color-text-lighter: 60% 0.02 250;
 
-                /* Secondary, Accent, Status remain visible on both usually, 
+            /* Primary Colors (Indigo) */
+            --color-primary-base: 50% 0.22 255;
+            --color-primary-dark: 42% 0.22 255;
+            --color-primary-darker: 35% 0.22 255;
+            --color-primary-light: 65% 0.15 255;
+            --color-primary-lighter: 85% 0.08 255;
+
+            /* Secondary, Accent, Status remain visible on both usually, 
                    but we might want to tweak them for dark mode contract */
-                --color-secondary-base: 70% 0.1 255;
-                --color-secondary-dark: 60% 0.12 255;
-                --color-secondary-darker: 50% 0.15 255;
-                --color-secondary-light: 85% 0.05 255;
-                --color-secondary-lighter: 95% 0.02 255;
+            --color-secondary-base: 70% 0.1 255;
+            --color-secondary-dark: 60% 0.12 255;
+            --color-secondary-darker: 50% 0.15 255;
+            --color-secondary-light: 85% 0.05 255;
+            --color-secondary-lighter: 95% 0.02 255;
 
-                --color-accent-base: 60% 0.25 240;
-                --color-accent-dark: 50% 0.25 240;
-                --color-accent-darker: 40% 0.25 240;
-                --color-accent-light: 75% 0.15 240;
-                --color-accent-lighter: 90% 0.05 240;
-                
-                --color-status-success: 60% 0.18 145;
-                --color-status-warning: 75% 0.15 85;
-                --color-status-error: 60% 0.2 25;
-                --color-status-info: 65% 0.15 240;
-            }
+            --color-accent-base: 60% 0.25 240;
+            --color-accent-dark: 50% 0.25 240;
+            --color-accent-darker: 40% 0.25 240;
+            --color-accent-light: 75% 0.15 240;
+            --color-accent-lighter: 90% 0.05 240;
 
-            .dark {
-                /* Color Palette - Dark Mode Overrides */
-                /* Backgrounds become dark */
-                /* Backgrounds (Inverted Lightness) */
-                --color-bg-base: 12% 0.015 250;      /* Deep background */
-                --color-bg-dark: 8% 0.02 250;        /* Even deeper for wells/inputs */
-                --color-bg-darker: 5% 0.02 250;      /* Near black */
-                --color-bg-light: 18% 0.015 250;     /* Elevated surfaces (cards) */
-                --color-bg-lighter: 24% 0.015 250;   /* High elevation (hover states) */
+            --color-status-success: 60% 0.18 145;
+            --color-status-warning: 75% 0.15 85;
+            --color-status-error: 60% 0.2 25;
+            --color-status-info: 65% 0.15 240;
+        }
 
-                /* Text (Inverted Lightness) */
-                --color-text-base: 92% 0.01 250;     /* Primary readable text */
-                --color-text-dark: 80% 0.02 250;     /* Secondary text */
-                --color-text-darker: 65% 0.02 250;   /* Muted/disabled text */
-                --color-text-light: 96% 0.005 250;   /* High emphasis text */
-                --color-text-lighter: 100% 0 0;      /* Pure white highlight */
+        .dark {
+            /* Color Palette - Dark Mode Overrides */
+            /* Backgrounds become dark */
+            /* Backgrounds (Inverted Lightness) */
+            --color-bg-base: 12% 0.015 250;
+            /* Deep background */
+            --color-bg-dark: 8% 0.02 250;
+            /* Even deeper for wells/inputs */
+            --color-bg-darker: 5% 0.02 250;
+            /* Near black */
+            --color-bg-light: 18% 0.015 250;
+            /* Elevated surfaces (cards) */
+            --color-bg-lighter: 24% 0.015 250;
+            /* High elevation (hover states) */
 
-                /* Primary Colors (Indigo - Adjusted for Dark Mode Contrast) */
-                --color-primary-base: 65% 0.18 255;    /* Brightened base for dark BG */
-                --color-primary-dark: 55% 0.18 255;
-                --color-primary-darker: 45% 0.18 255;
-                --color-primary-light: 75% 0.12 255;
-                --color-primary-lighter: 85% 0.08 255;
+            /* Text (Inverted Lightness) */
+            --color-text-base: 92% 0.01 250;
+            /* Primary readable text */
+            --color-text-dark: 80% 0.02 250;
+            /* Secondary text */
+            --color-text-darker: 65% 0.02 250;
+            /* Muted/disabled text */
+            --color-text-light: 96% 0.005 250;
+            /* High emphasis text */
+            --color-text-lighter: 100% 0 0;
+            /* Pure white highlight */
 
-                /* Secondary & Accent (Softer Chroma) */
-                --color-secondary-base: 75% 0.08 255;
-                --color-secondary-dark: 65% 0.1 255;
-                --color-secondary-darker: 55% 0.12 255;
-                --color-secondary-light: 85% 0.05 255;
-                --color-secondary-lighter: 92% 0.03 255;
+            /* Primary Colors (Indigo - Adjusted for Dark Mode Contrast) */
+            --color-primary-base: 65% 0.18 255;
+            /* Brightened base for dark BG */
+            --color-primary-dark: 55% 0.18 255;
+            --color-primary-darker: 45% 0.18 255;
+            --color-primary-light: 75% 0.12 255;
+            --color-primary-lighter: 85% 0.08 255;
 
-                --color-accent-base: 70% 0.18 240;
-                --color-accent-dark: 60% 0.18 240;
-                --color-accent-darker: 50% 0.18 240;
-                --color-accent-light: 80% 0.12 240;
-                --color-accent-lighter: 90% 0.06 240;
+            /* Secondary & Accent (Softer Chroma) */
+            --color-secondary-base: 75% 0.08 255;
+            --color-secondary-dark: 65% 0.1 255;
+            --color-secondary-darker: 55% 0.12 255;
+            --color-secondary-light: 85% 0.05 255;
+            --color-secondary-lighter: 92% 0.03 255;
 
-                /* Status Colors (Boosted Lightness for readability) */
-                --color-status-success: 70% 0.14 145;
-                --color-status-warning: 80% 0.12 85;
-                --color-status-error: 65% 0.16 25;
-                --color-status-info: 72% 0.12 240;
-            }
+            --color-accent-base: 70% 0.18 240;
+            --color-accent-dark: 60% 0.18 240;
+            --color-accent-darker: 50% 0.18 240;
+            --color-accent-light: 80% 0.12 240;
+            --color-accent-lighter: 90% 0.06 240;
 
-            /* Global Dark Theme Helpers */
-            html.dark body {
-                background-color: oklch(var(--color-bg-base));
-                color: oklch(var(--color-text-base));
-            }
-            
-            /* Invert icons8 images in dark mode to make them white */
-            html.dark img[src*="icons8.com"] {
-                filter: invert(1) hue-rotate(180deg);
-            }
-            
-            /* Comprehensive Dark Mode Overrides for missing dark: classes */
-            /* Handle elements with bg-white that don't have dark mode variants */
-            html.dark .bg-white:not([class*="dark:"]) {
-                background-color: oklch(var(--color-bg-dark)) !important;
-            }
-            
-            /* Handle elements with bg-gray-50 that don't have dark mode variants */ 
-            html.dark .bg-gray-50:not([class*="dark:"]) {
-                background-color: oklch(var(--color-bg-darker)) !important;
-            }
-            
-            /* Handle elements with bg-gray-100 that don't have dark mode variants */
-            html.dark .bg-gray-100:not([class*="dark:"]) {
-                background-color: oklch(var(--color-bg-base)) !important;
-            }
-            
-            /* Input & Form Elements in Dark Mode */
-            html.dark input:not([type="checkbox"]):not([type="radio"]), 
-            html.dark select, 
-            html.dark textarea,
-            html.dark .bg-gray-50:not([class*="dark:"]) {
-                background-color: oklch(var(--color-bg-darker)) !important;
-                border: 1px solid #374151 !important; /* Force border */
-                color: oklch(var(--color-text-base)) !important;
-            }
-            /* Explicitly handle white inputs too */
-            html.dark input.bg-white, html.dark select.bg-white, html.dark textarea.bg-white {
-                 background-color: oklch(var(--color-bg-darker)) !important;
-                 border-color: #374151 !important;
-                 color: oklch(var(--color-text-base)) !important;
-            }
+            /* Status Colors (Boosted Lightness for readability) */
+            --color-status-success: 70% 0.14 145;
+            --color-status-warning: 80% 0.12 85;
+            --color-status-error: 65% 0.16 25;
+            --color-status-info: 72% 0.12 240;
+        }
 
-            html.dark input:focus, html.dark select:focus, html.dark textarea:focus {
-                 border-color: oklch(var(--color-primary-base)) !important;
-                 ring-color: oklch(var(--color-primary-base)) !important;
-            }
-            html.dark ::placeholder {
-                color: oklch(var(--color-text-lighter)) !important;
-            }
-            html.dark .bg-white.bg-gray-50 {
-                 /* sometimes utility classes conflict */
-                 background-color: oklch(var(--color-bg-darker)) !important;
-            }
-            
-            /* Fix text colors that don't have dark mode variants */
-            html.dark .text-text-dark:not([class*="dark:"]) {
-                color: oklch(var(--color-text-base)) !important;
-            }
-            html.dark .text-text-darker:not([class*="dark:"]) {
-                color: oklch(var(--color-text-dark)) !important; 
-            }
-            html.dark .text-gray-900:not([class*="dark:"]) {
-                color: oklch(var(--color-text-base)) !important;
-            }
-            html.dark .text-gray-800:not([class*="dark:"]) {
-                color: oklch(var(--color-text-base)) !important;
-            }
-            html.dark .text-gray-700:not([class*="dark:"]) {
-                color: oklch(var(--color-text-light)) !important;
-            }
-            
-            /* Fix borders that don't have dark mode variants */
-            html.dark .border-gray-100:not([class*="dark:"]) {
-                border-color: oklch(var(--color-bg-light)) !important;
-            }
-            html.dark .border-gray-200:not([class*="dark:"]) {
-                border-color: oklch(var(--color-bg-lighter)) !important;
-            }
-            html.dark .border-gray-300:not([class*="dark:"]) {
-                border-color: oklch(var(--color-bg-lighter)) !important;
-            }
-            
-            /* Fix more text grays that don't have dark: variants */
-            html.dark .text-gray-600:not([class*="dark:"]) {
-                color: oklch(var(--color-text-light)) !important;
-            }
-            html.dark .text-gray-500:not([class*="dark:"]) {
-                color: oklch(var(--color-text-lighter)) !important;
-            }
-            html.dark .text-gray-400:not([class*="dark:"]) {
-                color: #9ca3af !important;
-            }
-            html.dark .text-gray-300:not([class*="dark:"]) {
-                color: #d1d5db !important;
-            }
-            
-            /* Fix bg-gray-200 */
-            html.dark .bg-gray-200:not([class*="dark:"]) {
-                background-color: #374151 !important;
-            }
-            
-            /* Fix hover states */
-            html.dark .hover\:bg-gray-50:hover {
-                background-color: oklch(var(--color-bg-light)) !important;
-            }
-            html.dark .hover\:bg-gray-100:hover {
-                background-color: oklch(var(--color-bg-lighter)) !important;
-            }
-            
-            /* Fix bg-indigo-* for dark (used in signin, calendar) */
-            html.dark .bg-indigo-600:not([class*="dark:"]) {
-                background-color: oklch(var(--color-primary-base)) !important;
-            }
-            html.dark .hover\:bg-indigo-700:hover {
-                background-color: oklch(var(--color-primary-dark)) !important;
-            }
-            html.dark .text-indigo-600:not([class*="dark:"]) {
-                color: oklch(var(--color-primary-light)) !important;
-            }
-            html.dark .text-indigo-500:not([class*="dark:"]) {
-                color: oklch(var(--color-primary-light)) !important;
-            }
-            html.dark .focus\:ring-indigo-500:focus {
-                --tw-ring-color: oklch(var(--color-primary-base)) !important;
-            }
-            html.dark .focus\:border-indigo-500:focus {
-                border-color: oklch(var(--color-primary-base)) !important;
-            }
-            
-            /* Status color dark fixes */
-            html.dark .bg-green-50:not([class*="dark:"]) {
-                background-color: rgba(34, 197, 94, 0.1) !important;
-            }
-            html.dark .bg-red-50:not([class*="dark:"]) {
-                background-color: rgba(239, 68, 68, 0.1) !important;
-            }
-            html.dark .bg-amber-50:not([class*="dark:"]) {
-                background-color: rgba(245, 158, 11, 0.1) !important;
-            }
-            html.dark .bg-yellow-50:not([class*="dark:"]) {
-                background-color: rgba(234, 179, 8, 0.1) !important;
-            }
-            html.dark .bg-blue-50:not([class*="dark:"]) {
-                background-color: rgba(59, 130, 246, 0.1) !important;
-            }
-            html.dark .bg-purple-50:not([class*="dark:"]) {
-                background-color: rgba(168, 85, 247, 0.1) !important;
-            }
-            html.dark .bg-orange-50:not([class*="dark:"]) {
-                background-color: rgba(249, 115, 22, 0.1) !important;
-            }
-            html.dark .bg-indigo-50:not([class*="dark:"]) {
-                background-color: rgba(99, 102, 241, 0.1) !important;
-            }
-            html.dark .bg-emerald-50:not([class*="dark:"]) {
-                background-color: rgba(16, 185, 129, 0.1) !important;
-            }
-            
-            /* Status text dark adjustments (lighten for contrast) */
-            html.dark .text-green-600:not([class*="dark:"]),
-            html.dark .text-green-700:not([class*="dark:"]) {
-                color: #4ade80 !important;
-            }
-            html.dark .text-red-600:not([class*="dark:"]),
-            html.dark .text-red-700:not([class*="dark:"]) {
-                color: #f87171 !important;
-            }
-            html.dark .text-amber-600:not([class*="dark:"]),
-            html.dark .text-amber-700:not([class*="dark:"]) {
-                color: #fbbf24 !important;
-            }
-            html.dark .text-yellow-500:not([class*="dark:"]),
-            html.dark .text-yellow-700:not([class*="dark:"]) {
-                color: #fbbf24 !important;
-            }
-            html.dark .text-blue-600:not([class*="dark:"]),
-            html.dark .text-blue-700:not([class*="dark:"]) {
-                color: #60a5fa !important;
-            }
-            html.dark .text-purple-600:not([class*="dark:"]),
-            html.dark .text-purple-700:not([class*="dark:"]) {
-                color: #c084fc !important;
-            }
-            html.dark .text-orange-600:not([class*="dark:"]),
-            html.dark .text-orange-700:not([class*="dark:"]) {
-                color: #fb923c !important;
-            }
-            html.dark .text-indigo-600:not([class*="dark:"]) {
-                color: #818cf8 !important;
-            }
-            html.dark .text-emerald-600:not([class*="dark:"]) {
-                color: #34d399 !important;
-            }
-            
-            /* Fix status borders in dark */
-            html.dark .border-green-100:not([class*="dark:"]) {
-                border-color: rgba(34, 197, 94, 0.2) !important;
-            }
-            html.dark .border-red-100:not([class*="dark:"]),
-            html.dark .border-red-200:not([class*="dark:"]) {
-                border-color: rgba(239, 68, 68, 0.2) !important;
-            }
-            html.dark .border-amber-100:not([class*="dark:"]) {
-                border-color: rgba(245, 158, 11, 0.2) !important;
-            }
-            html.dark .border-yellow-100:not([class*="dark:"]) {
-                border-color: rgba(234, 179, 8, 0.2) !important;
-            }
-            html.dark .border-blue-100:not([class*="dark:"]) {
-                border-color: rgba(59, 130, 246, 0.2) !important;
-            }
-            html.dark .border-purple-100:not([class*="dark:"]) {
-                border-color: rgba(168, 85, 247, 0.2) !important;
-            }
-            html.dark .border-orange-200:not([class*="dark:"]) {
-                border-color: rgba(249, 115, 22, 0.2) !important;
-            }
-            
-            /* Subtle card and container shadows for Dark Mode */
-            html.dark .shadow-sm:not([class*="dark:"]) {
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12) !important;
-            }
-            html.dark .shadow-md:not([class*="dark:"]) {
-                box-shadow: 0 6px 12px -4px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.06) !important;
-            }
-            html.dark .shadow-lg:not([class*="dark:"]) {
-                box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.14), 0 4px 6px -4px rgba(0, 0, 0, 0.06) !important;
-            }
-            html.dark .shadow-xl:not([class*="dark:"]) {
-                box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.16), 0 6px 8px -6px rgba(0, 0, 0, 0.06) !important;
-            }
-            html.dark .shadow-2xl:not([class*="dark:"]) {
-                box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.18) !important;
-            }
-            
-            /* Force any remaining white backgrounds to be dark */
-            html.dark .bg-white:not([class*="dark:"]) {
-                background-color: oklch(var(--color-bg-dark)) !important;
-            }
-        </style>
-        <script>
-            tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                    extend: {
-                        fontFamily: {
-                            sans: ["Inter", "sans-serif"],
+        /* Global Dark Theme Helpers */
+        html.dark body {
+            background-color: oklch(var(--color-bg-base));
+            color: oklch(var(--color-text-base));
+        }
+
+        /* Invert icons8 images in dark mode to make them white */
+        html.dark img[src*="icons8.com"] {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        /* Comprehensive Dark Mode Overrides for missing dark: classes */
+        /* Handle elements with bg-white that don't have dark mode variants */
+        html.dark .bg-white:not([class*="dark:"]) {
+            background-color: oklch(var(--color-bg-dark)) !important;
+        }
+
+        /* Handle elements with bg-gray-50 that don't have dark mode variants */
+        html.dark .bg-gray-50:not([class*="dark:"]) {
+            background-color: oklch(var(--color-bg-darker)) !important;
+        }
+
+        /* Handle elements with bg-gray-100 that don't have dark mode variants */
+        html.dark .bg-gray-100:not([class*="dark:"]) {
+            background-color: oklch(var(--color-bg-base)) !important;
+        }
+
+        /* Input & Form Elements in Dark Mode */
+        html.dark input:not([type="checkbox"]):not([type="radio"]),
+        html.dark select,
+        html.dark textarea,
+        html.dark .bg-gray-50:not([class*="dark:"]) {
+            background-color: oklch(var(--color-bg-darker)) !important;
+            border: 1px solid #374151 !important;
+            /* Force border */
+            color: oklch(var(--color-text-base)) !important;
+        }
+
+        /* Explicitly handle white inputs too */
+        html.dark input.bg-white,
+        html.dark select.bg-white,
+        html.dark textarea.bg-white {
+            background-color: oklch(var(--color-bg-darker)) !important;
+            border-color: #374151 !important;
+            color: oklch(var(--color-text-base)) !important;
+        }
+
+        html.dark input:focus,
+        html.dark select:focus,
+        html.dark textarea:focus {
+            border-color: oklch(var(--color-primary-base)) !important;
+            ring-color: oklch(var(--color-primary-base)) !important;
+        }
+
+        html.dark ::placeholder {
+            color: oklch(var(--color-text-lighter)) !important;
+        }
+
+        html.dark .bg-white.bg-gray-50 {
+            /* sometimes utility classes conflict */
+            background-color: oklch(var(--color-bg-darker)) !important;
+        }
+
+        /* Fix text colors that don't have dark mode variants */
+        html.dark .text-text-dark:not([class*="dark:"]) {
+            color: oklch(var(--color-text-base)) !important;
+        }
+
+        html.dark .text-text-darker:not([class*="dark:"]) {
+            color: oklch(var(--color-text-dark)) !important;
+        }
+
+        html.dark .text-gray-900:not([class*="dark:"]) {
+            color: oklch(var(--color-text-base)) !important;
+        }
+
+        html.dark .text-gray-800:not([class*="dark:"]) {
+            color: oklch(var(--color-text-base)) !important;
+        }
+
+        html.dark .text-gray-700:not([class*="dark:"]) {
+            color: oklch(var(--color-text-light)) !important;
+        }
+
+        /* Fix borders that don't have dark mode variants */
+        html.dark .border-gray-100:not([class*="dark:"]) {
+            border-color: oklch(var(--color-bg-light)) !important;
+        }
+
+        html.dark .border-gray-200:not([class*="dark:"]) {
+            border-color: oklch(var(--color-bg-lighter)) !important;
+        }
+
+        html.dark .border-gray-300:not([class*="dark:"]) {
+            border-color: oklch(var(--color-bg-lighter)) !important;
+        }
+
+        /* Fix more text grays that don't have dark: variants */
+        html.dark .text-gray-600:not([class*="dark:"]) {
+            color: oklch(var(--color-text-light)) !important;
+        }
+
+        html.dark .text-gray-500:not([class*="dark:"]) {
+            color: oklch(var(--color-text-lighter)) !important;
+        }
+
+        html.dark .text-gray-400:not([class*="dark:"]) {
+            color: #9ca3af !important;
+        }
+
+        html.dark .text-gray-300:not([class*="dark:"]) {
+            color: #d1d5db !important;
+        }
+
+        /* Fix bg-gray-200 */
+        html.dark .bg-gray-200:not([class*="dark:"]) {
+            background-color: #374151 !important;
+        }
+
+        /* Fix hover states */
+        html.dark .hover\:bg-gray-50:hover {
+            background-color: oklch(var(--color-bg-light)) !important;
+        }
+
+        html.dark .hover\:bg-gray-100:hover {
+            background-color: oklch(var(--color-bg-lighter)) !important;
+        }
+
+        /* Fix bg-indigo-* for dark (used in signin, calendar) */
+        html.dark .bg-indigo-600:not([class*="dark:"]) {
+            background-color: oklch(var(--color-primary-base)) !important;
+        }
+
+        html.dark .hover\:bg-indigo-700:hover {
+            background-color: oklch(var(--color-primary-dark)) !important;
+        }
+
+        html.dark .text-indigo-600:not([class*="dark:"]) {
+            color: oklch(var(--color-primary-light)) !important;
+        }
+
+        html.dark .text-indigo-500:not([class*="dark:"]) {
+            color: oklch(var(--color-primary-light)) !important;
+        }
+
+        html.dark .focus\:ring-indigo-500:focus {
+            --tw-ring-color: oklch(var(--color-primary-base)) !important;
+        }
+
+        html.dark .focus\:border-indigo-500:focus {
+            border-color: oklch(var(--color-primary-base)) !important;
+        }
+
+        /* Status color dark fixes */
+        html.dark .bg-green-50:not([class*="dark:"]) {
+            background-color: rgba(34, 197, 94, 0.1) !important;
+        }
+
+        html.dark .bg-red-50:not([class*="dark:"]) {
+            background-color: rgba(239, 68, 68, 0.1) !important;
+        }
+
+        html.dark .bg-amber-50:not([class*="dark:"]) {
+            background-color: rgba(245, 158, 11, 0.1) !important;
+        }
+
+        html.dark .bg-yellow-50:not([class*="dark:"]) {
+            background-color: rgba(234, 179, 8, 0.1) !important;
+        }
+
+        html.dark .bg-blue-50:not([class*="dark:"]) {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+        }
+
+        html.dark .bg-purple-50:not([class*="dark:"]) {
+            background-color: rgba(168, 85, 247, 0.1) !important;
+        }
+
+        html.dark .bg-orange-50:not([class*="dark:"]) {
+            background-color: rgba(249, 115, 22, 0.1) !important;
+        }
+
+        html.dark .bg-indigo-50:not([class*="dark:"]) {
+            background-color: rgba(99, 102, 241, 0.1) !important;
+        }
+
+        html.dark .bg-emerald-50:not([class*="dark:"]) {
+            background-color: rgba(16, 185, 129, 0.1) !important;
+        }
+
+        /* Status text dark adjustments (lighten for contrast) */
+        html.dark .text-green-600:not([class*="dark:"]),
+        html.dark .text-green-700:not([class*="dark:"]) {
+            color: #4ade80 !important;
+        }
+
+        html.dark .text-red-600:not([class*="dark:"]),
+        html.dark .text-red-700:not([class*="dark:"]) {
+            color: #f87171 !important;
+        }
+
+        html.dark .text-amber-600:not([class*="dark:"]),
+        html.dark .text-amber-700:not([class*="dark:"]) {
+            color: #fbbf24 !important;
+        }
+
+        html.dark .text-yellow-500:not([class*="dark:"]),
+        html.dark .text-yellow-700:not([class*="dark:"]) {
+            color: #fbbf24 !important;
+        }
+
+        html.dark .text-blue-600:not([class*="dark:"]),
+        html.dark .text-blue-700:not([class*="dark:"]) {
+            color: #60a5fa !important;
+        }
+
+        html.dark .text-purple-600:not([class*="dark:"]),
+        html.dark .text-purple-700:not([class*="dark:"]) {
+            color: #c084fc !important;
+        }
+
+        html.dark .text-orange-600:not([class*="dark:"]),
+        html.dark .text-orange-700:not([class*="dark:"]) {
+            color: #fb923c !important;
+        }
+
+        html.dark .text-indigo-600:not([class*="dark:"]) {
+            color: #818cf8 !important;
+        }
+
+        html.dark .text-emerald-600:not([class*="dark:"]) {
+            color: #34d399 !important;
+        }
+
+        /* Fix status borders in dark */
+        html.dark .border-green-100:not([class*="dark:"]) {
+            border-color: rgba(34, 197, 94, 0.2) !important;
+        }
+
+        html.dark .border-red-100:not([class*="dark:"]),
+        html.dark .border-red-200:not([class*="dark:"]) {
+            border-color: rgba(239, 68, 68, 0.2) !important;
+        }
+
+        html.dark .border-amber-100:not([class*="dark:"]) {
+            border-color: rgba(245, 158, 11, 0.2) !important;
+        }
+
+        html.dark .border-yellow-100:not([class*="dark:"]) {
+            border-color: rgba(234, 179, 8, 0.2) !important;
+        }
+
+        html.dark .border-blue-100:not([class*="dark:"]) {
+            border-color: rgba(59, 130, 246, 0.2) !important;
+        }
+
+        html.dark .border-purple-100:not([class*="dark:"]) {
+            border-color: rgba(168, 85, 247, 0.2) !important;
+        }
+
+        html.dark .border-orange-200:not([class*="dark:"]) {
+            border-color: rgba(249, 115, 22, 0.2) !important;
+        }
+
+        /* Subtle card and container shadows for Dark Mode */
+        html.dark .shadow-sm:not([class*="dark:"]) {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.12) !important;
+        }
+
+        html.dark .shadow-md:not([class*="dark:"]) {
+            box-shadow: 0 6px 12px -4px rgba(0, 0, 0, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        html.dark .shadow-lg:not([class*="dark:"]) {
+            box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.14), 0 4px 6px -4px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        html.dark .shadow-xl:not([class*="dark:"]) {
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.16), 0 6px 8px -6px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        html.dark .shadow-2xl:not([class*="dark:"]) {
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.18) !important;
+        }
+
+        /* Force any remaining white backgrounds to be dark */
+        html.dark .bg-white:not([class*="dark:"]) {
+            background-color: oklch(var(--color-bg-dark)) !important;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    colors: {
+                        background: {
+                            DEFAULT: 'oklch(var(--color-bg-base))',
+                            base: 'oklch(var(--color-bg-base))',
+                            dark: 'oklch(var(--color-bg-dark))',
+                            darker: 'oklch(var(--color-bg-darker))',
+                            light: 'oklch(var(--color-bg-light))',
+                            lighter: 'oklch(var(--color-bg-lighter))',
                         },
-                        colors: {
-                            background: {
-                                DEFAULT: 'oklch(var(--color-bg-base))', 
-                                base: 'oklch(var(--color-bg-base))',
-                                dark: 'oklch(var(--color-bg-dark))', 
-                                darker: 'oklch(var(--color-bg-darker))', 
-                                light: 'oklch(var(--color-bg-light))', 
-                                lighter: 'oklch(var(--color-bg-lighter))', 
-                            },
-                            text: {
-                                DEFAULT: 'oklch(var(--color-text-base))', 
-                                base: 'oklch(var(--color-text-base))',
-                                dark: 'oklch(var(--color-text-dark))',
-                                darker: 'oklch(var(--color-text-darker))',
-                                light: 'oklch(var(--color-text-light))',
-                                lighter: 'oklch(var(--color-text-lighter))',
-                            },
-                            primary: {
-                                DEFAULT: 'oklch(var(--color-primary-base))', 
-                                base: 'oklch(var(--color-primary-base))',
-                                dark: 'oklch(var(--color-primary-dark))', 
-                                darker: 'oklch(var(--color-primary-darker))', 
-                                light: 'oklch(var(--color-primary-light))',
-                                lighter: 'oklch(var(--color-primary-lighter))',
-                            },
-                            secondary: {
-                                base: 'oklch(var(--color-secondary-base))',
-                                DEFAULT: 'oklch(var(--color-secondary-base))', 
-                                dark: 'oklch(var(--color-secondary-dark))',
-                                darker: 'oklch(var(--color-secondary-darker))',
-                                light: 'oklch(var(--color-secondary-light))',
-                                lighter: 'oklch(var(--color-secondary-lighter))',
-                            },
-                            accent: {
-                                base: 'oklch(var(--color-accent-base))',
-                                DEFAULT: 'oklch(var(--color-accent-base))', 
-                                dark: 'oklch(var(--color-accent-dark))',
-                                darker: 'oklch(var(--color-accent-darker))',
-                                light: 'oklch(var(--color-accent-light))',
-                                lighter: 'oklch(var(--color-accent-lighter))',
-                            },
-                            status: {
-                                success: 'oklch(var(--color-status-success))',
-                                warning: 'oklch(var(--color-status-warning))',
-                                error: 'oklch(var(--color-status-error))',
-                                info: 'oklch(var(--color-status-info))',
-                            }
+                        text: {
+                            DEFAULT: 'oklch(var(--color-text-base))',
+                            base: 'oklch(var(--color-text-base))',
+                            dark: 'oklch(var(--color-text-dark))',
+                            darker: 'oklch(var(--color-text-darker))',
+                            light: 'oklch(var(--color-text-light))',
+                            lighter: 'oklch(var(--color-text-lighter))',
                         },
+                        primary: {
+                            DEFAULT: 'oklch(var(--color-primary-base))',
+                            base: 'oklch(var(--color-primary-base))',
+                            dark: 'oklch(var(--color-primary-dark))',
+                            darker: 'oklch(var(--color-primary-darker))',
+                            light: 'oklch(var(--color-primary-light))',
+                            lighter: 'oklch(var(--color-primary-lighter))',
+                        },
+                        secondary: {
+                            base: 'oklch(var(--color-secondary-base))',
+                            DEFAULT: 'oklch(var(--color-secondary-base))',
+                            dark: 'oklch(var(--color-secondary-dark))',
+                            darker: 'oklch(var(--color-secondary-darker))',
+                            light: 'oklch(var(--color-secondary-light))',
+                            lighter: 'oklch(var(--color-secondary-lighter))',
+                        },
+                        accent: {
+                            base: 'oklch(var(--color-accent-base))',
+                            DEFAULT: 'oklch(var(--color-accent-base))',
+                            dark: 'oklch(var(--color-accent-dark))',
+                            darker: 'oklch(var(--color-accent-darker))',
+                            light: 'oklch(var(--color-accent-light))',
+                            lighter: 'oklch(var(--color-accent-lighter))',
+                        },
+                        status: {
+                            success: 'oklch(var(--color-status-success))',
+                            warning: 'oklch(var(--color-status-warning))',
+                            error: 'oklch(var(--color-status-error))',
+                            info: 'oklch(var(--color-status-info))',
+                        }
                     },
                 },
-            };
-        </script>
-        <!-- Theme Initialization -->
-        <script>
-            (function () {
-                try {
-                    const theme = localStorage.getItem('theme');
-                    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    
-                    if (theme === 'dark') {
-                        document.documentElement.classList.add('dark');
-                    } else if (theme === 'system' && systemDark) {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        // Default to light mode (if theme is light, null, or system & light OS)
-                        document.documentElement.classList.remove('dark');
-                    }
-                } catch (e) {}
-            })();
-            
-            // Global Theme Manager
-            window.setTheme = function(theme) {
-                if (theme === 'system') {
-                    localStorage.setItem('theme', 'system');
-                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
+            },
+        };
+    </script>
+    <!-- Theme Initialization -->
+    <script>
+        (function () {
+            try {
+                const theme = localStorage.getItem('theme');
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else if (theme === 'system' && systemDark) {
+                    document.documentElement.classList.add('dark');
                 } else {
-                    localStorage.setItem('theme', theme);
-                    if (theme === 'dark') {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
+                    // Default to light mode (if theme is light, null, or system & light OS)
+                    document.documentElement.classList.remove('dark');
                 }
-                // Dispatch event for UI updates
-                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: theme } }));
-            };
-        </script>
-        <!-- Pre-apply collapsed layout (no animation) when stored collapsed.
+            } catch (e) { }
+        })();
+
+        // Global Theme Manager
+        window.setTheme = function (theme) {
+            if (theme === 'system') {
+                localStorage.setItem('theme', 'system');
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } else {
+                localStorage.setItem('theme', theme);
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+            // Dispatch event for UI updates
+            window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: theme } }));
+        };
+    </script>
+    <!-- Pre-apply collapsed layout (no animation) when stored collapsed.
              This runs before the sidebar element is parsed so the page renders
              already-collapsed without transition/flicker. -->
-        <script>
-            (function () {
-                try {
-                    if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
-                        if (localStorage.getItem('sidebar-collapsed') === 'true') {
-                            document.documentElement.classList.add('sidebar-collapsed-no-anim');
-                        }
+    <script>
+        (function () {
+            try {
+                if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
+                    if (localStorage.getItem('sidebar-collapsed') === 'true') {
+                        document.documentElement.classList.add('sidebar-collapsed-no-anim');
                     }
-                } catch (e) {
-                    // ignore
                 }
-            })();
-        </script>
-        <style>
-            .hidden {
+            } catch (e) {
+                // ignore
+            }
+        })();
+    </script>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        /* When html.sidebar-collapsed-no-anim is present, force collapsed layout
+               and disable transitions to avoid animation on first render. */
+        html.sidebar-collapsed-no-anim #sidebar {
+            width: 5rem !important;
+            /* approx Tailwind w-20 */
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+            transition: none !important;
+        }
+
+        html.sidebar-collapsed-no-anim #main-content {
+            left: 7rem !important;
+            /* approx Tailwind left-28 */
+            transition: none !important;
+        }
+
+        html.sidebar-collapsed-no-anim .sidebar-text,
+        html.sidebar-collapsed-no-anim #sidebar-title-text {
+            display: none !important;
+        }
+
+        html.sidebar-collapsed-no-anim #sidebar a {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            @apply bg-background-light;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            @apply bg-primary-light rounded-full;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            @apply bg-primary;
+        }
+
+        @media (max-width: 768px) {
+            .no-scrollbar-mobile::-webkit-scrollbar {
                 display: none;
             }
 
-            /* When html.sidebar-collapsed-no-anim is present, force collapsed layout
-               and disable transitions to avoid animation on first render. */
-            html.sidebar-collapsed-no-anim #sidebar {
-                width: 5rem !important; /* approx Tailwind w-20 */
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
-                transition: none !important;
+            .no-scrollbar-mobile {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
             }
-            html.sidebar-collapsed-no-anim #main-content {
-                left: 7rem !important; /* approx Tailwind left-28 */
-                transition: none !important;
-            }
-            html.sidebar-collapsed-no-anim .sidebar-text,
-            html.sidebar-collapsed-no-anim #sidebar-title-text {
-                display: none !important;
-            }
-            html.sidebar-collapsed-no-anim #sidebar a {
-                justify-content: center !important;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-            }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
 
-            /* Custom scrollbar styling */
-            ::-webkit-scrollbar {
-                width: 6px;
-            }
-
-            ::-webkit-scrollbar-track {
-                @apply bg-background-light;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                @apply bg-primary-light rounded-full;
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-                @apply bg-primary;
-            }
-
-            @media (max-width: 768px) {
-                .no-scrollbar-mobile::-webkit-scrollbar {
-                    display: none;
-                }
-                .no-scrollbar-mobile {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            }
-        </style>
-        {% block extra_head %}{% endblock %}
-    </head>
-    <body class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-lighter font-sans antialiased selection:bg-accent selection:text-white">
-        <!-- Sidebar Navbar -->
-        <aside id="sidebar"
-               class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
-            <h1 id="sidebar-toggle"
-                class="text-2xl font-bold tracking-tight m-0 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
-                <div class="p-0 bg-transparent rounded-xl flex-shrink-0 scale-75 lg:scale-100">
-                    <img src="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}"
-                         alt="CampusManager logo"
-                         width="48"
-                         height="48"
-                         class="w-12 h-12 rounded-lg object-cover"
-                         onerror="this.style.display='none'">
-                    <i data-feather="book"
-                       class="w-6 h-6 text-white hidden"
-                       aria-hidden="true"></i>
-                </div>
-                <span id="sidebar-title-text"
-                      class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-wrap overflow-wrap transition-all duration-300 select-none leading-none py-1">Campus Manager</span>
-            </h1>
-            <nav class="flex-1 lg:mx-0 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
-                <ul class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
-                    {% if current_user.is_authenticated and current_user.role.name == 'ADMIN' %}
-                        <li>
-                            <a href="{{ url_for("views.admin_dashboard") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.add_user") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="user-plus"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Add New User</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.assign_class") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Assign Classes</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.timetable") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.admin_queries") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="help-circle"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a>
-                        </li>
-                    {% elif current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
-                        <li>
-                            <a href="{{ url_for("views.teacher_dashboard") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.teacher_classes") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book-open"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Classes</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.teacher_enrollments") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="user-check"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Requests</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.teacher_schedule") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Schedule</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.teacher_kpi_dashboard") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_kpi_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="bar-chart-2"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">KPI Dashboard</span></a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{{ url_for("views.student_dashboard") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="home"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
-                        </li>
-                    {% endif %}
-                    {% if current_user.is_authenticated and current_user.role.name == 'STUDENT' %}
-                        <li>
-                            <a href="{{ url_for("views.curriculum") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="book-open"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Curriculum</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.student_timetable") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="clock"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.attendance") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="bar-chart"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Attendance</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for("views.calendar") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
-                        </li>
-                    {% endif %}
-                    {% if current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
-                        <li>
-                            <a href="{{ url_for("views.calendar") }}"
-                               class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="calendar"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
-                        </li>
-                    {% endif %}
-                    <li>
-                        <a href="{{ url_for("views.settings") }}"
-                           class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="settings"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Settings</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for("views.about") }}"
-                           class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i data-feather="info"
-   class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="lg:border-t lg:border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
-                <a href="{{ url_for("auth.logout") }}"
-                   class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300"
-                   onclick="return confirm('Are you sure you want to logout?')">
-                    <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span class="sidebar-text whitespace-nowrap hidden lg:inline">Logout</span>
+<body
+    class="flex flex-col lg:flex-row min-h-screen pt-16 lg:pt-0 text-text bg-background dark:bg-background-lighter font-sans antialiased selection:bg-accent selection:text-white">
+    <!-- Sidebar Navbar -->
+    <aside id="sidebar"
+        class="fixed top-0 left-0 right-0 h-16 w-full lg:w-64 lg:h-auto lg:top-4 lg:bottom-4 lg:left-4 lg:right-auto bg-primary-darker text-white px-4 lg:px-6 lg:py-6 flex flex-row lg:flex-col items-center lg:items-stretch lg:gap-6 rounded-none lg:rounded-3xl shadow-md lg:shadow-2xl border-b lg:border border-primary-dark/50 z-50 transition-all duration-300 ease-in-out overflow-hidden lg:overflow-visible justify-between">
+        <h1 id="sidebar-toggle"
+            class="text-2xl font-bold tracking-tight m-0 flex items-center gap-3 text-white cursor-pointer group justify-start flex-shrink-0">
+            <div class="p-0 bg-transparent rounded-xl flex-shrink-0 scale-75 lg:scale-100">
+                <img src="{{ url_for('static', filename='icons/CampusManagerLogo.png') }}" alt="CampusManager logo"
+                    width="48" height="48" class="w-12 h-12 rounded-lg object-cover"
+                    onerror="this.style.display='none'">
+                <i data-feather="book" class="w-6 h-6 text-white hidden" aria-hidden="true"></i>
+            </div>
+            <span id="sidebar-title-text"
+                class="hidden lg:block font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary-light whitespace-wrap overflow-wrap transition-all duration-300 select-none leading-none py-1">Campus
+                Manager</span>
+        </h1>
+        <nav
+            class="flex-1 lg:mx-0 lg:flex-1 w-auto lg:w-full overflow-x-auto lg:overflow-y-auto p-0 lg:custom-scrollbar no-scrollbar-mobile lg:justify-start">
+            <ul
+                class="flex flex-row justify-center lg:flex-col lg:justify-start space-x-2 lg:space-x-0 lg:space-y-2 items-center lg:items-stretch h-full lg:h-auto text-sm font-medium pr-4 lg:pr-0 w-fit lg:w-full mx-auto lg:mx-0">
+                {% if current_user.is_authenticated and current_user.role.name == 'ADMIN' %}
+                <li>
+                    <a href="{{ url_for("views.admin_dashboard") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="home"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.add_user") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="user-plus"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Add New User</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.assign_class") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.assign_class' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="book"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Assign Classes</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.timetable") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="calendar"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.admin_queries") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.admin_queries' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="help-circle"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Queries</span></a>
+                </li>
+                {% elif current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
+                <li>
+                    <a href="{{ url_for("views.teacher_dashboard") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="home"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.teacher_classes") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_classes' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="book-open"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Classes</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.teacher_enrollments") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_enrollments' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="user-check"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Requests</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.teacher_schedule") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.teacher_schedule' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="calendar"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">My Schedule</span></a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ url_for("views.student_dashboard") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_dashboard' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="home"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.role.name == 'STUDENT' %}
+                <li>
+                    <a href="{{ url_for("views.curriculum") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.curriculum' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="book-open"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Curriculum</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.student_timetable") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.student_timetable' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="clock"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Timetable</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.attendance") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.attendance' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="bar-chart"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Attendance</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.calendar") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="calendar"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.role.name == 'TEACHER' %}
+                <li>
+                    <a href="{{ url_for("views.calendar") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.calendar' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="calendar"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Calendar</span></a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="{{ url_for("views.settings") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.settings' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="settings"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Settings</span></a>
+                </li>
+                <li>
+                    <a href="{{ url_for("views.about") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.about' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="info"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">About</span></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="lg:border-t lg:border-primary-dark pt-0 lg:pt-3 mt-0 lg:mt-auto flex items-center">
+            <a href="{{ url_for("auth.logout") }}"
+                class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 group text-red-300"
+                onclick="return confirm('Are you sure you want to logout?')">
+                <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i> <span
+                    class="sidebar-text whitespace-nowrap hidden lg:inline">Logout</span>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <div id="content-wrapper" class="flex flex-col-reverse lg:contents w-full relative">
+        <main id="main-content"
+            class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-background-darker shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
+            <!-- Scrollable content wrapper -->
+            <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        <!-- Right Sidebar -->
+        {% if not hide_right_sidebar %}
+        <aside
+            class="w-full lg:w-80 bg-white dark:bg-background-darker shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
+            <!-- Profile -->
+            <div class="flex-shrink-0 mb-6">
+                <a href="{{ url_for("views.settings") }}"
+                    class="cursor-pointer flex items-center justify-between group">
+                    <!-- Name and Role on the left -->
+                    <div class="flex-1">
+                        <h2
+                            class="text-xl font-bold text-text-dark dark:text-text-base group-hover:text-primary transition-colors">
+                            {{ current_user.name }}
+                        </h2>
+                        <p class="text-sm text-gray-400 dark:text-gray-500">
+                            {{ current_user.role.name|title if current_user.is_authenticated else "Guest" }}, {{
+                            current_user.institution if current_user.is_authenticated and current_user.institution else
+                            "Delhi" }}
+                        </p>
+                    </div>
+                    <!-- Profile icon on the right -->
+                    <div
+                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl ml-4 shadow-lg transform group-hover:scale-105 transition-all">
+                        <i data-feather="user" class="w-8 h-8 text-white"></i>
+                    </div>
                 </a>
             </div>
-        </aside>
-        <!-- Main Content -->
-        <div id="content-wrapper"
-             class="flex flex-col-reverse lg:contents w-full relative">
-            <main id="main-content"
-                  class="w-full lg:w-auto lg:flex-1 p-4 lg:p-0 mx-0 my-0 ml-0 lg:fixed lg:left-72 lg:top-4 lg:bottom-4 {% if not hide_right_sidebar %}mr-0 lg:right-[21rem]{% else %}mr-0 lg:right-6{% endif %} rounded-none lg:rounded-3xl {% if not hide_right_sidebar %}lg:rounded-r-none{% endif %} overflow-visible lg:overflow-hidden bg-gray-50 dark:bg-background-darker shadow-none lg:shadow-xl border-x-0 lg:border border-gray-100/50 dark:border-gray-800/50 transition-all duration-300 ease-in-out pb-20 lg:pb-0">
-                <!-- Scrollable content wrapper -->
-                <div class="lg:h-full lg:overflow-y-auto lg:p-8 lg:custom-scrollbar">
-                    {% block content %}{% endblock %}
-                </div>
-            </main>
-            <!-- Right Sidebar -->
-            {% if not hide_right_sidebar %}
-                <aside class="w-full lg:w-80 bg-white dark:bg-background-darker shadow-none lg:shadow-xl px-4 py-4 lg:px-6 lg:py-6 flex flex-col static lg:fixed lg:right-4 lg:top-4 lg:bottom-4 rounded-none lg:rounded-r-3xl border-b lg:border-l lg:border-b-0 border-gray-100 dark:border-gray-800 z-10 lg:h-auto h-auto">
-                    <!-- Profile -->
-                    <div class="flex-shrink-0 mb-6">
-                        <a href="{{ url_for("views.settings") }}"
-                           class="cursor-pointer flex items-center justify-between group">
-                            <!-- Name and Role on the left -->
-                            <div class="flex-1">
-                                <h2 class="text-xl font-bold text-text-dark dark:text-text-base group-hover:text-primary transition-colors">
-                                    {{ current_user.name }}
-                                </h2>
-                                <p class="text-sm text-gray-400 dark:text-gray-500">
-                                    {{ current_user.role.name|title if current_user.is_authenticated else "Guest" }}, {{ current_user.institution if current_user.is_authenticated and current_user.institution else "Delhi" }}
-                                </p>
-                            </div>
-                            <!-- Profile icon on the right -->
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl ml-4 shadow-lg transform group-hover:scale-105 transition-all">
-                                <i data-feather="user" class="w-8 h-8 text-white"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Calendar will be inserted here from child templates -->
-                    <div class="w-full lg:flex-1 overflow-x-auto lg:overflow-y-auto lg:-mr-4 lg:pr-4 custom-scrollbar no-scrollbar-mobile pb-2 lg:pb-0">
-                        <div class="flex flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-6 items-stretch [&>*]:w-72 [&>*]:shrink-0 lg:[&>*]:w-auto lg:[&>*]:shrink">
-                            {% block sidebar_content %}{% endblock %}
-                        </div>
-                    </div>
-                    {% if current_user.is_authenticated and current_user.role.name != 'ADMIN' %}
-                        <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-                            <button onclick="document.getElementById('queryModal').classList.remove('hidden')"
-                                    class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-background-base hover:text-primary dark:hover:text-primary font-medium transition-colors">
-                                <i data-feather="help-circle" class="w-4 h-4"></i> Need Help?
-                            </button>
-                        </div>
-                    {% endif %}
-                </aside>
-            {% endif %}
-        </div>
-        <!-- Query Modal -->
-        <div id="queryModal"
-             class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-            <div class="relative mx-auto p-8 border border-gray-100 dark:border-gray-800 w-[32rem] shadow-2xl rounded-2xl bg-white dark:bg-background-dark animate-fadeIn">
-                <div class="mt-2">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl leading-6 font-bold text-gray-900 dark:text-text-base">Raise a Query</h3>
-                        <button onclick="document.getElementById('queryModal').classList.add('hidden')"
-                                class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                            <i data-feather="x" class="w-6 h-6"></i>
-                        </button>
-                    </div>
-                    <form action="{{ url_for("views.submit_query") }}" method="post">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-                                   for="title">Title</label>
-                            <input class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
-                                   id="title"
-                                   name="title"
-                                   type="text"
-                                   placeholder="Brief summary of your issue"
-                                   required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-                                   for="tag">Category</label>
-                            <div class="relative">
-                                <select class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base"
-                                        id="tag"
-                                        name="tag"
-                                        required>
-                                    <option value="BUG">Bug Report</option>
-                                    <option value="FEATURE">Feature Request</option>
-                                    <option value="ACCOUNT">Account Issue</option>
-                                    <option value="SYLLABUS">Syllabus Error</option>
-                                    <option value="OTHER">Other</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-400">
-                                    <i data-feather="chevron-down" class="w-4 h-4"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-                                   for="description">Description</label>
-                            <textarea class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
-                                      id="description"
-                                      name="description"
-                                      placeholder="Please describe your issue in detail..."
-                                      required></textarea>
-                        </div>
-                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-                            <button type="button"
-                                    onclick="document.getElementById('queryModal').classList.add('hidden')"
-                                    class="px-5 py-2.5 text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-100 dark:hover:bg-background-base rounded-xl transition-colors">
-                                Cancel
-                            </button>
-                            <button type="submit"
-                                    class="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white font-medium rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
-                                <i data-feather="send" class="w-4 h-4"></i> Submit Query
-                            </button>
-                        </div>
-                    </form>
+            <!-- Calendar will be inserted here from child templates -->
+            <div
+                class="w-full lg:flex-1 overflow-x-auto lg:overflow-y-auto lg:-mr-4 lg:pr-4 custom-scrollbar no-scrollbar-mobile pb-2 lg:pb-0">
+                <div
+                    class="flex flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-6 items-stretch [&>*]:w-72 [&>*]:shrink-0 lg:[&>*]:w-auto lg:[&>*]:shrink">
+                    {% block sidebar_content %}{% endblock %}
                 </div>
             </div>
+            {% if current_user.is_authenticated and current_user.role.name != 'ADMIN' %}
+            <div class="flex-shrink-0 mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <button onclick="document.getElementById('queryModal').classList.remove('hidden')"
+                    class="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-background-base hover:text-primary dark:hover:text-primary font-medium transition-colors">
+                    <i data-feather="help-circle" class="w-4 h-4"></i> Need Help?
+                </button>
+            </div>
+            {% endif %}
+        </aside>
+        {% endif %}
+    </div>
+    <!-- Query Modal -->
+    <div id="queryModal"
+        class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div
+            class="relative mx-auto p-8 border border-gray-100 dark:border-gray-800 w-[32rem] shadow-2xl rounded-2xl bg-white dark:bg-background-dark animate-fadeIn">
+            <div class="mt-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl leading-6 font-bold text-gray-900 dark:text-text-base">Raise a Query</h3>
+                    <button onclick="document.getElementById('queryModal').classList.add('hidden')"
+                        class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <form action="{{ url_for("views.submit_query") }}" method="post">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                            for="title">Title</label>
+                        <input
+                            class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
+                            id="title" name="title" type="text" placeholder="Brief summary of your issue" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                            for="tag">Category</label>
+                        <div class="relative">
+                            <select
+                                class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base"
+                                id="tag" name="tag" required>
+                                <option value="BUG">Bug Report</option>
+                                <option value="FEATURE">Feature Request</option>
+                                <option value="ACCOUNT">Account Issue</option>
+                                <option value="SYLLABUS">Syllabus Error</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-400">
+                                <i data-feather="chevron-down" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+                            for="description">Description</label>
+                        <textarea
+                            class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-32 resize-none transition-all bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base placeholder-gray-400 dark:placeholder-gray-500"
+                            id="description" name="description" placeholder="Please describe your issue in detail..."
+                            required></textarea>
+                    </div>
+                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <button type="button" onclick="document.getElementById('queryModal').classList.add('hidden')"
+                            class="px-5 py-2.5 text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-100 dark:hover:bg-background-base rounded-xl transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white font-medium rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
+                            <i data-feather="send" class="w-4 h-4"></i> Submit Query
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <script>
-            // Base functionality for all pages
-            // Initialize page
-            document.addEventListener("DOMContentLoaded", function () {
-                // Initialize Feather icons
-                if (typeof feather !== "undefined") {
-                    feather.replace();
-                }
+    </div>
+    <script>
+        // Base functionality for all pages
+        // Initialize page
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Feather icons
+            if (typeof feather !== "undefined") {
+                feather.replace();
+            }
 
-                // Sidebar Toggle
-                const sidebarToggle = document.getElementById('sidebar-toggle');
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('main-content');
-                const sidebarTitleText = document.getElementById('sidebar-title-text');
-                const sidebarTexts = document.querySelectorAll('.sidebar-text');
-                const htmlEl = document.documentElement;
+            // Sidebar Toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const sidebarTitleText = document.getElementById('sidebar-title-text');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+            const htmlEl = document.documentElement;
 
-                // Load state from local storage
-                const mdMatches = window.matchMedia("(min-width: 768px)").matches;
-                const storedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            // Load state from local storage
+            const mdMatches = window.matchMedia("(min-width: 768px)").matches;
+            const storedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
 
-                // If we pre-applied collapsed layout via html.sidebar-collapsed-no-anim,
-                // apply the corresponding DOM class changes now but avoid animation.
-                const preApplied = htmlEl.classList.contains('sidebar-collapsed-no-anim');
+            // If we pre-applied collapsed layout via html.sidebar-collapsed-no-anim,
+            // apply the corresponding DOM class changes now but avoid animation.
+            const preApplied = htmlEl.classList.contains('sidebar-collapsed-no-anim');
 
-                if (preApplied && mdMatches) {
-                    applyCollapse(true); // true -> no animation during this application
-                    // remove the pre-apply marker so subsequent transitions work normally
-                    htmlEl.classList.remove('sidebar-collapsed-no-anim');
-                } else if (storedCollapsed && mdMatches) {
-                    // If no pre-apply marker but stored flag exists (fallback), apply normally
-                    applyCollapse(true);
-                }
+            if (preApplied && mdMatches) {
+                applyCollapse(true); // true -> no animation during this application
+                // remove the pre-apply marker so subsequent transitions work normally
+                htmlEl.classList.remove('sidebar-collapsed-no-anim');
+            } else if (storedCollapsed && mdMatches) {
+                // If no pre-apply marker but stored flag exists (fallback), apply normally
+                applyCollapse(true);
+            }
 
-                sidebarToggle.addEventListener('click', function() {
-                    if (!window.matchMedia("(min-width: 768px)").matches) return;
-                    if (sidebar.classList.contains('lg:w-64')) {
-                        applyCollapse(false);
-                        localStorage.setItem('sidebar-collapsed', 'true');
-                    } else {
-                        removeCollapse(false);
-                        localStorage.setItem('sidebar-collapsed', 'false');
-                    }
-                });
-
-                function applyCollapse(noAnimate) {
-                    if (noAnimate) {
-                        sidebar.classList.add('transition-none');
-                        mainContent.classList.add('transition-none');
-                    }
-
-                    sidebar.classList.remove('lg:w-64', 'lg:px-6');
-                    sidebar.classList.add('lg:w-20', 'lg:px-3');
-
-                    sidebarToggle.classList.remove('justify-start');
-                    sidebarToggle.classList.add('justify-center');
-
-                    mainContent.classList.remove('lg:left-72');
-                    mainContent.classList.add('lg:left-28');
-
-                    sidebarTitleText.classList.remove('lg:block');
-
-                    sidebarTexts.forEach(text => text.classList.remove('lg:inline'));
-
-                    // Center icons
-                    const links = sidebar.querySelectorAll('a');
-                    links.forEach(link => {
-                        link.classList.remove('lg:px-4', 'lg:text-left', 'lg:justify-start');
-                        link.classList.add('lg:px-0', 'lg:justify-center');
-                    });
-
-                    if (noAnimate) {
-                        // Force reflow then restore transitions so future toggles animate.
-                        void sidebar.offsetWidth;
-                        sidebar.classList.remove('transition-none');
-                        mainContent.classList.remove('transition-none');
-                    }
-                }
-
-                function removeCollapse(noAnimate) {
-                    if (noAnimate) {
-                        sidebar.classList.add('transition-none');
-                        mainContent.classList.add('transition-none');
-                    }
-
-                    sidebar.classList.add('lg:w-64', 'lg:px-6');
-                    sidebar.classList.remove('lg:w-20', 'lg:px-3');
-
-                    sidebarToggle.classList.add('justify-start');
-                    sidebarToggle.classList.remove('justify-center');
-
-                    mainContent.classList.add('lg:left-72');
-                    mainContent.classList.remove('lg:left-28');
-
-                    sidebarTitleText.classList.add('lg:block');
-                    sidebarTexts.forEach(text => text.classList.add('lg:inline'));
-
-                    // Restore links
-                    const links = sidebar.querySelectorAll('a');
-                    links.forEach(link => {
-                        link.classList.add('lg:px-4', 'lg:text-left', 'lg:justify-start');
-                        link.classList.remove('lg:px-0', 'lg:justify-center');
-                    });
-
-                    if (noAnimate) {
-                        void sidebar.offsetWidth;
-                        sidebar.classList.remove('transition-none');
-                        mainContent.classList.remove('transition-none');
-                    }
+            sidebarToggle.addEventListener('click', function () {
+                if (!window.matchMedia("(min-width: 768px)").matches) return;
+                if (sidebar.classList.contains('lg:w-64')) {
+                    applyCollapse(false);
+                    localStorage.setItem('sidebar-collapsed', 'true');
+                } else {
+                    removeCollapse(false);
+                    localStorage.setItem('sidebar-collapsed', 'false');
                 }
             });
-        </script>
-        <!-- Real-time Notifications -->
-        <script>
-            // Set authentication status for notification manager
-            window.isAuthenticated = {{ 'true' if current_user.is_authenticated else 'false' }};
-            // Socket.IO connection debugging
-            window.debug_socketio = true;
-            
-            // Flash messages data for unified system - consume them here to prevent persistence
-            window.serverFlashMessages = [
-                {% for category, message in get_flashed_messages(with_categories=true) %}
-                {
-                    type: '{{ category }}',
-                    message: {{ message|tojson }},
-                    timestamp: new Date().toISOString()
-                }{{ ',' if not loop.last }}
-                {% endfor %}
+
+            function applyCollapse(noAnimate) {
+                if (noAnimate) {
+                    sidebar.classList.add('transition-none');
+                    mainContent.classList.add('transition-none');
+                }
+
+                sidebar.classList.remove('lg:w-64', 'lg:px-6');
+                sidebar.classList.add('lg:w-20', 'lg:px-3');
+
+                sidebarToggle.classList.remove('justify-start');
+                sidebarToggle.classList.add('justify-center');
+
+                mainContent.classList.remove('lg:left-72');
+                mainContent.classList.add('lg:left-28');
+
+                sidebarTitleText.classList.remove('lg:block');
+
+                sidebarTexts.forEach(text => text.classList.remove('lg:inline'));
+
+                // Center icons
+                const links = sidebar.querySelectorAll('a');
+                links.forEach(link => {
+                    link.classList.remove('lg:px-4', 'lg:text-left', 'lg:justify-start');
+                    link.classList.add('lg:px-0', 'lg:justify-center');
+                });
+
+                if (noAnimate) {
+                    // Force reflow then restore transitions so future toggles animate.
+                    void sidebar.offsetWidth;
+                    sidebar.classList.remove('transition-none');
+                    mainContent.classList.remove('transition-none');
+                }
+            }
+
+            function removeCollapse(noAnimate) {
+                if (noAnimate) {
+                    sidebar.classList.add('transition-none');
+                    mainContent.classList.add('transition-none');
+                }
+
+                sidebar.classList.add('lg:w-64', 'lg:px-6');
+                sidebar.classList.remove('lg:w-20', 'lg:px-3');
+
+                sidebarToggle.classList.add('justify-start');
+                sidebarToggle.classList.remove('justify-center');
+
+                mainContent.classList.add('lg:left-72');
+                mainContent.classList.remove('lg:left-28');
+
+                sidebarTitleText.classList.add('lg:block');
+                sidebarTexts.forEach(text => text.classList.add('lg:inline'));
+
+                // Restore links
+                const links = sidebar.querySelectorAll('a');
+                links.forEach(link => {
+                    link.classList.add('lg:px-4', 'lg:text-left', 'lg:justify-start');
+                    link.classList.remove('lg:px-0', 'lg:justify-center');
+                });
+
+                if (noAnimate) {
+                    void sidebar.offsetWidth;
+                    sidebar.classList.remove('transition-none');
+                    mainContent.classList.remove('transition-none');
+                }
+            }
+        });
+    </script>
+    <!-- Real-time Notifications -->
+    <script>
+        // Set authentication status for notification manager
+        window.isAuthenticated = {{ 'true' if current_user.is_authenticated else 'false' }};
+        // Socket.IO connection debugging
+        window.debug_socketio = true;
+
+        // Flash messages data for unified system - consume them here to prevent persistence
+        window.serverFlashMessages = [
+            {% for category, message in get_flashed_messages(with_categories = true) %}
+        {
+            type: '{{ category }}',
+                message: {{ message | tojson }},
+            timestamp: new Date().toISOString()
+        }{{ ',' if not loop.last }}
+        {% endfor %}
             ];
-        </script>
-        <script src="{{ url_for('static', filename='js/notifications_unified.js') }}"></script>
-        {% block scripts %}
-        {% endblock %}
-    </body>
+    </script>
+    <script src="{{ url_for('static', filename='js/notifications_unified.js') }}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
 </html>

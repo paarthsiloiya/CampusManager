@@ -28,6 +28,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+      - DATABASE_URL=postgresql+psycopg2://campus_user:welcome_to_campus@db:5432/campus_db
     env_file:
       - .env
     depends_on:
@@ -46,6 +47,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+      - DATABASE_URL=postgresql+psycopg2://campus_user:welcome_to_campus@db:5432/campus_db
     env_file:
       - .env
     depends_on:
@@ -64,6 +66,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - SECRET_KEY=dev_secret_key
+      - DATABASE_URL=postgresql+psycopg2://campus_user:welcome_to_campus@db:5432/campus_db
     env_file:
       - .env
     restart: unless-stopped
