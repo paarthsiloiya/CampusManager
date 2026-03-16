@@ -1053,17 +1053,18 @@ def admin_dashboard():
 
     trend_by_date = {}
     for record in trend_records:
-        date_str = record.date.strftime('%b %d') if record.date else 'Unknown'
-        if date_str not in trend_by_date:
-            trend_by_date[date_str] = {'present': 0, 'absent': 0}
-        if record.status == 'present':
-            trend_by_date[date_str]['present'] += 1
-        else:
-            trend_by_date[date_str]['absent'] += 1
+        if record.date:
+            if record.date not in trend_by_date:
+                trend_by_date[record.date] = {'present': 0, 'absent': 0}
+            if record.status == 'present':
+                trend_by_date[record.date]['present'] += 1
+            else:
+                trend_by_date[record.date]['absent'] += 1
 
-    attendance_trend_labels = list(trend_by_date.keys())
-    attendance_trend_present = [v['present'] for v in trend_by_date.values()]
-    attendance_trend_absent = [v['absent'] for v in trend_by_date.values()]
+    sorted_dates = sorted(trend_by_date.keys())
+    attendance_trend_labels = [d.strftime('%b %d') for d in sorted_dates]
+    attendance_trend_present = [trend_by_date[d]['present'] for d in sorted_dates]
+    attendance_trend_absent = [trend_by_date[d]['absent'] for d in sorted_dates]
 
     # Role distribution chart
     role_chart_labels = ['Admin', 'Teacher', 'Student']

@@ -338,3 +338,4 @@ class TestAdminKPIDashboard:
         # Dashboard has KPI content, manage_users has user management
         assert b"Admin Dashboard" in dashboard_response.data
         assert b"Admin Dashboard" not in manage_response.data
+        assert b"User Management" in manage_response.data
