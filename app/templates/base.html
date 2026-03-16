@@ -625,6 +625,13 @@
                         <span class="sidebar-text whitespace-nowrap hidden lg:inline">Dashboard</span></a>
                 </li>
                 <li>
+                    <a href="{{ url_for("views.manage_users") }}"
+                        class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.manage_users' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
+                            data-feather="users"
+                            class="w-5 h-5 text-white/70 group-hover:text-white transition-colors flex-shrink-0"></i>
+                        <span class="sidebar-text whitespace-nowrap hidden lg:inline">Manage Users</span></a>
+                </li>
+                <li>
                     <a href="{{ url_for("views.add_user") }}"
                         class="lg:w-full lg:text-left py-2 px-3 lg:py-3 lg:px-4 rounded-xl flex items-center justify-center lg:justify-start gap-0 lg:gap-3 transition-all duration-200 hover:bg-white/10 hover:text-white group {% if request.endpoint == 'views.add_user' %}bg-accent text-white shadow-md font-semibold{% endif %}"><i
                             data-feather="user-plus"

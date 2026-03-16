@@ -5,163 +5,493 @@
         <h3 class="font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
             <i data-feather="zap" class="w-4 h-4 text-primary"></i> Quick Actions
         </h3>
-        <a href="{{ url_for("views.add_user") }}"
-           class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:scale-105 transition-all shadow-lg shadow-primary/20">
-            <i data-feather="plus" class="w-4 h-4"></i>
-            <span>Add New User</span>
-        </a>
+        <div class="space-y-2">
+            <a href="{{ url_for("views.manage_users") }}"
+               class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                <i data-feather="users" class="w-4 h-4"></i>
+                <span>Manage Users</span>
+            </a>
+            <a href="{{ url_for("views.add_user") }}"
+               class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-text-dark dark:text-text-base font-bold hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <i data-feather="user-plus" class="w-4 h-4"></i>
+                <span>Add New User</span>
+            </a>
+        </div>
     </div>
 {% endblock %}
 {% block content %}
-    <div class="max-w-7xl mx-auto space-y-6">
-        <div class="flex items-center justify-between">
+<section class="max-w-7xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-text-dark dark:text-text-base">Admin Dashboard</h1>
+            <p class="text-text-light dark:text-text-light mt-1">Welcome back, {{ current_user.name }} — School-wide performance metrics and insights</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <form method="GET" action="{{ url_for('views.admin_dashboard') }}"
+        class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 md:p-6">
+        <div class="flex flex-col md:flex-row gap-3 md:gap-4 items-end">
+            <div class="flex-1 w-full">
+                <label class="block text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-2">Department / Branch</label>
+                <select name="branch"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option value="">All Departments</option>
+                    {% for b in branches %}
+                    <option value="{{ b }}" {% if selected_branch == b %}selected{% endif %}>{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1 w-full">
+                <label class="block text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-2">Time Period</label>
+                <select name="period"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option value="all" {% if selected_period == 'all' %}selected{% endif %}>All Time</option>
+                    <option value="7days" {% if selected_period == '7days' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="30days" {% if selected_period == '30days' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="90days" {% if selected_period == '90days' %}selected{% endif %}>Last 90 Days</option>
+                </select>
+            </div>
+            <div class="flex-1 w-full">
+                <label class="block text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider mb-2">User Type</label>
+                <select name="user_type"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-base text-text-dark dark:text-text-base text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option value="" {% if selected_user_type == '' %}selected{% endif %}>All Users</option>
+                    <option value="STUDENT" {% if selected_user_type == 'STUDENT' %}selected{% endif %}>Students</option>
+                    <option value="TEACHER" {% if selected_user_type == 'TEACHER' %}selected{% endif %}>Teachers</option>
+                    <option value="ADMIN" {% if selected_user_type == 'ADMIN' %}selected{% endif %}>Admins</option>
+                </select>
+            </div>
+            <button type="submit"
+                class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+                <i data-feather="filter" class="w-4 h-4"></i>
+                Apply Filters
+            </button>
+        </div>
+    </form>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        <!-- Total Users -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                    <i data-feather="users" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
             <div>
-                <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">User Management</h1>
-                <p class="text-text-light dark:text-text-light mt-1">View, search, and manage all users in the system.</p>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_users }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Total Users</p>
             </div>
         </div>
-        <!-- Search Toolbar (moved from sidebar) -->
-        <div class="bg-white dark:bg-background-dark p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 mb-4">
-            <form method="get"
-                  action="{{ url_for("views.admin_dashboard") }}"
-                  class="flex flex-col md:flex-row gap-3">
-                <div class="flex-grow relative">
-                    <i data-feather="search"
-                       class="w-5 h-5 text-gray-400 absolute left-4 top-3.5"></i>
-                    <input type="text"
-                           name="search"
-                           value="{{ search_query }}"
-                           placeholder="Search by name, email, or role..."
-                           class="w-full pl-12 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border-transparent focus:bg-white dark:focus:bg-gray-700 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-text-dark dark:text-white text-sm" />
-                </div>
-                <div class="flex gap-2">
-                    <button type="submit"
-                            class="px-6 py-2.5 rounded-xl bg-text-dark dark:bg-gray-700 text-white font-bold hover:bg-black dark:hover:bg-gray-600 transition-colors text-sm">
-                        Search
-                    </button>
-                    {% if search_query %}
-                        <a href="{{ url_for("views.admin_dashboard") }}"
-                           class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-background-darker text-text-dark dark:text-text-base font-bold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center text-sm">Clear</a>
-                    {% endif %}
-                </div>
-            </form>
-        </div>
-        <!-- Users List -->
-        <div class="space-y-4">
-            <!-- Desktop Table -->
-            <div class="hidden md:block bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-background-lighter">
-                                <th class="p-5 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">User Info</th>
-                                <th class="p-5 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Role</th>
-                                <th class="p-5 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Contact</th>
-                                <th class="p-5 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                            {% for user in users %}
-                                <tr class="group hover:bg-gray-50/50 dark:hover:bg-background-light transition-colors">
-                                    <td class="p-5">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-background-darker flex items-center justify-center text-text-lighter font-bold text-lg">
-                                                {{ user.name[0] | upper }}
-                                            </div>
-                                            <div>
-                                                <h3 class="font-bold text-text-dark dark:text-text-base group-hover:text-primary transition-colors">
-                                                    {{ user.name }}
-                                                </h3>
-                                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ user.email }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="p-5">
-                                        <span class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider {% if user.role.name == 'ADMIN' %}bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400{% elif user.role.name == 'TEACHER' %}bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400{% else %}bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400{% endif %}">
-                                            {{ user.role.name }}
-                                        </span>
-                                    </td>
-                                    <td class="p-5">
-                                        <div class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                            {% if user.phone %}
-                                                <div class="flex items-center gap-2">
-                                                    <i data-feather="phone" class="w-3 h-3"></i> {{ user.phone }}
-                                                </div>
-                                            {% else %}
-                                                <span class="text-gray-400 dark:text-gray-500 italic">No phone</span>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td class="p-5 text-right">
-                                        <a href="{{ url_for('views.edit_user', user_id=user.id) }}"
-                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 text-text-light dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary transition-colors"
-                                           title="Edit User">
-                                            <i data-feather="edit-2" class="w-4 h-4"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="4" class="p-12 text-center">
-                                        <div class="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300 dark:text-gray-600">
-                                            <i data-feather="users" class="w-8 h-8"></i>
-                                        </div>
-                                        <h3 class="text-lg font-bold text-text-dark dark:text-white">No users found</h3>
-                                        <p class="text-text-light dark:text-gray-400">Try adjusting your search criteria.</p>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+
+        <!-- Total Students -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400">
+                    <i data-feather="book-open" class="w-5 h-5 md:w-6 md:h-6"></i>
                 </div>
             </div>
-            <!-- Mobile Cards -->
-            <div class="md:hidden space-y-3">
-                {% for user in users %}
-                    <div class="bg-white dark:bg-background-dark p-3 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-lighter font-bold text-base">
-                                    {{ user.name[0] | upper }}
-                                </div>
-                                <div class="flex flex-row gap-2">
-                                    <h3 class="font-bold text-text-dark text-lg">{{ user.name }}</h3>
-                                    <span class="align-baseline inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider my-1 {% if user.role.name == 'ADMIN' %}bg-purple-50 text-purple-600 {% elif user.role.name == 'TEACHER' %}bg-blue-50 text-blue-600 {% else %}bg-green-50 text-green-600{% endif %}">{{ user.role.name }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-1 mb-3 text-sm text-text-light dark:text-text-light">
-                            <div class="flex items-center gap-2 text-xs">
-                                <i data-feather="mail" class="w-3.5 h-3.5"></i> {{ user.email }}
-                            </div>
-                            {% if user.phone %}
-                                <div class="flex items-center gap-2 text-xs">
-                                    <i data-feather="phone" class="w-3.5 h-3.5"></i> {{ user.phone }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-end">
-                            <a href="{{ url_for('views.edit_user', user_id=user.id) }}"
-                               class="flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-700 text-text-dark dark:text-text-base font-bold text-xs hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors w-full"> <i data-feather="edit-2" class="w-4 h-4"></i> Edit Profile </a>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="text-center py-12 bg-white dark:bg-background-dark rounded-2xl border border-gray-100 dark:border-gray-800 border-dashed">
-                        <div class="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-gray-600">
-                            <i data-feather="users" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-text-dark dark:text-text-base">No users found</h3>
-                        <p class="text-text-light dark:text-text-light">Try adjusting your search criteria.</p>
-                    </div>
-                {% endfor %}
+            <div>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_students }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Students</p>
+            </div>
+        </div>
+
+        <!-- Total Teachers -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                    <i data-feather="briefcase" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_teachers }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Teachers</p>
+            </div>
+        </div>
+
+        <!-- Attendance Rate -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+            {% if kpi.attendance_rate >= 75 %}
+            {% set att_color = "text-green-600 dark:text-green-400" %}
+            {% set att_bg = "bg-green-50 dark:bg-green-900/20" %}
+            {% elif kpi.attendance_rate >= 60 %}
+            {% set att_color = "text-amber-500 dark:text-amber-400" %}
+            {% set att_bg = "bg-amber-50 dark:bg-amber-900/20" %}
+            {% else %}
+            {% set att_color = "text-red-600 dark:text-red-400" %}
+            {% set att_bg = "bg-red-50 dark:bg-red-900/20" %}
+            {% endif %}
+            <div class="absolute top-0 right-0 w-24 h-24 {{ att_bg }} rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
+            <div class="flex items-start justify-between mb-3 md:mb-4 relative z-10">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl {{ att_bg }} flex items-center justify-center {{ att_color }}">
+                    <i data-feather="percent" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-xl md:text-2xl font-bold {{ att_color }} mb-1">
+                    {% if kpi.total_attendance_records == 0 %}N/A{% else %}{{ kpi.attendance_rate }}%{% endif %}
+                </h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Attendance Rate</p>
             </div>
         </div>
     </div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (typeof feather !== "undefined") {
-            feather.replace();
-        }
-    });
-    </script>
+
+    <!-- Second Row KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        <!-- Active Classes -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                    <i data-feather="book" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.active_classes }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Active Classes</p>
+            </div>
+        </div>
+
+        <!-- Subjects -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-cyan-50 dark:bg-cyan-900/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                    <i data-feather="layers" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_subjects }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Subjects</p>
+            </div>
+        </div>
+
+        <!-- Enrollments -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center text-teal-600 dark:text-teal-400">
+                    <i data-feather="check-circle" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.total_enrollments }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Enrollments</p>
+            </div>
+        </div>
+
+        <!-- Pending Queries -->
+        <div class="bg-white dark:bg-background-dark p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative overflow-hidden">
+            {% if kpi.pending_queries > 0 %}
+            <div class="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-900/20 rounded-full blur-2xl -mr-10 -mt-10 opacity-50"></div>
+            {% endif %}
+            <div class="flex items-start justify-between mb-3 md:mb-4 relative z-10">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+                    <i data-feather="help-circle" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-xl md:text-2xl font-bold text-text-dark dark:text-text-base mb-1">{{ kpi.pending_queries }}</h3>
+                <p class="text-[10px] md:text-xs font-bold text-text-light dark:text-text-light uppercase tracking-wider">Open Queries</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <!-- Department-wise Student Distribution -->
+        <div class="bg-white dark:bg-background-dark rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 md:p-6">
+            <h3 class="text-base md:text-lg font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
+                <i data-feather="pie-chart" class="w-4 h-4 md:w-5 md:h-5 text-primary"></i>
+                Department Distribution
+            </h3>
+            <div class="relative" style="height: 280px;">
+                <canvas id="deptDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Attendance Trend -->
+        <div class="bg-white dark:bg-background-dark rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 md:p-6">
+            <h3 class="text-base md:text-lg font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
+                <i data-feather="trending-up" class="w-4 h-4 md:w-5 md:h-5 text-primary"></i>
+                Attendance Trend
+            </h3>
+            <div class="relative" style="height: 280px;">
+                <canvas id="attendanceTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Performance Table -->
+    <div class="bg-white dark:bg-background-dark rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div class="p-4 md:p-6 border-b border-gray-100 dark:border-gray-800">
+            <h3 class="text-base md:text-lg font-bold text-text-dark dark:text-text-base flex items-center gap-2">
+                <i data-feather="bar-chart-2" class="w-4 h-4 md:w-5 md:h-5 text-primary"></i>
+                Department Performance
+            </h3>
+        </div>
+        <!-- Desktop Table -->
+        <div class="hidden md:block overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-background-lighter">
+                        <th class="p-4 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Department</th>
+                        <th class="p-4 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Students</th>
+                        <th class="p-4 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Teachers</th>
+                        <th class="p-4 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Classes</th>
+                        <th class="p-4 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Attendance</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    {% for dept in department_stats %}
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-background-light transition-colors">
+                        <td class="p-4">
+                            <span class="font-bold text-text-dark dark:text-text-base">{{ dept.name }}</span>
+                        </td>
+                        <td class="p-4 text-sm text-text-light dark:text-gray-400">{{ dept.students }}</td>
+                        <td class="p-4 text-sm text-text-light dark:text-gray-400">{{ dept.teachers }}</td>
+                        <td class="p-4 text-sm text-text-light dark:text-gray-400">{{ dept.classes }}</td>
+                        <td class="p-4">
+                            {% if dept.attendance_rate is not none %}
+                            <span class="px-2 py-1 rounded-lg text-xs font-bold {% if dept.attendance_rate >= 75 %}bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400{% elif dept.attendance_rate >= 60 %}bg-amber-50 dark:bg-amber-900/20 text-amber-500 dark:text-amber-400{% else %}bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400{% endif %}">
+                                {{ dept.attendance_rate }}%
+                            </span>
+                            {% else %}
+                            <span class="text-xs text-gray-400 dark:text-gray-500 italic">N/A</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="p-8 text-center">
+                            <p class="text-text-light dark:text-gray-400">No department data available.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Mobile Cards -->
+        <div class="md:hidden p-3 space-y-3">
+            {% for dept in department_stats %}
+            <div class="bg-gray-50 dark:bg-background-base rounded-xl p-4 border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-bold text-text-dark dark:text-text-base text-sm">{{ dept.name }}</span>
+                    {% if dept.attendance_rate is not none %}
+                    <span class="px-2 py-1 rounded-lg text-xs font-bold {% if dept.attendance_rate >= 75 %}bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400{% elif dept.attendance_rate >= 60 %}bg-amber-50 dark:bg-amber-900/20 text-amber-500 dark:text-amber-400{% else %}bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400{% endif %}">
+                        {{ dept.attendance_rate }}%
+                    </span>
+                    {% else %}
+                    <span class="text-xs text-gray-400 italic">N/A</span>
+                    {% endif %}
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div>
+                        <p class="text-lg font-bold text-text-dark dark:text-text-base">{{ dept.students }}</p>
+                        <p class="text-[10px] text-text-light dark:text-text-light uppercase">Students</p>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold text-text-dark dark:text-text-base">{{ dept.teachers }}</p>
+                        <p class="text-[10px] text-text-light dark:text-text-light uppercase">Teachers</p>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold text-text-dark dark:text-text-base">{{ dept.classes }}</p>
+                        <p class="text-[10px] text-text-light dark:text-text-light uppercase">Classes</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-text-light dark:text-gray-400 text-sm">No department data available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- User Role Distribution & App Usage -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <!-- User Role Distribution -->
+        <div class="bg-white dark:bg-background-dark rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 md:p-6">
+            <h3 class="text-base md:text-lg font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
+                <i data-feather="user-check" class="w-4 h-4 md:w-5 md:h-5 text-primary"></i>
+                User Role Distribution
+            </h3>
+            <div class="relative" style="height: 280px;">
+                <canvas id="roleDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- App Usage Summary -->
+        <div class="bg-white dark:bg-background-dark rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm p-4 md:p-6">
+            <h3 class="text-base md:text-lg font-bold text-text-dark dark:text-text-base mb-4 flex items-center gap-2">
+                <i data-feather="activity" class="w-4 h-4 md:w-5 md:h-5 text-primary"></i>
+                App Usage Summary
+            </h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 md:p-4 bg-gray-50 dark:bg-background-base rounded-xl border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                            <i data-feather="clipboard" class="w-4 h-4 md:w-5 md:h-5"></i>
+                        </div>
+                        <span class="text-sm font-medium text-text-dark dark:text-text-base">Total Attendance Records</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.total_attendance_records }}</span>
+                </div>
+                <div class="flex items-center justify-between p-3 md:p-4 bg-gray-50 dark:bg-background-base rounded-xl border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400">
+                            <i data-feather="user-check" class="w-4 h-4 md:w-5 md:h-5"></i>
+                        </div>
+                        <span class="text-sm font-medium text-text-dark dark:text-text-base">Approved Enrollments</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.total_enrollments }}</span>
+                </div>
+                <div class="flex items-center justify-between p-3 md:p-4 bg-gray-50 dark:bg-background-base rounded-xl border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+                            <i data-feather="message-circle" class="w-4 h-4 md:w-5 md:h-5"></i>
+                        </div>
+                        <span class="text-sm font-medium text-text-dark dark:text-text-base">Open Queries</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.pending_queries }}</span>
+                </div>
+                <div class="flex items-center justify-between p-3 md:p-4 bg-gray-50 dark:bg-background-base rounded-xl border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                            <i data-feather="calendar" class="w-4 h-4 md:w-5 md:h-5"></i>
+                        </div>
+                        <span class="text-sm font-medium text-text-dark dark:text-text-base">Timetable Entries</span>
+                    </div>
+                    <span class="text-lg font-bold text-text-dark dark:text-text-base">{{ kpi.timetable_entries }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (typeof feather !== "undefined") {
+        feather.replace();
+    }
+
+    const isDark = document.documentElement.classList.contains('dark');
+    const textColor = isDark ? '#e5e7eb' : '#374151';
+    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+    // Department Distribution Doughnut Chart
+    const deptLabels = {{ dept_chart_labels | tojson }};
+    const deptData = {{ dept_chart_data | tojson }};
+    const deptColors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6'];
+
+    if (document.getElementById('deptDistributionChart')) {
+        new Chart(document.getElementById('deptDistributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: deptLabels,
+                datasets: [{
+                    data: deptData,
+                    backgroundColor: deptColors.slice(0, deptLabels.length),
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: textColor, font: { size: 12, weight: '600' }, padding: 16, usePointStyle: true }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+
+    // Attendance Trend Line Chart
+    const trendLabels = {{ attendance_trend_labels | tojson }};
+    const trendPresent = {{ attendance_trend_present | tojson }};
+    const trendAbsent = {{ attendance_trend_absent | tojson }};
+
+    if (document.getElementById('attendanceTrendChart')) {
+        new Chart(document.getElementById('attendanceTrendChart'), {
+            type: 'line',
+            data: {
+                labels: trendLabels,
+                datasets: [
+                    {
+                        label: 'Present',
+                        data: trendPresent,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#10b981'
+                    },
+                    {
+                        label: 'Absent',
+                        data: trendAbsent,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239,68,68,0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#ef4444'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: textColor, font: { size: 12, weight: '600' }, usePointStyle: true }
+                    }
+                },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 11 } } },
+                    y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor, font: { size: 11 } } }
+                }
+            }
+        });
+    }
+
+    // User Role Distribution Bar Chart
+    const roleLabels = {{ role_chart_labels | tojson }};
+    const roleData = {{ role_chart_data | tojson }};
+
+    if (document.getElementById('roleDistributionChart')) {
+        new Chart(document.getElementById('roleDistributionChart'), {
+            type: 'bar',
+            data: {
+                labels: roleLabels,
+                datasets: [{
+                    label: 'Users',
+                    data: roleData,
+                    backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981'],
+                    borderRadius: 8,
+                    borderSkipped: false,
+                    barPercentage: 0.5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: textColor, font: { size: 12, weight: '600' } } },
+                    y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor, font: { size: 11 }, stepSize: 1 } }
+                }
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
