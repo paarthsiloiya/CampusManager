@@ -945,15 +945,176 @@ def admin_dashboard():
     if current_user.role != UserRole.ADMIN:
         flash('Access denied.', 'error')
         return redirect(url_for('auth.login'))
-    
+
+    # Filter parameters
+    selected_branch = request.args.get('branch', '')
+    selected_period = request.args.get('period', 'all')
+    selected_user_type = request.args.get('user_type', '')
+
+    # Date filter
+    date_filter = None
+    now = datetime.now(timezone.utc)
+    if selected_period == '7days':
+        date_filter = now - timedelta(days=7)
+    elif selected_period == '30days':
+        date_filter = now - timedelta(days=30)
+    elif selected_period == '90days':
+        date_filter = now - timedelta(days=90)
+
+    # Build user query with filters
+    user_query = User.query
+    if selected_user_type:
+        try:
+            user_query = user_query.filter(User.role == UserRole[selected_user_type])
+        except KeyError:
+            pass
+    if selected_branch:
+        user_query = user_query.filter(User.branch == selected_branch)
+
+    users = user_query.all()
+    total_users = len(users)
+    total_students = sum(1 for u in users if u.role == UserRole.STUDENT)
+    total_teachers = sum(1 for u in users if u.role == UserRole.TEACHER)
+    total_admins = sum(1 for u in users if u.role == UserRole.ADMIN)
+
+    # Attendance stats
+    att_query = Attendance.query
+    if date_filter:
+        att_query = att_query.filter(Attendance.date >= date_filter.date())
+    if selected_branch:
+        att_query = att_query.join(Subject, Attendance.subject_id == Subject.id).filter(Subject.branch == selected_branch)
+
+    all_attendance = att_query.all()
+    total_attendance_records = len(all_attendance)
+    present_count = sum(1 for a in all_attendance if a.status == 'present')
+    absent_count = total_attendance_records - present_count
+    attendance_rate = round((present_count / total_attendance_records) * 100) if total_attendance_records > 0 else 0
+
+    # Active classes and subjects
+    class_query = AssignedClass.query
+    if selected_branch:
+        class_query = class_query.join(Subject, AssignedClass.subject_id == Subject.id).filter(Subject.branch == selected_branch)
+    active_classes = class_query.count()
+
+    subject_query = Subject.query
+    if selected_branch:
+        subject_query = subject_query.filter(Subject.branch == selected_branch)
+    total_subjects = subject_query.count()
+
+    # Enrollments
+    enrollment_query = Enrollment.query.filter(Enrollment.status == EnrollmentStatus.APPROVED)
+    total_enrollments = enrollment_query.count()
+
+    # Pending queries
+    pending_queries = Query.query.count()
+
+    # Timetable entries
+    timetable_entries = TimetableEntry.query.count()
+
+    # Available branches
+    branches = sorted(set(
+        b[0] for b in db.session.query(Subject.branch).distinct().all() if b[0]
+    ))
+
+    # Department stats
+    department_stats = []
+    for branch_name in branches:
+        dept_students = User.query.filter(User.role == UserRole.STUDENT, User.branch == branch_name).count()
+        dept_teachers = User.query.filter(User.role == UserRole.TEACHER, User.branch == branch_name).count()
+        dept_classes = AssignedClass.query.join(Subject).filter(Subject.branch == branch_name).count()
+
+        dept_att_query = Attendance.query.join(Subject, Attendance.subject_id == Subject.id).filter(Subject.branch == branch_name)
+        if date_filter:
+            dept_att_query = dept_att_query.filter(Attendance.date >= date_filter.date())
+        dept_att = dept_att_query.all()
+        dept_total = len(dept_att)
+        dept_present = sum(1 for a in dept_att if a.status == 'present')
+        dept_rate = round((dept_present / dept_total) * 100) if dept_total > 0 else None
+
+        department_stats.append({
+            'name': branch_name,
+            'students': dept_students,
+            'teachers': dept_teachers,
+            'classes': dept_classes,
+            'attendance_rate': dept_rate,
+        })
+
+    # Chart data - department distribution (students per branch)
+    dept_chart_labels = [d['name'] for d in department_stats]
+    dept_chart_data = [d['students'] for d in department_stats]
+
+    # Attendance trend (group by date, last N days depending on filter)
+    trend_query = db.session.query(Attendance.date, Attendance.status)
+    if date_filter:
+        trend_query = trend_query.filter(Attendance.date >= date_filter.date())
+    if selected_branch:
+        trend_query = trend_query.join(Subject, Attendance.subject_id == Subject.id).filter(Subject.branch == selected_branch)
+    trend_records = trend_query.order_by(Attendance.date).all()
+
+    trend_by_date = {}
+    for record in trend_records:
+        if record.date:
+            if record.date not in trend_by_date:
+                trend_by_date[record.date] = {'present': 0, 'absent': 0}
+            if record.status == 'present':
+                trend_by_date[record.date]['present'] += 1
+            else:
+                trend_by_date[record.date]['absent'] += 1
+
+    sorted_dates = sorted(trend_by_date.keys())
+    attendance_trend_labels = [d.strftime('%b %d') for d in sorted_dates]
+    attendance_trend_present = [trend_by_date[d]['present'] for d in sorted_dates]
+    attendance_trend_absent = [trend_by_date[d]['absent'] for d in sorted_dates]
+
+    # Role distribution chart
+    role_chart_labels = ['Admin', 'Teacher', 'Student']
+    role_chart_data = [total_admins, total_teachers, total_students]
+
+    kpi = {
+        'total_users': total_users,
+        'total_students': total_students,
+        'total_teachers': total_teachers,
+        'total_admins': total_admins,
+        'attendance_rate': attendance_rate,
+        'total_attendance_records': total_attendance_records,
+        'active_classes': active_classes,
+        'total_subjects': total_subjects,
+        'total_enrollments': total_enrollments,
+        'pending_queries': pending_queries,
+        'timetable_entries': timetable_entries,
+    }
+
+    return render_template('Admin/dashboard.html',
+        kpi=kpi,
+        department_stats=department_stats,
+        branches=branches,
+        selected_branch=selected_branch,
+        selected_period=selected_period,
+        selected_user_type=selected_user_type,
+        dept_chart_labels=dept_chart_labels,
+        dept_chart_data=dept_chart_data,
+        attendance_trend_labels=attendance_trend_labels,
+        attendance_trend_present=attendance_trend_present,
+        attendance_trend_absent=attendance_trend_absent,
+        role_chart_labels=role_chart_labels,
+        role_chart_data=role_chart_data,
+    )
+
+@views.route('/admin/manage_users')
+@login_required
+def manage_users():
+    if current_user.role != UserRole.ADMIN:
+        flash('Access denied.', 'error')
+        return redirect(url_for('auth.login'))
+
     search_query = request.args.get('search', '')
-    
+
     query = User.query
     if search_query:
         query = query.filter(User.name.ilike(f'%{search_query}%') | User.email.ilike(f'%{search_query}%'))
-        
+
     users = query.all()
-    return render_template('Admin/dashboard.html', users=users, search_query=search_query)
+    return render_template('Admin/manage_users.html', users=users, search_query=search_query)
 
 @views.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -1010,7 +1171,7 @@ def edit_user(user_id):
             user_to_edit.updated_at = datetime.now(timezone.utc)
             db.session.commit()
             flash('User updated successfully', 'success')
-            return redirect(url_for('views.admin_dashboard', section='edit'))
+            return redirect(url_for('views.manage_users', section='edit'))
             
         except Exception as e:
             db.session.rollback()
@@ -1060,7 +1221,7 @@ def delete_user(user_id):
         db.session.delete(user_to_delete)
         db.session.commit()
         flash(f'User {name} deleted successfully.', 'success')
-        return redirect(url_for('views.admin_dashboard', section='edit'))
+        return redirect(url_for('views.manage_users', section='edit'))
     except Exception as e:
         db.session.rollback()
         flash(f'Error deleting user: {str(e)}', 'error')
@@ -1881,17 +2042,17 @@ def add_user():
     
     if not all([name, email, role_str, password]):
         flash('All fields are required', 'error')
-        return redirect(url_for('views.admin_dashboard'))
+        return redirect(url_for('views.manage_users'))
         
     if User.query.filter_by(email=email).first():
         flash('Email already exists', 'error')
-        return redirect(url_for('views.admin_dashboard'))
+        return redirect(url_for('views.manage_users'))
         
     try:
         role = UserRole[role_str]
     except KeyError:
         flash('Invalid role', 'error')
-        return redirect(url_for('views.admin_dashboard'))
+        return redirect(url_for('views.manage_users'))
         
     new_user = User(name=name, email=email, role=role)
     new_user.set_password(password)
@@ -1973,7 +2134,7 @@ def add_user():
     db.session.commit()
     
     flash(f'{role_str} added successfully', 'success')
-    return redirect(url_for('views.admin_dashboard'))
+    return redirect(url_for('views.manage_users'))
 
 @views.route('/admin/timetable', methods=['GET', 'POST'])
 @login_required

@@ -159,6 +159,7 @@ class TestPageLoading:
         
         admin_pages = [
             '/admin/dashboard',
+            '/admin/manage_users',
             '/admin/assign_class',
             '/admin/add_user', 
             '/admin/timetable',

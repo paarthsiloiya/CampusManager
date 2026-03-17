@@ -28,8 +28,8 @@
                 <h1 class="text-3xl font-bold text-text-dark dark:text-text-base">Edit User</h1>
                 <p class="text-text-light dark:text-gray-400 mt-1">Update profile information for {{ user.name }}.</p>
             </div>
-            <a href="{{ url_for("views.admin_dashboard") }}"
-               class="flex items-center gap-2 text-text-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Dashboard </a>
+            <a href="{{ url_for("views.manage_users") }}"
+               class="flex items-center gap-2 text-text-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"> <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Manage Users </a>
         </div>
         <!-- Edit Form -->
         <div class="bg-white dark:bg-background-dark rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
