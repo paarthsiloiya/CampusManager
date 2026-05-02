@@ -16,7 +16,26 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback_secret_key_for_development')
     
     # Database configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///student_management.db')
+    db_uri = os.getenv('DATABASE_URL', 'sqlite:///student_management.db')
+    
+    # Fallback to SQLite if local Postgres is configured but not accessible (e.g. running without Docker)
+    if 'postgresql' in db_uri and ('localhost' in db_uri or '127.0.0.1' in db_uri):
+        import socket
+        import urllib.parse
+        parsed = urllib.parse.urlparse(db_uri)
+        host = parsed.hostname or 'localhost'
+        port = parsed.port or 5432
+        
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        try:
+            sock.connect((host, port))
+            sock.close()
+        except (socket.timeout, ConnectionRefusedError):
+            print(f"⚠️  Cannot connect to Postgres at {host}:{port}. Falling back to SQLite.")
+            db_uri = 'sqlite:///student_management.db'
+            
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     # Initialize extensions
